@@ -24,14 +24,24 @@ model Subject {
   desc  String
   level Int // 0 = F3, 1 = F4, etc.
   notes Note[]
+  tests Test[]
+}
+
+model Test {
+  id        Int     @id @default(autoincrement())
+  title     String
+  sat_test  Boolean @default(false)
+  subject   Subject @relation(fields: [subjectId], references: [id])
+  subjectId Int
+  desc      String  @default("")
+  notes     Note[]
 }
 
 model Activity {
-  id       Int    @id @default(autoincrement())
-  title    String
-  desc     String
-  filename String
-  posts    Post[]
+  id    Int    @id @default(autoincrement())
+  title String
+  desc  String @default("")
+  posts Post[]
 }
 
 model Note {
@@ -39,10 +49,14 @@ model Note {
   title     String
   subject   Subject @relation(fields: [subjectId], references: [id])
   subjectId Int
-  desc      String
+  desc      String  @default("")
   filename  String
   author    User    @relation(fields: [authorId], references: [id])
   authorId  String
+  type      Int     @default(2) // 0 = Internal Exam Note, 1 = External Exam, 2 = Other
+  test      Test?   @relation(fields: [testId], references: [id])
+  testId    Int?
+  pinned    Boolean @default(false)
 }
 
 model Post {
@@ -59,14 +73,14 @@ model Post {
 model Olympiad {
   id        Int                 @id @default(autoincrement())
   title     String
-  desc      String
+  desc      String              @default("")
   resources Olympiad_Resource[]
 }
 
 model Olympiad_Resource {
   id         Int      @id @default(autoincrement())
   title      String
-  desc       String
+  desc       String   @default("")
   filename   String
   olympiad   Olympiad @relation(fields: [olympiadId], references: [id])
   olympiadId Int

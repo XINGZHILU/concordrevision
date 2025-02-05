@@ -3,15 +3,16 @@ import {notFound} from "next/navigation";
 import {isNumeric} from "@/lib/utils";
 import {year_group_names} from "@/lib/consts";
 
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default async function Page(req: any, res: any) {
+export default async function Page(req : any, res : any){
     const params = await req.params;
     const sid = params.subject;
+    const nid = params.note;
 
-    if (!isNumeric(sid)) {
+    if (!isNumeric(sid) || !isNumeric(nid)) {
         notFound();
     }
+
+
 
     const subject = await prisma.subject.findUnique({
         where: {
@@ -26,16 +27,17 @@ export default async function Page(req: any, res: any) {
         notFound();
     }
 
+    const note = subject.notes.filter((note) => note.id === +nid)[0];
 
-    console.log(subject);
+    console.log(note);
+
+    if (!note) {
+        notFound();
+    }
 
     return (<div>
         <h1>{year_group_names[subject.level]} {subject.title}</h1>
-        <ul>
-            {subject.notes.map((note) => (
-                <li key={note.id+'li'}><a key={note.id+'a'} href = {`/revision/${sid}/${note.id}`}>{note.title}</a></li>
-            ))}
-        </ul>
+        <h2>{note.title}</h2>
+        <embed src={note.filename} className='w-screen h-screen'></embed>
     </div>)
-
 }

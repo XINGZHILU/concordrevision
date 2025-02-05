@@ -25,17 +25,11 @@ export default async function Page(req: any, res: any) {
     if (!subject) {
         notFound();
     }
-
-
+    
     console.log(subject);
 
     return (<div>
         <h1>{year_group_names[subject.level]} {subject.title}</h1>
-        <ul>
-            {subject.notes.map((note) => (
-                <li key={note.id+'li'}><a key={note.id+'a'} href = {`/revision/${sid}/${note.id}`}>{note.title}</a></li>
-            ))}
-        </ul>
     </div>)
 
 }

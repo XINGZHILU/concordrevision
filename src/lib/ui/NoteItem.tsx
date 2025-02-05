@@ -23,7 +23,7 @@ export function NoteItem({subject}: {
                 <h5 className='mb-2 text-lg font-medium tracking-tight text-gray-900'>{subject.title}</h5>
                 <p className='mb-3 text-sm tracking-tight text-gray-700'>{subject.desc}</p>
                 <Link href={`/revision/${subject.id}`} className='inline-flex items-center py-2 font-semibold text-center'>
-                    Read more <Image src={assets.arrow} className='ml-2' alt='Arrow' width={12} height={12}/>
+                    View <Image src={assets.arrow} className='ml-2' alt='Arrow' width={12} height={12}/>
                 </Link>
             </div>
         </div>

@@ -1,0 +1,1 @@
+export const isNumeric = (string : string) => Number.isFinite(+string)

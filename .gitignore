@@ -86,3 +86,4 @@ junit.xml
 package.copy.json
 
 *.tgz
+.vercel
