@@ -31,7 +31,8 @@ export default async function Page(req: any, res: any) {
 
     return (<div>
         <h1>{year_group_names[subject.level]} {subject.title} upload</h1>
-        <UploadForm subject={1} author={"user_2sdHkP8YUZMVEOJ75AAykiAD4am"}></UploadForm>
+
+        <UploadForm subject={subject.id} author={"user_2sdHkP8YUZMVEOJ75AAykiAD4am"}></UploadForm>
     </div>)
 
 }

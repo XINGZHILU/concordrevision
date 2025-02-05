@@ -2,6 +2,7 @@ import {prisma} from "@/lib/prisma";
 import {notFound} from "next/navigation";
 import {isNumeric} from "@/lib/utils";
 import {year_group_names} from "@/lib/consts";
+import {NoteCard} from "@/lib/ui/cards";
 
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -31,11 +32,14 @@ export default async function Page(req: any, res: any) {
 
     return (<div>
         <h1>{year_group_names[subject.level]} {subject.title}</h1>
-        <ul>
-            {subject.notes.map((note) => (
-                <li key={note.id+'li'}><a key={note.id+'a'} href = {`/revision/${sid}/${note.id}`}>{note.title}</a></li>
-            ))}
-        </ul>
+        <br/>
+        <h2>About</h2>
+        <p>{subject.desc}</p>
+        <br/>
+        <h2>Notes</h2>
+        {subject.notes.map((note) => (
+            <NoteCard note={note} key={note.id}/>
+        ))}
     </div>)
 
 }

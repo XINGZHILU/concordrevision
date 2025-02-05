@@ -1,3 +1,43 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+h1,h2,h3,h4,h5 {
+    @apply leading-[1.1];
+}
+
+h1 {
+    @apply font-bold text-[1.75rem];
+}
+
+h2 {
+    @apply font-bold text-[1.50rem];
+}
+
+h3 {
+    @apply font-bold text-[1.35rem];
+}
+
+h4 {
+    @apply font-bold text-[1.25rem];
+}
+
+h5 {
+    @apply font-bold text-[1.1rem];
+}
+
+p {
+    @apply font-medium text-[1rem];
+}
+
+button {
+    @apply cursor-pointer outline-none border-0 font-[inherit];
+}
+
+input {
+    @apply outline-none font-[inherit];
+}
+
+details > *:not(summary){
+    margin-left: 2em;
+}
