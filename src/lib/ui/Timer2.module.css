@@ -1,0 +1,49 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 20vh; /* Reduced height */
+    padding: 0.3em; /* Reduced padding */
+    background-color: #f0f0f0;
+    min-width: 20vh;
+    max-width: 50%;
+    width:100%;
+}
+
+.timer {
+    text-align: center;
+    background: white;
+    padding: 1; /* Reduced padding */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 0.3rem; /* Reduced margin */
+    width: auto; /* Adjust width */
+}
+
+.title {
+    font-size: 1.5rem; /* Reduced font size */
+    margin-bottom: 0.5rem; /* Reduced margin */
+}
+
+.time {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem; /* Reduced gap */
+}
+
+.timeSegment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.number {
+    font-size: 1.5rem; /* Reduced font size */
+    font-weight: bold;
+}
+
+.label {
+    font-size: 0.75rem; /* Reduced font size */
+    color: #555;
+}

@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id    String  @id @default(cuid())
+  email String  @unique
+  name  String?
+  posts Post[]
+  notes Note[]
+}
+
+model Subject {
+  id    Int    @id @default(autoincrement())
+  title String
+  desc  String
+  level Int // 0 = F3, 1 = GCSE, 2 = A Level
+  notes Note[]
+}
+
+model Activity {
+  id       Int    @id @default(autoincrement())
+  title    String
+  desc     String
+  filename String
+  posts    Post[]
+}
+
+model Note {
+  id        Int     @id @default(autoincrement())
+  title     String
+  subject   Subject @relation(fields: [subjectId], references: [id])
+  subjectId Int
+  desc      String
+  filename  String
+  author    User    @relation(fields: [authorId], references: [id])
+  authorId  String
+}
+
+model Post {
+  id         Int       @id @default(autoincrement())
+  title      String
+  content    String?
+  published  Boolean   @default(false)
+  author     User      @relation(fields: [authorId], references: [id])
+  authorId   String
+  Activity   Activity? @relation(fields: [activityId], references: [id])
+  activityId Int?
+}
