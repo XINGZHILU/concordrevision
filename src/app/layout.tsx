@@ -32,7 +32,7 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
             <nav
                 className="bg-gray-200 border-gray-500 dark:bg-gray-900">
                 <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                    <a href="https://concordcollege" className="flex items-center space-x-3 rtl:space-x-reverse">
+                    <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
                         <img src="https://concordcollegeuk.com/wp-content/uploads/2023/11/logo.svg" className="h-8"
                              alt="Flowbite Logo"/>
                         <span
