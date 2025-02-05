@@ -1,3 +1,6 @@
+'use client';
+
+
 import { useState, useEffect } from "react";
 import Head from "next/head";
 import styles from "./Timer2.module.css";

@@ -1,5 +1,5 @@
-import {prisma} from "@/lib/prisma";
-import Header from "@/lib/ui/Header";
+import { prisma } from "@/lib/prisma";
+import NoteList from "@/lib/ui/NoteList";
 
 export default async function Home() {
     const subjects = await prisma.subject.findMany({
@@ -10,8 +10,7 @@ export default async function Home() {
 
     return (
         <>
-            <Header/>
-
+            <NoteList subjects={subjects} year = {0}/>
         </>
     )
 }

@@ -9,18 +9,20 @@ datasource db {
 }
 
 model User {
-  id    String  @id @default(cuid())
-  email String  @unique
-  name  String?
-  posts Post[]
-  notes Note[]
+  id      String  @id @default(cuid())
+  email   String  @unique
+  name    String?
+  teacher Boolean @default(false)
+  year    Int     @default(-1)
+  posts   Post[]
+  notes   Note[]
 }
 
 model Subject {
   id    Int    @id @default(autoincrement())
   title String
   desc  String
-  level Int // 0 = F3, 1 = GCSE, 2 = A Level
+  level Int // 0 = F3, 1 = F4, etc.
   notes Note[]
 }
 
@@ -52,4 +54,20 @@ model Post {
   authorId   String
   Activity   Activity? @relation(fields: [activityId], references: [id])
   activityId Int?
+}
+
+model Olympiad {
+  id        Int                 @id @default(autoincrement())
+  title     String
+  desc      String
+  resources Olympiad_Resource[]
+}
+
+model Olympiad_Resource {
+  id         Int      @id @default(autoincrement())
+  title      String
+  desc       String
+  filename   String
+  olympiad   Olympiad @relation(fields: [olympiadId], references: [id])
+  olympiadId Int
 }

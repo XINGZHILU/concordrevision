@@ -1,5 +1,7 @@
+'use client';
+
 import React from 'react'
-import {assets} from '@/lib/assets.js'
+import {assets} from '@/lib/assets'
 import Image from 'next/image'
 import Timer from './timer'
 import Timer2 from './gcsetimer'
@@ -13,8 +15,6 @@ const Footer = () => {
                     <Image src={assets.ig} alt='' width={100} height={120}/>
                     <Image src={assets.teams} alt='' width={100} height={120}/>
                 </div>
-                <Timer/>
-                <Timer2/>
         </div>
                        
 
