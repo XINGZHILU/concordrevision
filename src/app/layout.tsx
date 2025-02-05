@@ -76,7 +76,9 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
                     </div>
                 </div>
             </nav>
-            {children}
+            <div className='min-h-screen'>
+                {children}
+            </div>
             <Footer/>
             </body>
             </html>
