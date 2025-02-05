@@ -5,6 +5,7 @@ import { useState, useRef } from 'react';
 
 export default function UploadForm({subject, author} : {subject : number, author : string}) {
     const inputFileRef = useRef<HTMLInputElement>(null);
+    const descriptionRef = useRef<HTMLInputElement>(null);
     const titleRef = useRef<HTMLInputElement>(null);
     const [status, setStatus] = useState<string>("Waiting for file to be selected");
     return (
@@ -21,8 +22,9 @@ export default function UploadForm({subject, author} : {subject : number, author
                     setStatus("Uploading...");
                     const file = inputFileRef.current.files[0];
                     const title = titleRef.current?.value;
+                    const desc = descriptionRef.current?.value;
 
-                    const response = await fetch(`/api/upload?filename=${file.name}&subject=${subject}&title=${title}&author=${author}`, {
+                    const response = await fetch(`/api/upload?filename=${file.name}&subject=${subject}&title=${title}&author=${author}&desc=${desc}`, {
                         method: 'POST',
                         body: file
                     });
@@ -35,9 +37,15 @@ export default function UploadForm({subject, author} : {subject : number, author
                     }
                 }}
             >
+                <label htmlFor="title">Note Title:</label>
                 <input name="title" ref={titleRef} type="text" placeholder='Note Title' required />
-                <br></br>
+                <br/>
+                <label htmlFor="description">Note Description:</label>
+                <input name="description" type="text" placeholder='Note Description' ref={descriptionRef} required />
+                <br/>
+                <label htmlFor="file">Select a file:</label>
                 <input name="file" ref={inputFileRef} type="file" accept='.pdf' required />
+                <br/>
                 <button type="submit">Upload</button>
             </form>
             <h2>{status}</h2>

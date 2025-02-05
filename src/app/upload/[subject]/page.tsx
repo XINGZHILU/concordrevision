@@ -2,6 +2,7 @@ import {prisma} from "@/lib/prisma";
 import {notFound} from "next/navigation";
 import {isNumeric} from "@/lib/utils";
 import {year_group_names} from "@/lib/consts";
+import UploadForm from "@/lib/ui/UploadForm";
 
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -29,7 +30,8 @@ export default async function Page(req: any, res: any) {
     console.log(subject);
 
     return (<div>
-        <h1>{year_group_names[subject.level]} {subject.title}</h1>
+        <h1>{year_group_names[subject.level]} {subject.title} upload</h1>
+        <UploadForm subject={1} author={"user_2sdHkP8YUZMVEOJ75AAykiAD4am"}></UploadForm>
     </div>)
 
 }

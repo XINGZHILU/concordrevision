@@ -9,10 +9,11 @@ export default async function handler(
 ) {
     const filename = req.query.filename as string;
     const subject = req.query.subject as string;
+    const desc = req.query.desc as string;
     if (!filename){
         res.status(404).json({});
     }
-    const blob = await put(filename, req.body, {
+    const blob = await put(filename, req, {
         access: 'public',
     });
     const url = blob.url;
@@ -23,7 +24,7 @@ export default async function handler(
             subjectId: +subject,
             filename: url,
             authorId: req.query.author as string,
-            desc: "Placeholder"
+            desc: desc,
         }
     })
 

@@ -38,6 +38,6 @@ export default async function Page(req : any, res : any){
     return (<div>
         <h1>{year_group_names[subject.level]} {subject.title}</h1>
         <h2>{note.title}</h2>
-        <embed src={note.filename} className='w-screen h-screen'></embed>
+        <iframe src={note.filename} width={'80%'} height={600}></iframe>
     </div>)
 }

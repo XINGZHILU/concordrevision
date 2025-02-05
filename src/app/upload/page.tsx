@@ -1,8 +1,10 @@
-import UploadForm from "@/lib/ui/UploadForm";
+import {prisma} from "@/lib/prisma";
+import SubjectList from "@/lib/ui/SubjectsList";
 
 export default async function Page() {
-    return (<div>
-        <UploadForm subject={1} author={"user_2sdHkP8YUZMVEOJ75AAykiAD4am"}></UploadForm>
-    </div>)
+    const subjects = await prisma.subject.findMany();
 
+    return (<div>
+        <SubjectList subjects={subjects} year={0}></SubjectList>
+    </div>);
 }
