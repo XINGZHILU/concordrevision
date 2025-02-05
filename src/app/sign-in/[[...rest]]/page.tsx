@@ -1,7 +1,7 @@
 import { SignIn } from '@clerk/nextjs'
 
 export default function Page() {
-    return <div className={'content-center'}>
+    return <div className={'place-items-center'}>
         <SignIn />
     </div>
 }

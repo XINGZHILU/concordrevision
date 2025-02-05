@@ -30,7 +30,7 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
 
 
             <nav
-                className="bg-gray-300 border-gray-500 dark:bg-gray-900">
+                className="bg-gray-200 border-gray-500 dark:bg-gray-900">
                 <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                     <a href="https://concordcollege" className="flex items-center space-x-3 rtl:space-x-reverse">
                         <img src="https://concordcollegeuk.com/wp-content/uploads/2023/11/logo.svg" className="h-8"
@@ -41,7 +41,7 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
 
                     <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1 "
                          id="navbar-sticky">
-                        <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-300 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                        <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-200 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                             <li>
                                 <Link href="/"
                                       className="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
@@ -49,20 +49,20 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
                             </li>
                             <li>
                                 <Link href="/revision"
-                                      className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-300 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Revision
+                                      className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-200 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Revision
                                     Notes</Link>
                             </li>
                             <li>
                                 <Link href="/olympiads"
-                                      className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-300 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Olympiads</Link>
+                                      className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-200 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Olympiads</Link>
                             </li>
                             <li>
                                 <Link href="/ec"
-                                      className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-300 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Extracurriculars</Link>
+                                      className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-200 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Extracurriculars</Link>
                             </li>
                             <li>
                                 <Link href="/upload"
-                                      className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-300 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Upload</Link>
+                                      className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-200 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Upload</Link>
                             </li>
                             <li>
                                 <SignedOut>
@@ -76,6 +76,7 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
                     </div>
                 </div>
             </nav>
+            <br/>
             <div className='min-h-screen'>
                 {children}
             </div>
