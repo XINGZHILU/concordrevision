@@ -35,11 +35,13 @@ export default async function Page(req : any, res : any){
         notFound();
     }
 
-    return (<div>
+    return (<div className="w-full">
         <h1>{year_group_names[subject.level]} {subject.title} - {note.title}</h1>
         <br/>
         <p>{note.desc}</p>
         <br/>
-        <iframe src={note.filename} width={'90%'} height={600}></iframe>
+        <div className="w-full place-items-center">
+            <iframe src={note.filename} width={'90%'} height={600}></iframe>
+        </div>
     </div>)
 }
