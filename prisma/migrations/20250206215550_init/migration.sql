@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Note" ADD COLUMN     "colour" INTEGER NOT NULL DEFAULT 0;

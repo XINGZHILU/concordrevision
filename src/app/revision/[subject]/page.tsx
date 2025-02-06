@@ -38,7 +38,10 @@ export default async function Page(req: any, res: any) {
         <br/>
         <h2>Notes</h2>
         {subject.notes.map((note) => (
-            <NoteCard note={note} key={note.id}/>
+            <div key={note.id+'div'}>
+                <NoteCard note={note} key={note.id}/>
+                <br key={note.id+'br'}/>
+            </div>
         ))}
     </div>)
 

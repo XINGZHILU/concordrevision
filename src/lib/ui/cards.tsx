@@ -4,13 +4,15 @@ export function NoteCard({note}: {
         title: string,
         desc: string,
         subjectId: number,
+        colour: number
     }
 }) {
+    const borderColours = ['border-green-400', 'border-amber-400', 'border-red-400'];
     // https://flowbite.com/docs/components/card/
     return (
 
         <div
-            className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+            className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
             <a href="#">
                 <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{note.title}</h5>
             </a>
@@ -25,4 +27,31 @@ export function NoteCard({note}: {
             </a>
         </div>
     );
+}
+
+export function ColourSymbol({colour}: { colour: number }) {
+    if (colour === 0) {
+        return (
+            <div className={'py-2 px-1'}><span
+                className={`focus:outline-none text-white bg-green-400 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800`}>Green</span></div>
+        );
+    }
+    else if (colour === 1) {
+        return (
+            <div className={'py-2 px-1'}><span
+                className={`focus:outline-none text-white bg-amber-400 focus:ring-4 focus:ring-amber-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-amber-600 dark:hover:bg-amber-700 dark:focus:ring-amber-800`}>Amber</span></div>
+        );
+    }
+    else if (colour === 2) {
+        return (
+            <div className={'py-2 px-1'}><span
+                className={`focus:outline-none text-white bg-red-400 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800`}>Red</span></div>
+        );
+    }
+    else {
+        return (
+            <div className={'py-2 px-1'}><span
+                className={`focus:outline-none text-white bg-gray-400 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800`}>Unclassified</span></div>
+        );
+    }
 }
