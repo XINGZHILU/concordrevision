@@ -85,7 +85,7 @@ export function OlympiadCard({olympiad}: {
     return (
         <div className={'p-4'}>
             <div
-                className='w-[330px] sm:w-[300px] h-[120px] bg-white border border-black hover:shadow-[-7px_7px_0px_#000000]'>
+                className='w-[360px] h-[120px] bg-white border border-black hover:shadow-[-7px_7px_0px_#000000]'>
                 <div className='p-5'>
                     <h5 className='mb-2 text-lg font-medium tracking-tight text-gray-900'>{olympiad.title}</h5>
                     <Link href={`/olympiads/${olympiad.id}`} className='inline-flex items-center py-2 font-semibold text-center'>
