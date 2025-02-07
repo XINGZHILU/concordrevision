@@ -22,12 +22,12 @@ export default function OlympiadsList({olympiads}: {
                 ))
             }
         </div>
-        <ul>
+        <div className={"flex flex-wrap justify-around gap-1 gap-y-10 mb-16 xl:mx-24"}>
             {
                 olympiads.filter((olympiad) => olympiad.area === menu).map((olympiad) => (
                     <OlympiadCard key={olympiad.id} olympiad={olympiad}/>)
                 )
             }
-        </ul>
+        </div>
     </div>;
 }
