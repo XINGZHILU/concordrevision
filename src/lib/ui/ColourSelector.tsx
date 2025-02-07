@@ -11,16 +11,16 @@ export default function ColourSelector({nid, uid, original}: { nid: number, uid:
         if (colour === undefined || colour === original) {
             return;
         }
-        const response1 = await fetch('/api/remove_colour', {
+        const response2 = await fetch('/api/add_colour', {
             method: 'POST',
-            body: JSON.stringify({nid, uid, original}),
+            body: JSON.stringify({nid, uid, colour}),
             headers: {
                 'Content-Type': 'application/json'
             }
         });
-        const response2 = await fetch('/api/add_colour', {
+        const response1 = await fetch('/api/remove_colour', {
             method: 'POST',
-            body: JSON.stringify({nid, uid, colour}),
+            body: JSON.stringify({nid, uid, original}),
             headers: {
                 'Content-Type': 'application/json'
             }
