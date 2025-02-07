@@ -55,7 +55,7 @@ export default async function Page(req : any, res : any){
     return (<div className="w-full">
         <h1>{year_group_names[subject.level]} {subject.title} - {note.title}</h1>
         <ColourSelector nid={note.id} uid={user.id} original={colour}/>
-        <p aria-multiline={true}>{note.desc}</p>
+        {note.desc.split('\n').map((line, index) => <p key={index}>{line}</p>)}
         <br/>
         <div className="w-full place-items-center">
             <iframe src={note.filename} width={'90%'} height={600}></iframe>

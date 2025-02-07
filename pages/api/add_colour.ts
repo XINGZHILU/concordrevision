@@ -10,47 +10,42 @@ export default async function handler(
     const uid = req.body.uid as string;
     const colour = req.body.colour as number;
 
-    const note = await prisma.note.findUnique({
-        where: {
-            id: nid
-        }
-    });
-    if (!note){
-        res.status(404).json({error: 'Note not found'});
-        return;
-    }
+
     if (colour === 0){
-        note.greenUIDs.push(uid);
         const updated = await prisma.note.update({
             where: {
                 id: nid
             },
             data: {
-                greenUIDs: note.greenUIDs
+                greenUIDs: {
+                    push: uid
+                }
             }
         });
         console.log(updated);
     }
     else if (colour === 1){
-        note.amberUIDs.push(uid);
         const updated = await prisma.note.update({
             where: {
                 id: nid
             },
             data: {
-                amberUIDs: note.amberUIDs
+                amberUIDs: {
+                    push: uid
+                }
             }
         });
         console.log(updated);
     }
     else if (colour === 2){
-        note.redUIDs.push(uid);
         const updated = await prisma.note.update({
             where: {
                 id: nid
             },
             data: {
-                redUIDs: note.redUIDs
+                redUIDs: {
+                    push: uid
+                }
             }
         });
         console.log(updated);
