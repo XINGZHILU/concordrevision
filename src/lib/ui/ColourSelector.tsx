@@ -27,7 +27,8 @@ export default function ColourSelector({nid, uid, subject, original}: { nid: num
         });
 
         if (response1.ok && response2.ok){
-            redirect(`/revision/${subject}/resources/${nid}`);
+            //redirect(`/revision/${subject}/resources/${nid}`);
+            return;
         }
         else {
             alert('Colour not set');
