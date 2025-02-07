@@ -1,18 +1,31 @@
-export function NoteCard({note}: {
+function borderColour(colour: number) {
+    if (colour === 0) {
+        return 'border-green-400';
+    }
+    else if (colour === 1) {
+        return 'border-amber-400';
+    }
+    else if (colour === 2) {
+        return 'border-red-400';
+    }
+    else {
+        return 'border-gray-400';
+    }
+}
+
+export function NoteCard({note, colour}: {
     note: {
         id: number,
         title: string,
         desc: string,
         subjectId: number,
-        colour: number
-    }
+    },
+    colour: number
 }) {
-    const borderColours = ['border-green-400', 'border-amber-400', 'border-red-400'];
     // https://flowbite.com/docs/components/card/
     return (
-
         <div
-            className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
+            className={`max-w-sm p-6 bg-white ${borderColour(colour)} border-2 rounded-lg shadow-sm`}>
             <a href="#">
                 <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{note.title}</h5>
             </a>

@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import NoteList from "@/lib/ui/NoteList";
+import {currentUser} from "@clerk/nextjs/server";
 
 export default async function Home() {
     const subjects = await prisma.subject.findMany({
@@ -8,9 +9,24 @@ export default async function Home() {
         }
     });
 
+    const user = await currentUser();
+    if (!user){
+        return <h1>You must login to access this page</h1>;
+    }
+
+    const user_data = await prisma.user.findUnique({
+        where: {
+            id: user.id
+        }
+    });
+
+    if (!user_data){
+        return <h1>User not found</h1>;
+    }
+
     return (
         <>
-            <NoteList subjects={subjects} year = {0}/>
+            <NoteList subjects={subjects} year = {user_data.year}/>
         </>
     )
 }

@@ -35,8 +35,6 @@ export default async function Page(req : any, res : any){
 
     const note = subject.notes.filter((note) => note.id === +nid)[0];
 
-    console.log(note);
-
     let colour = -1;
     if (note.greenUIDs.includes(user.id)) {
         colour = 0;
@@ -54,7 +52,7 @@ export default async function Page(req : any, res : any){
 
     return (<div className="w-full">
         <h1>{year_group_names[subject.level]} {subject.title} - {note.title}</h1>
-        <ColourSelector nid={note.id} uid={user.id} original={colour}/>
+        <ColourSelector nid={note.id} uid={user.id} subject={subject.id} original={colour}/>
         {note.desc.split('\n').map((line, index) => <p key={index}>{line}</p>)}
         <br/>
         <div className="w-full place-items-center">

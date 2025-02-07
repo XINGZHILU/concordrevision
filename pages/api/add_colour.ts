@@ -8,11 +8,10 @@ export default async function handler(
 ) {
     const nid = req.body.nid as number;
     const uid = req.body.uid as string;
-    const colour = req.body.colour as number;
+    const colour = req.body.colour;
 
-
-    if (colour === 0){
-        const updated = await prisma.note.update({
+    if (colour === '0'){
+        await prisma.note.update({
             where: {
                 id: nid
             },
@@ -22,10 +21,9 @@ export default async function handler(
                 }
             }
         });
-        console.log(updated);
     }
-    else if (colour === 1){
-        const updated = await prisma.note.update({
+    else if (colour === '1'){
+        await prisma.note.update({
             where: {
                 id: nid
             },
@@ -35,10 +33,9 @@ export default async function handler(
                 }
             }
         });
-        console.log(updated);
     }
-    else if (colour === 2){
-        const updated = await prisma.note.update({
+    else if (colour === '2'){
+        await prisma.note.update({
             where: {
                 id: nid
             },
@@ -48,7 +45,6 @@ export default async function handler(
                 }
             }
         });
-        console.log(updated);
     }
 
     res.status(200).json({});

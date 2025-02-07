@@ -29,13 +29,12 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
 
             <body className={inter.className}>
 
-
             <nav
                 className="bg-gray-200 border-gray-500">
                 <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                     <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
                         <Image src="https://concordcollegeuk.com/wp-content/uploads/2023/11/logo.svg" className="h-8"
-                             alt="Flowbite Logo"/>
+                             alt="Concord Logo" width={80} height={80}/>
                         <span
                             className="self-center text-2xl font-semibold whitespace-nowrap">Concord Student Hub</span>
                     </Link>
