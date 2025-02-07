@@ -43,7 +43,7 @@ export default async function handler(
         });
         console.log(updated);
     }
-    else {
+    else if (colour === 2){
         note.redUIDs.push(uid);
         const updated = await prisma.note.update({
             where: {
