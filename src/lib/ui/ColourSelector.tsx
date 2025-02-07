@@ -18,14 +18,8 @@ export default function ColourSelector({nid, uid, original}: { nid: number, uid:
                 'Content-Type': 'application/json'
             }
         });
-        const response1 = await fetch('/api/remove_colour', {
-            method: 'POST',
-            body: JSON.stringify({nid, uid, original}),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        if (response1.ok && response2.ok){
+
+        if (response2.ok){
             alert('Colour set');
 
         }
