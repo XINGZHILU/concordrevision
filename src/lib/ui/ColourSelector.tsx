@@ -1,8 +1,8 @@
 'use client';
 
-import {useRef, useState} from "react";
-import {redirect} from "next/navigation";
+import {useRef} from "react";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ColourSelector({nid, uid, subject, original}: { nid: number, uid: string, subject: number, original: number }) {
     async function submit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();

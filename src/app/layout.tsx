@@ -61,6 +61,10 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
                                       className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-200 md:hover:bg-transparent md:hover:text-blue-700 md:p-0  ">Extracurriculars</Link>
                             </li>
                             <li>
+                                <Link href="/tools"
+                                      className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-200 md:hover:bg-transparent md:hover:text-blue-700 md:p-0  ">Utilities</Link>
+                            </li>
+                            <li>
                                 <Link href="/upload"
                                       className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-200 md:hover:bg-transparent md:hover:text-blue-700 md:p-0  ">Upload</Link>
                             </li>
