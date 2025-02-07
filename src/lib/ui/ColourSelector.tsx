@@ -1,6 +1,6 @@
 'use client';
 
-import {useRef} from "react";
+import {useRef, useState} from "react";
 import {redirect} from "next/navigation";
 
 export default function ColourSelector({nid, uid, subject, original}: { nid: number, uid: string, subject: number, original: number }) {
@@ -27,7 +27,7 @@ export default function ColourSelector({nid, uid, subject, original}: { nid: num
         });
 
         if (response1.ok && response2.ok){
-            redirect(`/revision/${subject}/${nid}`);
+            redirect(`/revision/${subject}/resources/${nid}`);
         }
         else {
             alert('Colour not set');
@@ -39,12 +39,12 @@ export default function ColourSelector({nid, uid, subject, original}: { nid: num
         <form onSubmit={submit}>
             <label htmlFor="colour">Choose a colour:</label>
             <select name="colour" id="colour" defaultValue={original} ref={colourRef} required>
-                <option value={-1} className={'bg-black text-white'}>Unclassified</option>
-                <option value={0} className={'bg-green-500 text-white'}>Green</option>
-                <option value={1} className={'bg-amber-500 text-white'}>Amber</option>
-                <option value={2} className={'bg-red-500 text-white'}>Red</option>
+                <option value={-1} className={'bg-black text-white'} >Unclassified</option>
+                <option value={0} className={'bg-green-500 text-white'} >Green</option>
+                <option value={1} className={'bg-amber-500 text-white'} >Amber</option>
+                <option value={2} className={'bg-red-500 text-white'} >Red</option>
             </select>
-            <button type="submit">Save</button>
+            <button type="submit" className={'bg-blue-500'}>Save</button>
         </form>
     </div>);
 }
