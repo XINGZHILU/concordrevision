@@ -78,6 +78,8 @@ model Post {
 model Olympiad {
   id        Int                 @id @default(autoincrement())
   title     String
+  area      String
+  links     String[]
   desc      String              @default("")
   resources Olympiad_Resource[]
 }

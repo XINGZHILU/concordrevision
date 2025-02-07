@@ -1,3 +1,8 @@
+import Link from "next/link";
+import Image from "next/image";
+import {assets} from "@/lib/assets";
+import React from "react";
+
 function borderColour(colour: number) {
     if (colour === 0) {
         return 'border-green-400';
@@ -67,4 +72,27 @@ export function ColourSymbol({colour}: { colour: number }) {
                 className={`focus:outline-none text-white bg-gray-400 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800`}>Unclassified</span></div>
         );
     }
+}
+
+export function OlympiadCard({olympiad}: {
+    olympiad: {
+        id: number,
+        title: string,
+        desc: string,
+        area: string
+    }
+}){
+    return (
+        <div className={'p-4'}>
+            <div
+                className='w-[330px] sm:w-[300px] h-[120px] bg-white border border-black hover:shadow-[-7px_7px_0px_#000000]'>
+                <div className='p-5'>
+                    <h5 className='mb-2 text-lg font-medium tracking-tight text-gray-900'>{olympiad.title}</h5>
+                    <Link href={`/olympiads/${olympiad.id}`} className='inline-flex items-center py-2 font-semibold text-center'>
+                        View <Image src={assets.arrow} className='ml-2' alt='Arrow' width={12} height={12}/>
+                    </Link>
+                </div>
+            </div>
+        </div>
+    );
 }
