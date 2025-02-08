@@ -11,47 +11,47 @@ export default async function handler(
     const original = req.body.original as number;
 
 
-    const note = await prisma.note.findUnique({
+    const user = await prisma.user.findUnique({
         where: {
-            id: nid
+            id: uid
         }
     });
-    if (!note){
-        res.status(404).json({error: 'Note not found'});
+    if (!user){
+        res.status(404).json({error: 'User not found'});
         return;
     }
     if (original === 0){
-        await prisma.note.update({
+        await prisma.user.update({
             where: {
-                id: nid
+                id: uid
             },
             data: {
-                greenUIDs: {
-                    set: note.greenUIDs.filter((id) => id !== uid)
+                green: {
+                    set: user.green.filter((id) => id !== nid)
                 }
             }
         });
     }
     else if (original === 1){
-        await prisma.note.update({
+        await prisma.user.update({
             where: {
-                id: nid
+                id: uid
             },
             data: {
-                amberUIDs: {
-                    set: note.amberUIDs.filter((id) => id !== uid)
+                amber: {
+                    set: user.amber.filter((id) => id !== nid)
                 }
             }
         });
     }
     else if (original === 2){
-        await prisma.note.update({
+        await prisma.user.update({
             where: {
-                id: nid
+                id: uid
             },
             data: {
-                redUIDs: {
-                    set: note.redUIDs.filter((id) => id !== uid)
+                red: {
+                    set: user.red.filter((id) => id !== nid)
                 }
             }
         });

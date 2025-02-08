@@ -11,37 +11,37 @@ export default async function handler(
     const colour = req.body.colour;
 
     if (colour === '0'){
-        await prisma.note.update({
+        await prisma.user.update({
             where: {
-                id: nid
+                id: uid
             },
             data: {
-                greenUIDs: {
-                    push: uid
+                green: {
+                    push: nid
                 }
             }
         });
     }
     else if (colour === '1'){
-        await prisma.note.update({
+        await prisma.user.update({
             where: {
-                id: nid
+                id: uid
             },
             data: {
-                amberUIDs: {
-                    push: uid
+                amber: {
+                    push: nid
                 }
             }
         });
     }
     else if (colour === '2'){
-        await prisma.note.update({
+        await prisma.user.update({
             where: {
-                id: nid
+                id: uid
             },
             data: {
-                redUIDs: {
-                    push: uid
+                red: {
+                    push: nid
                 }
             }
         });

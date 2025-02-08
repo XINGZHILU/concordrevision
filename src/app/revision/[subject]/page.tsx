@@ -7,16 +7,19 @@ import {currentUser} from "@clerk/nextjs/server";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default async function Page(req: any, res: any) {
-    function Get_Colour(note: { greenUIDs: string[]; amberUIDs: string[]; redUIDs: string[]; }, uid: string) {
-        if (note.greenUIDs.includes(uid)) {
-            return 0;
-        } else if (note.amberUIDs.includes(uid)) {
-            return 1;
-        } else if (note.redUIDs.includes(uid)) {
+    function Get_Colour(usr: { red: number[]; amber: number[]; green: number[]}, nid: number) {
+        if (usr.red.includes(nid)) {
             return 2;
-        } else {
-            return -1;
         }
+        else if (usr.amber.includes(nid)) {
+            return 1;
+        }
+        else if (usr.green.includes(nid)) {
+            return 0;
+        }
+        else {
+            return -1;
+            }
     }
 
     const params = await req.params;
@@ -48,6 +51,16 @@ export default async function Page(req: any, res: any) {
         return <h1>You must login to access this page</h1>;
     }
 
+    const record = await prisma.user.findUnique({
+        where: {
+            id: user.id
+        }
+    });
+
+    if (!record){
+        return <h1>User not found</h1>;
+    }
+
     return (<div>
         <h1>{year_group_names[subject.level]} {subject.title}</h1>
         <br/>
@@ -57,7 +70,7 @@ export default async function Page(req: any, res: any) {
         <h2>Resources</h2>
         {subject.notes.map((note) => (
             <div key={note.id+'div'}>
-                <NoteCard note={note} key={note.id} colour={Get_Colour(note, user.id)}/>
+                <NoteCard note={note} key={note.id} colour={Get_Colour(record, note.id)}/>
                 <br key={note.id+'br'}/>
             </div>
         ))}

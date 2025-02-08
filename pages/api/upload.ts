@@ -24,9 +24,6 @@ export default async function handler(
             filename: url,
             authorId: req.query.author as string,
             desc: desc,
-            redUIDs: [''],
-            amberUIDs: [''],
-            greenUIDs: ['']
         }
     })
 
