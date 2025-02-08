@@ -27,7 +27,7 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
         <ClerkProvider>
             <html lang="en" suppressHydrationWarning={true}>
             <head>
-                <title>Concord College tutor notes</title>
+                <title>Concord Student Hub/title>
                 <link rel="icon" type="image/x-icon"
                       href="https://concordcollegeuk.com/wp-content/uploads/2023/11/logo.svg"/>
             </head>
