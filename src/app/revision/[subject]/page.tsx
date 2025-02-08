@@ -2,7 +2,7 @@ import {prisma} from "@/lib/prisma";
 import {notFound} from "next/navigation";
 import {isNumeric} from "@/lib/utils";
 import {year_group_names} from "@/lib/consts";
-import {NoteCard} from "@/lib/customui/cards";
+import {NoteCard, TestCard} from "@/lib/customui/cards";
 import {currentUser} from "@clerk/nextjs/server";
 
 import {Collapsible, Tabs} from "@chakra-ui/react"
@@ -44,8 +44,6 @@ export default async function Page(req: any, res: any) {
     }
 
 
-    console.log(subject);
-
     const user = await currentUser();
     if (!user) {
         return <h1>You must login to access this page</h1>;
@@ -61,10 +59,23 @@ export default async function Page(req: any, res: any) {
         return <h1>User not found</h1>;
     }
 
-    const resource_list = subject.notes.map((note) => (
+
+
+    const resource_list = subject.notes.filter((note) => {return note.type === 2}).map((note) => (
         <div key={note.id + 'div'}>
             <NoteCard note={note} key={note.id} colour={Get_Colour(record, note.id)}/>
             <br key={note.id + 'br'}/>
+        </div>
+    ));
+
+    subject.tests.sort((a, b) => a.date.getTime() - b.date.getTime());
+
+    const today = new Date();
+    console.log(today, subject.tests[0].date);
+    const test_list = subject.tests.filter((test) => ((test.date.getTime() - today.getTime())>=(-86400000))).map((test) => (
+        <div key={test.id + 'div'}>
+            <TestCard test={test} key={test.id}/>
+            <br key={test.id + 'br'}/>
         </div>
     ));
 
@@ -94,7 +105,9 @@ export default async function Page(req: any, res: any) {
             <Tabs.Content value="resources">
                 {resource_list}
             </Tabs.Content>
-            <Tabs.Content value="tests">...</Tabs.Content>
+            <Tabs.Content value="tests">
+                {test_list}
+            </Tabs.Content>
         </Tabs.Root>
 
     </div>)

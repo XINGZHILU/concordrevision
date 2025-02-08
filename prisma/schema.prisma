@@ -31,14 +31,14 @@ model Subject {
 }
 
 model Test {
-  id            Int     @id @default(autoincrement())
-  title         String
-  sat_test      Boolean @default(false)
-  subject       Subject @relation(fields: [subjectId], references: [id])
-  subjectId     Int
-  desc          String  @default("")
-  notes         Note[]
-  user_RecordId Int?
+  id        Int      @id @default(autoincrement())
+  title     String
+  type      Int      @default(0) // 0 = Sat Test, 1 = EOT Exam, 2 = External Exam
+  subject   Subject  @relation(fields: [subjectId], references: [id])
+  subjectId Int
+  desc      String   @default("")
+  notes     Note[]
+  date      DateTime @default(now()) @db.Date
 }
 
 model Activity {
