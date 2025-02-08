@@ -4,6 +4,8 @@ import {isNumeric} from "@/lib/utils";
 import {year_group_names} from "@/lib/consts";
 import {currentUser} from "@clerk/nextjs/server";
 import ColourSelector from "@/lib/customui/ColourSelector";
+import {BreadcrumbCurrentLink, BreadcrumbLink, BreadcrumbRoot} from "@/components/ui/breadcrumb";
+
 
 export default async function Page(req : any, res : any){
     function Get_Colour(usr: { red: number[]; amber: number[]; green: number[]}, nid: number) {
@@ -66,6 +68,13 @@ export default async function Page(req : any, res : any){
     }
 
     return (<div className="w-full">
+        <BreadcrumbRoot>
+            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+            <BreadcrumbLink href="/revision">Revision Notes</BreadcrumbLink>
+            <BreadcrumbLink href={`/revision/${subject.id}`}>{year_group_names[subject.level]} {subject.title}</BreadcrumbLink>
+            <BreadcrumbCurrentLink>{note.title}</BreadcrumbCurrentLink>
+        </BreadcrumbRoot>
+        <br/>
         <h1>{year_group_names[subject.level]} {subject.title} - {note.title}</h1>
         <ColourSelector nid={note.id} uid={user.id} subject={subject.id} original={colour}/>
         {note.desc.split('\n').map((line, index) => <p key={index}>{line}</p>)}
