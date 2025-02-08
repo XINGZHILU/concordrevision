@@ -71,7 +71,7 @@ export default async function Page(req: any, res: any) {
     subject.tests.sort((a, b) => a.date.getTime() - b.date.getTime());
 
     const today = new Date();
-    console.log(today, subject.tests[0].date);
+
     const test_list = subject.tests.filter((test) => ((test.date.getTime() - today.getTime())>=(-86400000))).map((test) => (
         <div key={test.id + 'div'}>
             <TestCard test={test} key={test.id}/>
