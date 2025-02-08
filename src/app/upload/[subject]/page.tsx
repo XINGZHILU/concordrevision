@@ -2,7 +2,7 @@ import {prisma} from "@/lib/prisma";
 import {notFound} from "next/navigation";
 import {isNumeric} from "@/lib/utils";
 import {year_group_names} from "@/lib/consts";
-import UploadForm from "@/lib/ui/UploadForm";
+import UploadForm from "@/lib/customui/UploadForm";
 import { currentUser } from '@clerk/nextjs/server'
 
 

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import "@/app/globals.css";
-import { inter } from "@/lib/ui/fonts";
+import { inter } from "@/lib/customui/fonts";
 import Link from "next/link";
-import Footer from "@/lib/ui/Footer";
+import Footer from "@/lib/customui/Footer";
 import {
     ClerkProvider,
     SignInButton,

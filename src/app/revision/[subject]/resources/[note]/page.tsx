@@ -3,7 +3,7 @@ import {notFound} from "next/navigation";
 import {isNumeric} from "@/lib/utils";
 import {year_group_names} from "@/lib/consts";
 import {currentUser} from "@clerk/nextjs/server";
-import ColourSelector from "@/lib/ui/ColourSelector";
+import ColourSelector from "@/lib/customui/ColourSelector";
 
 export default async function Page(req : any, res : any){
     function Get_Colour(usr: { red: number[]; amber: number[]; green: number[]}, nid: number) {
@@ -71,7 +71,7 @@ export default async function Page(req : any, res : any){
         {note.desc.split('\n').map((line, index) => <p key={index}>{line}</p>)}
         <br/>
         <div className="w-full place-items-center">
-            <iframe src={note.filename} width={'90%'} height={600}></iframe>
+            <iframe src={note.filename} width={'90%'} height={600} allowFullScreen={true}></iframe>
         </div>
     </div>)
 }

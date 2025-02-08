@@ -1,5 +1,5 @@
 import {prisma} from "@/lib/prisma";
-import OlympiadsList from "@/lib/ui/olympiadslist";
+import OlympiadsList from "@/lib/customui/olympiadslist";
 
 export default async function Page(){
     const olympiads = await prisma.olympiad.findMany({

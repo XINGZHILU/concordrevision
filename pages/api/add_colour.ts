@@ -2,6 +2,7 @@ import {prisma} from "@/lib/prisma";
 import {NextApiRequest, NextApiResponse} from "next";
 
 
+
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse,
@@ -22,6 +23,7 @@ export default async function handler(
             }
         });
     }
+
     else if (colour === '1'){
         await prisma.user.update({
             where: {

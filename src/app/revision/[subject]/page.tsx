@@ -2,7 +2,7 @@ import {prisma} from "@/lib/prisma";
 import {notFound} from "next/navigation";
 import {isNumeric} from "@/lib/utils";
 import {year_group_names} from "@/lib/consts";
-import {NoteCard} from "@/lib/ui/cards";
+import {NoteCard} from "@/lib/customui/cards";
 import {currentUser} from "@clerk/nextjs/server";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
