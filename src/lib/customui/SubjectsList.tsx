@@ -18,7 +18,7 @@ export default function SubjectList({subjects, year}: {
             {
                 year_group_names.map((year, index) => (
                     <button key={index} onClick={() => setMenu(index)}
-                            className={menu === index ? 'bg-black text-white py-1 px-4 rounded-sm' : ""}>{year} Notes</button>
+                            className={menu === index ? 'bg-black text-white py-1 px-4 rounded-sm' : ""}>{year}</button>
                 ))
             }
         </div>

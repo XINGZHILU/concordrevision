@@ -3,6 +3,7 @@ import Image from "next/image";
 import {assets} from "@/lib/assets";
 import React from "react";
 import {Badge} from "@chakra-ui/react";
+import {LuCalendar} from "react-icons/lu";
 
 export function NoteCard({note, colour}: {
     note: {
@@ -76,6 +77,7 @@ export function TestCard({test}: {
         desc: string,
         subjectId: number,
         type: number,
+        date: Date
     }
 }) {
     if (test.type === 0) {
@@ -84,7 +86,8 @@ export function TestCard({test}: {
                 <div
                     className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
                     <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{test.title}</h5>
-                    <Badge colorPalette='green'>Saturday Test</Badge>
+                    <Badge colorPalette='green'>Saturday Test</Badge><br/>
+                    <Badge><LuCalendar/>{test.date.toDateString()}</Badge>
                 </div>
 
             </Link>
@@ -95,7 +98,8 @@ export function TestCard({test}: {
                 <div
                     className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
                     <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{test.title}</h5>
-                    <Badge colorPalette='yellow'>End of term exam</Badge>
+                    <Badge colorPalette='yellow'>End of term exam</Badge><br/>
+                    <Badge><LuCalendar/>{test.date.toDateString()}</Badge>
                 </div>
 
             </Link>
@@ -106,7 +110,56 @@ export function TestCard({test}: {
                 <div
                     className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
                     <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{test.title}</h5>
-                    <Badge colorPalette='red'>Public exam</Badge>
+                    <Badge colorPalette='red'>Public exam</Badge><br/>
+                    <Badge><LuCalendar/>{test.date.toDateString()}</Badge>
+                </div>
+            </Link>
+        );
+    }
+}
+
+export function TestLinkCard({test}: {
+    test: {
+        id: number,
+        title: string,
+        desc: string,
+        subjectId: number,
+        type: number,
+        date: Date
+    }
+}) {
+    if (test.type === 0) {
+        return (
+            <Link href={`/upload/${test.subjectId}/test-revision/${test.id}`}>
+                <div
+                    className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
+                    <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{test.title}</h5>
+                    <Badge colorPalette='green'>Saturday Test</Badge><br/>
+                    <Badge><LuCalendar/>{test.date.toDateString()}</Badge>
+                </div>
+
+            </Link>
+        );
+    } else if (test.type === 1) {
+        return (
+            <Link href={`/upload/${test.subjectId}/test-revision/${test.id}`}>
+                <div
+                    className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
+                    <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{test.title}</h5>
+                    <Badge colorPalette='yellow'>End of term exam</Badge><br/>
+                    <Badge><LuCalendar/>{test.date.toDateString()}</Badge>
+                </div>
+
+            </Link>
+        );
+    } else {
+        return (
+            <Link href={`/upload/${test.subjectId}/test-revision/${test.id}`}>
+                <div
+                    className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
+                    <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{test.title}</h5>
+                    <Badge colorPalette='red'>Public exam</Badge><br/>
+                    <Badge><LuCalendar/>{test.date.toDateString()}</Badge>
                 </div>
             </Link>
         );

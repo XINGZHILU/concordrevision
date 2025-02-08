@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react';
 
-export default function UploadForm({ subject, author }: { subject: number, author: string }) {
+export default function TestUploadForm({ subject, author, test, type }: { subject: number, author: string, test: number, type: number }) {
     const inputFileRef = useRef<HTMLInputElement>(null);
     //const colourRef = useRef<HTMLSelectElement>(null);
     const descriptionRef = useRef<HTMLTextAreaElement>(null);
@@ -26,9 +26,10 @@ export default function UploadForm({ subject, author }: { subject: number, autho
                     const file = inputFileRef.current.files[0];
                     const title = titleRef.current?.value;
                     const desc = descriptionRef.current?.value;
+
                     //const colour = colourRef.current?.value;
 
-                    const response = await fetch(`/api/upload?filename=${file.name}&subject=${subject}&title=${title}&author=${author}&desc=${desc}`, {
+                    const response = await fetch(`/api/upload_test_notes?filename=${file.name}&subject=${subject}&title=${title}&author=${author}&desc=${desc}&test=${test}&type=${type}`, {
                         method: 'POST',
                         body: file
                     });

@@ -90,29 +90,32 @@ export default async function Page(req: any, res: any) {
             </Collapsible.Content>
         </Collapsible.Root>
         <br/>
-        <Tabs.Root defaultValue="resources" variant='plain'>
-            <Tabs.List bg="bg.muted" rounded="l3" p="1">
-                <Tabs.Trigger value="resources" p="2">
-                    <LuFolder/>
-                    Resources
-                </Tabs.Trigger>
-                <Tabs.Trigger value="tests" p="2">
-                    <LuBookCheck/>
-                    Upcoming tests
-                </Tabs.Trigger>
-                <Tabs.Indicator rounded="l2" />
-            </Tabs.List>
-            <Tabs.Content value="resources">
-                <div className={'max-h-11/12 overflow-y-scroll'}>
-                    {resource_list}
-                </div>
-            </Tabs.Content>
-            <Tabs.Content value="tests">
-                <div className={'max-h-11/12 overflow-y-scroll'}>
-                    {test_list}
-                </div>
-            </Tabs.Content>
-        </Tabs.Root>
+        <div>
+            <Tabs.Root defaultValue="resources" variant='plain' rounded="l3">
+                <Tabs.List bg="bg.muted" rounded="l3" p="1">
+                    <Tabs.Trigger value="resources" p="2">
+                        <LuFolder/>
+                        Resources
+                    </Tabs.Trigger>
+                    <Tabs.Trigger value="tests" p="2">
+                        <LuBookCheck/>
+                        Upcoming tests
+                    </Tabs.Trigger>
+                    <Tabs.Indicator rounded="l2" />
+                </Tabs.List>
+
+                    <Tabs.Content value="resources">
+                        <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll'}>
+                            {resource_list}
+                        </div>
+                    </Tabs.Content>
+                    <Tabs.Content value="tests">
+                        <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll'}>
+                            {test_list}
+                        </div>
+                    </Tabs.Content>
+            </Tabs.Root>
+        </div>
 
     </div>)
 
