@@ -62,6 +62,7 @@ model Note {
   testId    Int?
   pinned    Boolean @default(false)
   colour    Int     @default(0) // 0 = green, 1 = amber, 2 = red
+  approved  Boolean @default(false)
 }
 
 model Post {
