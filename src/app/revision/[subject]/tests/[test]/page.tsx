@@ -83,7 +83,7 @@ export default async function Page(req: any, res: any) {
         </ul>
         <br/>
         <h2>Notes</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-11/12 overflow-y-scroll">
             {test.notes.map((note) => (
                 <div key={note.id + 'div'}>
                     <NoteCard note={note} key={note.id} colour={Get_Colour(record, note.id)}/>

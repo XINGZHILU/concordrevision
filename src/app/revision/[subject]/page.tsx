@@ -103,10 +103,14 @@ export default async function Page(req: any, res: any) {
                 <Tabs.Indicator rounded="l2" />
             </Tabs.List>
             <Tabs.Content value="resources">
-                {resource_list}
+                <div className={'max-h-11/12 overflow-y-scroll'}>
+                    {resource_list}
+                </div>
             </Tabs.Content>
             <Tabs.Content value="tests">
-                {test_list}
+                <div className={'max-h-11/12 overflow-y-scroll'}>
+                    {test_list}
+                </div>
             </Tabs.Content>
         </Tabs.Root>
 
