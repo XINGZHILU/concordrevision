@@ -1,7 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import NoteList from "@/lib/customui/NoteList";
 import {currentUser} from "@clerk/nextjs/server";
-import {BreadcrumbCurrentLink, BreadcrumbLink, BreadcrumbRoot} from "@/components/ui/breadcrumb";
 
 export default async function Home() {
     const subjects = await prisma.subject.findMany({
@@ -27,10 +26,6 @@ export default async function Home() {
 
     return (
         <>
-            <BreadcrumbRoot>
-                <BreadcrumbLink href="/">Home</BreadcrumbLink>
-                <BreadcrumbCurrentLink>Revision Notes</BreadcrumbCurrentLink>
-            </BreadcrumbRoot>
             <NoteList subjects={subjects} year = {user_data.year}/>
         </>
     )

@@ -4,12 +4,8 @@ import {isNumeric} from "@/lib/utils";
 import {year_group_names} from "@/lib/consts";
 import {NoteCard} from "@/lib/customui/cards";
 import {currentUser} from "@clerk/nextjs/server";
-import {
-    BreadcrumbCurrentLink,
-    BreadcrumbLink,
-    BreadcrumbRoot,
-} from "@/components/ui/breadcrumb"
-import {Collapsible, Tabs, Separator} from "@chakra-ui/react"
+
+import {Collapsible, Tabs} from "@chakra-ui/react"
 import {LuFolder, LuBookCheck} from "react-icons/lu"
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -73,12 +69,6 @@ export default async function Page(req: any, res: any) {
     ));
 
     return (<div>
-        <BreadcrumbRoot>
-            <BreadcrumbLink href="/">Home</BreadcrumbLink>
-            <BreadcrumbLink href="/revision">Revision Notes</BreadcrumbLink>
-            <BreadcrumbCurrentLink>{year_group_names[subject.level]} {subject.title}</BreadcrumbCurrentLink>
-        </BreadcrumbRoot>
-        <br/>
         <h1>{year_group_names[subject.level]} {subject.title}</h1>
         <br/>
 
