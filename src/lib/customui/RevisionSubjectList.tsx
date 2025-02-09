@@ -59,11 +59,18 @@ const RevisionSubjectList = ({subjects, year}: {
                 </Tabs.Trigger>
                 <Tabs.Indicator rounded="l2" />
             </Tabs.List>
-            <Tabs.Content value="f3">{f3}</Tabs.Content>
-            <Tabs.Content value="f4">{f4}</Tabs.Content>
-            <Tabs.Content value="f5">{f5}</Tabs.Content>
-            <Tabs.Content value="61">{f61}</Tabs.Content>
-            <Tabs.Content value="62">{f62}</Tabs.Content>
+            <Tabs.Content value="f3">
+                <div className='flex flex-wrap justify-around gap-1 gap-y-10 mb-16 xl:mx-24 w-screen max-h-screen'>{f3}</div>
+            </Tabs.Content>
+            <Tabs.Content value="f4">
+                <div className='flex flex-wrap justify-around gap-1 gap-y-10 mb-16 xl:mx-24 w-screen max-h-screen'>{f4}</div>
+            </Tabs.Content><Tabs.Content value="f5">
+                <div className='flex flex-wrap justify-around gap-1 gap-y-10 mb-16 xl:mx-24 w-screen max-h-screen'>{f5}</div>
+            </Tabs.Content><Tabs.Content value="61">
+                <div className='flex flex-wrap justify-around gap-1 gap-y-10 mb-16 xl:mx-24 w-screen max-h-screen'>{f61}</div>
+            </Tabs.Content><Tabs.Content value="62">
+                <div className='flex flex-wrap justify-around gap-1 gap-y-10 mb-16 xl:mx-24 w-screen max-h-screen'>{f62}</div>
+            </Tabs.Content>
         </Tabs.Root>
     )
 }
