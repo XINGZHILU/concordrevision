@@ -8,7 +8,7 @@ export function SubjectTabs({ f3, f4, f5, f61, f62, defaultval }: {
     f62: React.JSX.Element[],
     defaultval: string
 }) {
-    const className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-w-9/10 max-h-screen overflow-y-scroll';
+    const className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-w-9/10';
     return (<div className="w-screen">
         <Tabs.Root defaultValue={defaultval} variant='plain' rounded="l3">
             <Tabs.List p="1">
