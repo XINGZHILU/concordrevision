@@ -9,7 +9,11 @@ export default async function Page() {
         return <h1>You must login to access this page</h1>;
     }
     
-    const subjects = await prisma.subject.findMany();
+    const subjects = await prisma.subject.findMany({
+        orderBy: {
+            title: 'asc'
+        }
+    });
 
     return (<div>
         <SubjectList subjects={subjects} year={0}></SubjectList>

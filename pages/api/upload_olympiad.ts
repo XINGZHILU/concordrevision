@@ -5,21 +5,31 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse,
 ) {
-    const url = req.body.url as string;
+    const urls = req.body.urls as string[];
     const title = req.body.title as string;
     const desc = req.body.desc as string;
     const olympiad = req.body.olympiad as number;
     const author = req.body.author as string;
+    const names = req.body.names as string[];
 
-    await prisma.olympiad_Resource.create({
+    const o_r = await prisma.olympiad_Resource.create({
         data: {
             title: title,
             olympiadId: olympiad,
-            filename: url,
             desc: desc,
             authorId: author
         }
     });
+
+    for (let i = 0; i < urls.length; i++) {
+        await prisma.storageFile.create({
+            data: {
+                filename: names[i],
+                path: urls[i],
+                olympiadId: o_r.id,
+            }
+        });
+    }
 
     res.status(200).json({});
 }

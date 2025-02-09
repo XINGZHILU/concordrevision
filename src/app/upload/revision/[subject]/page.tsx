@@ -16,9 +16,6 @@ export default async function Page(req: any, res: any) {
         where: {
             id: +sid
         },
-        include: {
-            notes: true
-        }
     });
 
     if (!subject) {

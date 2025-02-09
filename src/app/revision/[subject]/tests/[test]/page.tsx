@@ -3,7 +3,7 @@ import {notFound} from "next/navigation";
 import {isNumeric} from "@/lib/utils";
 import {year_group_names} from "@/lib/consts";
 import {currentUser} from "@clerk/nextjs/server";
-import {NoteCard} from "@/lib/customui/cards";
+import {TestNoteCard} from "@/lib/customui/cards";
 
 
 export default async function Page(req: any, res: any) {
@@ -69,6 +69,7 @@ export default async function Page(req: any, res: any) {
         notFound();
     }
 
+
     return (<div className="w-full">
         <h1>{year_group_names[subject.level]} {subject.title} - {test.title}</h1>
         <br/>
@@ -87,12 +88,12 @@ export default async function Page(req: any, res: any) {
         <br/>
         <h2>Notes</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll">
-            {test.notes.map((note) => (
-                <div key={note.id + 'div'}>
-                    <NoteCard note={note} key={note.id} colour={Get_Colour(record, note.id)}/>
+            {test.notes.map((note) => {
+                // @ts-ignore
+                return <div key={note.id + 'div'}> <TestNoteCard note={note} key={note.id} colour={Get_Colour(record, note.id)}/>
                     <br key={note.id + 'br'}/>
-                </div>
-            ))}
+                </div>;
+            })}
         </div>
     </div>)
 }

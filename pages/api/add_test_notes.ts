@@ -5,7 +5,8 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse,
 ) {
-    const url = req.body.url as string;
+    const urls = req.body.urls as string[];
+    const names = req.body.names as string[];
     const title = req.body.title as string;
     const desc = req.body.desc as string;
     const subject = req.body.subject as number;
@@ -13,17 +14,28 @@ export default async function handler(
     const type = req.body.type as number;
     const test = req.body.test as number;
 
-    await prisma.note.create({
+
+    const note = await prisma.note.create({
         data: {
             title: title,
             subjectId: subject,
-            filename: url,
             authorId: author,
             desc: desc,
             type: type,
             testId: test
         }
     })
+
+    for (let i = 0; i < urls.length; i++) {
+        await prisma.storageFile.create({
+            data: {
+                filename: names[i],
+                path: urls[i],
+                noteId: note.id,
+            }
+        });
+    }
+
 
     res.status(200).json({});
 }

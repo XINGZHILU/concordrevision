@@ -51,20 +51,20 @@ model Activity {
 }
 
 model Note {
-  id        Int     @id @default(autoincrement())
+  id        Int           @id @default(autoincrement())
   title     String
-  subject   Subject @relation(fields: [subjectId], references: [id])
+  subject   Subject       @relation(fields: [subjectId], references: [id])
   subjectId Int
-  desc      String  @default("")
-  filename  String
-  author    User    @relation(fields: [authorId], references: [id])
+  desc      String        @default("")
+  author    User          @relation(fields: [authorId], references: [id])
   authorId  String
-  type      Int     @default(2) // 0 = Internal Exam Note, 1 = External Exam, 2 = Other
-  test      Test?   @relation(fields: [testId], references: [id])
+  type      Int           @default(2) // 0 = Internal Exam Note, 1 = External Exam, 2 = Other
+  test      Test?         @relation(fields: [testId], references: [id])
   testId    Int?
-  pinned    Boolean @default(false)
-  colour    Int     @default(0) // 0 = green, 1 = amber, 2 = red
-  approved  Boolean @default(false)
+  pinned    Boolean       @default(false)
+  colour    Int           @default(0) // 0 = green, 1 = amber, 2 = red
+  approved  Boolean       @default(false)
+  files     StorageFile[]
 }
 
 model Post {
@@ -88,13 +88,24 @@ model Olympiad {
 }
 
 model Olympiad_Resource {
-  id         Int      @id @default(autoincrement())
+  id         Int           @id @default(autoincrement())
   title      String
-  desc       String   @default("")
-  filename   String
-  olympiad   Olympiad @relation(fields: [olympiadId], references: [id])
+  desc       String        @default("")
+  olympiad   Olympiad      @relation(fields: [olympiadId], references: [id])
   olympiadId Int
-  author     User     @relation(fields: [authorId], references: [id])
+  author     User          @relation(fields: [authorId], references: [id])
   authorId   String
-  type       Int      @default(0) // 0 = Past Paper, 1 = Solution, 2 = Other
+  type       Int           @default(0) // 0 = Past Paper, 1 = Solution, 2 = Other
+  files      StorageFile[]
+}
+
+model StorageFile {
+  id                Int                @id @default(autoincrement())
+  filename          String
+  type              String             @default("pdf")
+  path              String
+  note              Note?              @relation(fields: [noteId], references: [id])
+  noteId            Int?
+  olympiad_resource Olympiad_Resource? @relation(fields: [olympiadId], references: [id])
+  olympiadId        Int?
 }

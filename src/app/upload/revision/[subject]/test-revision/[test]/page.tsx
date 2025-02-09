@@ -18,7 +18,7 @@ export default async function Page(req: any, res: any) {
     }
 
     if (!isNumeric(sid) || !isNumeric(test)) {
-        notFound();
+        return <h1>Invalid subject or test</h1>;
     }
 
     const subject = await prisma.subject.findUnique({
@@ -31,7 +31,7 @@ export default async function Page(req: any, res: any) {
     });
 
     if (!subject) {
-        notFound();
+        return <h1>Subject not found</h1>;
     }
 
     const test_record = await prisma.test.findUnique({
@@ -41,9 +41,12 @@ export default async function Page(req: any, res: any) {
         }
     });
 
+
+
     if (!test_record) {
-        notFound();
+        return <h1>Test not found</h1>;
     }
+
 
     if (test_record.type === 2){
         return (<div>

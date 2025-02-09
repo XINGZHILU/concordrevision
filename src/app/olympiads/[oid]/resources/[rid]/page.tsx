@@ -1,7 +1,7 @@
 import {prisma} from "@/lib/prisma";
 import {notFound} from "next/navigation";
 import {isNumeric} from "@/lib/utils";
-import PDFFrame from "@/lib/customui/pdf_frame";
+import FileList from "@/lib/customui/filelist";
 
 
 export default async function Page(req : any, res : any){
@@ -26,6 +26,9 @@ export default async function Page(req : any, res : any){
     const resource = await prisma.olympiad_Resource.findUnique({
         where: {
             id: +rid
+        },
+        include: {
+            files: true
         }
     });
 
@@ -38,6 +41,6 @@ export default async function Page(req : any, res : any){
         <br/>
         {resource.desc.split('\n').map((line, index) => <p  key={index}>{line}</p>)}
         <br/>
-        <PDFFrame url={resource.filename}/>
+        <FileList files={resource.files}/>
     </div>)
 }

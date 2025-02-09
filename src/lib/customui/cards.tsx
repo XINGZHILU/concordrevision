@@ -26,6 +26,28 @@ export function NoteCard({note, colour}: {
     );
 }
 
+export function TestNoteCard({note, colour}: {
+    note: {
+        id: number,
+        title: string,
+        desc: string,
+        subjectId: number,
+        testId: number
+    },
+    colour: number
+}) {
+    // https://flowbite.com/docs/components/card/
+    return (
+        <Link href={`/revision/${note.subjectId}/tests/${note.testId}/${note.id}`}>
+            <div
+                className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
+                <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{note.title}</h5>
+                <BadgeSymbol colour={colour}/>
+            </div>
+        </Link>
+    );
+}
+
 export function OlympiadCard({olympiad}: {
     olympiad: {
         id: number,
@@ -130,7 +152,7 @@ export function TestLinkCard({test}: {
 }) {
     if (test.type === 0) {
         return (
-            <Link href={`/upload/${test.subjectId}/test-revision/${test.id}`}>
+            <Link href={`/upload/revision/${test.subjectId}/test-revision/${test.id}`}>
                 <div
                     className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
                     <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{test.title}</h5>
@@ -142,7 +164,7 @@ export function TestLinkCard({test}: {
         );
     } else if (test.type === 1) {
         return (
-            <Link href={`/upload/${test.subjectId}/test-revision/${test.id}`}>
+            <Link href={`/upload/revision/${test.subjectId}/test-revision/${test.id}`}>
                 <div
                     className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
                     <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{test.title}</h5>
@@ -154,7 +176,7 @@ export function TestLinkCard({test}: {
         );
     } else {
         return (
-            <Link href={`/upload/${test.subjectId}/test-revision/${test.id}`}>
+            <Link href={`/upload/revision/${test.subjectId}/test-revision/${test.id}`}>
                 <div
                     className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
                     <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{test.title}</h5>

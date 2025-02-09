@@ -2,7 +2,6 @@
 
 import {useRef} from "react";
 import {Toaster, toaster} from "@/components/ui/toaster"
-import {revalidatePath} from "next/cache";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ColourSelector({nid, uid, subject, original}: {
@@ -38,7 +37,6 @@ export default function ColourSelector({nid, uid, subject, original}: {
                 title: "Success",
                 description: "Colour changed successfully",
             });
-            revalidatePath(`/revision/${subject}`, 'page');
         } else {
             toaster.error(
                 {
