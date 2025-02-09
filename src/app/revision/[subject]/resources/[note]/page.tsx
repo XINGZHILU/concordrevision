@@ -84,6 +84,7 @@ export default async function Page(req : any, res : any){
         {note.desc.split('\n').map((line, index) => <p  key={index}>{line}</p>)}
         <br/>
         <h2>Files</h2>
+        <br/>
         <FileList files={note.files}/>
     </div>)
 }
