@@ -82,7 +82,7 @@ export default async function Page(req: any, res: any) {
         <br/>
         <h2>Information</h2>
         {test.desc.split('\n').map((line) => {
-            return <span key={line}>{line}</span>
+            return <p key={line}>{line}</p>
         })}
 
         <br/>
