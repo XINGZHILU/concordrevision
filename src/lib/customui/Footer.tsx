@@ -17,7 +17,7 @@ const Footer = () => {
                         <Link href="/guide" className="hover:underline me-4 md:me-6">Guide</Link>
                     </li>
                     <li>
-                        <Link href="/credits" className="hover:underline me-4 md:me-6">Credits</Link>
+                        <Link href="/team" className="hover:underline me-4 md:me-6">Contributors</Link>
                     </li>
                     <li>
                         <PomodoroActionBar/>

@@ -15,7 +15,7 @@ export default function FileList({files}: {
                        className={'p-2 border-solid border-gray-500 border-2 rounded-lg'}>{file.filename}</a>
                 </h3>
                 <br/>
-                
+
             </div>;
         })}
     </div>);
