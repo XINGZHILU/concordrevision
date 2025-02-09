@@ -72,15 +72,18 @@ export default async function Page(req: any, res: any) {
     return (<div className="w-full">
         <h1>{year_group_names[subject.level]} {subject.title} - {test.title}</h1>
         <br/>
-        <h2>Information</h2>
         <ul>
             <li><b>Test
-                Type:</b> {test.type === 0 ? 'Saturday Test' : test.type === 1 ? 'End of term exam' : 'Public exam'}</li>
+                Type:</b> {test.type === 0 ? 'Saturday Test' : test.type === 1 ? 'End of term exam' : 'Public exam'}
+            </li>
             <li><b>Test Date:</b> {test.date.toDateString()}</li>
-            <li><b>Test Topics:</b> {test.desc.split('\n').map((line) => {
-                return <span key={line}>{line}</span>
-            })}</li>
         </ul>
+        <br/>
+        <h2>Information</h2>
+        {test.desc.split('\n').map((line) => {
+            return <span key={line}>{line}</span>
+        })}
+
         <br/>
         <h2>Notes</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll">
