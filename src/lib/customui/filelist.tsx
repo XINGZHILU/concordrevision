@@ -9,9 +9,8 @@ export default function FileList({files}: {
 }) {
     return (<div>
         {files.map((file) => {
-            return <div key={file.id} >
-                <Link href={`/fileview/pdf/${file.id}`}>{file.filename}</Link>
-                <br/>
+            return <div key={file.id} className={'p-2 border-solid border-gray-500 border-2 rounded-lg'}>
+                <h3><a target="_blank" href={`https://drive.google.com/viewerng/viewer?url=${file.path}`}>{file.filename}</a></h3>
             </div>;
         })}
     </div>);
