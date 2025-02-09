@@ -4,6 +4,16 @@ import {Toaster, toaster} from "@/components/ui/toaster"
 import {useState, useRef} from 'react';
 
 export default function ResourceUploadForm({subject, author}: { subject: number, author: string }) {
+    async function upload(file: File, title: string, desc: string ) {
+        const response = await fetch(`/api/upload_resource?filename=${file.name}&subject=${subject}&title=${title}&author=${author}&desc=${desc}`, {
+            method: 'POST',
+            body: file
+        });
+        if (!response.ok) {
+            throw new Error("Failed to upload");
+        }
+    }
+
     const inputFileRef = useRef<HTMLInputElement>(null);
     //const colourRef = useRef<HTMLSelectElement>(null);
     const descriptionRef = useRef<HTMLTextAreaElement>(null);
@@ -24,14 +34,11 @@ export default function ResourceUploadForm({subject, author}: { subject: number,
 
 
                     const file = inputFileRef.current.files[0];
-                    const title = titleRef.current?.value;
-                    const desc = descriptionRef.current?.value;
+                    const title = titleRef.current?.value || 'No title';
+                    const desc = descriptionRef.current?.value || '';
                     //const colour = colourRef.current?.value;
 
-                    toaster.promise(fetch(`/api/upload_resource?filename=${file.name}&subject=${subject}&title=${title}&author=${author}&desc=${desc}`, {
-                        method: 'POST',
-                        body: file
-                    }), {
+                    toaster.promise(upload(file, title, desc), {
                         success: {
                             title: "Successfully uploaded!",
                             description: "The resource is now available for others to view",
@@ -52,7 +59,7 @@ export default function ResourceUploadForm({subject, author}: { subject: number,
                 <br/>
                 <label htmlFor="description">Note Description:</label><br/>
                 <textarea name="description" placeholder='Note Description' ref={descriptionRef}
-                          className={'w-11/12 h-80 border-2 border-gray-500'} required/>
+                          className={'w-11/12 h-80 border-2 border-gray-500'}/>
                 <br/>
                 <label htmlFor="file">Select a file:</label>
                 <input name="file" ref={inputFileRef} type="file" accept='.pdf' required/>
