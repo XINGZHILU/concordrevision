@@ -10,7 +10,10 @@ export default function FileList({files}: {
     return (<div>
         {files.map((file) => {
             return <div key={file.id}>
-                <h3 className={'p-2 border-solid border-gray-500 border-2 rounded-lg'}><a target="_blank" href={`https://drive.google.com/viewerng/viewer?url=${file.path}`}>{file.filename}</a></h3>
+                <h3>
+                    <a target="_blank" href={`https://drive.google.com/viewerng/viewer?url=${file.path}`}
+                       className={'p-2 border-solid border-gray-500 border-2 rounded-lg'}>{file.filename}</a>
+                </h3>
             </div>;
         })}
     </div>);
