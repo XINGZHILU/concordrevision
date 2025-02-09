@@ -1,5 +1,6 @@
 'use client';
 
+import {Toaster, toaster} from "@/components/ui/toaster"
 import { useState, useRef } from 'react';
 
 export default function TestUploadForm({ subject, author, test, type }: { subject: number, author: string, test: number, type: number }) {
@@ -7,10 +8,10 @@ export default function TestUploadForm({ subject, author, test, type }: { subjec
     //const colourRef = useRef<HTMLSelectElement>(null);
     const descriptionRef = useRef<HTMLTextAreaElement>(null);
     const titleRef = useRef<HTMLInputElement>(null);
-    const [status, setStatus] = useState<string>("Waiting for file to be selected");
     const [cantUpload, setCantUpload] = useState<boolean>(false);
     return (
         <>
+            <Toaster/>
             <form
                 onSubmit={async (event) => {
                     event.preventDefault();
@@ -22,26 +23,28 @@ export default function TestUploadForm({ subject, author, test, type }: { subjec
                     setCantUpload(true);
 
 
-                    setStatus("Uploading...");
                     const file = inputFileRef.current.files[0];
                     const title = titleRef.current?.value;
                     const desc = descriptionRef.current?.value;
 
                     //const colour = colourRef.current?.value;
 
-                    const response = await fetch(`/api/upload_test_notes?filename=${file.name}&subject=${subject}&title=${title}&author=${author}&desc=${desc}&test=${test}&type=${type}`, {
+                    toaster.promise(fetch(`/api/upload_test_notes?filename=${file.name}&subject=${subject}&title=${title}&author=${author}&desc=${desc}&test=${test}&type=${type}`, {
                         method: 'POST',
                         body: file
-                    });
+                    }), {
+                        success: {
+                            title: "Successfully uploaded!",
+                            description: "The resource is now available for others to view",
+                        },
+                        error: {
+                            title: "Upload failed",
+                            description: "Something wrong with the upload",
+                        },
+                        loading: {title: "Uploading...", description: "Please wait"},
+                    })
 
-                    if (response.ok) {
-                        setStatus("Upload finished");
-
-                    }
-                    else {
-                        setStatus("Upload failed");
-                        setCantUpload(false);
-                    }
+                    setCantUpload(false);
 
                 }}
             >
@@ -56,7 +59,6 @@ export default function TestUploadForm({ subject, author, test, type }: { subjec
                 <br />
                 <button className={'border-solid border-2 border-blue-500'} disabled={cantUpload}>Upload</button>
             </form>
-            <h5>{status}</h5>
         </>
     );
 }
