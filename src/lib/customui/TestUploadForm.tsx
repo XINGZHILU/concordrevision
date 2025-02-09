@@ -2,14 +2,41 @@
 
 import {Toaster, toaster} from "@/components/ui/toaster"
 import { useState, useRef } from 'react';
+import cuid from "cuid";
+import {StorageURL} from "@/lib/utils";
+import {createClient} from "@/utils/supabase/client";
 
 export default function TestUploadForm({ subject, author, test, type }: { subject: number, author: string, test: number, type: number }) {
-    async function upload(file: File, title: string, desc: string ) {
-        const response = await fetch(`/api/upload_test_notes?filename=${file.name}&subject=${subject}&title=${title}&author=${author}&desc=${desc}&test=${test}&type=${type}`, {
+    async function upload(file: File, title: string, desc: string) {
+        const response = await supabase.storage.from('notes-storage').upload(file.name.replace(' ', '_').substring(0, file.name.length-4)+cuid()+'.pdf',
+            file, {
+                cacheControl: '3600',
+                upsert: false
+            });
+
+        if (response.error) {
+            throw new Error("Failed to upload");
+        }
+
+        const url = StorageURL(response.data.path);
+
+        const response2 = await fetch('/api/add_test_notes', {
             method: 'POST',
-            body: file
+            body: JSON.stringify({
+                url: url,
+                title: title,
+                desc: desc,
+                subject: subject,
+                author: author,
+                type: type,
+                test: test
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
         });
-        if (!response.ok) {
+
+        if (!response2.ok) {
             throw new Error("Failed to upload");
         }
     }
@@ -20,6 +47,7 @@ export default function TestUploadForm({ subject, author, test, type }: { subjec
     const descriptionRef = useRef<HTMLTextAreaElement>(null);
     const titleRef = useRef<HTMLInputElement>(null);
     const [cantUpload, setCantUpload] = useState<boolean>(false);
+    const supabase = createClient();
     return (
         <>
             <Toaster/>
@@ -47,9 +75,9 @@ export default function TestUploadForm({ subject, author, test, type }: { subjec
                         },
                         error: {
                             title: "Upload failed",
-                            description: "Something wrong with the upload",
+                            description: "Something went wrong with the upload",
                         },
-                        loading: {title: "Uploading...", description: "Please wait"},
+                        loading: {title: "Uploading...", description: "Please do not leave the page"},
                     })
 
                     setCantUpload(false);

@@ -4,6 +4,7 @@ import {isNumeric} from "@/lib/utils";
 import {year_group_names} from "@/lib/consts";
 import {currentUser} from "@clerk/nextjs/server";
 import ColourSelector from "@/lib/customui/ColourSelector";
+import PDFFrame from "@/lib/customui/pdf_frame";
 
 
 export default async function Page(req : any, res : any){
@@ -71,10 +72,8 @@ export default async function Page(req : any, res : any){
         <br/>
         <ColourSelector nid={note.id} uid={user.id} subject={subject.id} original={colour}/>
         <br/>
-        {note.desc.split('\n').map((line, index) => <p key={index}>{line}</p>)}
+        {note.desc.split('\n').map((line, index) => <p  key={index}>{line}</p>)}
         <br/>
-        <div className="w-full place-items-center">
-            <iframe src={note.filename} width={'90%'} height={600} allowFullScreen={true}></iframe>
-        </div>
+        <PDFFrame url={note.filename}/>
     </div>)
 }
