@@ -41,6 +41,7 @@ export default async function Page(req : any, res : any){
         <br/>
         {resource.desc.split('\n').map((line, index) => <p  key={index}>{line}</p>)}
         <br/>
+        <h2>Files</h2>
         <FileList files={resource.files}/>
     </div>)
 }
