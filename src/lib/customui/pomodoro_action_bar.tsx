@@ -18,7 +18,7 @@ export default function PomodoroActionBar() {
                 checked={checked}
                 onCheckedChange={(e) => setChecked(!!e.checked)}
             >
-                Show Timer
+                Pomodoro Timer
             </Checkbox>
             <ActionBarRoot
                 open={checked}

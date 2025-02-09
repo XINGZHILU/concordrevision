@@ -1,5 +1,5 @@
 import {prisma} from "@/lib/prisma";
-import SubjectList from "@/lib/customui/SubjectsList";
+import SubjectList from "@/lib/customui/UploadSubjectsList";
 import { currentUser } from '@clerk/nextjs/server'
 
 export default async function Page() {

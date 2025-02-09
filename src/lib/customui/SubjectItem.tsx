@@ -5,7 +5,7 @@ import React from 'react'
 import { assets } from '@/lib/assets'
 import Link from 'next/link'
 
-export function NoteItem({ subject }: {
+export function SubjectItem({ subject }: {
     subject: {
         id: number,
         title: string,

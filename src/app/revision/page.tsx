@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import NoteList from "@/lib/customui/NoteList";
+import RevisionSubjectList from "@/lib/customui/RevisionSubjectList";
 import {currentUser} from "@clerk/nextjs/server";
 
 export default async function Home() {
@@ -26,7 +26,7 @@ export default async function Home() {
 
     return (
         <>
-            <NoteList subjects={subjects} year = {user_data.year}/>
+            <RevisionSubjectList subjects={subjects} year = {user_data.year}/>
         </>
     )
 }
