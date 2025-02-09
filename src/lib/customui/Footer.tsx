@@ -2,6 +2,7 @@
 
 import React from 'react'
 import PomodoroActionBar from "@/lib/customui/pomodoro_action_bar";
+import Link from 'next/link';
 
 const Footer = () => {
     return (
@@ -10,13 +11,13 @@ const Footer = () => {
                 <span className="text-sm text-gray-500 sm:text-center">All rights reserved. ©Joshua Ng, Xingzhi Lu, Christoph Chan 2025</span>
                 <ul className="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 sm:mt-0">
                     <li>
-                        <a href="/about" className="hover:underline me-4 md:me-6">About</a>
+                        <Link href="/about" className="hover:underline me-4 md:me-6">About</Link>
                     </li>
                     <li>
-                        <a href="/guide" className="hover:underline me-4 md:me-6">Guide</a>
+                        <Link href="/guide" className="hover:underline me-4 md:me-6">Guide</Link>
                     </li>
                     <li>
-                        <a href="/credits" className="hover:underline me-4 md:me-6">Credits</a>
+                        <Link href="/credits" className="hover:underline me-4 md:me-6">Credits</Link>
                     </li>
                     <li>
                         <PomodoroActionBar/>
