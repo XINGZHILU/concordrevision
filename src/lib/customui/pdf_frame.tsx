@@ -1,13 +1,13 @@
 'use client';
 
-import {Suspense} from "react";
 
 export default function PDFFrame({url}: { url: string }) {
     return <div className="w-full place-items-center">
-        <Suspense fallback={<p>Loading pdf...</p>}>
-            <iframe itemType={'pdf'} id={'pdf_frame'}
-                    src={`https://drive.google.com/viewerng/viewer?embedded=true&url=${url}`}
-                    className={'w-11/12 h-screen'} allowFullScreen={true}/>
-        </Suspense>
+        <div className="pdf">
+            <object data={`${url}#toolbar=1&navpanes=0&scrollbar=1&page=1&view=FitW`}
+                    type="application/pdf">
+                <p>You do not seem to have a functional PDF plug-in for this browser.</p>
+            </object>
+        </div>
     </div>;
 }
