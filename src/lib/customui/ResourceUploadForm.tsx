@@ -4,7 +4,7 @@ import {Toaster, toaster} from "@/components/ui/toaster"
 import {useState, useRef} from 'react';
 import {createClient} from "@/utils/supabase/client";
 import cuid from "cuid";
-import {StorageURL} from "@/lib/utils";
+import {StorageURLNotes} from "@/lib/utils";
 
 export default function ResourceUploadForm({subject, author}: { subject: number, author: string }) {
     async function upload(file: File, title: string, desc: string) {
@@ -18,7 +18,7 @@ export default function ResourceUploadForm({subject, author}: { subject: number,
             throw new Error("Failed to upload");
         }
 
-        const url = StorageURL(response.data.path);
+        const url = StorageURLNotes(response.data.path);
 
         const response2 = await fetch('/api/add_resource', {
             method: 'POST',

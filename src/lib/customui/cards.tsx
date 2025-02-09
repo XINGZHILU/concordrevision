@@ -165,3 +165,23 @@ export function TestLinkCard({test}: {
         );
     }
 }
+
+export function OlympiadResourceCard({resource}: {
+    resource: {
+        id: number,
+        title: string,
+        desc: string,
+        olympiadId: number
+    }
+}) {
+    return (
+        <>
+            <Link href={`/olympiads/${resource.olympiadId}/resources/${resource.id}`}>
+                <div
+                    className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
+                    <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{resource.title}</h5>
+                </div>
+            </Link>
+        </>
+    );
+}

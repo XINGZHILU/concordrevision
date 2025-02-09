@@ -9,16 +9,17 @@ datasource db {
 }
 
 model User {
-  id      String  @id @default(cuid())
-  email   String  @unique
-  name    String?
-  teacher Boolean @default(false)
-  year    Int     @default(-1)
-  posts   Post[]
-  notes   Note[]
-  red     Int[]
-  amber   Int[]
-  green   Int[]
+  id                 String              @id @default(cuid())
+  email              String              @unique
+  name               String?
+  teacher            Boolean             @default(false)
+  year               Int                 @default(-1)
+  posts              Post[]
+  notes              Note[]
+  olympiad_resources Olympiad_Resource[]
+  red                Int[]
+  amber              Int[]
+  green              Int[]
 }
 
 model Subject {
@@ -93,4 +94,7 @@ model Olympiad_Resource {
   filename   String
   olympiad   Olympiad @relation(fields: [olympiadId], references: [id])
   olympiadId Int
+  author     User     @relation(fields: [authorId], references: [id])
+  authorId   String
+  type       Int      @default(0) // 0 = Past Paper, 1 = Solution, 2 = Other
 }

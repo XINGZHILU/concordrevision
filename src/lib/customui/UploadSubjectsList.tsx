@@ -26,7 +26,7 @@ export default function SubjectList({subjects, year}: {
             {
                 subjects.filter((subject) => subject.level === menu).map((subject) => (
                     <li key={subject.title + 'li'}><Link key={subject.title + subject.id} className={'border-dotted border-2 border-blue-500'}
-                                                         href={`/upload/${subject.id}`}>{subject.title}</Link></li>)
+                                                         href={`/upload/revision/${subject.id}`}>{subject.title}</Link></li>)
                 )
             }
         </ul>

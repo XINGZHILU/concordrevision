@@ -27,8 +27,8 @@ export default async function Page(req: any, res: any) {
 
 
     return <div>
-        <Link href={`/upload/${subject.id}/resources`}>Upload resources</Link><br/>
-        <Link href={`/upload/${subject.id}/test-revision`}>Upload test revision materials</Link><br/>
-        <Link href={`/upload/${subject.id}/create_test`}>Schedule a new test</Link>
+        <Link href={`/upload/revision/${subject.id}/resources`}>Upload resources</Link><br/>
+        <Link href={`/upload/revision/${subject.id}/test-revision`}>Upload test revision materials</Link><br/>
+        <Link href={`/upload/revision/${subject.id}/create_test`}>Schedule a new test</Link>
     </div>;
 }

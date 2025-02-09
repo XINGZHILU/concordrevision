@@ -1,17 +1,11 @@
-import {prisma} from "@/lib/prisma";
-import SubjectList from "@/lib/customui/UploadSubjectsList";
-import { currentUser } from '@clerk/nextjs/server'
+import Link from "next/link";
 
-export default async function Page() {
-    const user = await currentUser();
 
-    if (!user) {
-        return <h1>You must login to access this page</h1>;
-    }
-    
-    const subjects = await prisma.subject.findMany();
+export default function Page() {
 
-    return (<div>
-        <SubjectList subjects={subjects} year={0}></SubjectList>
-    </div>);
+
+    return <div>
+        <Link href={`/upload/revision/`}>Revision resources</Link><br/>
+        <Link href={`/upload/olympiads/`}>Olympiad resources</Link><br/>
+    </div>;
 }

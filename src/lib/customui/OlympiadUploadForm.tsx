@@ -3,33 +3,31 @@
 import {Toaster, toaster} from "@/components/ui/toaster"
 import { useState, useRef } from 'react';
 import cuid from "cuid";
-import {StorageURLNotes} from "@/lib/utils";
+import {StorageURLOlympiads} from "@/lib/utils";
 import {createClient} from "@/utils/supabase/client";
 
-export default function TestUploadForm({ subject, author, test, type }: { subject: number, author: string, test: number, type: number }) {
+export default function OlympiadUploadForm({ olympiad, author }: { olympiad: number, author: string}) {
     async function upload(file: File, title: string, desc: string) {
-        const response = await supabase.storage.from('notes-storage').upload(file.name.replace(' ', '_').substring(0, file.name.length-4)+cuid()+'.pdf',
+        const response = await supabase.storage.from('olympiads-storage').upload(file.name.replace(' ', '_').substring(0, file.name.length-4)+cuid()+'.pdf',
             file, {
                 cacheControl: '3600',
                 upsert: false
             });
 
         if (response.error) {
-            throw new Error("Failed to upload");
+            throw new Error("Failed to upload file");
         }
 
-        const url = StorageURLNotes(response.data.path);
+        const url = StorageURLOlympiads(response.data.path);
 
-        const response2 = await fetch('/api/add_test_notes', {
+        const response2 = await fetch('/api/upload_olympiad', {
             method: 'POST',
             body: JSON.stringify({
                 url: url,
                 title: title,
                 desc: desc,
-                subject: subject,
+                olympiad: olympiad,
                 author: author,
-                type: type,
-                test: test
             }),
             headers: {
                 'Content-Type': 'application/json'
@@ -37,7 +35,7 @@ export default function TestUploadForm({ subject, author, test, type }: { subjec
         });
 
         if (!response2.ok) {
-            throw new Error("Failed to upload");
+            throw new Error("Failed to update database");
         }
     }
 
@@ -84,10 +82,10 @@ export default function TestUploadForm({ subject, author, test, type }: { subjec
 
                 }}
             >
-                <label htmlFor="title">Note Title:</label>
+                <label htmlFor="title">Title:</label>
                 <input name="title" ref={titleRef} type="text" placeholder='Note Title' className={'border-2 border-gray-500 w-4/12 '} required />
                 <br />
-                <label htmlFor="description">Note Description:</label><br/>
+                <label htmlFor="description">Description:</label><br/>
                 <textarea name="description" placeholder='Note Description' ref={descriptionRef} className={'w-11/12 h-80 border-2 border-gray-500'}/>
                 <br />
                 <label htmlFor="file">Select a file:</label>

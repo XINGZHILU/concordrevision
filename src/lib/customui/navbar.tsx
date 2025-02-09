@@ -29,10 +29,6 @@ export default function NavBar(){
                               className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-200 md:hover:bg-transparent md:hover:text-blue-700 md:p-0  ">Olympiads</Link>
                     </li>
                     <li>
-                        <Link href="/ec"
-                              className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-200 md:hover:bg-transparent md:hover:text-blue-700 md:p-0  ">Extracurriculars</Link>
-                    </li>
-                    <li>
                         <Link href="/upload"
                               className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-200 md:hover:bg-transparent md:hover:text-blue-700 md:p-0  ">Upload</Link>
                     </li>
