@@ -32,7 +32,7 @@ export default function SubjectList({ subjects, year }: {
         <li key={subject.title + 'li'}><Link key={subject.title + subject.id} className={'border-dotted border-2 border-blue-500'}
             href={`/upload/revision/${subject.id}`}>{subject.title}</Link></li>)
     );
-    return (<div>
+    return (<div className="w-screen">
         <Tabs.Root defaultValue={years[year]} variant='plain' rounded="l3">
             <Tabs.List p="1">
                 <Tabs.Trigger value="f3" asChild p="2">
@@ -63,16 +63,16 @@ export default function SubjectList({ subjects, year }: {
                 <Tabs.Indicator rounded="l2" />
             </Tabs.List>
             <Tabs.Content value="f3">
-                <div className='flex flex-wrap justify-around gap-1 gap-y-10 mb-16 xl:mx-24 w-screen max-h-screen'>{f3}</div>
+                <div className='flex flex-wrap justify-around gap-1 gap-y-10 mb-16 xl:mx-24 w-screen'>{f3}</div>
             </Tabs.Content>
             <Tabs.Content value="f4">
-                <div className='flex flex-wrap justify-around gap-1 gap-y-10 mb-16 xl:mx-24 w-screen max-h-screen'>{f4}</div>
+                <div className='flex flex-wrap justify-around gap-1 gap-y-10 mb-16 xl:mx-24 w-screen'>{f4}</div>
             </Tabs.Content><Tabs.Content value="f5">
-                <div className='flex flex-wrap justify-around gap-1 gap-y-10 mb-16 xl:mx-24 w-screen max-h-screen'>{f5}</div>
+                <div className='flex flex-wrap justify-around gap-1 gap-y-10 mb-16 xl:mx-24 w-screen'>{f5}</div>
             </Tabs.Content><Tabs.Content value="61">
-                <div className='flex flex-wrap justify-around gap-1 gap-y-10 mb-16 xl:mx-24 w-screen max-h-screen'>{f61}</div>
+                <div className='flex flex-wrap justify-around gap-1 gap-y-10 mb-16 xl:mx-24 w-screen'>{f61}</div>
             </Tabs.Content><Tabs.Content value="62">
-                <div className='flex flex-wrap justify-around gap-1 gap-y-10 mb-16 xl:mx-24 w-screen max-h-screen'>{f62}</div>
+                <div className='flex flex-wrap justify-around gap-1 gap-y-10 mb-16 xl:mx-24 w-screen'>{f62}</div>
             </Tabs.Content>
         </Tabs.Root>
 
