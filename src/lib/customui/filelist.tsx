@@ -7,9 +7,9 @@ export default function FileList({files}: {
         path: string;
     }[]
 }) {
-    return (<div>
+    return (<div className={'gap-y-6'}>
         {files.map((file) => {
-            return <div key={file.id} className={'gap-y-6'}>
+            return <div key={file.id}>
                 <h3>
                     <a target="_blank" href={file.path}
                        className={'p-2 border-solid border-gray-500 border-2 rounded-lg'}>{file.filename}</a>
