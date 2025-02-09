@@ -37,6 +37,7 @@ model Test {
   subject   Subject  @relation(fields: [subjectId], references: [id])
   subjectId Int
   desc      String   @default("")
+  topics    String[]
   notes     Note[]
   date      DateTime @default(now()) @db.Date
 }

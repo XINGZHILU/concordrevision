@@ -1,8 +1,8 @@
-import Link from "next/link";
-import {prisma} from "@/lib/prisma";
-import {notFound} from "next/navigation";
+import NewTestForm from "@/lib/customui/test_create_form";
 import {isNumeric} from "@/lib/utils";
-
+import {notFound} from "next/navigation";
+import {prisma} from "@/lib/prisma";
+import {year_group_names} from "@/lib/consts";
 
 export default async function Page(req: any, res: any) {
     const params = await req.params;
@@ -25,10 +25,8 @@ export default async function Page(req: any, res: any) {
         notFound();
     }
 
-
     return <div>
-        <Link href={`/upload/${subject.id}/resources`}>Upload resources</Link><br/>
-        <Link href={`/upload/${subject.id}/test-revision`}>Upload test revision materials</Link><br/>
-        <Link href={`/upload/${subject.id}/create_test`}>Schedule a new test</Link>
+        <h1>{year_group_names[subject.level]} {subject.title} test scheduling</h1>
+        <NewTestForm subject={subject.id}/>
     </div>;
 }
