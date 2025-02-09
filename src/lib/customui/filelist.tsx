@@ -10,7 +10,7 @@ export default function FileList({files}: {
     return (<div>
         {files.map((file) => {
             return <div key={file.id} >
-                <Link href={`/fileview/${file.id}`}>{file.filename}</Link>
+                <Link href={`/fileview/pdf/${file.id}`}>{file.filename}</Link>
                 <br/>
             </div>;
         })}
