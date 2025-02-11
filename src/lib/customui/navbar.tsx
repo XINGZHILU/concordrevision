@@ -5,13 +5,6 @@ import {SignedIn, SignedOut, SignInButton, UserButton} from "@clerk/nextjs";
 export default function NavBar(){
     return (<nav className="bg-gray-200 border-gray-500">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-            <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-                <Image src="https://concordcollegeuk.com/wp-content/uploads/2023/11/logo.svg" className="h-8"
-                       alt="Concord Logo" width={80} height={80}/>
-                <span
-                    className="self-center text-2xl font-semibold whitespace-nowrap">Concord Student Hub</span>
-            </Link>
-
             <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1 "
                  id="navbar-sticky">
                 <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-200 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0">

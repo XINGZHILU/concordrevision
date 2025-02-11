@@ -6,7 +6,7 @@ import {ClerkProvider} from "@clerk/nextjs";
 import Footer from "@/lib/customui/Footer";
 
 export const metadata: Metadata = {
-    title: "Concord Student Hub",
+    title: "Student Hub",
     description: "©Joshua Ng, Xingzhi Lu, Christoph Chan 2025",
 };
 import {Provider} from "@/components/ui/provider"
@@ -20,9 +20,7 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
         <ClerkProvider>
             <html lang="en" suppressHydrationWarning={true}>
             <head>
-                <title>Concord Student Hub</title>
-                <link rel="icon" type="image/x-icon"
-                      href="https://concordcollegeuk.com/wp-content/uploads/2023/11/logo.svg"/>
+                <title>Student Hub</title>
             </head>
 
             <body className={inter.className}>
