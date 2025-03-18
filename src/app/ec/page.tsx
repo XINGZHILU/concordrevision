@@ -6,7 +6,7 @@ export default async function Page() {
     const posts = await prisma.post.findMany();
 
     return <div>
-        <Link href={'/ec/new'}>New Post</Link>
+        <h2><Link href={'/ec/new'} className={'text-blue-500'}>New Post</Link></h2>
         <h1>Current posts</h1>
         {
             posts.map((post) => {

@@ -6,7 +6,7 @@
 import MDEditor from '@uiw/react-md-editor';
 import {toaster} from "@/components/ui/toaster"
 import {Alert, Button} from "@chakra-ui/react";
-import React, { useState, useRef, useEffect } from "react";
+import React, {useState, useRef, useEffect} from "react";
 
 export default function PostForm({author}: { author: string }) {
     const [value, setValue] = useState("");
@@ -20,7 +20,8 @@ export default function PostForm({author}: { author: string }) {
         window.addEventListener('beforeunload', beforeUnload);
 
         return () => {
-            window.confirm('Please do not refresh the page or navigate away from this page. Your post will be lost');
+            window.confirm('Please do not refresh the page or navigate away from this page if you have not posted your ' +
+                'content yet. Your post will be lost');
             window.removeEventListener('beforeunload', beforeUnload);
         };
     }, []);
@@ -82,7 +83,8 @@ export default function PostForm({author}: { author: string }) {
             <Alert.Root status="warning">
                 <Alert.Indicator/>
                 <Alert.Title>
-                    Click <a href={'https://www.markdownguide.org/basic-syntax/'}><b>here</b></a> for how to write your
+                    Click <a href={'https://www.markdownguide.org/basic-syntax/'} target="_blank"
+                             rel="noopener noreferrer"><b>here</b></a> for how to write your
                     post
                 </Alert.Title>
             </Alert.Root>
