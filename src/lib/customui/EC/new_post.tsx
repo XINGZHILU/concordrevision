@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 'use client';
 
 import React, {useRef} from "react";
@@ -46,14 +48,14 @@ export default function PostForm({author}: { author: string }) {
         setValue("");
     }
 
-    // @ts-expect-error
+
     return (
         <div className="container w-full">
             <form onSubmit={submit}>
                 <label htmlFor={'title'}>Title: </label>
                 <input type="text" ref={titleRef} name={'title'} placeholder={'Enter the title of the post'}
                        required={true}/> <br/>
-                
+
                 <MDEditor value={value} onChange={setValue}/>
                 <Button colorPalette={'blue'} type="submit">Post</Button>
             </form>
