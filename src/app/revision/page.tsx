@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import RevisionSubjectList from "@/lib/customui/RevisionSubjectList";
+import RevisionSubjectList from "@/lib/customui/Revision/RevisionSubjectList";
 import {currentUser} from "@clerk/nextjs/server";
 
 export default async function Home() {

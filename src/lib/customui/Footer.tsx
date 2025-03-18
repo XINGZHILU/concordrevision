@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react'
-import PomodoroActionBar from "@/lib/customui/pomodoro_action_bar";
+import PomodoroActionBar from "@/lib/customui/Basic/pomodoro_action_bar";
 import Link from 'next/link';
 
 const Footer = () => {

@@ -1,7 +1,7 @@
 'use client';
 
-import { SubjectItem } from './SubjectItem'
-import { SubjectTabs } from './tabs';
+import { SubjectItem } from '../Upload/SubjectItem'
+import { SubjectTabs } from '../Basic/tabs';
 
 const RevisionSubjectList = ({ subjects, year }: {
     subjects: {

@@ -3,7 +3,7 @@ import {notFound} from "next/navigation";
 import {isNumeric} from "@/lib/utils";
 import {year_group_names} from "@/lib/consts";
 import { currentUser } from '@clerk/nextjs/server'
-import {TestLinkCard} from "@/lib/customui/cards";
+import {TestLinkCard} from "@/lib/customui/Basic/cards";
 
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -14,6 +14,20 @@ export default async function Page(req: any, res: any) {
 
     if (!user) {
         return <h1>You must login to access this page</h1>;
+    }
+
+    const record = await prisma.user.findUnique({
+        where: {
+            id: user.id
+        }
+    });
+
+    if (!record){
+        return <h1>User not found</h1>;
+    }
+
+    if (!record.upload_permission){
+        return <h1>You do not have permission to access this page</h1>;
     }
 
     if (!isNumeric(sid)) {

@@ -13,6 +13,7 @@ model User {
   email              String              @unique
   name               String?
   teacher            Boolean             @default(false)
+  upload_permission  Boolean             @default(false)
   year               Int                 @default(-1)
   posts              Post[]
   notes              Note[]

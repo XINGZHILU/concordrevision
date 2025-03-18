@@ -1,6 +1,6 @@
 'use client';
 
-import Pomodoro from "@/lib/customui/pomodoro";
+import Pomodoro from "@/lib/customui/Basic/pomodoro";
 import {
     ActionBarCloseTrigger,
     ActionBarContent,

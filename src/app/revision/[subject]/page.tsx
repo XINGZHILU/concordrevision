@@ -2,7 +2,7 @@ import {prisma} from "@/lib/prisma";
 import {notFound} from "next/navigation";
 import {isNumeric} from "@/lib/utils";
 import {year_group_names} from "@/lib/consts";
-import {NoteCard, TestCard} from "@/lib/customui/cards";
+import {NoteCard, TestCard} from "@/lib/customui/Basic/cards";
 import {currentUser} from "@clerk/nextjs/server";
 
 import {Collapsible, Tabs} from "@chakra-ui/react"

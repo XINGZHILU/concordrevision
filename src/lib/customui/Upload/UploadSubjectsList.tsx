@@ -1,7 +1,7 @@
 'use client';
 
 import Link from "next/link";
-import { SubjectTabs } from "./tabs";
+import { SubjectTabs } from "../Basic/tabs";
 
 export default function SubjectList({ subjects, year }: {
     subjects: {

@@ -2,7 +2,7 @@
 
 import {useState} from "react";
 import {olympiad_subjects} from "@/lib/consts";
-import {OlympiadCard} from "@/lib/customui/cards";
+import {OlympiadCard} from "@/lib/customui/Basic/cards";
 import Link from "next/link";
 
 export default function OlympiadsList({olympiads}: {

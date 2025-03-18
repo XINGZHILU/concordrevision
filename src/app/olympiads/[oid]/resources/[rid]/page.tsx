@@ -1,7 +1,7 @@
 import {prisma} from "@/lib/prisma";
 import {notFound} from "next/navigation";
 import {isNumeric} from "@/lib/utils";
-import FileList from "@/lib/customui/filelist";
+import FileList from "@/lib/customui/Basic/filelist";
 
 
 export default async function Page(req : any, res : any){

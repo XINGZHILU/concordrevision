@@ -1,6 +1,6 @@
 import {prisma} from "@/lib/prisma";
 import {notFound} from "next/navigation";
-import {OlympiadResourceCard} from "@/lib/customui/cards";
+import {OlympiadResourceCard} from "@/lib/customui/Basic/cards";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default async function Page(req : any, res : any){

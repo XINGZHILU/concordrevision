@@ -3,7 +3,7 @@ import {notFound} from "next/navigation";
 import {isNumeric} from "@/lib/utils";
 import {year_group_names} from "@/lib/consts";
 import {currentUser} from "@clerk/nextjs/server";
-import {TestNoteCard} from "@/lib/customui/cards";
+import {TestNoteCard} from "@/lib/customui/Basic/cards";
 
 
 export default async function Page(req: any, res: any) {

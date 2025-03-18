@@ -4,6 +4,7 @@ import {inter} from "@/lib/customui/fonts";
 import NavBar from "@/lib/customui/navbar";
 import {ClerkProvider} from "@clerk/nextjs";
 import Footer from "@/lib/customui/Footer";
+import Script from 'next/script'
 
 export const metadata: Metadata = {
     title: "Student Hub",
@@ -21,6 +22,9 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
             <html lang="en" suppressHydrationWarning={true}>
             <head>
                 <title>Student Hub</title>
+                <meta charSet="utf-8"/>
+                <Script src={'marked.min.js'}></Script>
+                <Script src={'jquery.min.js'}></Script>
             </head>
 
             <body className={inter.className}>

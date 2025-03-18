@@ -3,9 +3,9 @@ import {notFound} from "next/navigation";
 import {isNumeric} from "@/lib/utils";
 import {year_group_names} from "@/lib/consts";
 import {currentUser} from "@clerk/nextjs/server";
-import ColourSelector from "@/lib/customui/ColourSelector";
-import PDFFrame from "@/lib/customui/pdf_frame";
-import FileList from "@/lib/customui/filelist";
+import ColourSelector from "@/lib/customui/Revision/ColourSelector";
+import PDFFrame from "@/lib/customui/Basic/pdf_frame";
+import FileList from "@/lib/customui/Basic/filelist";
 
 
 export default async function Page(req : any, res : any){

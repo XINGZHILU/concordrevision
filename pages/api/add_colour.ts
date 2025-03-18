@@ -1,7 +1,5 @@
 import {prisma} from "@/lib/prisma";
 import {NextApiRequest, NextApiResponse} from "next";
-import {revalidatePath} from "next/cache";
-
 
 
 export default async function handler(
@@ -12,7 +10,7 @@ export default async function handler(
     const uid = req.body.uid as string;
     const colour = req.body.colour;
 
-    if (colour === '0'){
+    if (colour === '0') {
         await prisma.user.update({
             where: {
                 id: uid
@@ -23,9 +21,7 @@ export default async function handler(
                 }
             }
         });
-    }
-
-    else if (colour === '1'){
+    } else if (colour === '1') {
         await prisma.user.update({
             where: {
                 id: uid
@@ -36,8 +32,7 @@ export default async function handler(
                 }
             }
         });
-    }
-    else if (colour === '2'){
+    } else if (colour === '2') {
         await prisma.user.update({
             where: {
                 id: uid
