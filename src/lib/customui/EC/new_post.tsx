@@ -66,6 +66,14 @@ export default function PostForm({author}: { author: string }) {
 
     return (
         <div className="container w-full">
+            <Alert.Root status="warning">
+                <Alert.Indicator/>
+                <Alert.Title>
+                    Click <a href={'https://www.markdownguide.org/basic-syntax/'} target="_blank"
+                             rel="noopener noreferrer"><b>here</b></a> for how to write your
+                    post
+                </Alert.Title>
+            </Alert.Root>
             <form onSubmit={submit}>
                 <label htmlFor={'title'}>Title: </label>
                 <input type="text" ref={titleRef} name={'title'} placeholder={'Enter the title of the post'}
@@ -76,18 +84,11 @@ export default function PostForm({author}: { author: string }) {
                         placeholder: "Please enter Markdown text"
                     }}
                     value={value}
+                    height={800}
                     onChange={setValue}
                 />
                 <Button colorPalette={'blue'} type="submit">Post</Button>
             </form>
-            <Alert.Root status="warning">
-                <Alert.Indicator/>
-                <Alert.Title>
-                    Click <a href={'https://www.markdownguide.org/basic-syntax/'} target="_blank"
-                             rel="noopener noreferrer"><b>here</b></a> for how to write your
-                    post
-                </Alert.Title>
-            </Alert.Root>
         </div>
     );
 }
