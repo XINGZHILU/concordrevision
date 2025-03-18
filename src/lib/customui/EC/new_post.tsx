@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 
 'use client';
@@ -56,13 +57,19 @@ export default function PostForm({author}: { author: string }) {
                 <input type="text" ref={titleRef} name={'title'} placeholder={'Enter the title of the post'}
                        required={true}/> <br/>
 
-                <MDEditor value={value} onChange={setValue}/>
+                <MDEditor
+                    textareaProps={{
+                        placeholder: "Please enter Markdown text"
+                    }}
+                    value={value}
+                    onChange={setValue}
+                />
                 <Button colorPalette={'blue'} type="submit">Post</Button>
             </form>
             <Alert.Root status="warning">
                 <Alert.Indicator/>
                 <Alert.Title>
-                    Click <a href={'https://www.markdownguide.org/basic-syntax/'}><b>here</b></a> for how to format your
+                    Click <a href={'https://www.markdownguide.org/basic-syntax/'}><b>here</b></a> for how to write your
                     post
                 </Alert.Title>
             </Alert.Root>

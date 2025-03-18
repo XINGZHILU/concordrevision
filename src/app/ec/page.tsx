@@ -1,15 +1,17 @@
-import PostForm from "@/lib/customui/EC/new_post";
-import {currentUser} from "@clerk/nextjs/server";
+import {prisma} from "@/lib/prisma";
+import {PostCard} from "@/lib/customui/EC/EC_card";
+import Link from "next/link";
 
 export default async function Page() {
-
-    const user = await currentUser();
-
-    if (!user) {
-        return <h1>You must login to access this page</h1>;
-    }
+    const posts = await prisma.post.findMany();
 
     return <div>
-        <PostForm author={user.id}/>
+        <Link href={'/ec/new'}>New Post</Link>
+        <h1>Current posts</h1>
+        {
+            posts.map((post) => {
+                return <PostCard post={post} key={post.id}/>
+            })
+        }
     </div>;
 }
