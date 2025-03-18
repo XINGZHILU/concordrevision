@@ -4,14 +4,19 @@
 import {prisma} from "@/lib/prisma";
 import MDViewer from "@/lib/customui/Basic/showMD";
 import {notFound} from "next/navigation";
+import {isNumeric} from "@/lib/utils";
 
 
 export default async function Page(req: any, res: any) {
     const params = await req.params;
-    const pid = params.pid;
+    const pid = params.pid as string;
+
+    if (!isNumeric(pid)) {
+        notFound();
+    }
 
     const post = await prisma.post.findUnique({
-        where: {id: pid}
+        where: {id: +pid}
     });
 
     if (!post) {
