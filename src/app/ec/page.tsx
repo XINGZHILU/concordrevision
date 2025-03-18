@@ -1,21 +1,15 @@
-import Script from "next/script";
+import PostForm from "@/lib/customui/EC/new_post";
+import {currentUser} from "@clerk/nextjs/server";
 
-export default function Page() {
+export default async function Page() {
 
-    return (
-        <div className="content-center">
-            <div className="container">
-                <div className="editor-container">
-                    <textarea id="editor"></textarea>
-                </div>
-                <div className="preview-container">
-                    <div id="preview"></div>
-                </div>
-            </div>
+    const user = await currentUser();
 
-            <Script src=
-                        "https://cdnjs.cloudflare.com/ajax/libs/marked/2.0.2/marked.min.js"></Script>
-            <Script src="script.js"></Script>
-        </div>
-    );
+    if (!user) {
+        return <h1>You must login to access this page</h1>;
+    }
+
+    return <div>
+        <PostForm author={user.id}/>
+    </div>;
 }

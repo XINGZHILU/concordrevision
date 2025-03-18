@@ -23,8 +23,6 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
             <head>
                 <title>Student Hub</title>
                 <meta charSet="utf-8"/>
-                <Script src={'marked.min.js'}></Script>
-                <Script src={'jquery.min.js'}></Script>
             </head>
 
             <body className={inter.className}>
