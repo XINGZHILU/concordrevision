@@ -84,7 +84,7 @@ export default function PostForm({author}: { author: string }) {
                         placeholder: "Please enter Markdown text"
                     }}
                     value={value}
-                    height={800}
+                    height={600}
                     onChange={setValue}
                 />
                 <Button colorPalette={'blue'} type="submit">Post</Button>
