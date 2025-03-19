@@ -25,6 +25,6 @@ export default async function Page(req: any, res: any) {
 
     return <div>
         <h1>{post.title}</h1>
-        <MDViewer content={post.content}/>
+        <MDViewer content={`# ${post.title}\n${post.content}`}/>
     </div>;
 }
