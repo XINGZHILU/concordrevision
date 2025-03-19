@@ -1,11 +1,10 @@
 import type {Metadata} from "next";
 import "@/app/globals.css";
+import "@/app/md.css";
 import {inter} from "@/lib/customui/fonts";
 import NavBar from "@/lib/customui/navbar";
 import {ClerkProvider} from "@clerk/nextjs";
 import Footer from "@/lib/customui/Footer";
-import Script from 'next/script'
-
 export const metadata: Metadata = {
     title: "Student Hub",
     description: "©Joshua Ng, Xingzhi Lu, Christoph Chan 2025",
@@ -30,10 +29,8 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
             <NavBar/>
 
             <Provider>
-                <div className={'w-screen place-items-center p-2'}>
-                    <div className='min-h-screen max-w-11/12 mx-auto'>
-                        {children}
-                    </div>
+                <div className={'w-11/12 h-screen p-2 mx-auto markdown-body'}>
+                    {children}
                 </div>
                 <Footer/>
             </Provider>
