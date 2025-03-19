@@ -9,7 +9,7 @@ export default async function Page() {
         return <h1>You must login to access this page</h1>;
     }
 
-    return <div>
+    return <div className={'content-center'}>
         <PostForm author={user.id}/>
     </div>;
 }
