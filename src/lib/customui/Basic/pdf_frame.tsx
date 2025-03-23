@@ -5,7 +5,7 @@ export default function PdfViewer({url, title}: {
     return <iframe src={url} style={
         {
             width: "100%",
-            height: "100%",
+            height: "100%"
         }
-    } title={title}></iframe>;
+    }></iframe>;
 }
