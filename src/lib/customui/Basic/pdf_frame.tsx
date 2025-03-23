@@ -1,98 +1,145 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Document, Page, pdfjs } from 'react-pdf';
-import '@/styles/pdf-viewer.css'
+// src/components/EnhancedPDFViewer.tsx
+import React, { useState, useEffect } from 'react';
 
-// Ensure this is only included on the client side
-if (typeof window !== 'undefined' && !pdfjs.GlobalWorkerOptions.workerSrc) {
-    pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/3.6.172/pdf.worker.min.js`;
-}
-
-// Configure PDF.js worker
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/3.6.172/pdf.worker.min.js`;
-
-interface PDFViewerProps {
+interface EnhancedPDFViewerProps {
     url: string;
     title: string;
 }
 
-const PDFViewer: React.FC<PDFViewerProps> = ({ url, title }) => {
-    const [numPages, setNumPages] = useState<number | null>(null);
-    const [pageNumber, setPageNumber] = useState<number>(1);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+const EnhancedPDFViewer: React.FC<EnhancedPDFViewerProps> = ({ url, title }) => {
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [urlType, setUrlType] = useState<string>('unknown');
 
-    function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
-        setNumPages(numPages);
-        setPageNumber(1);
-        setIsLoading(false);
-        console.log(`PDF "${title}" loaded successfully with ${numPages} pages`);
-    }
+    useEffect(() => {
+        // Reset states when URL changes
+        setLoading(true);
+        setError(null);
 
-    function onDocumentLoadError(error: Error) {
-        setIsLoading(false);
-        console.error(`Error loading PDF "${title}":`, error);
-    }
+        // Determine URL type for debugging
+        if (url.startsWith('blob:')) {
+            setUrlType('blob');
+        } else if (url.startsWith('data:')) {
+            setUrlType('data');
+        } else if (url.startsWith('/')) {
+            setUrlType('relative');
+        } else if (url.startsWith('http')) {
+            setUrlType('absolute');
+        } else {
+            setUrlType('unknown');
+        }
 
-    function changePage(offset: number) {
-        if (!numPages) return;
-        setPageNumber(prevPageNumber => {
-            const newPageNumber = prevPageNumber + offset;
-            return Math.max(1, Math.min(numPages, newPageNumber));
-        });
-    }
+        // Simulate loading completion
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 1500);
 
-    function previousPage() {
-        changePage(-1);
-    }
+        return () => clearTimeout(timer);
+    }, [url]);
 
-    function nextPage() {
-        changePage(1);
-    }
+    // Function to handle iframe load event
+    const handleIframeLoad = () => {
+        setLoading(false);
+    };
+
+    // Function to handle iframe error
+    const handleIframeError = () => {
+        setError('Failed to load PDF in iframe');
+    };
 
     return (
-        <div className="pdf-viewer" style={{ width: '100%' }}>
-            <div className="pdf-controls" style={{ padding: '10px', borderBottom: '1px solid #ccc', marginBottom: '10px' }}>
-                <button
-                    onClick={previousPage}
-                    disabled={pageNumber <= 1}
-                    style={{ marginRight: '10px', padding: '5px 10px' }}
-                >
-                    Previous
-                </button>
-                <span>
-          Page {pageNumber} of {numPages || '--'}
-        </span>
-                <button
-                    onClick={nextPage}
-                    disabled={numPages === null || pageNumber >= numPages}
-                    style={{ marginLeft: '10px', padding: '5px 10px' }}
-                >
-                    Next
-                </button>
+        <div className="pdf-viewer" style={{ width: '100%', height: '800px', position: 'relative' }}>
+            {/* Header with title */}
+            <div style={{ padding: '10px', marginBottom: '10px', textAlign: 'center' }}>
+                <h2>{title}</h2>
+                <div style={{ fontSize: '12px', color: '#666' }}>
+                    URL Type: {urlType} {urlType === 'blob' && '(Uploaded File)'}
+                </div>
             </div>
 
-            <div className="pdf-container" style={{ textAlign: 'center' }}>
-                {isLoading && <div>Loading PDF...</div>}
-                <Document
-                    file={url}
-                    onLoadSuccess={onDocumentLoadSuccess}
-                    onLoadError={onDocumentLoadError}
-                    loading={<div>Loading PDF...</div>}
-                    noData={<div>No PDF file specified</div>}
-                    error={<div>An error occurred!</div>}
-                >
-                    <Page
-                        pageNumber={pageNumber}
-                        renderTextLayer={true}
-                        renderAnnotationLayer={true}
-                        width={window.innerWidth > 800 ? 800 : window.innerWidth - 40}
-                        error={<div>Error loading page</div>}
-                    />
-                </Document>
+            {/* Loading indicator */}
+            {loading && (
+                <div style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    backgroundColor: 'rgba(255,255,255,0.8)',
+                    padding: '20px',
+                    borderRadius: '8px',
+                    zIndex: 10
+                }}>
+                    Loading PDF...
+                </div>
+            )}
+
+            {/* Error message */}
+            {error && (
+                <div style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    backgroundColor: 'rgba(255,200,200,0.9)',
+                    padding: '20px',
+                    borderRadius: '8px',
+                    zIndex: 10
+                }}>
+                    <p>Error: {error}</p>
+                    <p><a href={url} target="_blank" rel="noopener noreferrer">Open PDF directly</a></p>
+                </div>
+            )}
+
+            {/* Main PDF viewer with both iframe and object as fallbacks */}
+            <div style={{ height: 'calc(100% - 70px)', width: '100%' }}>
+                {/* Try iframe first - works better in Safari */}
+                <iframe
+                    src={`${url}#toolbar=1&navpanes=1`}
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                        border: 'none',
+                        display: error ? 'none' : 'block'
+                    }}
+                    title={title}
+                    onLoad={handleIframeLoad}
+                    onError={handleIframeError}
+                />
+
+                {/* Display download link as a fallback */}
+                <div style={{
+                    display: error ? 'flex' : 'none',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '100%',
+                    backgroundColor: '#f8f8f8',
+                    padding: '20px',
+                    borderRadius: '8px'
+                }}>
+                    <p>Unable to display PDF in browser.</p>
+                    <a
+                        href={url}
+                        download={title}
+                        style={{
+                            display: 'inline-block',
+                            margin: '20px 0',
+                            padding: '10px 15px',
+                            backgroundColor: '#0070f3',
+                            color: 'white',
+                            borderRadius: '4px',
+                            textDecoration: 'none'
+                        }}
+                    >
+                        Download PDF
+                    </a>
+                    <p>Debug info: URL type is {urlType}</p>
+                </div>
             </div>
         </div>
     );
 };
 
-export default PDFViewer;
+export default EnhancedPDFViewer;
