@@ -1,145 +1,263 @@
 'use client';
 
-// src/components/EnhancedPDFViewer.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import * as pdfjs from 'pdfjs-dist';
 
-interface EnhancedPDFViewerProps {
+// Ensure PDF.js worker is correctly loaded
+if (typeof window !== 'undefined') {
+    pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/3.6.172/pdf.worker.min.js`;
+}
+
+interface CanvasPDFViewerProps {
     url: string;
     title: string;
 }
 
-const EnhancedPDFViewer: React.FC<EnhancedPDFViewerProps> = ({ url, title }) => {
+const CanvasPDFViewer: React.FC<CanvasPDFViewerProps> = ({ url, title }) => {
+    const [pdfDoc, setPdfDoc] = useState<pdfjs.PDFDocumentProxy | null>(null);
+    const [pageNum, setPageNum] = useState(1);
+    const [pageCount, setPageCount] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [urlType, setUrlType] = useState<string>('unknown');
+    const [scale, setScale] = useState(1.5);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
 
+    // Load the PDF document
     useEffect(() => {
-        // Reset states when URL changes
         setLoading(true);
         setError(null);
+        setPdfDoc(null);
 
-        // Determine URL type for debugging
-        if (url.startsWith('blob:')) {
-            setUrlType('blob');
-        } else if (url.startsWith('data:')) {
-            setUrlType('data');
-        } else if (url.startsWith('/')) {
-            setUrlType('relative');
-        } else if (url.startsWith('http')) {
-            setUrlType('absolute');
-        } else {
-            setUrlType('unknown');
-        }
+        const loadPdf = async () => {
+            try {
+                // Use arrayBuffer for better compatibility
+                const arrayBuffer = await fetchPdfAsArrayBuffer(url);
+                const loadingTask = pdfjs.getDocument({ data: arrayBuffer });
+                const pdf = await loadingTask.promise;
 
-        // Simulate loading completion
-        const timer = setTimeout(() => {
-            setLoading(false);
-        }, 1500);
+                setPdfDoc(pdf);
+                setPageCount(pdf.numPages);
+                setPageNum(1);
+                setLoading(false);
+            } catch (err: any) {
+                console.error("Error loading PDF:", err);
+                setError(err.message || "Failed to load PDF");
+                setLoading(false);
+            }
+        };
 
-        return () => clearTimeout(timer);
+        loadPdf();
     }, [url]);
 
-    // Function to handle iframe load event
-    const handleIframeLoad = () => {
-        setLoading(false);
+    // Fetch PDF as ArrayBuffer (better for cross-browser compatibility)
+    const fetchPdfAsArrayBuffer = async (pdfUrl: string): Promise<ArrayBuffer> => {
+        // Handle blob URLs differently
+        if (pdfUrl.startsWith('blob:')) {
+            try {
+                const response = await fetch(pdfUrl);
+                return await response.arrayBuffer();
+            } catch (err) {
+                throw new Error(`Failed to fetch blob URL: ${err}`);
+            }
+        }
+
+        // Handle normal URLs
+        try {
+            const response = await fetch(pdfUrl);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return await response.arrayBuffer();
+        } catch (err) {
+            throw new Error(`Failed to fetch PDF: ${err}`);
+        }
     };
 
-    // Function to handle iframe error
-    const handleIframeError = () => {
-        setError('Failed to load PDF in iframe');
-    };
+    // Render the current page
+    useEffect(() => {
+        if (!pdfDoc || !canvasRef.current) return;
+
+        const renderPage = async () => {
+            try {
+                // Get the page
+                const page = await pdfDoc.getPage(pageNum);
+
+                // Get the canvas element
+                const canvas = canvasRef.current;
+                if (!canvas) return;
+
+                const context = canvas.getContext('2d');
+                if (!context) return;
+
+                // Calculate the viewport to fit the container width
+                let viewport = page.getViewport({ scale: 1.0 });
+
+                // Adjust scale to fit container width with some padding
+                if (containerRef.current) {
+                    const containerWidth = containerRef.current.clientWidth - 40; // 20px padding on each side
+                    const calculatedScale = containerWidth / viewport.width;
+                    setScale(calculatedScale);
+                    viewport = page.getViewport({ scale: calculatedScale });
+                }
+
+                // Set canvas dimensions to match viewport
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+
+                // Render the page
+                const renderContext = {
+                    canvasContext: context,
+                    viewport: viewport
+                };
+
+                await page.render(renderContext).promise;
+            } catch (err: any) {
+                console.error("Error rendering page:", err);
+                setError(`Error rendering page ${pageNum}: ${err.message || "Unknown error"}`);
+            }
+        };
+
+        renderPage();
+    }, [pdfDoc, pageNum, containerRef.current?.clientWidth]);
+
+    // Add window resize handler to adjust scaling
+    useEffect(() => {
+        const handleResize = () => {
+            // This will trigger the useEffect above to recalculate scaling
+            if (containerRef.current) {
+                const containerWidth = containerRef.current.clientWidth;
+                // Force a re-render by updating a state
+                setScale(prevScale => {
+                    // Just toggle between very close values to force a re-render
+                    return prevScale === 1.5 ? 1.501 : 1.5;
+                });
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    // Navigation functions
+    const prevPage = () => setPageNum(prev => Math.max(prev - 1, 1));
+    const nextPage = () => setPageNum(prev => Math.min(prev + 1, pageCount));
 
     return (
-        <div className="pdf-viewer" style={{ width: '100%', height: '800px', position: 'relative' }}>
-            {/* Header with title */}
-            <div style={{ padding: '10px', marginBottom: '10px', textAlign: 'center' }}>
-                <h2>{title}</h2>
-                <div style={{ fontSize: '12px', color: '#666' }}>
-                    URL Type: {urlType} {urlType === 'blob' && '(Uploaded File)'}
+        <div className="canvas-pdf-viewer" style={{ width: '100%' }}>
+            <div style={{
+                padding: '10px',
+                borderBottom: '1px solid #ccc',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '10px'
+            }}>
+                <h2 style={{ margin: '0', fontSize: '1.2rem' }}>{title}</h2>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <button
+                        onClick={prevPage}
+                        disabled={pageNum <= 1 || loading}
+                        style={{
+                            padding: '5px 10px',
+                            border: '1px solid #ccc',
+                            borderRadius: '4px',
+                            backgroundColor: pageNum <= 1 ? '#f0f0f0' : '#fff',
+                            cursor: pageNum <= 1 ? 'not-allowed' : 'pointer'
+                        }}
+                    >
+                        Previous
+                    </button>
+
+                    <span>
+            Page {pageNum} of {pageCount}
+          </span>
+
+                    <button
+                        onClick={nextPage}
+                        disabled={pageNum >= pageCount || loading}
+                        style={{
+                            padding: '5px 10px',
+                            border: '1px solid #ccc',
+                            borderRadius: '4px',
+                            backgroundColor: pageNum >= pageCount ? '#f0f0f0' : '#fff',
+                            cursor: pageNum >= pageCount ? 'not-allowed' : 'pointer'
+                        }}
+                    >
+                        Next
+                    </button>
                 </div>
             </div>
 
-            {/* Loading indicator */}
-            {loading && (
-                <div style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    backgroundColor: 'rgba(255,255,255,0.8)',
+            <div
+                ref={containerRef}
+                style={{
                     padding: '20px',
-                    borderRadius: '8px',
-                    zIndex: 10
-                }}>
-                    Loading PDF...
-                </div>
-            )}
-
-            {/* Error message */}
-            {error && (
-                <div style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    backgroundColor: 'rgba(255,200,200,0.9)',
-                    padding: '20px',
-                    borderRadius: '8px',
-                    zIndex: 10
-                }}>
-                    <p>Error: {error}</p>
-                    <p><a href={url} target="_blank" rel="noopener noreferrer">Open PDF directly</a></p>
-                </div>
-            )}
-
-            {/* Main PDF viewer with both iframe and object as fallbacks */}
-            <div style={{ height: 'calc(100% - 70px)', width: '100%' }}>
-                {/* Try iframe first - works better in Safari */}
-                <iframe
-                    src={`${url}#toolbar=1&navpanes=1`}
-                    style={{
-                        width: '100%',
-                        height: '100%',
-                        border: 'none',
-                        display: error ? 'none' : 'block'
-                    }}
-                    title={title}
-                    onLoad={handleIframeLoad}
-                    onError={handleIframeError}
-                />
-
-                {/* Display download link as a fallback */}
-                <div style={{
-                    display: error ? 'flex' : 'none',
-                    flexDirection: 'column',
-                    alignItems: 'center',
+                    display: 'flex',
                     justifyContent: 'center',
-                    height: '100%',
-                    backgroundColor: '#f8f8f8',
-                    padding: '20px',
-                    borderRadius: '8px'
-                }}>
-                    <p>Unable to display PDF in browser.</p>
-                    <a
-                        href={url}
-                        download={title}
-                        style={{
-                            display: 'inline-block',
-                            margin: '20px 0',
-                            padding: '10px 15px',
-                            backgroundColor: '#0070f3',
-                            color: 'white',
-                            borderRadius: '4px',
-                            textDecoration: 'none'
-                        }}
-                    >
-                        Download PDF
-                    </a>
-                    <p>Debug info: URL type is {urlType}</p>
-                </div>
+                    position: 'relative',
+                    minHeight: '500px'
+                }}
+            >
+                {loading && (
+                    <div style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        padding: '20px',
+                        backgroundColor: 'rgba(255,255,255,0.9)',
+                        borderRadius: '8px',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                        zIndex: 10
+                    }}>
+                        Loading PDF...
+                    </div>
+                )}
+
+                {error && (
+                    <div style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        padding: '20px',
+                        backgroundColor: 'rgba(255,200,200,0.9)',
+                        borderRadius: '8px',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                        zIndex: 10
+                    }}>
+                        <p>Error: {error}</p>
+                        <a
+                            href={url}
+                            download={title}
+                            style={{
+                                display: 'inline-block',
+                                margin: '10px 0',
+                                padding: '5px 10px',
+                                backgroundColor: '#0070f3',
+                                color: 'white',
+                                borderRadius: '4px',
+                                textDecoration: 'none'
+                            }}
+                        >
+                            Download PDF
+                        </a>
+                    </div>
+                )}
+
+                <canvas
+                    ref={canvasRef}
+                    style={{
+                        boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
+                        display: loading ? 'none' : 'block'
+                    }}
+                />
             </div>
         </div>
     );
 };
 
-export default EnhancedPDFViewer;
+export default CanvasPDFViewer;
