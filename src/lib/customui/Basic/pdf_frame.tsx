@@ -2,12 +2,27 @@
 
 // src/components/CanvasPDFViewer.tsx
 import React, { useState, useEffect, useRef } from 'react';
-import * as pdfjs from 'pdfjs-dist';
 
-// Ensure PDF.js worker is correctly loaded
-if (typeof window !== 'undefined') {
-    pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.269/pdf.worker.min.js`;
-}
+// Import PDF.js with proper worker configuration
+// Note: We dynamically import to avoid SSR issues
+const loadPdfJs = async () => {
+    // Only import in browser environment
+    if (typeof window === 'undefined') return null;
+
+    try {
+        // Dynamic import of pdfjs
+        const pdfjs = await import('pdfjs-dist');
+
+        // Configure the worker
+        const pdfjsWorker = await import('pdfjs-dist/build/pdf.worker.entry');
+        pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
+
+        return pdfjs;
+    } catch (error) {
+        console.error('Error loading PDF.js:', error);
+        return null;
+    }
+};
 
 interface CanvasPDFViewerProps {
     url: string;
@@ -15,17 +30,36 @@ interface CanvasPDFViewerProps {
 }
 
 const CanvasPDFViewer: React.FC<CanvasPDFViewerProps> = ({ url, title }) => {
-    const [pdfDoc, setPdfDoc] = useState<pdfjs.PDFDocumentProxy | null>(null);
+    const [pdfDoc, setPdfDoc] = useState<any | null>(null);
     const [pageNum, setPageNum] = useState(1);
     const [pageCount, setPageCount] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [scale, setScale] = useState(1.5);
+    const [pdfjs, setPdfjs] = useState<any | null>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    // Load the PDF document
+    // Load PDF.js library
     useEffect(() => {
+        const initPdfJs = async () => {
+            try {
+                const pdfJsModule = await loadPdfJs();
+                setPdfjs(pdfJsModule);
+            } catch (err) {
+                console.error("Failed to load PDF.js:", err);
+                setError("Failed to load PDF renderer. Please try a different browser.");
+                setLoading(false);
+            }
+        };
+
+        initPdfJs();
+    }, []);
+
+    // Load the PDF document once pdfjs is available
+    useEffect(() => {
+        if (!pdfjs || !url) return;
+
         setLoading(true);
         setError(null);
         setPdfDoc(null);
@@ -49,7 +83,7 @@ const CanvasPDFViewer: React.FC<CanvasPDFViewerProps> = ({ url, title }) => {
         };
 
         loadPdf();
-    }, [url]);
+    }, [pdfjs, url]);
 
     // Fetch PDF as ArrayBuffer (better for cross-browser compatibility)
     const fetchPdfAsArrayBuffer = async (pdfUrl: string): Promise<ArrayBuffer> => {
@@ -77,7 +111,7 @@ const CanvasPDFViewer: React.FC<CanvasPDFViewerProps> = ({ url, title }) => {
 
     // Render the current page
     useEffect(() => {
-        if (!pdfDoc || !canvasRef.current) return;
+        if (!pdfDoc || !canvasRef.current || !pdfjs) return;
 
         const renderPage = async () => {
             try {
@@ -120,7 +154,7 @@ const CanvasPDFViewer: React.FC<CanvasPDFViewerProps> = ({ url, title }) => {
         };
 
         renderPage();
-    }, [pdfDoc, pageNum, containerRef.current?.clientWidth]);
+    }, [pdfDoc, pageNum, containerRef.current?.clientWidth, pdfjs]);
 
     // Add window resize handler to adjust scaling
     useEffect(() => {
