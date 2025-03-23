@@ -9,6 +9,22 @@ const nextConfig: NextConfig = {
         optimizePackageImports: ["@chakra-ui/react"],
     },
     pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+    webpack: (config) => {
+        // Support for PDF files
+        config.module.rules.push({
+            test: /\.pdf$/,
+            use: [
+                {
+                    loader: 'file-loader',
+                    options: {
+                        name: '[path][name].[ext]',
+                    },
+                },
+            ],
+        });
+
+        return config;
+    },
 };
 
 const withMDX = createMDX({

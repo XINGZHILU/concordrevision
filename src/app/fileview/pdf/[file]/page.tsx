@@ -22,10 +22,12 @@ export default async function Page(req : any, res : any){
     }
 
     return (<div className={'place-items-center'}>
-        <PDFViewer
-            pdfUrl={file.path}
-            title={file.filename}
-        />
+        <div className="bg-white rounded-lg shadow-lg p-4">
+            <PDFViewer
+                url={file.path}
+                title={file.filename}
+            />
+        </div>
     </div>)
 
 }
