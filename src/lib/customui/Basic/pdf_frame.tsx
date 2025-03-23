@@ -1,11 +1,12 @@
 'use client';
 
+// src/components/CanvasPDFViewer.tsx
 import React, { useState, useEffect, useRef } from 'react';
 import * as pdfjs from 'pdfjs-dist';
 
 // Ensure PDF.js worker is correctly loaded
 if (typeof window !== 'undefined') {
-    pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/3.6.172/pdf.worker.min.js`;
+    pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.269/pdf.worker.min.js`;
 }
 
 interface CanvasPDFViewerProps {
