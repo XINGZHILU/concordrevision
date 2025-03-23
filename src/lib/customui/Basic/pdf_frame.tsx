@@ -2,7 +2,7 @@ export default function PdfViewer({url, title}: {
     url: string;
     title: string;
 }) {
-    return <div id="__next" className={'min-h-screen'}>
+    return <div id="__next">
         <h1>{title}</h1>
         <iframe src={url} style={
             {
