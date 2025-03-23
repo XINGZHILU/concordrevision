@@ -8,10 +8,6 @@ export default function PdfViewer({url, title}: {
             {
                 width: "100%",
                 height: "100%",
-                minHeight: "100%",
-                flexGrow: 1,
-                overflow: 'auto',
-
             }
         }></iframe>
     </div>;
