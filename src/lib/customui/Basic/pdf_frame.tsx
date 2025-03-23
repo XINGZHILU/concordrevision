@@ -1,151 +1,125 @@
-'use client';
-
 // components/PDFViewer.tsx
-import React, {useState} from 'react';
-import {Document, Page, pdfjs} from 'react-pdf';
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
-import 'react-pdf/dist/esm/Page/TextLayer.css';
+"use client";
 
-// Configure PDF.js worker
-// In your actual project, you'll need to configure this to work with Next.js
-// This is typically done in a _app.tsx file or similar
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+import {useEffect, useState, useRef} from 'react';
 
+interface PDFViewerProps {
+    pdfUrl: string;
+    title?: string;
+}
 
-export default function PDFViewer({pdfUrl, title}: {
-    pdfUrl: string,
-    title: string
-}) {
-    const width = 800;
-    const [numPages, setNumPages] = useState<number | null>(null);
-    const [pageNumber, setPageNumber] = useState<number>(1);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
+const PDFViewer = ({pdfUrl, title = "PDF Viewer"}: PDFViewerProps) => {
+    const [viewerMode, setViewerMode] = useState<'default' | 'ios' | 'android'>('default');
+    const containerRef = useRef<HTMLDivElement>(null);
 
-    function onDocumentLoadSuccess({numPages}: { numPages: number }): void {
-        setNumPages(numPages);
-        setLoading(false);
+    useEffect(() => {
+        // Check platform - only runs on client
+        // @ts-ignore
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+        // Detect iOS
+        // @ts-ignore
+        const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+
+        // Specific iPad detection
+        const isIPad = /iPad/.test(userAgent) ||
+            (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+        // Detect Safari
+        const isSafari = /^((?!chrome|android).)*safari/i.test(userAgent);
+
+        // Detect Android
+        const isAndroid = /android/i.test(userAgent);
+
+        // Set the viewer mode based on device
+        if (isIOS || isIPad) {
+            setViewerMode('ios');
+        } else if (isAndroid) {
+            setViewerMode('android');
+        } else {
+            setViewerMode('default');
+        }
+
+        console.log(`Device info: iOS: ${isIOS}, iPad: ${isIPad}, Safari: ${isSafari}, Android: ${isAndroid}`);
+    }, []);
+
+    // For iOS devices (iPhone/iPad)
+    if (viewerMode === 'ios') {
+        // Safari on iOS has built-in PDF viewer that works when PDF is embedded in an iframe
+        return (
+            <div className="w-full h-screen flex flex-col" ref={containerRef}>
+                <div className="p-3 bg-gray-100 border-b border-gray-300 text-center">
+                    <h1 className="text-xl font-bold">{title}</h1>
+                </div>
+
+                {/* Safari on iOS/iPadOS supports PDF viewing via iframe with proper settings */}
+                <div
+                    className="flex-1 w-full"
+                    style={{
+                        overflowY: 'scroll',
+                        WebkitOverflowScrolling: 'touch',
+                        height: 'calc(100vh - 56px)' // Account for header height
+                    }}
+                >
+                    <iframe
+                        src={pdfUrl}
+                        className="w-full h-full border-none"
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            overflow: 'scroll',
+                            border: 'none',
+                            WebkitOverflowScrolling: 'touch'
+                        }}
+                        title={title}
+                    ></iframe>
+                </div>
+            </div>
+        );
     }
 
-    function onDocumentLoadError(error: Error): void {
-        console.error('Error while loading PDF:', error);
-        setError('Failed to load PDF document. Please try again later.');
-        setLoading(false);
+    // For Android devices
+    if (viewerMode === 'android') {
+        return (
+            <div className="w-full h-screen flex flex-col" ref={containerRef}>
+                <div className="p-3 bg-gray-100 border-b border-gray-300 text-center">
+                    <h1 className="text-xl font-bold">{title}</h1>
+                </div>
+
+                <div className="flex-1 w-full overflow-hidden">
+                    <iframe
+                        src={pdfUrl}
+                        className="w-full h-full border-none"
+                        style={{height: 'calc(100vh - 56px)'}}
+                        title={title}
+                        allow="fullscreen"
+                    ></iframe>
+                </div>
+            </div>
+        );
     }
 
-    const changePage = (offset: number) => {
-        setPageNumber(prevPageNumber => {
-            const newPageNumber = prevPageNumber + offset;
-            return numPages ? Math.min(Math.max(1, newPageNumber), numPages) : 1;
-        });
-    };
-
-    const previousPage = () => changePage(-1);
-    const nextPage = () => changePage(1);
-
+    // Default approach for desktop browsers
     return (
-        <div className="pdf-viewer">
-            <div className="pdf-viewer-controls">
-                <button
-                    onClick={previousPage}
-                    disabled={pageNumber <= 1}
-                    className="pdf-control-button"
-                >
-                    Previous
-                </button>
-                {numPages && (
-                    <span className="pdf-page-indicator">
-            Page {pageNumber} of {numPages}
-          </span>
-                )}
-                <button
-                    onClick={nextPage}
-                    disabled={numPages !== null && pageNumber >= numPages}
-                    className="pdf-control-button"
-                >
-                    Next
-                </button>
+        <div className="w-full h-screen flex flex-col" ref={containerRef}>
+            <div className="p-3 bg-gray-100 border-b border-gray-300 text-center">
+                <h1 className="text-xl font-bold">{title}</h1>
             </div>
 
-            <div className="pdf-document-container">
-                {loading && <div className="pdf-loading">Loading PDF...</div>}
-                {error && <div className="pdf-error">{error}</div>}
-                <Document
-                    file={pdfUrl}
-                    onLoadSuccess={onDocumentLoadSuccess}
-                    onLoadError={onDocumentLoadError}
-                    loading={<div className="pdf-loading">Loading PDF...</div>}
-                    error={<div className="pdf-error">Failed to load PDF. Please try again.</div>}
+            <div className="flex-1 w-full overflow-hidden">
+                <object
+                    className="w-full h-full border-none"
+                    data={pdfUrl}
+                    type="application/pdf"
+                    style={{height: 'calc(100vh - 56px)'}}
                 >
-                    <Page
-                        pageNumber={pageNumber}
-                        width={width}
-                        renderTextLayer={true}
-                        renderAnnotationLayer={true}
-                    />
-                </Document>
+                    <div className="p-5 text-center text-gray-600">
+                        <p>Your browser doesn't support embedded PDFs.</p>
+                    </div>
+                </object>
             </div>
-
-            <style jsx>{`
-                .pdf-viewer {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    padding: 20px;
-                    font-family: sans-serif;
-                }
-
-                .pdf-viewer-controls {
-                    display: flex;
-                    align-items: center;
-                    margin-bottom: 15px;
-                    width: 100%;
-                    max-width: ${width}px;
-                    justify-content: space-between;
-                }
-
-                .pdf-control-button {
-                    padding: 8px 16px;
-                    background-color: #0070f3;
-                    color: white;
-                    border: none;
-                    border-radius: 4px;
-                    cursor: pointer;
-                    font-size: 14px;
-                }
-
-                .pdf-control-button:disabled {
-                    background-color: #cccccc;
-                    cursor: not-allowed;
-                }
-
-                .pdf-page-indicator {
-                    font-size: 14px;
-                }
-
-                .pdf-document-container {
-                    border: 1px solid #e0e0e0;
-                    border-radius: 4px;
-                    padding: 20px;
-                    background-color: #f8f8f8;
-                    min-height: 500px;
-                    display: flex;
-                    justify-content: center;
-                    position: relative;
-                }
-
-                .pdf-loading, .pdf-error {
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    text-align: center;
-                }
-
-                .pdf-error {
-                    color: #e53e3e;
-                }
-            `}</style>
         </div>
     );
 };
+
+export default PDFViewer;
