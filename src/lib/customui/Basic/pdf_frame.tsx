@@ -4,8 +4,6 @@ export default function PdfViewer({ url, title } : {
 }) {
     return <div>
         <h1>{title}</h1>
-        <div className="w-full h-screen flex flex-col">
-            <iframe src={url} className={'w-full h-screen'}></iframe>
-        </div>
+        <iframe src={url} className={'w-full h-screen'}></iframe>
     </div>;
 }
