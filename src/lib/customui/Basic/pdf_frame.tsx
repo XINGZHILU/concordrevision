@@ -3,7 +3,7 @@
 
 import {useEffect, useState} from 'react';
 
-export function PDFViewer(
+export default function PDFViewer(
     {pdfUrl, title}: { pdfUrl: string, title: string }
 ) {
     const [deviceInfo, setDeviceInfo] = useState({

@@ -1,7 +1,7 @@
 import {prisma} from "@/lib/prisma";
 import {notFound} from "next/navigation";
 import {isNumeric} from "@/lib/utils";
-import {PDFViewer} from "@/lib/customui/Basic/pdf_frame";
+import PDFViewer from "@/lib/customui/Basic/pdf_frame";
 
 export default async function Page(req : any, res : any){
     const params = await req.params;
