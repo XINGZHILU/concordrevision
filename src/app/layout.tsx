@@ -33,6 +33,7 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
                 <div className={'w-11/12 h-full p-2 mx-auto markdown-body'}>
                     {children}
                 </div>
+                <br/>
                 <Footer/>
             </Provider>
             </body>
