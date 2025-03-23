@@ -1,6 +1,7 @@
 import {prisma} from "@/lib/prisma";
 import {notFound} from "next/navigation";
 import {isNumeric} from "@/lib/utils";
+import {PDFViewer} from "@/lib/customui/Basic/pdf_frame";
 
 export default async function Page(req : any, res : any){
     const params = await req.params;
@@ -21,8 +22,10 @@ export default async function Page(req : any, res : any){
     }
 
     return (<div className={'place-items-center'}>
-        <iframe src
-        ={file.path} className="w-screen h-screen"></iframe>
+        <PDFViewer
+            pdfUrl={file.path}
+            title={file.filename}
+        />
     </div>)
 
 }

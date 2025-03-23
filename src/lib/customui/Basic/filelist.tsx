@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function FileList({files}: {
     files: {
         id: number;
@@ -9,8 +11,8 @@ export default function FileList({files}: {
         {files.map((file) => {
             return <div key={file.id}>
                 <h3>
-                    <a target="_blank" href={file.path}
-                       className={'p-2 border-solid border-gray-500 border-2 rounded-lg'}>{file.filename}</a>
+                    <Link href={`/fileview/pdf/${file.id}`}
+                       className={'p-2 border-solid border-gray-500 border-2 rounded-lg'}>{file.filename}</Link>
                 </h3>
                 <br/>
 
