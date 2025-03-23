@@ -3,7 +3,7 @@ export default function PdfViewer({url, title}: {
     title: string;
 }) {
     return <div className={'min-h-screen h-full w-full'}>
-        <iframe src={url} style={
+        <iframe src={`${url}&embedded=true`} style={
             {
                 width: '100%',
                 height: '60%',
