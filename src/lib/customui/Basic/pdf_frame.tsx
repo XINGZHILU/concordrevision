@@ -3,10 +3,10 @@ export default function PdfViewer({url, title}: {
     title: string;
 }) {
     return <div className={'min-h-screen h-full w-full'}>
-        <iframe src={`https://docs.google.com/viewer?url=${url}&embedded=true`} style={
+        <iframe src={`https://drive.google.com/viewerng/viewer?embedded=true&url=${url}`} style={
             {
                 width: '100%',
-                height: '60%',
+                height: '80%',
                 border: 'none'
             }
         } title={title}></iframe>
