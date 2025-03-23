@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+#__next {
+    position: absolute;
+    inset: 0;
+}
+
 h1,h2,h3,h4,h5 {
     @apply leading-[1.1];
 }
