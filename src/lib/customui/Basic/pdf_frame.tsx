@@ -1,5 +1,5 @@
 // components/PDFViewer.tsx
-"use client"; // Mark as client component
+"use client";
 
 import { useEffect, useState, useRef } from 'react';
 
@@ -9,14 +9,6 @@ interface PDFViewerProps {
 }
 
 const PDFViewer = ({ pdfUrl, title = "PDF Viewer" }: PDFViewerProps) => {
-  const [deviceInfo, setDeviceInfo] = useState({
-    isIOS: false,
-    isIPad: false,
-    isAndroid: false,
-    isMobile: false
-  });
-  
-  // Use direct URL approach for iOS since embedded viewers can have issues
   const [viewerMode, setViewerMode] = useState<'default' | 'ios' | 'android'>('default');
   const containerRef = useRef<HTMLDivElement>(null);
   
@@ -33,11 +25,11 @@ const PDFViewer = ({ pdfUrl, title = "PDF Viewer" }: PDFViewerProps) => {
     const isIPad = /iPad/.test(userAgent) || 
       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     
+    // Detect Safari
+    const isSafari = /^((?!chrome|android).)*safari/i.test(userAgent);
+    
     // Detect Android
     const isAndroid = /android/i.test(userAgent);
-    
-    // General mobile detection
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
     
     // Set the viewer mode based on device
     if (isIOS || isIPad) {
@@ -48,35 +40,38 @@ const PDFViewer = ({ pdfUrl, title = "PDF Viewer" }: PDFViewerProps) => {
       setViewerMode('default');
     }
     
-    setDeviceInfo({
-      isIOS,
-      isIPad,
-      isAndroid,
-      isMobile
-    });
-    
-    console.log(`Device: iOS: ${isIOS}, iPad: ${isIPad}, Android: ${isAndroid}, Mode: ${isIOS || isIPad ? 'ios' : isAndroid ? 'android' : 'default'}`);
+    console.log(`Device info: iOS: ${isIOS}, iPad: ${isIPad}, Safari: ${isSafari}, Android: ${isAndroid}`);
   }, []);
 
   // For iOS devices (iPhone/iPad)
   if (viewerMode === 'ios') {
+    // Safari on iOS has built-in PDF viewer that works when PDF is embedded in an iframe
     return (
       <div className="w-full h-screen flex flex-col" ref={containerRef}>
-        <div className="p-4 bg-gray-100 border-b border-gray-300 text-center">
+        <div className="p-3 bg-gray-100 border-b border-gray-300 text-center">
           <h1 className="text-xl font-bold">{title}</h1>
-          <div className="text-sm text-gray-500 mt-1">
-            {deviceInfo.isIPad ? "iPad Mode" : "iOS Mode"}
-          </div>
         </div>
         
-        {/* iOS-specific approach using Google PDF Viewer as a service */}
-        <div className="flex-1 w-full overflow-hidden">
-          <iframe
-            src={`https://docs.google.com/viewer?url=${encodeURIComponent(window.location.origin + pdfUrl)}&embedded=true`}
+        {/* Safari on iOS/iPadOS supports PDF viewing via iframe with proper settings */}
+        <div 
+          className="flex-1 w-full" 
+          style={{ 
+            overflowY: 'scroll', 
+            WebkitOverflowScrolling: 'touch',
+            height: 'calc(100vh - 56px)' // Account for header height
+          }}
+        >
+          <iframe 
+            src={pdfUrl}
             className="w-full h-full border-none"
-            style={{ height: "90vh" }}
+            style={{ 
+              width: '100%',
+              height: '100%',
+              overflow: 'scroll',
+              border: 'none',
+              '-webkit-overflow-scrolling': 'touch'
+            }}
             title={title}
-            allow="fullscreen"
           ></iframe>
         </div>
       </div>
@@ -87,16 +82,15 @@ const PDFViewer = ({ pdfUrl, title = "PDF Viewer" }: PDFViewerProps) => {
   if (viewerMode === 'android') {
     return (
       <div className="w-full h-screen flex flex-col" ref={containerRef}>
-        <div className="p-4 bg-gray-100 border-b border-gray-300 text-center">
+        <div className="p-3 bg-gray-100 border-b border-gray-300 text-center">
           <h1 className="text-xl font-bold">{title}</h1>
-          <div className="text-sm text-gray-500 mt-1">Android Mode</div>
         </div>
         
         <div className="flex-1 w-full overflow-hidden">
           <iframe 
             src={pdfUrl}
             className="w-full h-full border-none"
-            style={{ height: "90vh" }}
+            style={{ height: 'calc(100vh - 56px)' }}
             title={title}
             allow="fullscreen"
           ></iframe>
@@ -108,9 +102,8 @@ const PDFViewer = ({ pdfUrl, title = "PDF Viewer" }: PDFViewerProps) => {
   // Default approach for desktop browsers
   return (
     <div className="w-full h-screen flex flex-col" ref={containerRef}>
-      <div className="p-4 bg-gray-100 border-b border-gray-300 text-center">
+      <div className="p-3 bg-gray-100 border-b border-gray-300 text-center">
         <h1 className="text-xl font-bold">{title}</h1>
-        <div className="text-sm text-gray-500 mt-1">Desktop Mode</div>
       </div>
       
       <div className="flex-1 w-full overflow-hidden">
@@ -118,6 +111,7 @@ const PDFViewer = ({ pdfUrl, title = "PDF Viewer" }: PDFViewerProps) => {
           className="w-full h-full border-none"
           data={pdfUrl}
           type="application/pdf"
+          style={{ height: 'calc(100vh - 56px)' }}
         >
           <div className="p-5 text-center text-gray-600">
             <p>Your browser doesn't support embedded PDFs.</p>
