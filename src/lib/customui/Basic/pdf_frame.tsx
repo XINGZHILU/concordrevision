@@ -69,7 +69,7 @@ const PDFViewer = ({ pdfUrl, title = "PDF Viewer" }: PDFViewerProps) => {
               height: '100%',
               overflow: 'scroll',
               border: 'none',
-              '-webkit-overflow-scrolling': 'touch'
+              WebkitOverflowScrolling: 'touch'
             }}
             title={title}
           ></iframe>
@@ -114,7 +114,7 @@ const PDFViewer = ({ pdfUrl, title = "PDF Viewer" }: PDFViewerProps) => {
           style={{ height: 'calc(100vh - 56px)' }}
         >
           <div className="p-5 text-center text-gray-600">
-            <p>Your browser doesn't support embedded PDFs.</p>
+            <p>Your browser does not support embedded PDFs.</p>
           </div>
         </object>
       </div>
