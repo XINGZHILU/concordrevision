@@ -21,13 +21,8 @@ export default async function Page(req : any, res : any){
         notFound();
     }
 
-    return (<div className={'place-items-center'}>
-        <div className="bg-white rounded-lg shadow-lg p-4">
-            <PDFViewer
-                url={file.path}
-                title={file.filename}
-            />
-        </div>
-    </div>)
-
+    return (<PDFViewer
+        url={file.path}
+        title={file.filename}
+    />);
 }
