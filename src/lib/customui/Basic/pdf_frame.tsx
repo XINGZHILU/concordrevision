@@ -22,9 +22,11 @@ const PDFViewer = ({ pdfUrl, title = "PDF Viewer" }: PDFViewerProps) => {
   
   useEffect(() => {
     // Check platform - only runs on client
+    // @ts-ignore
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
     
     // Detect iOS
+    // @ts-ignore
     const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
     
     // Specific iPad detection
