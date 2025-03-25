@@ -2,12 +2,9 @@
 // @ts-nocheck
 
 import {prisma} from "@/lib/prisma";
-// import MDViewer from "@/lib/customui/Basic/showMD";
+import MDViewer from "@/lib/customui/Basic/showMD";
 import {notFound} from "next/navigation";
 import {isNumeric} from "@/lib/utils";
-// import ReactDom from 'react-dom'
-// import ReactMarkdown from 'react-markdown';
-import PrintMarkdown from "@/lib/customui/Basic/printMD";
 
 export default async function Page(req: any, res: any) {
     const params = await req.params;
@@ -27,6 +24,6 @@ export default async function Page(req: any, res: any) {
 
     return <div>
         <h1>{post.title}</h1> <br/>
-        <PrintMarkdown markdown={post.content}/>
+        <MDViewer content={`${post.content}`}/>
     </div>;
 }
