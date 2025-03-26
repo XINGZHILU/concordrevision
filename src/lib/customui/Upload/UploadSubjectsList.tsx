@@ -12,14 +12,6 @@ export default function SubjectList({ subjects, year }: {
     }[],
     year: number
 }) {
-    // Level to year group mapping
-    const levelLabels = {
-        0: 'Form 3',
-        1: 'Form 4',
-        2: 'Form 5',
-        3: 'Form 6 (Year 1)',
-        4: 'Form 6 (Year 2)'
-    };
 
     // Tab IDs to match the expected format
     const tabIds = ['f3', 'f4', 'f5', '61', '62'];
@@ -37,19 +29,19 @@ export default function SubjectList({ subjects, year }: {
         }
 
         return (
-            <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 w-min-800">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
                 {filteredSubjects.map(subject => (
                     <li key={`${subject.title}-${subject.id}`}>
                         <Link
                             href={`/upload/revision/${subject.id}`}
-                            className="block h-full bg-white hover:bg-indigo-50 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all p-6 group"
+                            className="block h-full bg-white hover:bg-indigo-50 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all p-3 group"
                         >
                             <div className="flex items-center">
-                                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 text-lg font-medium mr-4">
+                                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 text-sm font-medium mr-2">
                                     {subject.title.charAt(0).toUpperCase()}
                                 </div>
                                 <div>
-                                    <h3 className="text-lg font-medium text-gray-900 group-hover:text-indigo-700 transition-colors">
+                                    <h3 className="text-sm font-medium text-gray-900 group-hover:text-indigo-700 transition-colors">
                                         {subject.title}
                                     </h3>
                                 </div>
@@ -70,19 +62,16 @@ export default function SubjectList({ subjects, year }: {
 
     return (
         <div className="rounded-lg">
-            <div className="mb-6">
-                <h2 className="text-2xl font-semibold text-gray-900">Subjects by Year Group</h2>
-                <p className="text-gray-600 mt-1">
-                    Select a year group and subject to upload resources
-                </p>
+            <div className="mb-3">
+                <h2 className="text-xl font-semibold text-gray-900">Subjects by Year Group</h2>
             </div>
 
             <SubjectTabs
-                f3={f3}
-                f4={f4}
-                f5={f5}
-                f61={f61}
-                f62={f62}
+                f3={[f3]}
+                f4={[f4]}
+                f5={[f5]}
+                f61={[f61]}
+                f62={[f62]}
                 defaultval={tabIds[year]}
             />
         </div>
