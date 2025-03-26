@@ -29,9 +29,15 @@ export default async function Page(req : any, res : any){
         <br/>
         <h2>Resources</h2>
         <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll'}>
-            {olympiad.resources.map((resource) => {
-                return <OlympiadResourceCard key={resource.id} resource={resource}/>
-            })}
+            {
+                olympiad.resources.length === 0 ? (
+                    <p>No resources</p>
+                ) : (
+                    olympiad.resources.map((resource) => {
+                        return <OlympiadResourceCard key={resource.id} resource={resource}/>
+                    })
+                )
+            }
         </div>
     </div>;
 }

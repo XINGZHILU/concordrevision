@@ -105,14 +105,22 @@ export default async function Page(req: any, res: any) {
                 </Tabs.List>
 
                     <Tabs.Content value="resources">
-                        <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll'}>
-                            {resource_list}
-                        </div>
+                        {resource_list.length === 0 ? (
+                            <p>No resources found</p>
+                        ) : (
+                            <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll'}>
+                                {resource_list}
+                            </div>
+                        )}
                     </Tabs.Content>
                     <Tabs.Content value="tests">
-                        <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll'}>
-                            {test_list}
-                        </div>
+                        {test_list.length === 0 ? (
+                            <p>No upcoming tests</p>
+                        ) : (
+                            <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll'}>
+                                {test_list}
+                            </div>
+                        )}
                     </Tabs.Content>
             </Tabs.Root>
         </div>

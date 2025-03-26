@@ -88,12 +88,18 @@ export default async function Page(req: any, res: any) {
         <br/>
         <h2>Notes</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll">
-            {test.notes.map((note) => {
-                // @ts-ignore
-                return <div key={note.id + 'div'}> <TestNoteCard note={note} key={note.id} colour={Get_Colour(record, note.id)}/>
-                    <br key={note.id + 'br'}/>
-                </div>;
-            })}
+            {
+                test.notes.length === 0 ? (
+                    <p>No notes found</p>
+                ) : (
+                    test.notes.map((note) => {
+                        // @ts-ignore
+                        return <div key={note.id + 'div'}> <TestNoteCard note={note} key={note.id} colour={Get_Colour(record, note.id)}/>
+                            <br key={note.id + 'br'}/>
+                        </div>;
+                    })
+                )
+            }
         </div>
     </div>)
 }
