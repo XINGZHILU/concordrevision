@@ -7,6 +7,7 @@ export default function FileList({ files }: {
         path: string;
     }[]
 }) {
+    /*
     return (<div className={'gap-y-6'}>
         {files.map((file) => {
             return <div key={file.id}>
@@ -20,4 +21,19 @@ export default function FileList({ files }: {
             </div>;
         })}
     </div>);
+     */
+    return (<div className={'gap-y-6'}>
+        {files.map((file) => {
+            return <div key={file.id}>
+                <h3>
+                    <a href={file.path} target="_blank" rel="noopener noreferrer">
+                        {file.filename}
+                    </a>
+                </h3>
+                <br />
+
+            </div>;
+        })}
+    </div>);
+
 }
