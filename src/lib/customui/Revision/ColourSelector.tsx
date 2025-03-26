@@ -122,7 +122,7 @@ export default function ColourSelector({ nid, uid, subject, original }: {
 
                 <button
                     type="submit"
-                    disabled={isLoading || selectedColor === original}
+                    disabled={isLoading}
                     className={`
                         inline-flex items-center px-3 py-1.5 text-xs font-medium rounded 
                         focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-indigo-500
