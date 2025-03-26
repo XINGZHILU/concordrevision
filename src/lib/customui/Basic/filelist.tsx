@@ -26,7 +26,8 @@ export default function FileList({ files }: {
         {files.map((file) => {
             return <div key={file.id}>
                 <h3>
-                    <a href={file.path} target="_blank" rel="noopener noreferrer">
+                    <a className={'p-2 border-solid border-gray-500 border-2 rounded-lg'}
+                       href={file.path} target="_blank" rel="noopener noreferrer">
                         {file.filename}
                     </a>
                 </h3>
