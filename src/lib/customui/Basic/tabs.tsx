@@ -13,27 +13,27 @@ export function SubjectTabs({ f3, f4, f5, f61, f62, defaultval }: {
         <Tabs.Root defaultValue={defaultval} variant='plain' rounded="l3">
             <Tabs.List p="1">
                 <Tabs.Trigger value="f3" asChild p="2">
-                    <CL unstyled href="#f3">
+                    <CL unstyled>
                         Form 3
                     </CL>
                 </Tabs.Trigger>
                 <Tabs.Trigger value="f4" asChild p="2">
-                    <CL unstyled href="#f4">
+                    <CL unstyled>
                         Form 4
                     </CL>
                 </Tabs.Trigger>
                 <Tabs.Trigger value="f5" asChild p="2">
-                    <CL unstyled href="#f5">
+                    <CL unstyled>
                         Form 5
                     </CL>
                 </Tabs.Trigger>
                 <Tabs.Trigger value="61" asChild p="2">
-                    <CL unstyled href="#61">
+                    <CL unstyled>
                         6.1
                     </CL>
                 </Tabs.Trigger>
                 <Tabs.Trigger value="62" asChild p="2">
-                    <CL unstyled href="#62">
+                    <CL unstyled>
                         6.2
                     </CL>
                 </Tabs.Trigger>
