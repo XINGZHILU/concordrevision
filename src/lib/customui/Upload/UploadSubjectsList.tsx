@@ -12,6 +12,14 @@ export default function SubjectList({ subjects, year }: {
     }[],
     year: number
 }) {
+    // Level to year group mapping
+    const levelLabels = {
+        0: 'Form 3',
+        1: 'Form 4',
+        2: 'Form 5',
+        3: 'Form 6 (Year 1)',
+        4: 'Form 6 (Year 2)'
+    };
 
     // Tab IDs to match the expected format
     const tabIds = ['f3', 'f4', 'f5', '61', '62'];
@@ -29,7 +37,7 @@ export default function SubjectList({ subjects, year }: {
         }
 
         return (
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-5 w-min-600">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 w-min-800">
                 {filteredSubjects.map(subject => (
                     <li key={`${subject.title}-${subject.id}`}>
                         <Link
@@ -70,11 +78,11 @@ export default function SubjectList({ subjects, year }: {
             </div>
 
             <SubjectTabs
-                f3={[f3]}
-                f4={[f4]}
-                f5={[f5]}
-                f61={[f61]}
-                f62={[f62]}
+                f3={f3}
+                f4={f4}
+                f5={f5}
+                f61={f61}
+                f62={f62}
                 defaultval={tabIds[year]}
             />
         </div>
