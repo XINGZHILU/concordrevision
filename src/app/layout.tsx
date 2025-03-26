@@ -30,7 +30,7 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
             <NavBar/>
 
             <Provider>
-                <div className={'w-11/12 h-full p-2 mx-auto markdown-body'}>
+                <div className={'w-11/12 min-h-screen p-2 mx-auto markdown-body'}>
                     {children}
                 </div>
                 <br/>
