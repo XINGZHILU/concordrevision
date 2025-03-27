@@ -1,11 +1,10 @@
 'use client';
 
-import {Toaster, toaster} from "@/components/ui/toaster"
-import {useState, useRef} from 'react';
+import { Toaster, toaster } from "@/components/ui/toaster"
+import { useState, useRef } from 'react';
 
-export default function NewTestForm({subject}: { subject: number }) {
+export default function NewTestForm({ subject }: { subject: number }) {
     async function create(title: string, desc: string, type: string, date: string) {
-
         const response = await fetch('/api/add_test', {
             method: 'POST',
             headers: {
@@ -25,65 +24,147 @@ export default function NewTestForm({subject}: { subject: number }) {
         }
     }
 
-
-    //const colourRef = useRef<HTMLSelectElement>(null);
     const descriptionRef = useRef<HTMLTextAreaElement>(null);
     const titleRef = useRef<HTMLInputElement>(null);
     const typeRef = useRef<HTMLSelectElement>(null);
     const dateRef = useRef<HTMLInputElement>(null);
     const [cantUpload, setCantUpload] = useState<boolean>(false);
+
+    // Calculate minimum date (today) for the date picker
+    const today = new Date().toISOString().split('T')[0];
+
     return (
         <>
-            <Toaster/>
-            <form
-                onSubmit={async (event) => {
-                    event.preventDefault();
+            <Toaster />
+            <div className="w-full max-w-3xl mx-auto bg-white rounded-lg shadow p-6">
+                <div className="mb-6">
+                    <h2 className="text-xl font-semibold text-gray-900">Schedule a New Test</h2>
+                    <p className="text-gray-600 mt-1">Create a new test and provide details for students</p>
+                </div>
 
-                    setCantUpload(true);
+                <form
+                    className="space-y-6"
+                    onSubmit={async (event) => {
+                        event.preventDefault();
 
+                        setCantUpload(true);
 
-                    const title = titleRef.current?.value || 'No title';
-                    const desc = descriptionRef.current?.value || '';
-                    const type = typeRef.current?.value || '0';
-                    const date = dateRef.current?.value || '1970-01-01 00:00:00';
+                        const title = titleRef.current?.value || 'No title';
+                        const desc = descriptionRef.current?.value || '';
+                        const type = typeRef.current?.value || '0';
+                        const date = dateRef.current?.value || '1970-01-01 00:00:00';
 
+                        toaster.promise(create(title, desc, type, date), {
+                            success: {
+                                title: "Successfully scheduled test!",
+                                description: "The test is now available for others to view",
+                            },
+                            error: {
+                                title: "Scheduling failed",
+                                description: "Something went wrong with the upload",
+                            },
+                            loading: { title: "Creating test...", description: "Please do not leave the page" },
+                        })
 
-                    toaster.promise(create(title, desc, type, date), {
-                        success: {
-                            title: "Successfully scheduled test!",
-                            description: "The test is now available for others to view",
-                        },
-                        error: {
-                            title: "Scheduling failed",
-                            description: "Something went wrong with the upload",
-                        },
-                        loading: {title: "Uploading...", description: "Please do not leave the page"},
-                    })
+                        setCantUpload(false);
+                    }}
+                >
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+                                Test Name
+                            </label>
+                            <input
+                                name="title"
+                                ref={titleRef}
+                                type="text"
+                                placeholder="Enter test name"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                required
+                            />
+                        </div>
 
-                    setCantUpload(false);
+                        <div>
+                            <label htmlFor="type" className="block text-sm font-medium text-gray-700 mb-1">
+                                Test Type
+                            </label>
+                            <select
+                                name="type"
+                                ref={typeRef}
+                                className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white"
+                                defaultValue="0"
+                                required
+                            >
+                                <option value="0">Saturday Test</option>
+                                <option value="1">End of Term Exam</option>
+                                <option value="2">Public Exam</option>
+                            </select>
+                        </div>
 
-                }}
-            >
-                <label htmlFor="title">Test Name:</label>
-                <input name="title" ref={titleRef} type="text" placeholder='Test Name'
-                       className={'border-2 border-gray-500 w-4/12 '} required/>
-                <br/>
-                <label htmlFor="description">Information:</label><br/>
-                <textarea name="description" placeholder='Information' ref={descriptionRef}
-                          className={'w-11/12 h-80 border-2 border-gray-500'}/>
-                <br/>
-                <label htmlFor="type">Type:</label>
-                <select name="type" ref={typeRef} className={'border-2 border-gray-500'} defaultValue={0} required>
-                    <option value={0}>Saturday Test</option>
-                    <option value={1}>End of Term</option>
-                    <option value={2}>Public Exam</option>
-                </select>
-                <br/>
-                <label htmlFor="date">Date:</label>
-                <input name="date" ref={dateRef} type="date" className={'border-2 border-gray-500'} required/>
-                <br/>
-                <button className={'border-solid border-2 border-blue-500'} disabled={cantUpload}>Add</button>
-            </form>
+                        <div>
+                            <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">
+                                Test Date
+                            </label>
+                            <input
+                                name="date"
+                                ref={dateRef}
+                                type="date"
+                                min={today}
+                                className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                required
+                            />
+                            <p className="mt-1 text-xs text-gray-500">
+                                Select a date for the test (must be today or later)
+                            </p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+                            Test Information
+                        </label>
+                        <textarea
+                            name="description"
+                            placeholder="Provide details about this test (topics covered, preparation guidance, etc.)"
+                            ref={descriptionRef}
+                            rows={6}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        ></textarea>
+                    </div>
+
+                    <div className="flex items-center justify-end">
+                        <button
+                            type="button"
+                            className="mr-4 px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            onClick={() => {
+                                if (titleRef.current) titleRef.current.value = '';
+                                if (descriptionRef.current) descriptionRef.current.value = '';
+                                if (typeRef.current) typeRef.current.value = '0';
+                                if (dateRef.current) dateRef.current.value = '';
+                            }}
+                        >
+                            Reset
+                        </button>
+                        <button
+                            type="submit"
+                            className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+                                cantUpload
+                                    ? 'bg-indigo-300 cursor-not-allowed'
+                                    : 'bg-indigo-600 hover:bg-indigo-700'
+                            }`}
+                            disabled={cantUpload}
+                        >
+                            {cantUpload ? (
+                                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                            ) : null}
+                            {cantUpload ? 'Creating...' : 'Schedule Test'}
+                        </button>
+                    </div>
+                </form>
+            </div>
         </>
     );
 }

@@ -1,9 +1,9 @@
 'use client';
 
-import {Toaster, toaster} from "@/components/ui/toaster"
+import { Toaster, toaster } from "@/components/ui/toaster"
 import { useState, useRef } from 'react';
-import {StorageURLNotes} from "@/lib/utils";
-import {createClient} from "@/utils/supabase/client";
+import { StorageURLNotes } from "@/lib/utils";
+import { createClient } from "@/utils/supabase/client";
 import cuid from "cuid";
 
 export default function TestUploadForm({ subject, author, test, type }: { subject: number, author: string, test: number, type: number }) {
@@ -11,7 +11,7 @@ export default function TestUploadForm({ subject, author, test, type }: { subjec
         const urls = [];
         const names = [];
         for (const file of files) {
-            const response = await supabase.storage.from('notes-storage').upload(cuid()+file.name,
+            const response = await supabase.storage.from('notes-storage').upload(cuid() + file.name,
                 file, {
                     cacheControl: '3600',
                     upsert: false
@@ -24,7 +24,6 @@ export default function TestUploadForm({ subject, author, test, type }: { subjec
             urls.push(StorageURLNotes(response.data.path));
             names.push(file.name);
         }
-
 
         const response2 = await fetch('/api/add_test_notes', {
             method: 'POST',
@@ -48,63 +47,194 @@ export default function TestUploadForm({ subject, author, test, type }: { subjec
         }
     }
 
-
     const inputFileRef = useRef<HTMLInputElement>(null);
-    //const colourRef = useRef<HTMLSelectElement>(null);
     const descriptionRef = useRef<HTMLTextAreaElement>(null);
     const titleRef = useRef<HTMLInputElement>(null);
     const [cantUpload, setCantUpload] = useState<boolean>(false);
+    const [selectedFiles, setSelectedFiles] = useState<number>(0);
     const supabase = createClient();
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            setSelectedFiles(e.target.files.length);
+        } else {
+            setSelectedFiles(0);
+        }
+    };
+
+    // Function to get type name for display
+    const getTypeName = () => {
+        switch(type) {
+            case 0: return "Practice Question";
+            case 1: return "Sample Test";
+            case 2: return "Study Guide";
+            default: return "Test Material";
+        }
+    };
+
     return (
         <>
-            <Toaster/>
-            <form
-                onSubmit={async (event) => {
-                    event.preventDefault();
+            <Toaster />
+            <div className="w-full max-w-3xl mx-auto bg-white rounded-lg shadow p-6">
+                <div className="mb-6">
+                    <h2 className="text-xl font-semibold text-gray-900">Upload Test Materials</h2>
+                    <p className="text-gray-600 mt-1">
+                        Share {getTypeName().toLowerCase()} for test preparation
+                    </p>
+                </div>
 
-                    if (!inputFileRef.current?.files) {
-                        throw new Error("No file selected");
-                    }
+                <form
+                    className="space-y-6"
+                    onSubmit={async (event) => {
+                        event.preventDefault();
 
-                    setCantUpload(true);
+                        if (!inputFileRef.current?.files) {
+                            throw new Error("No file selected");
+                        }
 
+                        setCantUpload(true);
 
-                    const files = inputFileRef.current.files;
-                    if (!files) {
-                        return;
-                    }
-                    const title = titleRef.current?.value || 'No title';
-                    const desc = descriptionRef.current?.value || '';
+                        const files = inputFileRef.current.files;
+                        if (!files) {
+                            return;
+                        }
+                        const title = titleRef.current?.value || 'No title';
+                        const desc = descriptionRef.current?.value || '';
 
-                    //const colour = colourRef.current?.value;
+                        toaster.promise(upload(files, title, desc), {
+                            success: {
+                                title: "Successfully uploaded!",
+                                description: "The resource is now available for others to view",
+                            },
+                            error: {
+                                title: "Upload failed",
+                                description: "Something went wrong with the upload",
+                            },
+                            loading: { title: "Uploading...", description: "Please do not leave the page" },
+                        })
 
-                    toaster.promise(upload(files, title, desc), {
-                        success: {
-                            title: "Successfully uploaded!",
-                            description: "The resource is now available for others to view",
-                        },
-                        error: {
-                            title: "Upload failed",
-                            description: "Something went wrong with the upload",
-                        },
-                        loading: {title: "Uploading...", description: "Please do not leave the page"},
-                    })
+                        setCantUpload(false);
+                    }}
+                >
+                    <div>
+                        <div className="flex items-center mb-4">
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                                {getTypeName()}
+                            </span>
+                        </div>
 
-                    setCantUpload(false);
+                        <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+                            Material Title
+                        </label>
+                        <input
+                            name="title"
+                            ref={titleRef}
+                            type="text"
+                            placeholder="Enter a descriptive title"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                            required
+                        />
+                    </div>
 
-                }}
-            >
-                <label htmlFor="title">Note Title:</label>
-                <input name="title" ref={titleRef} type="text" placeholder='Note Title' className={'border-2 border-gray-500 w-4/12 '} required />
-                <br />
-                <label htmlFor="description">Note Description:</label><br/>
-                <textarea name="description" placeholder='Note Description' ref={descriptionRef} className={'w-11/12 h-80 border-2 border-gray-500'}/>
-                <br />
-                <label htmlFor="file">Select files:</label>
-                <input name="file" ref={inputFileRef} type="file" accept='.pdf' required multiple/>
-                <br />
-                <button className={'border-solid border-2 border-blue-500'} disabled={cantUpload}>Upload</button>
-            </form>
+                    <div>
+                        <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+                            Description
+                        </label>
+                        <textarea
+                            name="description"
+                            placeholder="Provide details about these materials"
+                            ref={descriptionRef}
+                            rows={6}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        ></textarea>
+                        <p className="mt-1 text-xs text-gray-500">
+                            Explain what topics are covered, difficulty level, and any instructions for students
+                        </p>
+                    </div>
+
+                    <div>
+                        <label htmlFor="file" className="block text-sm font-medium text-gray-700 mb-1">
+                            Select Files (PDF)
+                        </label>
+                        <div className="mt-1 flex justify-center px-6 py-4 border-2 border-gray-300 border-dashed rounded-md">
+                            <div className="space-y-1 text-center">
+                                <svg
+                                    className="mx-auto h-12 w-12 text-gray-400"
+                                    stroke="currentColor"
+                                    fill="none"
+                                    viewBox="0 0 48 48"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H8m36-4h-4m4 0v-8"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
+                                <div className="flex text-sm text-gray-600">
+                                    <label
+                                        htmlFor="file-upload"
+                                        className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                                    >
+                                        <span>Upload files</span>
+                                        <input
+                                            id="file-upload"
+                                            name="file"
+                                            type="file"
+                                            className="sr-only"
+                                            ref={inputFileRef}
+                                            onChange={handleFileChange}
+                                            accept=".pdf"
+                                            required
+                                            multiple
+                                        />
+                                    </label>
+                                    <p className="pl-1">or drag and drop</p>
+                                </div>
+                                <p className="text-xs text-gray-500">PDF files only</p>
+                                {selectedFiles > 0 && (
+                                    <p className="text-sm text-indigo-600 font-medium">
+                                        {selectedFiles} file{selectedFiles !== 1 ? 's' : ''} selected
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center justify-end">
+                        <button
+                            type="button"
+                            className="mr-4 px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            onClick={() => {
+                                if (titleRef.current) titleRef.current.value = '';
+                                if (descriptionRef.current) descriptionRef.current.value = '';
+                                if (inputFileRef.current) inputFileRef.current.value = '';
+                                setSelectedFiles(0);
+                            }}
+                        >
+                            Reset
+                        </button>
+                        <button
+                            type="submit"
+                            className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+                                cantUpload
+                                    ? 'bg-indigo-300 cursor-not-allowed'
+                                    : 'bg-indigo-600 hover:bg-indigo-700'
+                            }`}
+                            disabled={cantUpload}
+                        >
+                            {cantUpload ? (
+                                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                            ) : null}
+                            {cantUpload ? 'Uploading...' : 'Upload Materials'}
+                        </button>
+                    </div>
+                </form>
+            </div>
         </>
     );
 }
