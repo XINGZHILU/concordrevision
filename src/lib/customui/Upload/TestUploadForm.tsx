@@ -69,9 +69,10 @@ export default function TestUploadForm({ subject, author, test, type }: { subjec
             case 0: return "Practice Question";
             case 1: return "Sample Test";
             case 2: return "Study Guide";
+            default: return "Test Material";
             */
             case 3: return "Test Material";
-            default: return "Test Material";
+            default: return "Revision Resources"
         }
     };
 
