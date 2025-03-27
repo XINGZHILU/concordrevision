@@ -6,25 +6,13 @@
 import MDEditor from '@uiw/react-md-editor';
 import {toaster} from "@/components/ui/toaster"
 import {Alert, Button} from "@chakra-ui/react";
-import React, {useState, useRef, useEffect} from "react";
+import React, {useState, useRef} from "react";
 
 export default function PostForm({author}: { author: string }) {
     const [value, setValue] = useState("");
     const titleRef = useRef<HTMLInputElement>(null);
 
-    useEffect(() => {
-        function beforeUnload(e: BeforeUnloadEvent) {
-            e.preventDefault();
-        }
 
-        window.addEventListener('beforeunload', beforeUnload);
-
-        return () => {
-            window.confirm('Please do not refresh the page or navigate away from this page if you have not posted your ' +
-                'content yet. Your post will be lost');
-            window.removeEventListener('beforeunload', beforeUnload);
-        };
-    }, []);
 
     async function submit(event: React.FormEvent) {
         event.preventDefault();
