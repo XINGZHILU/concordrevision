@@ -1,60 +1,93 @@
 'use client';
 
-import Image from 'next/image'
-import React from 'react'
-import { assets } from '@/lib/assets'
-import Link from 'next/link'
-import { year_group_names } from "@/lib/consts";
-import { Badge } from "@chakra-ui/react";
+import Link from "next/link";
+import { SubjectTabs } from "../Basic/tabs";
 
-export function SubjectItem({ subject }: {
-    subject: {
+export default function SubjectList({ subjects, year }: {
+    subjects: {
         id: number,
         title: string,
         desc: string,
-        level: number,
-    }
+        level: number
+    }[],
+    year: number
 }) {
-    // Generate a consistent background color based on subject ID
-    const getSubjectColor = () => {
-        const colors = ['indigo', 'purple', 'sky', 'emerald', 'amber', 'rose'];
-        return colors[subject.id % colors.length];
-    };
+    // Generate lists of subjects by level for each tab
+    const f3 = subjects.filter((subject) => subject.level === 0).map((subject) => (
+        <li key={subject.title + 'li'}>
+            <Link
+                key={subject.title + subject.id}
+                href={`/upload/revision/${subject.id}`}
+                className="inline-block py-2 px-3 text-indigo-600 hover:text-indigo-800 hover:underline"
+            >
+                {subject.title}
+            </Link>
+        </li>
+    ));
 
-    const subjectColor = getSubjectColor();
+    const f4 = subjects.filter((subject) => subject.level === 1).map((subject) => (
+        <li key={subject.title + 'li'}>
+            <Link
+                key={subject.title + subject.id}
+                href={`/upload/revision/${subject.id}`}
+                className="inline-block py-2 px-3 text-indigo-600 hover:text-indigo-800 hover:underline"
+            >
+                {subject.title}
+            </Link>
+        </li>
+    ));
+
+    const f5 = subjects.filter((subject) => subject.level === 2).map((subject) => (
+        <li key={subject.title + 'li'}>
+            <Link
+                key={subject.title + subject.id}
+                href={`/upload/revision/${subject.id}`}
+                className="inline-block py-2 px-3 text-indigo-600 hover:text-indigo-800 hover:underline"
+            >
+                {subject.title}
+            </Link>
+        </li>
+    ));
+
+    const f61 = subjects.filter((subject) => subject.level === 3).map((subject) => (
+        <li key={subject.title + 'li'}>
+            <Link
+                key={subject.title + subject.id}
+                href={`/upload/revision/${subject.id}`}
+                className="inline-block py-2 px-3 text-indigo-600 hover:text-indigo-800 hover:underline"
+            >
+                {subject.title}
+            </Link>
+        </li>
+    ));
+
+    const f62 = subjects.filter((subject) => subject.level === 4).map((subject) => (
+        <li key={subject.title + 'li'}>
+            <Link
+                key={subject.title + subject.id}
+                href={`/upload/revision/${subject.id}`}
+                className="inline-block py-2 px-3 text-indigo-600 hover:text-indigo-800 hover:underline"
+            >
+                {subject.title}
+            </Link>
+        </li>
+    ));
+
+    // Map year value to tab ID
+    const tabIds = ['f3', 'f4', 'f5', '61', '62'];
 
     return (
-        <div className="p-2">
-            <Link
-                href={`/revision/${subject.id}`}
-                className={`block w-full h-full bg-white border-2 border-${subjectColor}-200 hover:border-${subjectColor}-500 rounded-lg hover:shadow-lg transition-all duration-200 overflow-hidden`}
-            >
-                <div className={`p-1 bg-${subjectColor}-50`}>
-                    <div className="p-4">
-                        <div className="flex items-center justify-between mb-2">
-                            <h3 className="text-lg font-semibold text-gray-900 line-clamp-1">{subject.title}</h3>
-                            <Badge colorPalette={subjectColor} className="ml-2 text-xs">
-                                {year_group_names[subject.level]}
-                            </Badge>
-                        </div>
+        <div>
+            <h2 className="text-xl font-semibold text-gray-900 mb-3">Subjects by Year Group</h2>
 
-                        {subject.desc && (
-                            <p className="text-sm text-gray-600 mb-3 line-clamp-2">{subject.desc}</p>
-                        )}
-
-                        <div className="flex items-center justify-end text-sm font-medium text-indigo-600 hover:text-indigo-800 group-hover:translate-x-1 transition-transform">
-                            <span>Explore</span>
-                            <Image
-                                src={assets.arrow}
-                                className="ml-1 group-hover:translate-x-1 transition-transform"
-                                alt="Arrow"
-                                width={14}
-                                height={14}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </Link>
+            <SubjectTabs
+                f3={f3}
+                f4={f4}
+                f5={f5}
+                f61={f61}
+                f62={f62}
+                defaultval={tabIds[year]}
+            />
         </div>
     );
 }
