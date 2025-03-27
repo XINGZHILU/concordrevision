@@ -121,12 +121,6 @@ export default function TestUploadForm({ subject, author, test, type }: { subjec
                     }}
                 >
                     <div>
-                        <div className="flex items-center mb-4">
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                                {getTypeName()}
-                            </span>
-                        </div>
-
                         <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
                             Material Title
                         </label>
