@@ -1,4 +1,6 @@
 import {clerkMiddleware, createRouteMatcher} from '@clerk/nextjs/server'
+import {NextResponse, NextRequest} from "next/server";
+import { get } from '@vercel/edge-config'
 
 const isPublicRoute = createRouteMatcher([
     //'/(.*)',
@@ -15,6 +17,15 @@ export default clerkMiddleware(async (auth, request) => {
         await auth.protect()
     }
 })
+
+export async function middleware(request : NextRequest) {
+    const isInMaintenanceMode = await get('maintenance')
+
+    if (isInMaintenanceMode) {
+        request.nextUrl.pathname = `/maintenance`
+        return NextResponse.rewrite(request.nextUrl)
+    }
+}
 
 export const config = {
     matcher: [
