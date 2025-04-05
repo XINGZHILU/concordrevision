@@ -90,7 +90,7 @@ export default function OlympiadUploadForm({ olympiad, author }: { olympiad: num
                         toaster.promise(upload(files, title, desc), {
                             success: {
                                 title: "Successfully uploaded!",
-                                description: "The resource is now available for others to view",
+                                description: "The resource will be available for view after being approved by teachers",
                             },
                             error: {
                                 title: "Upload failed",
