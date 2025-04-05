@@ -37,7 +37,7 @@ export default async function RootLayout({children}: { children: React.ReactNode
 
             <body>
 
-            <NavBar teacher={record.teacher} can_upload={record.upload_permission}/>
+            <NavBar teacher={record.teacher} can_upload={record.upload_permission || record.teacher}/>
 
             <Provider>
                 <div className={'w-11/12 min-h-screen p-2 mx-auto markdown-body'}>
