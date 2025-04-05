@@ -92,7 +92,7 @@ export default function EditSubjectForm({ subject }: EditSubjectFormProps) {
                     href="/admin/subjects"
                     className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition-colors"
                 >
-                    Cancel
+                    Back to Subjects Page
                 </Link>
             </div>
 
