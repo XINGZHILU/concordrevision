@@ -1,37 +1,23 @@
-import {clerkMiddleware, createRouteMatcher} from '@clerk/nextjs/server'
-import {NextResponse, NextRequest} from "next/server";
-import { get } from '@vercel/edge-config'
+import {clerkMiddleware, ClerkMiddlewareAuth} from '@clerk/nextjs/server';
+import { NextResponse, NextRequest } from "next/server";
+import { get } from '@vercel/edge-config';
 
-const isPublicRoute = createRouteMatcher([
-    //'/(.*)',
-    //'/',
-    '/sign-in(.*)',
-])
-
-// const isPrivateRoute = createRouteMatcher([
-//     '/upload(.*)',
-// ])
-
-export default clerkMiddleware(async (auth, request) => {
-    if (!isPublicRoute(request)) {
-        await auth.protect()
-    }
-})
-
-export async function middleware(request : NextRequest) {
-    const isInMaintenanceMode = await get('maintenance')
-
+export default clerkMiddleware(async (auth : ClerkMiddlewareAuth, request : NextRequest) => {
+    // Check maintenance mode first
+    const isInMaintenanceMode = await get('maintenance');
     if (isInMaintenanceMode) {
-        request.nextUrl.pathname = `/maintenance`
-        return NextResponse.rewrite(request.nextUrl)
+        request.nextUrl.pathname = `/maintenance`;
+        return NextResponse.rewrite(request.nextUrl);
     }
-}
+
+    // Then handle authentication
+    if (!/^\/sign-in(?:\/.*)?$/.test(request.nextUrl.pathname)) {
+        await auth.protect();
+    }
+
+    return NextResponse.next();
+});
 
 export const config = {
-    matcher: [
-        // Skip Next.js internals and all static files, unless found in search params
-        '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-        // Always run for API routes
-        '/(api|trpc)(.*)',
-    ],
-}
+    matcher: ['/((?!_next|.*\\..*).*)', '/api/:path*'],
+};
