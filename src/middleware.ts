@@ -1,12 +1,6 @@
-import {clerkMiddleware, ClerkMiddlewareAuth, createRouteMatcher} from '@clerk/nextjs/server';
-import {NextResponse, NextRequest} from "next/server";
-import {get} from '@vercel/edge-config';
-
-const isPrivateRoute = createRouteMatcher([
-    '/upload(.*)',
-    '/admin(.*)',
-])
-
+import { clerkMiddleware, ClerkMiddlewareAuth } from '@clerk/nextjs/server';
+import { NextResponse, NextRequest } from "next/server";
+import { get } from '@vercel/edge-config';
 
 export default clerkMiddleware(async (auth: ClerkMiddlewareAuth, request: NextRequest) => {
     // Check maintenance mode first
@@ -17,7 +11,7 @@ export default clerkMiddleware(async (auth: ClerkMiddlewareAuth, request: NextRe
     }
 
     // Then handle authentication
-    if (isPrivateRoute(request)) {
+    if (!/^\/sign-in(?:\/.*)?$/.test(request.nextUrl.pathname)) {
         await auth.protect();
     }
 
