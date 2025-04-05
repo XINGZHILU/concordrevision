@@ -4,7 +4,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import { year_group_names } from "@/lib/consts";
 import { toaster, Toaster } from "@/components/ui/toaster";
 
@@ -26,7 +26,7 @@ export default function EditSubjectForm({ subject }: EditSubjectFormProps) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [description, setDescription] = useState(subject.desc);
 
-    const router = useRouter();
+    // const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
