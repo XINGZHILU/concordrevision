@@ -32,12 +32,6 @@ export default async function UserManagementPage() {
         <div className="container mx-auto px-4 py-8">
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold">User Management</h1>
-                <Link
-                    href="/admin"
-                    className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition-colors"
-                >
-                    Back to Dashboard
-                </Link>
             </div>
 
             <div className="bg-white shadow-md rounded-lg p-6">
