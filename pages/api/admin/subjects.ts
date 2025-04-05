@@ -22,23 +22,17 @@ export default async function handler(
     if (req.method === 'PUT') {
         try {
             // Get data from request body
-            const { title, desc, level, id } = req.body;
+            const { desc, id } = req.body;
 
             if (isNaN(id)) {
                 return res.status(400).json({ error: 'Invalid subject ID' });
-            }
-
-            if (!title) {
-                return res.status(400).json({ error: 'Subject title is required' });
             }
 
             // Update subject
             const subject = await prisma.subject.update({
                 where: { id: id },
                 data: {
-                    title,
                     desc: desc || '',
-                    level: level || 0,
                 },
             });
 

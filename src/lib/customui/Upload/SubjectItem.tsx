@@ -1,8 +1,6 @@
 'use client';
 
-import Image from 'next/image'
 import React from 'react'
-import { assets } from '@/lib/assets'
 import Link from 'next/link'
 import {year_group_names} from "@/lib/consts";
 import {Badge} from "@chakra-ui/react";

@@ -1,6 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
-import {assets} from "@/lib/assets";
 import React from "react";
 import {Badge} from "@chakra-ui/react";
 import {LuCalendar} from "react-icons/lu";
