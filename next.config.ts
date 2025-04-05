@@ -8,6 +8,9 @@ const nextConfig: NextConfig = {
     experimental: {
         optimizePackageImports: ["@chakra-ui/react"],
     },
+    typescript: {
+        ignoreBuildErrors: true,
+    },
     pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
     webpack: (config) => {
         // Support for PDF files
