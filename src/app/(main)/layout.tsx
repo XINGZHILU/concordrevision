@@ -10,9 +10,26 @@ export const metadata: Metadata = {
     description: "©Joshua Ng, Xingzhi Lu, Christoph Chan 2025",
 };
 import {Provider} from "@/components/ui/provider"
+import {currentUser} from "@clerk/nextjs/server";
+import {prisma} from "@/lib/prisma";
 
 
-export default function RootLayout({children}: { children: React.ReactNode }) {
+export default async function RootLayout({children}: { children: React.ReactNode }) {
+    const user = await currentUser();
+    if (!user) {
+        return <h1>You must login to access this page</h1>;
+    }
+    const record = await prisma.user.findUnique({
+        where: {
+            id: user.id
+        }
+    });
+    if (!record) {
+        return <h1>User not found</h1>;
+    }
+    if (!record.teacher && !record.upload_permission){
+        return <h1>You do not have permission to access this page</h1>;
+    }
     return (
         <ClerkProvider>
             <html lang="en" suppressHydrationWarning={true}>

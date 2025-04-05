@@ -12,7 +12,7 @@ export default async function Page(req : any, res : any){
             id: +oid
         },
         include: {
-            resources: true
+            resources: true,
         }
     });
 

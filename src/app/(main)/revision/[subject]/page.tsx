@@ -61,7 +61,7 @@ export default async function Page(req: any, res: any) {
 
 
 
-    const resource_list = subject.notes.filter((note) => {return note.type === 2}).map((note) => (
+    const resource_list = subject.notes.filter((note) => {return (note.type === 2 && note.approved)}).map((note) => (
         <div key={note.id + 'div'}>
             <NoteCard note={note} key={note.id} colour={Get_Colour(record, note.id)}/>
             <br key={note.id + 'br'}/>
