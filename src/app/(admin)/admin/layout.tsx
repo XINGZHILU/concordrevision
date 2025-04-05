@@ -1,7 +1,7 @@
 import type {Metadata} from "next";
 import "@/app/globals.css";
 import "@/app/md.css";
-import {ClerkProvider} from "@clerk/nextjs";
+import {ClerkProvider, SignedIn, UserButton} from "@clerk/nextjs";
 import {currentUser} from "@clerk/nextjs/server";
 import {prisma} from "@/lib/prisma";
 
@@ -74,9 +74,17 @@ export default async function RootLayout({children}: { children: React.ReactNode
                                         Main Site
                                     </Link>
 
-                                    <div className="text-sm">
-                                        <span className="hidden md:inline">Welcome, </span>{record.name || 'Admin'}
-                                    </div>
+                                    <SignedIn>
+                                        <div className="mr-4">
+                                            <UserButton
+                                                appearance={{
+                                                    elements: {
+                                                        userButtonAvatarBox: "w-8 h-8"
+                                                    }
+                                                }}
+                                            />
+                                        </div>
+                                    </SignedIn>
                                 </div>
                             </div>
                         </div>
