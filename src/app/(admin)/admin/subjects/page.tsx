@@ -3,7 +3,6 @@
 import { prisma } from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import Link from "next/link";
 import SubjectList from "./subject-list";
 
 export default async function SubjectManagementPage() {

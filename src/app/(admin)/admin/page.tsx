@@ -213,6 +213,7 @@ export default async function AdminHomePage() {
             </div>
 
             {/* Recent activity section - could be implemented later */}
+            {/*
             <h2 className="text-xl font-bold text-gray-800 mb-4">Recent Activity</h2>
             <div className="bg-white rounded-lg shadow overflow-hidden">
                 <div className="p-6">
@@ -221,6 +222,7 @@ export default async function AdminHomePage() {
                     </p>
                 </div>
             </div>
+            */}
         </div>
     );
 }
