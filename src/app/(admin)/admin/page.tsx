@@ -60,7 +60,8 @@ export default async function AdminHomePage() {
         },
     });
 
-    const totalNotesCount = await prisma.note.count();
+    let totalNotesCount = await prisma.note.count();
+    totalNotesCount -= unapprovedNotesCount;
 
     const totalSubjectsCount = await prisma.subject.count();
 

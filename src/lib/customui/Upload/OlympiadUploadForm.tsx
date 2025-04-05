@@ -100,6 +100,7 @@ export default function OlympiadUploadForm({ olympiad, author }: { olympiad: num
                         })
 
                         setCantUpload(false);
+                        
                     }}
                 >
                     <div>
