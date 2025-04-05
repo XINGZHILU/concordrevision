@@ -17,7 +17,29 @@ import {prisma} from "@/lib/prisma";
 export default async function RootLayout({children}: { children: React.ReactNode }) {
     const user = await currentUser();
     if (!user) {
-        return <h1>You must login to access this page</h1>;
+        return (
+            <ClerkProvider>
+                <html lang="en" suppressHydrationWarning={true}>
+                <head>
+                    <title>Student Hub</title>
+                    <meta charSet="utf-8"/>
+                </head>
+
+                <body>
+
+                <NavBar teacher={false} can_upload={false}/>
+
+                <Provider>
+                    <div className={'w-11/12 min-h-screen p-2 mx-auto markdown-body'}>
+                        {children}
+                    </div>
+                    <br/>
+                    <Footer/>
+                </Provider>
+                </body>
+                </html>
+            </ClerkProvider>
+        );
     }
     const record = await prisma.user.findUnique({
         where: {
