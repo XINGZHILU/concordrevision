@@ -64,7 +64,7 @@ export function OlympiadCard({olympiad}: {
                     <h5 className='mb-2 text-lg font-medium tracking-tight text-gray-900'>{olympiad.title}</h5>
                     <Link href={`/olympiads/${olympiad.id}`}
                           className='inline-flex items-center py-2 font-semibold text-center'>
-                        View <Image src={assets.arrow} className='ml-2' alt='Arrow' width={12} height={12}/>
+                        View
                     </Link>
                 </div>
             </div>

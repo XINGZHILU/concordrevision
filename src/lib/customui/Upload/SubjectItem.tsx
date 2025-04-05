@@ -23,7 +23,7 @@ export function SubjectItem({ subject }: {
                 <div className='p-5'>
                     <h5 className='mb-2 text-lg font-medium tracking-tight text-gray-900'>{subject.title} <Badge colorPalette={'purple'}>{year_group_names[subject.level]}</Badge></h5>
                     <Link href={`/revision/${subject.id}`} className='inline-flex items-center py-2 font-semibold text-center'>
-                        View <Image src={assets.arrow} className='ml-2' alt='Arrow' width={12} height={12} />
+                        View
                     </Link>
                 </div>
             </div>
