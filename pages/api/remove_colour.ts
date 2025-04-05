@@ -1,5 +1,5 @@
-import {prisma} from "@/lib/prisma";
-import {NextApiRequest, NextApiResponse} from "next";
+import { prisma } from "@/lib/prisma";
+import { NextApiRequest, NextApiResponse } from "next";
 
 
 export default async function handler(
@@ -16,11 +16,11 @@ export default async function handler(
             id: uid
         }
     });
-    if (!user){
-        res.status(404).json({error: 'User not found'});
+    if (!user) {
+        res.status(404).json({ error: 'User not found' });
         return;
     }
-    if (original === 0){
+    if (original === 0) {
         await prisma.user.update({
             where: {
                 id: uid
@@ -32,7 +32,7 @@ export default async function handler(
             }
         });
     }
-    else if (original === 1){
+    else if (original === 1) {
         await prisma.user.update({
             where: {
                 id: uid
@@ -44,7 +44,7 @@ export default async function handler(
             }
         });
     }
-    else if (original === 2){
+    else if (original === 2) {
         await prisma.user.update({
             where: {
                 id: uid

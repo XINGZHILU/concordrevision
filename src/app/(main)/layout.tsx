@@ -27,9 +27,6 @@ export default async function RootLayout({children}: { children: React.ReactNode
     if (!record) {
         return <h1>User not found</h1>;
     }
-    if (!record.teacher && !record.upload_permission){
-        return <h1>You do not have permission to access this page</h1>;
-    }
     return (
         <ClerkProvider>
             <html lang="en" suppressHydrationWarning={true}>
@@ -40,7 +37,7 @@ export default async function RootLayout({children}: { children: React.ReactNode
 
             <body>
 
-            <NavBar/>
+            <NavBar teacher={record.teacher}/>
 
             <Provider>
                 <div className={'w-11/12 min-h-screen p-2 mx-auto markdown-body'}>

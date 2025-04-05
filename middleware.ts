@@ -1,8 +1,8 @@
-import {clerkMiddleware, ClerkMiddlewareAuth} from '@clerk/nextjs/server';
+import { clerkMiddleware, ClerkMiddlewareAuth } from '@clerk/nextjs/server';
 import { NextResponse, NextRequest } from "next/server";
 import { get } from '@vercel/edge-config';
 
-export default clerkMiddleware(async (auth : ClerkMiddlewareAuth, request : NextRequest) => {
+export default clerkMiddleware(async (auth: ClerkMiddlewareAuth, request: NextRequest) => {
     // Check maintenance mode first
     const isInMaintenanceMode = await get('maintenance');
     if (isInMaintenanceMode) {

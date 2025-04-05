@@ -5,7 +5,7 @@ import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
 
-export default function NavBar() {
+export default function NavBar({can_upload, teacher} : {can_upload : boolean, teacher: boolean}) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const pathname = usePathname();
 
@@ -78,16 +78,30 @@ export default function NavBar() {
                             >
                                 Extracurriculars
                             </Link>
-                            <Link
-                                href="/upload"
-                                className={`px-3 py-2 rounded-md text-sm font-medium ${
-                                    isActive('/upload')
-                                        ? 'text-indigo-600 bg-indigo-50'
-                                        : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
-                                }`}
-                            >
-                                Upload
-                            </Link>
+
+                            {can_upload ? (<Link
+                                    href="/upload"
+                                    className={`px-3 py-2 rounded-md text-sm font-medium ${
+                                        isActive('/upload')
+                                            ? 'text-indigo-600 bg-indigo-50'
+                                            : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
+                                    }`}
+                                >
+                                    Upload
+                                </Link>
+                            ) : (<></>)}
+
+                            {teacher ? (<Link
+                                    href="/admin"
+                                    className={`px-3 py-2 rounded-md text-sm font-medium ${
+                                        isActive('/admin')
+                                            ? 'text-indigo-600 bg-indigo-50'
+                                            : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
+                                    }`}
+                                >
+                                    Admin
+                                </Link>
+                            ) : (<></>)}
 
                             <div className="ml-4 flex items-center">
                                 <SignedOut>

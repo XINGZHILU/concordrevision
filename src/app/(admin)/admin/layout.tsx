@@ -63,9 +63,6 @@ export default async function RootLayout({children}: { children: React.ReactNode
                                         <Link href="/admin/subjects" className="hover:text-indigo-200 px-2 py-1 rounded hover:bg-indigo-600">
                                             Subjects
                                         </Link>
-                                        <Link href="/" className="hover:text-indigo-200 px-2 py-1 rounded hover:bg-indigo-600">
-                                            Home
-                                        </Link>
                                     </nav>
                                 </div>
 
