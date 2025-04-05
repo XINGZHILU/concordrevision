@@ -55,10 +55,10 @@ export default function EditSubjectForm({ subject }: EditSubjectFormProps) {
             });
 
             // Navigate back to subjects list after a short delay
-            setTimeout(() => {
-                router.push('/admin/subjects');
-                router.refresh();
-            }, 1500);
+            // setTimeout(() => {
+            //     router.push('/admin/subjects');
+            //     router.refresh();
+            // }, 1500);
         } catch (error) {
             console.error('Error updating subject:', error);
             toaster.error({
