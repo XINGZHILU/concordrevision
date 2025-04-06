@@ -1,6 +1,6 @@
 'use client';
 
-// File: app/admin/olympiads/new/page.tsx
+// File: src/app/(admin)/admin/olympiads/new/page.tsx
 
 import React, { useState } from 'react';
 import Link from 'next/link';
@@ -14,7 +14,9 @@ export default function NewOlympiadPage() {
   const [description, setDescription] = useState('');
   const [area, setArea] = useState(olympiad_subjects[0]);
   const [links, setLinks] = useState<string[]>([]);
+  const [linkDescriptions, setLinkDescriptions] = useState<string[]>([]);
   const [newLink, setNewLink] = useState('');
+  const [newLinkDescription, setNewLinkDescription] = useState('');
   
   const router = useRouter();
 
@@ -23,12 +25,22 @@ export default function NewOlympiadPage() {
     if (!newLink.trim()) return;
     
     setLinks([...links, newLink.trim()]);
+    setLinkDescriptions([...linkDescriptions, newLinkDescription.trim()]);
     setNewLink('');
+    setNewLinkDescription('');
   };
 
   // Remove a link by index
   const removeLink = (indexToRemove: number) => {
     setLinks(links.filter((_, index) => index !== indexToRemove));
+    setLinkDescriptions(linkDescriptions.filter((_, index) => index !== indexToRemove));
+  };
+
+  // Update link description at index
+  const updateLinkDescription = (index: number, value: string) => {
+    const newDescriptions = [...linkDescriptions];
+    newDescriptions[index] = value;
+    setLinkDescriptions(newDescriptions);
   };
 
   // Handle form submission
@@ -64,6 +76,7 @@ export default function NewOlympiadPage() {
           desc: description.trim(),
           area,
           links,
+          link_descriptions: linkDescriptions,
         }),
       });
 
@@ -160,46 +173,79 @@ export default function NewOlympiadPage() {
             <label className="block text-sm font-medium text-gray-700 mb-1">
               External Links
             </label>
-            <div className="flex gap-2 mb-2">
-              <input
-                type="url"
-                value={newLink}
-                onChange={(e) => setNewLink(e.target.value)}
-                className="flex-1 p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                placeholder="https://example.com"
-              />
-              <button
-                type="button"
-                onClick={addLink}
-                className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors"
-              >
-                Add
-              </button>
+            
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-2 mb-2">
+              <div className="md:col-span-2">
+                <input
+                  type="url"
+                  value={newLink}
+                  onChange={(e) => setNewLink(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                  placeholder="https://example.com"
+                />
+              </div>
+              <div className="md:col-span-2">
+                <input
+                  type="text"
+                  value={newLinkDescription}
+                  onChange={(e) => setNewLinkDescription(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                  placeholder="Link description (optional)"
+                />
+              </div>
+              <div>
+                <button
+                  type="button"
+                  onClick={addLink}
+                  className="w-full px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors"
+                >
+                  Add
+                </button>
+              </div>
             </div>
+            
             {links.length > 0 && (
-              <ul className="mt-2 bg-gray-50 p-3 rounded-md border border-gray-200">
-                {links.map((link, index) => (
-                  <li key={index} className="flex justify-between items-center py-1">
-                    <a 
-                      href={link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-indigo-600 hover:underline truncate"
-                    >
-                      {link}
-                    </a>
-                    <button
-                      type="button"
-                      onClick={() => removeLink(index)}
-                      className="text-red-600 hover:text-red-800"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  </li>
-                ))}
-              </ul>
+              <div className="mt-3 bg-gray-50 p-3 rounded-md border border-gray-200">
+                <h3 className="text-sm font-medium text-gray-700 mb-2">Added Links</h3>
+                <ul className="divide-y divide-gray-200">
+                  {links.map((link, index) => (
+                    <li key={index} className="py-3">
+                      <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
+                        <div className="md:col-span-2">
+                          <a 
+                            href={link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-indigo-600 hover:underline block truncate"
+                          >
+                            {link}
+                          </a>
+                        </div>
+                        <div className="md:col-span-2">
+                          <input
+                            type="text"
+                            value={linkDescriptions[index] || ''}
+                            onChange={(e) => updateLinkDescription(index, e.target.value)}
+                            className="w-full p-1 text-sm border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                            placeholder="Add description"
+                          />
+                        </div>
+                        <div className="flex justify-end">
+                          <button
+                            type="button"
+                            onClick={() => removeLink(index)}
+                            className="text-red-600 hover:text-red-800 p-1"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
           </div>
           

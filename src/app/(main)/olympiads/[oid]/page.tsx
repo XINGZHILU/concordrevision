@@ -22,7 +22,6 @@ export default async function Page(req : any, res : any){
 
     const resources = olympiad.resources.filter((resource) => {return resource.approved});
 
-
     return <div>
         <h1>{olympiad.title}</h1>
         <br/>
@@ -35,9 +34,20 @@ export default async function Page(req : any, res : any){
                 olympiad.links.length === 0 ? (
                     <p>No external links available</p>
                 ) : (
-                    olympiad.links.map((link) => {
-                        return <a key={link} href={link} target={'_blank'} rel="noopener noreferrer">{link}<br/></a>
-                    })
+                    <ul className="space-y-2 list-disc pl-5">
+                        {olympiad.links.map((link, index) => {
+                            const description = olympiad.link_descriptions && olympiad.link_descriptions[index] 
+                                ? ` - ${olympiad.link_descriptions[index]}` 
+                                : '';
+                            return (
+                                <li key={index}>
+                                    <a href={link} target={'_blank'} rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                                        {link}{description}
+                                    </a>
+                                </li>
+                            );
+                        })}
+                    </ul>
                 )
             }
         </div>

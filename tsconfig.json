@@ -29,7 +29,6 @@
             ]
         },
         // Add these to suppress the specific type errors:
-        "suppressImplicitAnyIndexErrors": true,
         "ignoreDeprecations": "5.0",
         // Set these to be more permissive with props:
         "noImplicitAny": false

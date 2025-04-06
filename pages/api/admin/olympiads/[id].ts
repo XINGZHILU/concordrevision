@@ -25,7 +25,7 @@ export default async function handler(
   if (req.method === 'PUT') {
     try {
       // Get data from request body
-      const { title, desc, area, links } = req.body;
+      const { title, desc, area, links, link_descriptions } = req.body;
 
       if (!title) {
         return res.status(400).json({ error: 'Olympiad title is required' });
@@ -43,6 +43,7 @@ export default async function handler(
           desc: desc || '',
           area,
           links: links || [],
+          link_descriptions: link_descriptions || [],
         },
       });
 
