@@ -1,10 +1,27 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/prisma";
+import { getAuth } from "@clerk/nextjs/server";
 
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse,
 ) {
+    const { userId } = getAuth(req);
+    
+    if (!userId) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const record = await prisma.user.findUnique({
+        where: {
+            id : userId,
+        }
+    });
+
+    if (!record){
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
     const urls = req.body.urls as string[];
     const names = req.body.names as string[];
     const title = req.body.title as string;
@@ -22,7 +39,8 @@ export default async function handler(
             authorId: author,
             desc: desc,
             type: type,
-            testId: test
+            testId: test,
+            approved: record.teacher
         }
     })
 
@@ -37,7 +55,7 @@ export default async function handler(
     }
 
 
-    res.status(200).json({});
+    res.status(200).json({approved: record.teacher});
 }
 
 export const config = {
