@@ -82,6 +82,8 @@ junit.xml
 .envrc.local
 
 .idea/
+/.idea/
+.idea
 
 package.copy.json
 

@@ -80,12 +80,13 @@ model Post {
 }
 
 model Olympiad {
-    id        Int                 @id @default(autoincrement())
-    title     String
-    area      String
-    links     String[]
-    desc      String              @default("")
-    resources Olympiad_Resource[]
+    id                Int                 @id @default(autoincrement())
+    title             String
+    area              String
+    links             String[]
+    link_descriptions String[]
+    desc              String              @default("")
+    resources         Olympiad_Resource[]
 }
 
 model Olympiad_Resource {
@@ -98,7 +99,7 @@ model Olympiad_Resource {
     authorId   String
     type       Int           @default(0) // 0 = Past Paper, 1 = Solution, 2 = Other
     files      StorageFile[]
-    approved  Boolean       @default(false)
+    approved   Boolean       @default(false)
 }
 
 model StorageFile {
