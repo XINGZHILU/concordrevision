@@ -22,7 +22,8 @@ export default async function AdminApprovalPage() {
             },
             author: {
                 select: {
-                    name: true,
+                    firstname: true,
+                    lastname: true,
                     email: true,
                 },
             },
@@ -48,7 +49,8 @@ export default async function AdminApprovalPage() {
             },
             author: {
                 select: {
-                    name: true,
+                    firstname: true,
+                    lastname: true,
                     email: true,
                 },
             },

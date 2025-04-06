@@ -43,7 +43,8 @@ export default async function OlympiadResourceReviewPage({ params }: { params: {
             },
             author: {
                 select: {
-                    name: true,
+                    firstname: true,
+                    lastname: true,
                     email: true,
                 },
             },
@@ -92,7 +93,7 @@ export default async function OlympiadResourceReviewPage({ params }: { params: {
                                 {getResourceTypeLabel(resource.type)}
                             </Badge>
                             <p className="text-sm text-gray-600">
-                                Submitted by: {resource.author.name || 'Unknown'} ({resource.author.email})
+                                Submitted by: {`${resource.author.firstname} ${resource.author.lastname}` || 'Unknown'} ({resource.author.email})
                             </p>
                         </div>
                     </div>

@@ -64,7 +64,7 @@ export default async function UserDetailPage({ params }: { params: { id: string 
                 <div className="p-6 border-b border-gray-200">
                     <div className="flex flex-col md:flex-row md:justify-between md:items-center">
                         <div>
-                            <h2 className="text-xl font-bold text-gray-900">{userDetails.name || 'Anonymous User'}</h2>
+                            <h2 className="text-xl font-bold text-gray-900">{`${userDetails.firstname} ${userDetails.lastname}` || 'Anonymous User'}</h2>
                             <p className="text-gray-600">{userDetails.email}</p>
                         </div>
                         <div className="mt-4 md:mt-0 flex space-x-2">

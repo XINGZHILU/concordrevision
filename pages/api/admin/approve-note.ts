@@ -53,7 +53,7 @@ export default async function handler(
                 to: [updatedNote.author.email],
                 subject: 'Upload approved',
                 // @ts-expect-error: type might not match
-                react: ApprovedEmailTemplate({ name: updatedNote.author.name,
+                react: ApprovedEmailTemplate({ name: updatedNote.author.firstname,
                     title: updatedNote.title,
                     area: `${year_group_names[updatedNote.subject.level]} ${updatedNote.subject.title}`
                 }),
