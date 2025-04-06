@@ -82,7 +82,7 @@ export default async function AdminApprovalPage() {
 
             <div className="bg-white shadow-md rounded-lg p-6 mb-6">
                 <Tabs.Root defaultValue="notes" variant="enclosed">
-                    <Tabs.List mb="4">
+                    <Tabs.List mb="4" bg="bg.muted" rounded="l3" p='1'>
                         <Tabs.Trigger value="notes">
                             Notes & Resources ({unapprovedNotes.length})
                         </Tabs.Trigger>
