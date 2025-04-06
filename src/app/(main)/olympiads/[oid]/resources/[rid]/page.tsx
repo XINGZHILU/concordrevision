@@ -36,6 +36,10 @@ export default async function Page(req : any, res : any){
         notFound();
     }
 
+    if (!resource.approved){
+        notFound();
+    }
+
     return (<div className="w-full">
         <h1>{olympiad.title} - {resource.title}</h1>
         <br/>

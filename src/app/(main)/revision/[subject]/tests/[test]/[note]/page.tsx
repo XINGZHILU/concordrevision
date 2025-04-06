@@ -75,6 +75,10 @@ export default async function Page(req : any, res : any){
         notFound();
     }
 
+    if (!note.approved){
+        notFound();
+    }
+
     return (<div className="w-full">
         <h1>{year_group_names[subject.level]} {subject.title} - {note.title}</h1>
         <br/>

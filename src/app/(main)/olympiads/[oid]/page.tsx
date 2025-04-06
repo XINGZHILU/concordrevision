@@ -20,6 +20,8 @@ export default async function Page(req : any, res : any){
         notFound();
     }
 
+    const resources = olympiad.resources.filter((resource) => {return resource.approved});
+
 
     return <div>
         <h1>{olympiad.title}</h1>
@@ -43,10 +45,10 @@ export default async function Page(req : any, res : any){
         <h2>Resources</h2>
         <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll'}>
             {
-                olympiad.resources.length === 0 ? (
+                resources.length === 0 ? (
                     <p>No resources</p>
                 ) : (
-                    olympiad.resources.map((resource) => {
+                    resources.map((resource) => {
                         return <OlympiadResourceCard key={resource.id} resource={resource}/>
                     })
                 )

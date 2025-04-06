@@ -215,7 +215,7 @@ export default function FilteredNoteList({ notes }: FilteredNoteListProps) {
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     <Link
-                                        href={`/admin/approval/${note.id}`}
+                                        href={`/admin/approval/revision/${note.id}`}
                                         className="text-indigo-600 hover:text-indigo-900 px-3 py-1 rounded border border-indigo-600 hover:bg-indigo-50"
                                     >
                                         Review
