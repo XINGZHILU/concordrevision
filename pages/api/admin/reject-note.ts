@@ -50,7 +50,7 @@ export default async function handler(
                 to: [deleted.author.email],
                 subject: 'Upload rejected',
                 // @ts-expect-error: type might not match
-                react: RejectedEmailTemplate({ name: deleted.author.name, title: deleted.title,
+                react: RejectedEmailTemplate({ name: deleted.author.firstname, title: deleted.title,
                     area: `${year_group_names[deleted.subject.level]} ${deleted.subject.title}`
                  }),
             });

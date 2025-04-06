@@ -12,7 +12,8 @@ import {year_group_names} from "@/lib/consts";
 type UserWithCount = {
     id: string;
     email: string;
-    name: string | null;
+    firstname: string | null;
+    lastname: string | null;
     year: number;
     teacher: boolean;
     upload_permission: boolean;
@@ -38,7 +39,8 @@ export default function UserList({users}: UserListProps) {
         return users.filter(user => {
             const matchesSearch =
                 user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                (user.name && user.name.toLowerCase().includes(searchTerm.toLowerCase()));
+                (user.firstname && user.firstname.toLowerCase().includes(searchTerm.toLowerCase())) || 
+                (user.lastname && user.lastname.toLowerCase().includes(searchTerm.toLowerCase()));
 
             const matchesTeacher =
                 showTeachers === 'all' ||
@@ -225,7 +227,7 @@ export default function UserList({users}: UserListProps) {
                             <tr key={user.id} className="hover:bg-gray-50">
                                 <td className="px-6 py-4">
                                     <div
-                                        className="text-sm font-medium text-gray-900">{user.name || 'Anonymous User'}</div>
+                                    className="text-sm font-medium text-gray-900">{`${user.firstname} ${user.lastname}` || 'Anonymous User'}</div>
                                     <div className="text-sm text-gray-500">{user.email}</div>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">

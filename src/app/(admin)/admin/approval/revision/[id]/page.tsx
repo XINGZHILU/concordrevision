@@ -45,7 +45,8 @@ export default async function NoteReviewPage({ params }: { params: { id: string 
             },
             author: {
                 select: {
-                    name: true,
+                    firstname: true,
+                    lastname: true,
                     email: true,
                 },
             },
@@ -94,7 +95,7 @@ export default async function NoteReviewPage({ params }: { params: { id: string 
                                 {getNoteTypeLabel(note.type)}
                             </Badge>
                             <p className="text-sm text-gray-600">
-                                Submitted by: {note.author.name || 'Unknown'} ({note.author.email})
+                                Submitted by: {`${note.author.firstname} ${note.author.lastname}` || 'Unknown'} ({note.author.email})
                             </p>
                         </div>
                     </div>

@@ -60,7 +60,7 @@ export default async function handler(
                 to: [deleted.author.email],
                 subject: 'Upload rejected',
                 // @ts-expect-error: type might not match
-                react: RejectedEmailTemplate({ name: deleted.author.name, title: deleted.title, area: deleted.olympiad.area }),
+                react: RejectedEmailTemplate({ name: deleted.author.firstname, title: deleted.title, area: deleted.olympiad.title }),
             });
         }
         finally {

@@ -15,7 +15,12 @@ export default async function UserManagementPage() {
             },
         },
         orderBy: [
-            { name: 'asc' },
+            {
+                lastname: 'asc',
+            },
+            {
+                firstname: 'asc'
+            }
         ],
     });
 

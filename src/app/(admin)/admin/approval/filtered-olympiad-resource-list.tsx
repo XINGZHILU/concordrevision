@@ -21,7 +21,8 @@ type OlympiadResource = {
         area: string;
     };
     author: {
-        name: string | null;
+        firstname: string | null;
+        lastname: string | null;
         email: string;
     };
     files: {
@@ -181,7 +182,7 @@ export default function FilteredOlympiadResourceList({ resources }: FilteredReso
                                     <div className="text-xs text-gray-500">{resource.olympiad.area}</div>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="text-sm text-gray-900">{resource.author.name || 'Unknown'}</div>
+                                    <div className="text-sm text-gray-900">{`${resource.author.firstname} ${resource.author.lastname}` || 'Unknown'}</div>
                                     <div className="text-xs text-gray-500">{resource.author.email}</div>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">

@@ -12,7 +12,9 @@ export const ApprovedEmailTemplate: React.FC<Readonly<ApprovedEmailTemplateProps
     <div>
         <p>Dear {name},</p>
         <p>We are delighted to inform you that your uploaded resource <b>{title}</b> for <b>{area}</b> has been <b>approved</b> and is now available to other fellow students and teachers.</p>
-        <p>Thank you for your contribution to the College academic community.</p>
+        <p>Thank you for your contribution to the college academic community.</p>
+        <br/>
+        <p>The Concord Student Hub Team</p>
     </div>
 );
 
@@ -27,6 +29,8 @@ export const RejectedEmailTemplate: React.FC<Readonly<RejectedEmailTemplateProps
 }) => (
     <div>
         <p>Dear {name},</p>
-        <p>We regret to inform you that your uploaded resource <b>{title}</b> for <b>{area}</b> was <b>rejected</b>.</p>
+        <p>We regret to inform you that your uploaded resource <b>{title}</b> for <b>{area}</b> was <b>rejected</b>. Please do not be afraid of future rejections and continue to support the college academic community by providing resources.</p>
+        <br/>
+        <p>The Concord Student Hub Team</p>
     </div>
 );

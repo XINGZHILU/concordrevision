@@ -22,7 +22,8 @@ type NoteWithSubject = {
         level: number;
     };
     author: {
-        name: string | null;
+        firstname: string | null;
+        lastname: string | null;
         email: string;
     };
     files: {
@@ -200,7 +201,7 @@ export default function FilteredNoteList({ notes }: FilteredNoteListProps) {
                                     <div className="text-xs text-gray-500">{year_group_names[note.subject.level]}</div>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="text-sm text-gray-900">{note.author.name || 'Unknown'}</div>
+                                    <div className="text-sm text-gray-900">{`${note.author.firstname} ${note.author.lastname}` || 'Unknown'}</div>
                                     <div className="text-xs text-gray-500">{note.author.email}</div>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
