@@ -3,6 +3,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/prisma";
 import { getAuth } from "@clerk/nextjs/server";
+import { Resend } from 'resend';
+import { ApprovedEmailTemplate } from "@/email/email-templates";
+import { email_from, year_group_names } from "@/lib/consts";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async function handler(
     req: NextApiRequest,
@@ -36,7 +41,27 @@ export default async function handler(
             data: {
                 approved: true,
             },
+            include: {
+                author: true,
+                subject: true
+            },
         });
+
+        try{
+            await resend.emails.send({
+                from: email_from,
+                to: [updatedNote.author.email],
+                subject: 'Upload approved',
+                // @ts-expect-error: type might not match
+                react: ApprovedEmailTemplate({ name: updatedNote.author.name,
+                    title: updatedNote.title,
+                    area: `${year_group_names[updatedNote.subject.level]} ${updatedNote.subject.title}`
+                }),
+            });
+        }
+        finally{
+            console.log('Email send attempted');
+        }
 
         return res.status(200).json({ success: true, note: updatedNote });
     } catch (error) {

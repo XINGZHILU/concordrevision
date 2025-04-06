@@ -8,3 +8,5 @@ export const olympiad_subjects = [
     'Computer Science',
     'Economics',
 ]
+
+export const email_from = "Acme <onboarding@resend.dev>";

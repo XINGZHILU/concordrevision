@@ -62,7 +62,7 @@ export default async function NoteReviewPage({ params }: { params: { id: string 
             <div className="flex justify-between items-center mb-6">
                 <div>
                     <Link
-                        href="/src/app/(main)/admin/approval"
+                        href="/admin/approval"
                         className="text-indigo-600 hover:text-indigo-900 flex items-center"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">

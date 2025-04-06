@@ -3,6 +3,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/prisma";
 import { getAuth } from "@clerk/nextjs/server";
+import { Resend } from 'resend';
+import { RejectedEmailTemplate } from "@/email/email-templates";
+import { email_from, year_group_names } from "@/lib/consts";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async function handler(
     req: NextApiRequest,
@@ -29,11 +34,30 @@ export default async function handler(
         }
 
         // Delete the note (or alternatively, you could update a status field to 'rejected' if you want to keep records)
-        await prisma.note.delete({
+        const deleted = await prisma.note.delete({
             where: {
                 id: noteId,
             },
+            include: {
+                author: true,
+                subject: true
+            }
         });
+
+        try {
+            await resend.emails.send({
+                from: email_from,
+                to: [deleted.author.email],
+                subject: 'Upload rejected',
+                // @ts-expect-error: type might not match
+                react: RejectedEmailTemplate({ name: deleted.author.name, title: deleted.title,
+                    area: `${year_group_names[deleted.subject.level]} ${deleted.subject.title}`
+                 }),
+            });
+        }
+        finally {
+            console.log('Email send attempted');
+        }
 
         return res.status(200).json({ success: true });
     } catch (error) {
