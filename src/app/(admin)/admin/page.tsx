@@ -60,8 +60,16 @@ export default async function AdminHomePage() {
         },
     });
 
-    let totalNotesCount = await prisma.note.count();
-    totalNotesCount -= unapprovedNotesCount;
+    const olympiadResourcesCount = await prisma.olympiad_Resource.count();
+
+    const unapprovedOlympiadResourcesCount = await prisma.olympiad_Resource.count({
+        where: {
+            approved: false,
+        },
+    });
+
+    const totalNotesCount = await prisma.note.count();
+    const totalResourcesCount = totalNotesCount - unapprovedNotesCount + olympiadResourcesCount - unapprovedOlympiadResourcesCount;
 
     const totalSubjectsCount = await prisma.subject.count();
 
@@ -100,8 +108,8 @@ export default async function AdminHomePage() {
                             </svg>
                         </div>
                         <div className="ml-4">
-                            <h2 className="text-sm font-medium text-gray-600">Total Notes</h2>
-                            <p className="text-2xl font-semibold text-gray-900">{totalNotesCount}</p>
+                            <h2 className="text-sm font-medium text-gray-600">Total Resources</h2>
+                            <p className="text-2xl font-semibold text-gray-900">{totalResourcesCount}</p>
                         </div>
                     </div>
                 </div>

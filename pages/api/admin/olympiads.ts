@@ -31,11 +31,11 @@ export default async function handler(
             console.log(req.body);
 
             // Create new olympiad
-            const olympiads = await prisma.olympiad.findMany();
+            const olympiads_count = await prisma.olympiad.count();
 
             const olympiad = await prisma.olympiad.create({
                 data: {
-                    id: 10000 + olympiads.length,
+                    id: 10000 + olympiads_count,
                     title: title,
                     desc: desc || '',
                     area: area,
