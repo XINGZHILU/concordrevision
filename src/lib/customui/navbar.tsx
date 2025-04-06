@@ -237,7 +237,7 @@ export default function NavBar({ can_upload, teacher }: { can_upload: boolean, t
                         </Link>) : (<></>)}
                         {teacher ? (<Link
                             href="/admin"
-                            className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/upload')
+                            className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/admin')
                                     ? 'text-indigo-600 bg-indigo-50'
                                     : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
                                 }`}
