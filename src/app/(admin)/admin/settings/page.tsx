@@ -1,9 +1,9 @@
-import { SignIn } from '@clerk/nextjs'
-
 export default function Page() {
+
+
     return <div>
         <center>
-            <SignIn />
+            <h1>The settings page will be added in a future update</h1>
         </center>
-    </div>
+    </div>;
 }
