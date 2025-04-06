@@ -218,6 +218,7 @@ export default function OlympiadList({ olympiads }: OlympiadListProps) {
                       >
                         Edit
                       </Link>
+                      {/* 
                       <button
                         onClick={() => openDeleteDialog(olympiad.id)}
                         className={`text-red-600 hover:text-red-900 ${olympiad._count.resources > 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
@@ -225,6 +226,7 @@ export default function OlympiadList({ olympiads }: OlympiadListProps) {
                       >
                         Delete
                       </button>
+                      */}
                     </div>
                   </td>
                 </tr>
