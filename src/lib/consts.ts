@@ -9,4 +9,4 @@ export const olympiad_subjects = [
     'Economics',
 ]
 
-export const email_from = "Concord Student Hub <onboarding@resend.dev>";
+export const email_from = "Concord Student Hub <noreply@concord-hub.com>";
