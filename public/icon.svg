@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="#4F46E5" />
+  <circle cx="100" cy="100" r="85" fill="#ffffff" />
+  
+  <!-- Book stack -->
+  <g transform="translate(45, 45)">
+    <!-- Book 1 (bottom) -->
+    <rect x="10" y="70" width="90" height="15" rx="2" fill="#FF6347" />
+    <rect x="10" y="70" width="90" height="3" rx="1" fill="#D84A35" />
+    
+    <!-- Book 2 (middle) -->
+    <rect x="5" y="55" width="90" height="15" rx="2" fill="#4CAF50" />
+    <rect x="5" y="55" width="90" height="3" rx="1" fill="#3E8E41" />
+    
+    <!-- Book 3 (top) -->
+    <rect x="15" y="40" width="90" height="15" rx="2" fill="#2196F3" />
+    <rect x="15" y="40" width="90" height="3" rx="1" fill="#0B7DCF" />
+    
+    <!-- Graduation cap -->
+    <path d="M55 10 L100 30 L55 50 L10 30 Z" fill="#4F46E5" />
+    <path d="M55 50 L55 65 C45 60 65 60 55 65 L55 50 Z" fill="#4F46E5" />
+    <circle cx="55" cy="10" r="8" fill="#4F46E5" />
+  </g>
+  
+  <!-- Progress indicators (green, amber, red dots) -->
+  <circle cx="50" cy="150" r="7" fill="#4CAF50" />
+  <circle cx="75" cy="150" r="7" fill="#FFC107" />
+  <circle cx="100" cy="150" r="7" fill="#FF5252" />
+</svg>

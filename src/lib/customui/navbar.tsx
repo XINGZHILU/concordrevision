@@ -4,8 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
-export default function NavBar({can_upload, teacher} : {can_upload : boolean, teacher: boolean}) {
+export default function NavBar({ can_upload, teacher }: { can_upload: boolean, teacher: boolean }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const pathname = usePathname();
 
@@ -18,7 +19,7 @@ export default function NavBar({can_upload, teacher} : {can_upload : boolean, te
         if (path === '/' && pathname === '/') {
             return true;
         }
-        if (!pathname){
+        if (!pathname) {
             return false;
         }
         return path !== '/' && pathname.startsWith(path);
@@ -31,6 +32,8 @@ export default function NavBar({can_upload, teacher} : {can_upload : boolean, te
                     {/* Logo/Brand */}
                     <div className="flex items-center">
                         <Link href="/" className="flex-shrink-0 flex items-center">
+                            <Image src="/icon.svg" className="h-8"
+                                alt="Concord Logo" width={80} height={80} />
                             <span className="text-xl font-bold text-indigo-600">Online Student Hub</span>
                         </Link>
                     </div>
@@ -40,67 +43,61 @@ export default function NavBar({can_upload, teacher} : {can_upload : boolean, te
                         <div className="flex space-x-4 items-center">
                             <Link
                                 href="/"
-                                className={`px-3 py-2 rounded-md text-sm font-medium ${
-                                    isActive('/')
+                                className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/')
                                         ? 'text-indigo-600 bg-indigo-50'
                                         : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
-                                }`}
+                                    }`}
                             >
                                 Home
                             </Link>
                             <Link
                                 href="/revision"
-                                className={`px-3 py-2 rounded-md text-sm font-medium ${
-                                    isActive('/revision')
+                                className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/revision')
                                         ? 'text-indigo-600 bg-indigo-50'
                                         : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
-                                }`}
+                                    }`}
                             >
                                 Revision
                             </Link>
                             <Link
                                 href="/olympiads"
-                                className={`px-3 py-2 rounded-md text-sm font-medium ${
-                                    isActive('/olympiads')
+                                className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/olympiads')
                                         ? 'text-indigo-600 bg-indigo-50'
                                         : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
-                                }`}
+                                    }`}
                             >
                                 Olympiads
                             </Link>
                             <Link
                                 href="/ec"
-                                className={`px-3 py-2 rounded-md text-sm font-medium ${
-                                    isActive('/ec')
+                                className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/ec')
                                         ? 'text-indigo-600 bg-indigo-50'
                                         : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
-                                }`}
+                                    }`}
                             >
                                 Extracurriculars
                             </Link>
 
                             {can_upload ? (<Link
-                                    href="/upload"
-                                    className={`px-3 py-2 rounded-md text-sm font-medium ${
-                                        isActive('/upload')
-                                            ? 'text-indigo-600 bg-indigo-50'
-                                            : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
+                                href="/upload"
+                                className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/upload')
+                                        ? 'text-indigo-600 bg-indigo-50'
+                                        : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
                                     }`}
-                                >
-                                    Upload
-                                </Link>
+                            >
+                                Upload
+                            </Link>
                             ) : (<></>)}
 
                             {teacher ? (<Link
-                                    href="/admin"
-                                    className={`px-3 py-2 rounded-md text-sm font-medium ${
-                                        isActive('/admin')
-                                            ? 'text-indigo-600 bg-indigo-50'
-                                            : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
+                                href="/admin"
+                                className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/admin')
+                                        ? 'text-indigo-600 bg-indigo-50'
+                                        : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
                                     }`}
-                                >
-                                    Admin
-                                </Link>
+                            >
+                                Admin
+                            </Link>
                             ) : (<></>)}
 
                             <div className="ml-4 flex items-center">
@@ -190,55 +187,50 @@ export default function NavBar({can_upload, teacher} : {can_upload : boolean, te
                     <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg">
                         <Link
                             href="/"
-                            className={`block px-3 py-2 rounded-md text-base font-medium ${
-                                isActive('/')
+                            className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/')
                                     ? 'text-indigo-600 bg-indigo-50'
                                     : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
-                            }`}
+                                }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
                             Home
                         </Link>
                         <Link
                             href="/revision"
-                            className={`block px-3 py-2 rounded-md text-base font-medium ${
-                                isActive('/revision')
+                            className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/revision')
                                     ? 'text-indigo-600 bg-indigo-50'
                                     : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
-                            }`}
+                                }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
                             Revision
                         </Link>
                         <Link
                             href="/olympiads"
-                            className={`block px-3 py-2 rounded-md text-base font-medium ${
-                                isActive('/olympiads')
+                            className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/olympiads')
                                     ? 'text-indigo-600 bg-indigo-50'
                                     : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
-                            }`}
+                                }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
                             Olympiads
                         </Link>
                         <Link
                             href="/ec"
-                            className={`block px-3 py-2 rounded-md text-base font-medium ${
-                                isActive('/ec')
+                            className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/ec')
                                     ? 'text-indigo-600 bg-indigo-50'
                                     : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
-                            }`}
+                                }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
                             Extracurriculars
                         </Link>
                         <Link
                             href="/upload"
-                            className={`block px-3 py-2 rounded-md text-base font-medium ${
-                                isActive('/upload')
+                            className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/upload')
                                     ? 'text-indigo-600 bg-indigo-50'
                                     : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
-                            }`}
+                                }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
                             Upload
