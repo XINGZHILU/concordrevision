@@ -225,7 +225,7 @@ export default function NavBar({ can_upload, teacher }: { can_upload: boolean, t
                         >
                             Extracurriculars
                         </Link>
-                        <Link
+                        {can_upload ? (<Link
                             href="/upload"
                             className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/upload')
                                     ? 'text-indigo-600 bg-indigo-50'
@@ -234,7 +234,17 @@ export default function NavBar({ can_upload, teacher }: { can_upload: boolean, t
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
                             Upload
-                        </Link>
+                        </Link>) : (<></>)}
+                        {teacher ? (<Link
+                            href="/admin"
+                            className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/upload')
+                                    ? 'text-indigo-600 bg-indigo-50'
+                                    : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
+                                }`}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                            Admin
+                        </Link>) : (<></>)}
                         <SignedOut>
                             <div className="mt-4 px-3">
                                 <SignInButton mode="modal">

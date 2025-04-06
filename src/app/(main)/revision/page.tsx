@@ -11,7 +11,11 @@ export default async function Home() {
 
     const user = await currentUser();
     if (!user){
-        return <h1>You must login to access this page</h1>;
+        return (
+            <>
+                <RevisionSubjectList subjects={subjects} year = {0}/>
+            </>
+        )
     }
 
     const user_data = await prisma.user.findUnique({

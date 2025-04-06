@@ -1,12 +1,12 @@
-import {prisma} from "@/lib/prisma";
-import {notFound} from "next/navigation";
-import {isNumeric} from "@/lib/utils";
-import {year_group_names} from "@/lib/consts";
-import {NoteCard, TestCard} from "@/lib/customui/Basic/cards";
-import {currentUser} from "@clerk/nextjs/server";
+import { prisma } from "@/lib/prisma";
+import { notFound } from "next/navigation";
+import { isNumeric } from "@/lib/utils";
+import { year_group_names } from "@/lib/consts";
+import { NoteCard, TestCard } from "@/lib/customui/Basic/cards";
+import { currentUser } from "@clerk/nextjs/server";
 
-import {Collapsible, Tabs} from "@chakra-ui/react"
-import {LuFolder, LuBookCheck} from "react-icons/lu"
+import { Collapsible, Tabs } from "@chakra-ui/react"
+import { LuFolder, LuBookCheck } from "react-icons/lu"
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default async function Page(req: any, res: any) {
@@ -46,63 +46,49 @@ export default async function Page(req: any, res: any) {
 
     const user = await currentUser();
     if (!user) {
-        return <h1>You must login to access this page</h1>;
-    }
+        const resource_list = subject.notes.filter((note) => { return (note.type === 2 && note.approved) }).map((note) => (
+            <div key={note.id + 'div'}>
+                <NoteCard note={note} key={note.id} colour={-1} />
+                <br key={note.id + 'br'} />
+            </div>
+        ));
 
-    const record = await prisma.user.findUnique({
-        where: {
-            id: user.id
-        }
-    });
+        subject.tests.sort((a, b) => a.date.getTime() - b.date.getTime());
 
-    if (!record) {
-        return <h1>User not found</h1>;
-    }
+        const today = new Date();
+
+        const test_list = subject.tests.filter((test) => ((test.date.getTime() - today.getTime()) >= (-86400000))).map((test) => (
+            <div key={test.id + 'div'}>
+                <TestCard test={test} key={test.id} />
+                <br key={test.id + 'br'} />
+            </div>
+        ));
 
 
+        return (<div>
+            <h1>{year_group_names[subject.level]} {subject.title}</h1>
+            <br />
 
-    const resource_list = subject.notes.filter((note) => {return (note.type === 2 && note.approved)}).map((note) => (
-        <div key={note.id + 'div'}>
-            <NoteCard note={note} key={note.id} colour={Get_Colour(record, note.id)}/>
-            <br key={note.id + 'br'}/>
-        </div>
-    ));
-    
-    subject.tests.sort((a, b) => a.date.getTime() - b.date.getTime());
-
-    const today = new Date();
-
-    const test_list = subject.tests.filter((test) => ((test.date.getTime() - today.getTime())>=(-86400000))).map((test) => (
-        <div key={test.id + 'div'}>
-            <TestCard test={test} key={test.id}/>
-            <br key={test.id + 'br'}/>
-        </div>
-    ));
-
-    return (<div>
-        <h1>{year_group_names[subject.level]} {subject.title}</h1>
-        <br/>
-
-        <Collapsible.Root defaultOpen>
-            <Collapsible.Trigger paddingY="3"><h2>About</h2></Collapsible.Trigger>
-            <Collapsible.Content>
-                {subject.desc.split('\n').map((line, index) => <p key={index}>{line}</p>)}
-            </Collapsible.Content>
-        </Collapsible.Root>
-        <br/>
-        <div>
-            <Tabs.Root defaultValue="resources" variant='plain' rounded="l3">
-                <Tabs.List bg="bg.muted" rounded="l3" p="1">
-                    <Tabs.Trigger value="resources" p="2">
-                        <LuFolder/>
-                        Resources
-                    </Tabs.Trigger>
-                    <Tabs.Trigger value="tests" p="2">
-                        <LuBookCheck/>
-                        Upcoming tests
-                    </Tabs.Trigger>
-                    <Tabs.Indicator rounded="l2" />
-                </Tabs.List>
+            <Collapsible.Root defaultOpen>
+                <Collapsible.Trigger paddingY="3"><h2>About</h2></Collapsible.Trigger>
+                <Collapsible.Content>
+                    {subject.desc.split('\n').map((line, index) => <p key={index}>{line}</p>)}
+                </Collapsible.Content>
+            </Collapsible.Root>
+            <br />
+            <div>
+                <Tabs.Root defaultValue="resources" variant='plain' rounded="l3">
+                    <Tabs.List bg="bg.muted" rounded="l3" p="1">
+                        <Tabs.Trigger value="resources" p="2">
+                            <LuFolder />
+                            Resources
+                        </Tabs.Trigger>
+                        <Tabs.Trigger value="tests" p="2">
+                            <LuBookCheck />
+                            Upcoming tests
+                        </Tabs.Trigger>
+                        <Tabs.Indicator rounded="l2" />
+                    </Tabs.List>
 
                     <Tabs.Content value="resources">
                         {resource_list.length === 0 ? (
@@ -122,6 +108,85 @@ export default async function Page(req: any, res: any) {
                             </div>
                         )}
                     </Tabs.Content>
+                </Tabs.Root>
+            </div>
+
+        </div>);
+    }
+
+    const record = await prisma.user.findUnique({
+        where: {
+            id: user.id
+        }
+    });
+
+    if (!record) {
+        return <h1>User not found</h1>;
+    }
+
+
+
+    const resource_list = subject.notes.filter((note) => { return (note.type === 2 && note.approved) }).map((note) => (
+        <div key={note.id + 'div'}>
+            <NoteCard note={note} key={note.id} colour={Get_Colour(record, note.id)} />
+            <br key={note.id + 'br'} />
+        </div>
+    ));
+
+    subject.tests.sort((a, b) => a.date.getTime() - b.date.getTime());
+
+    const today = new Date();
+
+    const test_list = subject.tests.filter((test) => ((test.date.getTime() - today.getTime()) >= (-86400000))).map((test) => (
+        <div key={test.id + 'div'}>
+            <TestCard test={test} key={test.id} />
+            <br key={test.id + 'br'} />
+        </div>
+    ));
+
+    return (<div>
+        <h1>{year_group_names[subject.level]} {subject.title}</h1>
+        <br />
+
+        <Collapsible.Root defaultOpen>
+            <Collapsible.Trigger paddingY="3"><h2>About</h2></Collapsible.Trigger>
+            <Collapsible.Content>
+                {subject.desc.split('\n').map((line, index) => <p key={index}>{line}</p>)}
+            </Collapsible.Content>
+        </Collapsible.Root>
+        <br />
+        <div>
+            <Tabs.Root defaultValue="resources" variant='plain' rounded="l3">
+                <Tabs.List bg="bg.muted" rounded="l3" p="1">
+                    <Tabs.Trigger value="resources" p="2">
+                        <LuFolder />
+                        Resources
+                    </Tabs.Trigger>
+                    <Tabs.Trigger value="tests" p="2">
+                        <LuBookCheck />
+                        Upcoming tests
+                    </Tabs.Trigger>
+                    <Tabs.Indicator rounded="l2" />
+                </Tabs.List>
+
+                <Tabs.Content value="resources">
+                    {resource_list.length === 0 ? (
+                        <p>No resources found</p>
+                    ) : (
+                        <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll'}>
+                            {resource_list}
+                        </div>
+                    )}
+                </Tabs.Content>
+                <Tabs.Content value="tests">
+                    {test_list.length === 0 ? (
+                        <p>No upcoming tests</p>
+                    ) : (
+                        <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll'}>
+                            {test_list}
+                        </div>
+                    )}
+                </Tabs.Content>
             </Tabs.Root>
         </div>
 

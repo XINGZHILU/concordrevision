@@ -23,21 +23,6 @@ export default async function Page(req : any, res : any){
         }
     }
 
-    const user = await currentUser();
-    if (!user){
-        return <h1>You must login to access this page</h1>;
-    }
-
-    const record = await prisma.user.findUnique({
-        where: {
-            id: user.id
-        }
-    });
-
-    if (!record){
-        return <h1>User not found</h1>;
-    }
-
     const params = await req.params;
     const sid = params.subject;
     const nid = params.note;
@@ -51,6 +36,7 @@ export default async function Page(req : any, res : any){
             id: +sid
         },
     });
+    
 
     if (!subject) {
         notFound();
@@ -68,6 +54,29 @@ export default async function Page(req : any, res : any){
     if (!note) {
         notFound();
     }
+    
+    const user = await currentUser();
+    if (!user){
+        return (<div className="w-full">
+            <h1>{year_group_names[subject.level]} {subject.title} - {note.title}</h1>
+            <br/>
+            {note.desc.split('\n').map((line, index) => <p  key={index}>{line}</p>)}
+            <br/>
+            <h2>Files</h2>
+            <br/>
+            <FileList files={note.files}/>
+        </div>)
+    }
+
+    const record = await prisma.user.findUnique({
+        where: {
+            id: user.id
+        }
+    });
+
+    if (!record){
+        return <h1>User not found</h1>;
+    }    
 
     const colour = Get_Colour(record, note.id);
 

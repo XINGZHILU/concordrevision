@@ -19,20 +19,6 @@ export default async function Page(req: any, res: any) {
         }
     }
 
-    const user = await currentUser();
-    if (!user) {
-        return <h1>You must login to access this page</h1>;
-    }
-
-    const record = await prisma.user.findUnique({
-        where: {
-            id: user.id
-        }
-    });
-
-    if (!record) {
-        return <h1>User not found</h1>;
-    }
 
     const params = await req.params;
     const sid = params.subject;
@@ -70,6 +56,52 @@ export default async function Page(req: any, res: any) {
     }
 
     const notes = test.notes.filter((note) => {return (note.type === 2 && note.approved)});
+
+    const user = await currentUser();
+    if (!user) {
+        return (<div className="w-full">
+            <h1>{year_group_names[subject.level]} {subject.title} - {test.title}</h1>
+            <br/>
+            <ul>
+                <li><b>Test
+                    Type:</b> {test.type === 0 ? 'Saturday Test' : test.type === 1 ? 'End of term exam' : 'Public exam'}
+                </li>
+                <li><b>Test Date:</b> {test.date.toDateString()}</li>
+            </ul>
+            <br/>
+            <h2>Information</h2>
+            {test.desc.split('\n').map((line) => {
+                return <p key={line}>{line}</p>
+            })}
+    
+            <br/>
+            <h2>Notes</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll">
+                {
+                    notes.length === 0 ? (
+                        <p>No notes found</p>
+                    ) : (
+                        notes.map((note) => {
+                            // @ts-ignore
+                            return <div key={note.id + 'div'}> <TestNoteCard note={note} key={note.id} colour={-1}/>
+                                <br key={note.id + 'br'}/>
+                            </div>;
+                        })
+                    )
+                }
+            </div>
+        </div>)
+    }
+
+    const record = await prisma.user.findUnique({
+        where: {
+            id: user.id
+        }
+    });
+
+    if (!record) {
+        return <h1>User not found</h1>;
+    }
 
     return (<div className="w-full">
         <h1>{year_group_names[subject.level]} {subject.title} - {test.title}</h1>
