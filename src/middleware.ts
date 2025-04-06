@@ -37,7 +37,7 @@ import { get } from '@vercel/edge-config';
 export default clerkMiddleware(async (auth: ClerkMiddlewareAuth, request: NextRequest) => {
     // Check maintenance mode first
     const isInMaintenanceMode = await get('maintenance');
-    if (isInMaintenanceMode) {
+    if (isInMaintenanceMode && process.env.ONLINE === 'true') {
         request.nextUrl.pathname = `/maintenance`;
         return NextResponse.rewrite(request.nextUrl);
     }
