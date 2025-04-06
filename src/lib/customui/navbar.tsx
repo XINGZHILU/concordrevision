@@ -115,7 +115,6 @@ export default function NavBar({ can_upload, teacher }: { can_upload: boolean, t
                                                 userButtonAvatarBox: "w-8 h-8"
                                             }
                                         }}
-                                        afterSignOutUrl="/"
                                     />
                                 </SignedIn>
                             </div>
@@ -124,18 +123,6 @@ export default function NavBar({ can_upload, teacher }: { can_upload: boolean, t
 
                     {/* Mobile menu button */}
                     <div className="flex md:hidden items-center">
-                        <SignedIn>
-                            <div className="mr-4">
-                                <UserButton
-                                    appearance={{
-                                        elements: {
-                                            userButtonAvatarBox: "w-8 h-8"
-                                        }
-                                    }}
-                                    afterSignOutUrl="/"
-                                />
-                            </div>
-                        </SignedIn>
 
                         <button
                             onClick={toggleMobileMenu}
@@ -245,6 +232,18 @@ export default function NavBar({ can_upload, teacher }: { can_upload: boolean, t
                         >
                             Admin
                         </Link>) : (<></>)}
+                        <SignedIn>
+                            <div className="mr-4">
+                                <UserButton
+                                    appearance={{
+                                        elements: {
+                                            userButtonAvatarBox: "w-8 h-8"
+                                        }
+                                    }}
+                                    afterSignOutUrl="/"
+                                />
+                            </div>
+                        </SignedIn>
                         <SignedOut>
                             <div className="mt-4 px-3">
                                 <SignInButton mode="modal">
