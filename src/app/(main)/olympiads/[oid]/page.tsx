@@ -27,14 +27,14 @@ export default async function Page(req : any, res : any){
         <h2>About</h2>
         <p>{olympiad.desc}</p>
         <br/>
-        <h2>Links</h2>
-        <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll'}>
+        <h2>External Links</h2>
+        <div>
             {
                 olympiad.links.length === 0 ? (
-                    <p>No links</p>
+                    <p>No external links available</p>
                 ) : (
                     olympiad.links.map((link) => {
-                        return <a key={link} href={link} target={'_blank'} rel="noopener noreferrer">{link}</a>
+                        return <a key={link} href={link} target={'_blank'} rel="noopener noreferrer">{link}<br/></a>
                     })
                 )
             }
