@@ -71,6 +71,8 @@ export default async function AdminHomePage() {
     const totalNotesCount = await prisma.note.count();
     const totalResourcesCount = totalNotesCount - unapprovedNotesCount + olympiadResourcesCount - unapprovedOlympiadResourcesCount;
 
+    const unapprovedCount = unapprovedNotesCount + unapprovedOlympiadResourcesCount;
+
     const totalSubjectsCount = await prisma.subject.count();
 
     const totalUsersCount = await prisma.user.count();
@@ -155,8 +157,8 @@ export default async function AdminHomePage() {
                         </svg>
                     }
                     href="/admin/approval"
-                    count={unapprovedNotesCount}
-                    variant={unapprovedNotesCount > 0 ? "warning" : "primary"}
+                    count={unapprovedCount}
+                    variant={unapprovedCount > 0 ? "warning" : "primary"}
                 />
 
                 <AdminCard
