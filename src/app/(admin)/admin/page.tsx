@@ -97,7 +97,7 @@ export default async function AdminHomePage() {
                         </div>
                         <div className="ml-4">
                             <h2 className="text-sm font-medium text-gray-600">Pending Approvals</h2>
-                            <p className="text-2xl font-semibold text-gray-900">{unapprovedNotesCount}</p>
+                            <p className="text-2xl font-semibold text-gray-900">{unapprovedCount}</p>
                         </div>
                     </div>
                 </div>
@@ -149,7 +149,7 @@ export default async function AdminHomePage() {
             <h2 className="text-xl font-bold text-gray-800 mb-4">Admin Functions</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
                 <AdminCard
-                    title="Note Approval"
+                    title="Resource Approval"
                     description="Review and approve submitted notes and resources"
                     icon={
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">

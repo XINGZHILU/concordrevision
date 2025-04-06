@@ -55,7 +55,7 @@ export default async function RootLayout({children}: { children: React.ReactNode
 
                                     <nav className="hidden md:flex space-x-4">
                                         <Link href="/admin/approval" className="hover:text-indigo-200 px-2 py-1 rounded hover:bg-indigo-600">
-                                            Approvals
+                                            Resource Approvals
                                         </Link>
                                         <Link href="/admin/users" className="hover:text-indigo-200 px-2 py-1 rounded hover:bg-indigo-600">
                                             Users
