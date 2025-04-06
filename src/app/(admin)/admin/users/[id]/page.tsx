@@ -1,19 +1,12 @@
 // File: app/admin/users/[id]/page.tsx
 
-import { notFound, redirect } from "next/navigation";
-import { currentUser } from "@clerk/nextjs/server";
+import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { Badge } from "@chakra-ui/react";
 import UserActions from "./user-actions";
 
 export default async function UserDetailPage({ params }: { params: { id: string } }) {
-    // Check if user is authenticated
-    const user = await currentUser();
-
-    if (!user) {
-        redirect('/sign-in');
-    }
 
     const userId = params.id;
 

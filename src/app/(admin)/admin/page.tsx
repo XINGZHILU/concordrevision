@@ -2,8 +2,6 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { currentUser } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 
 // Admin dashboard card component
@@ -46,12 +44,6 @@ function AdminCard({ title, description, icon, href, count, variant = "primary" 
 }
 
 export default async function AdminHomePage() {
-    // Check if user is authenticated
-    const user = await currentUser();
-
-    if (!user) {
-        redirect('/sign-in');
-    }
 
     // Fetch some stats for the dashboard
     const unapprovedNotesCount = await prisma.note.count({

@@ -1,18 +1,10 @@
 // File: app/admin/olympiads/page.tsx
 
 import { prisma } from "@/lib/prisma";
-import { currentUser } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import OlympiadList from "./olympiad-list";
 
 export default async function OlympiadManagementPage() {
-  // Check if user is authenticated
-  const user = await currentUser();
-  
-  if (!user) {
-    redirect('/sign-in');
-  }
 
   // Fetch all olympiads with counts
   const olympiads = await prisma.olympiad.findMany({

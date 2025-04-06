@@ -1,8 +1,7 @@
 // File: app/admin/approval/[id]/page.tsx
 
 import { prisma } from "@/lib/prisma";
-import { currentUser } from "@clerk/nextjs/server";
-import { redirect, notFound } from "next/navigation";
+import { notFound } from "next/navigation";
 import { year_group_names } from "@/lib/consts";
 import NoteReviewActions from "./note-review-actions";
 import Link from "next/link";
@@ -24,12 +23,6 @@ const getNoteTypeLabel = (type: number) => {
 };
 
 export default async function NoteReviewPage({ params }: { params: { id: string } }) {
-    // Check if user is authenticated
-    const user = await currentUser();
-
-    if (!user) {
-        redirect('/sign-in');
-    }
 
     const noteId = params.id;
 

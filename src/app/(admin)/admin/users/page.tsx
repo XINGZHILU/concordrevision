@@ -1,17 +1,9 @@
 // File: app/admin/users/page.tsx
 
 import { prisma } from "@/lib/prisma";
-import { currentUser } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
 import UserList from "./user-list";
 
 export default async function UserManagementPage() {
-    // Check if user is authenticated
-    const user = await currentUser();
-
-    if (!user) {
-        redirect('/sign-in');
-    }
 
     // Fetch all users with counts
     const users = await prisma.user.findMany({

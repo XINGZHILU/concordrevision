@@ -1,8 +1,7 @@
 // File: src/app/(admin)/admin/approval/olympiad/[id]/page.tsx
 
 import { prisma } from "@/lib/prisma";
-import { currentUser } from "@clerk/nextjs/server";
-import { redirect, notFound } from "next/navigation";
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Badge } from "@chakra-ui/react";
 import ResourceReviewActions from "./olympiad-resource-review-actions";
@@ -23,13 +22,6 @@ const getResourceTypeLabel = (type: number) => {
 };
 
 export default async function OlympiadResourceReviewPage({ params }: { params: { id: string } }) {
-    // Check if user is authenticated
-    const user = await currentUser();
-
-    if (!user) {
-        redirect('/sign-in');
-    }
-
     const resourceId = params.id;
 
     if (!resourceId) {

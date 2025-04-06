@@ -1,17 +1,9 @@
 // File: app/admin/subjects/page.tsx
 
 import { prisma } from "@/lib/prisma";
-import { currentUser } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
 import SubjectList from "./subject-list";
 
 export default async function SubjectManagementPage() {
-    // Check if user is authenticated
-    const user = await currentUser();
-
-    if (!user) {
-        redirect('/sign-in');
-    }
 
     // Fetch all subjects with notes count
     const subjects = await prisma.subject.findMany({

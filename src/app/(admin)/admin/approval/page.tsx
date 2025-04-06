@@ -1,19 +1,11 @@
 // File: app/admin/approval/page.tsx
 
 import { prisma } from "@/lib/prisma";
-import { currentUser } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
 import { Tabs } from "@chakra-ui/react";
 import FilteredNoteList from "./filtered-note-list";
 import FilteredOlympiadResourceList from "./filtered-olympiad-resource-list";
 
 export default async function AdminApprovalPage() {
-    // Check if user is authenticated
-    const user = await currentUser();
-
-    if (!user) {
-        redirect('/sign-in');
-    }
 
     // Fetch unapproved notes
     const unapprovedNotes = await prisma.note.findMany({
