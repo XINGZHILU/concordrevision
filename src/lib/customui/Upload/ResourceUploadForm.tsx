@@ -100,7 +100,7 @@ export default function ResourceUploadForm({ subject, author }: { subject: numbe
     return (
         <>
             <Toaster />
-            <div className="w-full max-w-3xl mx-auto bg-white rounded-lg shadow p-6">
+            <div className="w-full mx-auto bg-white rounded-lg shadow p-6">
                 <div className="mb-6">
                     <h2 className="text-xl font-semibold text-gray-900">Upload Resource</h2>
                     <p className="text-gray-600 mt-1">Share study materials and resources</p>
@@ -169,7 +169,6 @@ export default function ResourceUploadForm({ subject, author }: { subject: numbe
                                             ref={inputFileRef}
                                             onChange={handleFileChange}
                                             accept=".pdf"
-                                            required
                                             multiple
                                         />
                                     </label>

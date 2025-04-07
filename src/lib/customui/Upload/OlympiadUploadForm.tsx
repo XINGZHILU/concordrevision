@@ -69,7 +69,7 @@ export default function OlympiadUploadForm({ olympiad, author }: { olympiad: num
     return (
         <>
             <Toaster />
-            <div className="w-full max-w-3xl mx-auto bg-white rounded-lg shadow p-6">
+            <div className="w-full mx-auto bg-white rounded-lg shadow p-6">
                 <div className="mb-6">
                     <h2 className="text-xl font-semibold text-gray-900">Upload Olympiad Materials</h2>
                     <p className="text-gray-600 mt-1">Share resources to help students prepare for olympiads</p>
@@ -170,7 +170,6 @@ export default function OlympiadUploadForm({ olympiad, author }: { olympiad: num
                                             ref={inputFileRef}
                                             onChange={handleFileChange}
                                             accept=".pdf"
-                                            required
                                             multiple
                                         />
                                     </label>
