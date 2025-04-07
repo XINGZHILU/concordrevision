@@ -623,4 +623,4 @@ const HorizontalPomodoro: React.FC = () => {
     );
 };
 
-export default Pomodoro;
+export default HorizontalPomodoro;
