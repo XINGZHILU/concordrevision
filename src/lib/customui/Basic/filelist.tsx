@@ -87,7 +87,6 @@ export default function FileList({ files }: { files: FileItemProps[] }) {
                             title={file.filename}
                         >
                             <div className="flex-shrink-0 p-2 bg-indigo-100 rounded-md text-indigo-700 mr-3">
-                                {/* @ts-expect-error: doesn't exist */}
                                 <FileIcon size={20} />
                             </div>
                             
