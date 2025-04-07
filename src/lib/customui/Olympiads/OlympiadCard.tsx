@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import React from 'react';
@@ -23,14 +22,12 @@ export function OlympiadCard({ olympiad }: {
         title: string,
         desc: string,
         area: string,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         resources?: any[]
     }
 }) {
     // Get appropriate icon based on olympiad area
     const OlympiadIcon = getOlympiadIcon(olympiad.area);
-    
-    // Get color theme based on subject area
-    const colorTheme = getColorTheme(olympiad.area);
     
     // Create a truncated description
     const shortDesc = olympiad.desc 
@@ -44,47 +41,47 @@ export function OlympiadCard({ olympiad }: {
         <div className="p-3">
             <Link href={`/olympiads/${olympiad.id}`} className="block h-full">
                 <div 
-                    className={`group relative h-full overflow-hidden rounded-xl transition-all duration-300 ${colorTheme.gradientBg} hover:shadow-xl hover:-translate-y-1`}
+                    className="group relative h-full overflow-hidden rounded-xl border border-gray-200 bg-white transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
                 >
                     {/* Trophy decoration - top right */}
                     <div className="absolute top-4 right-4 opacity-10">
-                        <LuTrophy className="h-24 w-24 text-white" />
+                        <LuTrophy className="h-24 w-24 text-gray-500" />
                     </div>
                     
                     {/* Card content */}
                     <div className="relative z-10 p-6">
                         {/* Subject area badge */}
                         <Badge 
-                            className={`${colorTheme.badgeBg} text-white font-semibold px-2.5 py-1 rounded-full text-xs uppercase tracking-wider`}
+                            className="bg-gray-200 text-gray-700 font-medium px-2.5 py-1 rounded-full text-xs uppercase tracking-wider"
                         >
                             {olympiad.area}
                         </Badge>
                         
                         {/* Title and icon */}
                         <div className="mt-3 flex items-start">
-                            <div className={`mr-3 p-2 rounded-full ${colorTheme.iconBg}`}>
-                                <OlympiadIcon className="h-5 w-5 text-white" />
+                            <div className="mr-3 p-2 rounded-full bg-gray-100">
+                                <OlympiadIcon className="h-5 w-5 text-gray-700" />
                             </div>
-                            <h3 className="text-xl font-bold text-white group-hover:text-white">
+                            <h3 className="text-xl font-bold text-gray-900 group-hover:text-gray-700">
                                 {olympiad.title}
                             </h3>
                         </div>
                         
                         {/* Description */}
-                        <p className="mt-3 text-sm text-white/80 line-clamp-3 mb-4">
+                        <p className="mt-3 text-sm text-gray-600 line-clamp-3 mb-4">
                             {shortDesc}
                         </p>
                         
                         {/* Footer */}
-                        <div className="mt-auto pt-4 border-t border-white/20 flex justify-between items-center">
-                            <div className="text-white text-opacity-90 text-xs font-medium">
+                        <div className="mt-auto pt-4 border-t border-gray-200 flex justify-between items-center">
+                            <div className="text-gray-600 text-xs font-medium">
                                 {resourceCount > 0 ? (
                                     <span>{resourceCount} resource{resourceCount !== 1 ? 's' : ''} available</span>
                                 ) : (
                                     <span>Competition resources</span>
                                 )}
                             </div>
-                            <span className="inline-flex items-center text-white font-medium text-sm">
+                            <span className="inline-flex items-center text-gray-700 font-medium text-sm">
                                 Explore
                                 <LuArrowUpRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:translate-y-[-0.25rem]" />
                             </span>
@@ -119,64 +116,4 @@ function getOlympiadIcon(area: string) {
     
     // Default icon
     return LuBrain;
-}
-
-// Helper function to get color theme based on olympiad area
-function getColorTheme(area: string) {
-    const subject = area.toLowerCase();
-    
-    if (subject.includes('math')) {
-        return {
-            gradientBg: 'bg-gradient-to-br from-blue-600 to-indigo-800',
-            badgeBg: 'bg-blue-500',
-            iconBg: 'bg-blue-500',
-        };
-    }
-    
-    if (subject.includes('physics')) {
-        return {
-            gradientBg: 'bg-gradient-to-br from-violet-600 to-purple-800',
-            badgeBg: 'bg-violet-500',
-            iconBg: 'bg-violet-500',
-        };
-    }
-    
-    if (subject.includes('chemistry')) {
-        return {
-            gradientBg: 'bg-gradient-to-br from-emerald-600 to-green-800',
-            badgeBg: 'bg-emerald-500',
-            iconBg: 'bg-emerald-500',
-        };
-    }
-    
-    if (subject.includes('biology')) {
-        return {
-            gradientBg: 'bg-gradient-to-br from-amber-600 to-orange-700',
-            badgeBg: 'bg-amber-500',
-            iconBg: 'bg-amber-500',
-        };
-    }
-    
-    if (subject.includes('computer') || subject.includes('informatics')) {
-        return {
-            gradientBg: 'bg-gradient-to-br from-cyan-600 to-blue-800',
-            badgeBg: 'bg-cyan-500',
-            iconBg: 'bg-cyan-500',
-        };
-    }
-    
-    if (subject.includes('economics')) {
-        return {
-            gradientBg: 'bg-gradient-to-br from-rose-600 to-red-800',
-            badgeBg: 'bg-rose-500',
-            iconBg: 'bg-rose-500',
-        };
-    }
-    
-    // Default theme
-    return {
-        gradientBg: 'bg-gradient-to-br from-gray-700 to-gray-900',
-        badgeBg: 'bg-gray-600',
-        iconBg: 'bg-gray-600',
-    };
 }
