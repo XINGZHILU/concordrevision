@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 
@@ -7,7 +8,7 @@ import { OlympiadResourceCard } from "@/lib/customui/Basic/cards";
 import MDViewer from "@/lib/customui/Basic/showMD";
 import { Collapsible } from "@chakra-ui/react"
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars 
 export default async function Page(req: any, res: any) {
     const params = await req.params;
     const oid = params.oid;

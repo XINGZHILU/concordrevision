@@ -131,10 +131,10 @@ export default async function Page(req : any, res : any){
                 <div className="flex flex-col md:flex-row gap-8">
                     {/* Main content - larger proportion */}
                     <div className="flex-grow md:w-3/4">
-                        <div className="rounded-lg shadow-md border border-green-100 p-8 mb-6">
-                            <div className="flex items-center justify-between mb-5 border-b pb-3 border-green-200">
-                                <h2 className="text-2xl font-semibold text-green-800">Test Preparation Materials</h2>
-                                <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+                        <div className="rounded-lg shadow-md border border-blue-100 p-8 mb-6">
+                            <div className="flex items-center justify-between mb-5 border-b pb-3 border-blue-200">
+                                <h2 className="text-2xl font-semibold text-indigo-600">Test Preparation Materials</h2>
+                                <span className="px-3 py-1 bg-blue-100 text-indigo-600 rounded-full text-sm font-medium">
                                     {getTestTypeLabel(test.type)}
                                 </span>
                             </div>
@@ -161,10 +161,10 @@ export default async function Page(req : any, res : any){
             ) : (
                 /* Full width content when no files */
                 <div className="w-full">
-                    <div className="rounded-lg shadow-md border border-green-100 p-8 mb-6">
-                        <div className="flex items-center justify-between mb-5 border-b pb-3 border-green-200">
-                            <h2 className="text-2xl font-semibold text-green-800">Test Preparation Materials</h2>
-                            <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+                    <div className="rounded-lg shadow-md border border-blue-100 p-8 mb-6">
+                        <div className="flex items-center justify-between mb-5 border-b pb-3 border-blue-200">
+                            <h2 className="text-2xl font-semibold text-indigo-600">Test Preparation Materials</h2>
+                            <span className="px-3 py-1 bg-blue-100 text-indigo-600 rounded-full text-sm font-medium">
                                 {getTestTypeLabel(test.type)}
                             </span>
                         </div>
