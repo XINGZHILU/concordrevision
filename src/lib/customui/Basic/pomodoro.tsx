@@ -1,5 +1,6 @@
 'use client';
 
+
 import React, { useState, useEffect, useRef } from "react";
 import "./HorizontalPomodoro.css";
 import "./ImprovedPomodoro.css"; // Import the improved styles
