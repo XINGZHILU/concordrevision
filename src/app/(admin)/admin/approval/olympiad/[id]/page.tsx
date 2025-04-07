@@ -9,6 +9,7 @@ import FileList from "@/lib/customui/Basic/filelist";
 import MDViewer from "@/lib/customui/Basic/showMD";
 
 // Function to get type label
+/*
 const getResourceTypeLabel = (type: number) => {
     switch (type) {
         case 0:
@@ -21,6 +22,7 @@ const getResourceTypeLabel = (type: number) => {
             return "Unknown";
     }
 };
+*/
 
 export default async function OlympiadResourceReviewPage({ params }: { params: { id: string } }) {
     const resourceId = params.id;
@@ -91,7 +93,7 @@ export default async function OlympiadResourceReviewPage({ params }: { params: {
                                 colorPalette={resource.type === 0 ? 'blue' : resource.type === 1 ? 'green' : 'purple'}
                                 className="mb-2"
                             >
-                                {getResourceTypeLabel(resource.type)}
+                                Resource
                             </Badge>
                             <p className="text-sm text-gray-600">
                                 Submitted by: {`${resource.author.firstname} ${resource.author.lastname}` || 'Unknown'} ({resource.author.email})

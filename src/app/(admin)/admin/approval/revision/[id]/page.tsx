@@ -10,6 +10,7 @@ import FileList from "@/lib/customui/Basic/filelist";
 import MDViewer from "@/lib/customui/Basic/showMD";
 
 // Function to get type label
+/* 
 const getNoteTypeLabel = (type: number) => {
     switch (type) {
         case 0:
@@ -22,6 +23,7 @@ const getNoteTypeLabel = (type: number) => {
             return "Unknown";
     }
 };
+*/
 
 export default async function NoteReviewPage({ params }: { params: { id: string } }) {
 
@@ -93,7 +95,7 @@ export default async function NoteReviewPage({ params }: { params: { id: string 
                                 colorPalette={note.type === 0 ? 'green' : note.type === 1 ? 'orange' : 'blue'}
                                 className="mb-2"
                             >
-                                {getNoteTypeLabel(note.type)}
+                                Revision Resource
                             </Badge>
                             <p className="text-sm text-gray-600">
                                 Submitted by: {`${note.author.firstname} ${note.author.lastname}` || 'Unknown'} ({note.author.email})
