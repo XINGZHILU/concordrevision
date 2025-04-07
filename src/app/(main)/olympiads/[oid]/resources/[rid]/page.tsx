@@ -96,36 +96,6 @@ export default async function Page(req : any, res : any){
                                 <MDViewer content={resource.desc}/>
                             </div>
                         </div>
-
-                        {/* Related olympiad links if available */}
-                        {olympiad.links && olympiad.links.length > 0 && (
-                            <div className="bg-white rounded-lg shadow-sm border p-6 mt-6">
-                                <h2 className="text-xl font-semibold mb-4 flex items-center">
-                                    <LuExternalLink className="mr-2" />
-                                    Related Links
-                                </h2>
-                                <ul className="space-y-2">
-                                    {olympiad.links.map((link, index) => {
-                                        const description = olympiad.link_descriptions && olympiad.link_descriptions[index]
-                                            ? olympiad.link_descriptions[index]
-                                            : link;
-                                        return (
-                                            <li key={index} className="flex">
-                                                <a 
-                                                    href={link} 
-                                                    target="_blank" 
-                                                    rel="noopener noreferrer"
-                                                    className="text-indigo-600 hover:text-indigo-800 hover:underline flex items-center"
-                                                >
-                                                    <LuExternalLink className="mr-2 flex-shrink-0" />
-                                                    <span>{description}</span>
-                                                </a>
-                                            </li>
-                                        );
-                                    })}
-                                </ul>
-                            </div>
-                        )}
                     </div>
 
                     {/* Sidebar for files - only shown when there are files */}
@@ -151,36 +121,6 @@ export default async function Page(req : any, res : any){
                             <MDViewer content={resource.desc}/>
                         </div>
                     </div>
-
-                    {/* Related olympiad links if available */}
-                    {olympiad.links && olympiad.links.length > 0 && (
-                        <div className="bg-white rounded-lg shadow-sm border p-6 mt-6">
-                            <h2 className="text-xl font-semibold mb-4 flex items-center">
-                                <LuExternalLink className="mr-2" />
-                                Related Links
-                            </h2>
-                            <ul className="space-y-2">
-                                {olympiad.links.map((link, index) => {
-                                    const description = olympiad.link_descriptions && olympiad.link_descriptions[index]
-                                        ? olympiad.link_descriptions[index]
-                                        : link;
-                                    return (
-                                        <li key={index} className="flex">
-                                            <a 
-                                                href={link} 
-                                                target="_blank" 
-                                                rel="noopener noreferrer"
-                                                className="text-indigo-600 hover:text-indigo-800 hover:underline flex items-center"
-                                            >
-                                                <LuExternalLink className="mr-2 flex-shrink-0" />
-                                                <span>{description}</span>
-                                            </a>
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        </div>
-                    )}
                 </div>
             )}
         </div>
