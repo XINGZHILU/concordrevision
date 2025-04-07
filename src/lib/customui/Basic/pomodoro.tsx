@@ -3,7 +3,6 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import "./HorizontalPomodoro.css";
-import "./ImprovedPomodoro.css"; // Import the improved styles
 
 // Default values as constants
 const DEFAULT_WORK_TIME = 25 * 60;
@@ -52,73 +51,18 @@ const HorizontalPomodoro: React.FC = () => {
     const [activeTaskId, setActiveTaskId] = useState<number | null>(null);
     const [showTaskPanel, setShowTaskPanel] = useState<boolean>(false);
     
-    // Position state for dragging
-    const [position, setPosition] = useState({ x: 20, y: 20 });
-    const dragRef = useRef<HTMLDivElement>(null);
-    
     // Audio references
     const workCompleteSound = useRef<HTMLAudioElement | null>(null);
     const breakCompleteSound = useRef<HTMLAudioElement | null>(null);
     
-    // Initialize audio elements and drag functionality
+    // Initialize audio elements
     useEffect(() => {
         workCompleteSound.current = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-bell-notification-933.mp3");
         breakCompleteSound.current = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3");
         
-        // Add drag functionality
-        const element = dragRef.current;
-        if (!element) return;
-        
-        let posX = position.x;
-        let posY = position.y;
-        let isDragging = false;
-        let offsetX = 0;
-        let offsetY = 0;
-        
-        const onMouseDown = (e: MouseEvent) => {
-            // Don't initiate drag if clicking on buttons, inputs, etc.
-            if (e.target instanceof HTMLInputElement || 
-                e.target instanceof HTMLButtonElement || 
-                e.target instanceof HTMLTextAreaElement) {
-                return;
-            }
-            
-            isDragging = true;
-            offsetX = e.clientX - posX;
-            offsetY = e.clientY - posY;
-            element.style.cursor = 'grabbing';
-            e.preventDefault();
-        };
-        
-        const onMouseMove = (e: MouseEvent) => {
-            if (!isDragging) return;
-            
-            posX = e.clientX - offsetX;
-            posY = e.clientY - offsetY;
-            
-            element.style.transform = `translate(${posX}px, ${posY}px)`;
-        };
-        
-        const onMouseUp = () => {
-            if (!isDragging) return;
-            
-            isDragging = false;
-            element.style.cursor = 'grab';
-            
-            setPosition({ x: posX, y: posY });
-        };
-        
-        element.addEventListener('mousedown', onMouseDown);
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onMouseUp);
-        
         return () => {
             if (workCompleteSound.current) workCompleteSound.current = null;
             if (breakCompleteSound.current) breakCompleteSound.current = null;
-            
-            element.removeEventListener('mousedown', onMouseDown);
-            document.removeEventListener('mousemove', onMouseMove);
-            document.removeEventListener('mouseup', onMouseUp);
         };
     }, []);
 
@@ -441,20 +385,10 @@ const HorizontalPomodoro: React.FC = () => {
     );
 
     return (
-        <div 
-            ref={dragRef}
-            className={`pomodoro ${sizeMode}`}
-            style={{
-                position: 'fixed',
-                transform: `translate(${position.x}px, ${position.y}px)`,
-                zIndex: 999
-            }}
-        >
+        <div className={`pomodoro ${sizeMode}`}>
             <div className="horizontal-layout">
                 <div className="timer-section">
                     <div className="drag-handle">
-                        <span className="drag-icon">⋮⋮</span>
-                        
                         <button 
                             onClick={(e) => { e.stopPropagation(); toggleCanResize(); }} 
                             className={`lock-button ${!canResize ? "locked" : ""}`}
@@ -689,4 +623,4 @@ const HorizontalPomodoro: React.FC = () => {
     );
 };
 
-export default HorizontalPomodoro;
+export default Pomodoro;
