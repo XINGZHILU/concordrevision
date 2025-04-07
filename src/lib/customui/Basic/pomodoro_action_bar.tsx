@@ -12,7 +12,6 @@ import { useState } from "react"
 
 export default function PomodoroActionBar() {
     const [checked, setChecked] = useState(false)
-    return (<></>);
     return (
         <>
             <Checkbox
