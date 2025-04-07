@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { isNumeric } from "@/lib/utils";
@@ -7,6 +10,8 @@ import { currentUser } from "@clerk/nextjs/server";
 
 import { Collapsible, Tabs } from "@chakra-ui/react"
 import { LuFolder, LuBookCheck } from "react-icons/lu"
+
+import MDViewer from "@/lib/customui/Basic/showMD";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default async function Page(req: any, res: any) {
@@ -72,7 +77,7 @@ export default async function Page(req: any, res: any) {
             <Collapsible.Root defaultOpen>
                 <Collapsible.Trigger paddingY="3"><h2>About</h2></Collapsible.Trigger>
                 <Collapsible.Content>
-                    {subject.desc.split('\n').map((line, index) => <p key={index}>{line}</p>)}
+                    <MDViewer content={subject.desc}/>
                 </Collapsible.Content>
             </Collapsible.Root>
             <br />

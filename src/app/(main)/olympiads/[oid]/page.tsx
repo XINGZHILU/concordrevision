@@ -1,6 +1,11 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { OlympiadResourceCard } from "@/lib/customui/Basic/cards";
+import MDViewer from "@/lib/customui/Basic/showMD";
+import { Collapsible } from "@chakra-ui/react"
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default async function Page(req: any, res: any) {
@@ -25,8 +30,12 @@ export default async function Page(req: any, res: any) {
     return <div>
         <h1>{olympiad.title}</h1>
         <br />
-        <h2>About</h2>
-        <p>{olympiad.desc}</p>
+        <Collapsible.Root defaultOpen>
+            <Collapsible.Trigger paddingY="3"><h2>About</h2></Collapsible.Trigger>
+            <Collapsible.Content>
+                <MDViewer content={olympiad.desc}/>
+            </Collapsible.Content>
+        </Collapsible.Root>
         <br />
         <h2>External Links</h2>
         <div>

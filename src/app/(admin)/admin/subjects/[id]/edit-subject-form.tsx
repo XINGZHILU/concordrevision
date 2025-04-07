@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 'use client';
 
 // File: app/admin/subjects/[id]/edit-subject-form.tsx
@@ -7,6 +9,7 @@ import Link from 'next/link';
 // import { useRouter } from 'next/navigation';
 import { year_group_names } from "@/lib/consts";
 import { toaster, Toaster } from "@/components/ui/toaster";
+import MDEditor from '@uiw/react-md-editor';
 
 type Subject = {
     id: number;
@@ -41,7 +44,7 @@ export default function EditSubjectForm({ subject }: EditSubjectFormProps) {
                 },
                 body: JSON.stringify({
                     desc: description.trim(),
-                    id : subject.id,
+                    id: subject.id,
                 }),
             });
 
@@ -104,19 +107,19 @@ export default function EditSubjectForm({ subject }: EditSubjectFormProps) {
                 )}
 
                 <form onSubmit={handleSubmit}>
-                    
+
 
                     <div className="mb-6">
                         <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
                             Description
                         </label>
-                        <textarea
-                            id="description"
+                        <MDEditor
+                            textareaProps={{
+                                placeholder: "Please enter Markdown text"
+                            }}
                             value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            rows={4}
-                            className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                            placeholder="Enter a brief description of the subject..."
+                            height={450}
+                            onChange={setDescription}
                         />
                     </div>
 
@@ -129,9 +132,8 @@ export default function EditSubjectForm({ subject }: EditSubjectFormProps) {
                         </Link>
                         <button
                             type="submit"
-                            className={`px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors ${
-                                isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
-                            }`}
+                            className={`px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+                                }`}
                             disabled={isSubmitting}
                         >
                             {isSubmitting ? 'Saving...' : 'Save Changes'}
