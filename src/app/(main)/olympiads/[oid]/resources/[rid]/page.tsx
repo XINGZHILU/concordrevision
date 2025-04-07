@@ -90,7 +90,7 @@ export default async function Page(req : any, res : any){
                 <div className="flex flex-col md:flex-row gap-8">
                     {/* Main content - larger proportion */}
                     <div className="flex-grow md:w-3/4">
-                        <div className="bg-blue-50 rounded-lg shadow-md border border-blue-100 p-8 mb-6">
+                        <div className="rounded-lg shadow-md border border-blue-100 p-8 mb-6">
                             <h2 className="text-2xl font-semibold mb-5 text-blue-800 border-b pb-3 border-blue-200">Olympiad Resource Content</h2>
                             <div className="prose prose-lg max-w-none text-gray-800">
                                 <MDViewer content={resource.desc}/>
@@ -145,7 +145,7 @@ export default async function Page(req : any, res : any){
             ) : (
                 /* Full width content when no files */
                 <div className="w-full">
-                    <div className="bg-blue-50 rounded-lg shadow-md border border-blue-100 p-8 mb-6">
+                    <div className=" rounded-lg shadow-md border border-blue-100 p-8 mb-6">
                         <h2 className="text-2xl font-semibold mb-5 text-blue-800 border-b pb-3 border-blue-200">Olympiad Resource Content</h2>
                         <div className="prose prose-lg max-w-none text-gray-800">
                             <MDViewer content={resource.desc}/>
