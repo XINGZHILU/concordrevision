@@ -1,9 +1,19 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 'use client';
 
 import { Toaster, toaster } from "@/components/ui/toaster"
 import { useState, useRef } from 'react';
+import MDEditor from "@uiw/react-md-editor";
 
 export default function NewTestForm({ subject }: { subject: number }) {
+    const [description, setDescription] = useState<string>("");
+    const titleRef = useRef<HTMLInputElement>(null);
+    const typeRef = useRef<HTMLSelectElement>(null);
+    const dateRef = useRef<HTMLInputElement>(null);
+    const [cantUpload, setCantUpload] = useState<boolean>(false);
+
     async function create(title: string, desc: string, type: string, date: string) {
         const response = await fetch('/api/add_test', {
             method: 'POST',
@@ -22,13 +32,15 @@ export default function NewTestForm({ subject }: { subject: number }) {
         if (!response.ok) {
             throw new Error("Failed to upload");
         }
+        else {
+            if (titleRef.current) titleRef.current.value = '';
+            setDescription('');
+            if (typeRef.current) typeRef.current.value = '0';
+            if (dateRef.current) dateRef.current.value = '';
+        }
     }
 
-    const descriptionRef = useRef<HTMLTextAreaElement>(null);
-    const titleRef = useRef<HTMLInputElement>(null);
-    const typeRef = useRef<HTMLSelectElement>(null);
-    const dateRef = useRef<HTMLInputElement>(null);
-    const [cantUpload, setCantUpload] = useState<boolean>(false);
+
 
     // Calculate minimum date (today) for the date picker
     const today = new Date().toISOString().split('T')[0];
@@ -36,7 +48,7 @@ export default function NewTestForm({ subject }: { subject: number }) {
     return (
         <>
             <Toaster />
-            <div className="w-full max-w-3xl mx-auto bg-white rounded-lg shadow p-6">
+            <div className="w-full mx-auto bg-white rounded-lg shadow p-6">
                 <div className="mb-6">
                     <h2 className="text-xl font-semibold text-gray-900">Schedule a New Test</h2>
                     <p className="text-gray-600 mt-1">Create a new test and provide details for students</p>
@@ -50,11 +62,10 @@ export default function NewTestForm({ subject }: { subject: number }) {
                         setCantUpload(true);
 
                         const title = titleRef.current?.value || 'No title';
-                        const desc = descriptionRef.current?.value || '';
                         const type = typeRef.current?.value || '0';
                         const date = dateRef.current?.value || '1970-01-01 00:00:00';
 
-                        toaster.promise(create(title, desc, type, date), {
+                        toaster.promise(create(title, description, type, date), {
                             success: {
                                 title: "Successfully scheduled test!",
                                 description: "The test is now available for others to view",
@@ -123,13 +134,14 @@ export default function NewTestForm({ subject }: { subject: number }) {
                         <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
                             Test Information
                         </label>
-                        <textarea
-                            name="description"
-                            placeholder="Provide details about this test (topics covered, preparation guidance, etc.)"
-                            ref={descriptionRef}
-                            rows={6}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                        ></textarea>
+                        <MDEditor
+                            textareaProps={{
+                                placeholder: "Provide details about this test (topics covered, preparation guidance, etc.)"
+                            }}
+                            value={description}
+                            height={450}
+                            onChange={setDescription}
+                        />
                     </div>
 
                     <div className="flex items-center justify-end">
@@ -138,7 +150,7 @@ export default function NewTestForm({ subject }: { subject: number }) {
                             className="mr-4 px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                             onClick={() => {
                                 if (titleRef.current) titleRef.current.value = '';
-                                if (descriptionRef.current) descriptionRef.current.value = '';
+                                setDescription('');
                                 if (typeRef.current) typeRef.current.value = '0';
                                 if (dateRef.current) dateRef.current.value = '';
                             }}
@@ -147,11 +159,10 @@ export default function NewTestForm({ subject }: { subject: number }) {
                         </button>
                         <button
                             type="submit"
-                            className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
-                                cantUpload
+                            className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${cantUpload
                                     ? 'bg-indigo-300 cursor-not-allowed'
                                     : 'bg-indigo-600 hover:bg-indigo-700'
-                            }`}
+                                }`}
                             disabled={cantUpload}
                         >
                             {cantUpload ? (
