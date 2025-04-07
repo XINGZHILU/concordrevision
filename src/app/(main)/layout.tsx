@@ -34,8 +34,9 @@ export default async function RootLayout({children}: { children: React.ReactNode
                         {children}
                     </div>
                     <br/>
-                    <Footer/>
+                    
                 </Provider>
+                <Footer/>
                 </body>
                 </html>
             </ClerkProvider>

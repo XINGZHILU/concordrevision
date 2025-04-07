@@ -15,7 +15,7 @@ const Footer = () => {
                     </div>
 
                     {/* Links */}
-                    <ul className="flex flex-wrap items-center gap-4 order-1 md:order-2 justify-center md:justify-end">
+                    <ul className="flex flex-wrap items-center gap-4 order-1 md:order-2 justify-center md:justify-end list-none">
                         <li>
                             <Link href="/about" className="text-sm text-gray-500 hover:text-indigo-600">About</Link>
                         </li>
