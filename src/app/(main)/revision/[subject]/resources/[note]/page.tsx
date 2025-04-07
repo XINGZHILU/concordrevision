@@ -9,6 +9,8 @@ import {currentUser} from "@clerk/nextjs/server";
 import ColourSelector from "@/lib/customui/Revision/ColourSelector";
 import FileList from "@/lib/customui/Basic/filelist";
 import MDViewer from "@/lib/customui/Basic/showMD";
+import Link from "next/link";
+import { LuArrowLeft, LuFileText, LuFile } from "react-icons/lu";
 
 export default async function Page(req : any, res : any){
     function Get_Colour(usr: { red: number[]; amber: number[]; green: number[]}, nid: number) {
@@ -50,7 +52,13 @@ export default async function Page(req : any, res : any){
             id: +nid
         },
         include: {
-            files: true
+            files: true,
+            author: {
+                select: {
+                    firstname: true,
+                    lastname: true
+                }
+            }
         }
     });
 
@@ -58,48 +66,97 @@ export default async function Page(req : any, res : any){
         notFound();
     }
     
-    const user = await currentUser();
-    if (!user){
-        return (<div className="w-full">
-            <h1>{year_group_names[subject.level]} {subject.title} - {note.title}</h1>
-            <br/>
-            <MDViewer content={note.desc}/>
-            <br/>
-            <h2>Files</h2>
-            <br/>
-            <FileList files={note.files}/>
-        </div>)
-    }
-
-    const record = await prisma.user.findUnique({
-        where: {
-            id: user.id
-        }
-    });
-
-    if (!record){
-        return <h1>User not found</h1>;
-    }    
-
-    const colour = Get_Colour(record, note.id);
-
-    if (!note) {
-        notFound();
-    }
-
     if (!note.approved){
         notFound();
     }
 
-    return (<div className="w-full">
-        <h1>{year_group_names[subject.level]} {subject.title} - {note.title}</h1>
-        <br/>
-        <ColourSelector nid={note.id} uid={user.id} subject={subject.id} original={colour}/>
-        <br/>
-        <MDViewer content={note.desc}/>
-        <br/>
-        <h2>Files</h2>
-        <br/>
-        <FileList files={note.files}/>
-    </div>)
+    const user = await currentUser();
+    const colour = user ? await getUserColor(user.id, note.id) : -1;
+
+    const authorName = note.author.firstname && note.author.lastname 
+        ? `${note.author.firstname} ${note.author.lastname}`
+        : "Anonymous";
+
+    return (
+        <div className="container mx-auto px-4 py-6 max-w-7xl">
+            {/* Breadcrumb */}
+            <div className="mb-6">
+                <Link 
+                    href={`/revision/${subject.id}`}
+                    className="flex items-center text-indigo-600 hover:text-indigo-800 transition-colors"
+                >
+                    <LuArrowLeft className="mr-2" />
+                    <span>Back to {subject.title}</span>
+                </Link>
+            </div>
+
+            {/* Page Header */}
+            <div className="mb-8 border-b pb-4">
+                <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                    {note.title}
+                </h1>
+                <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600">
+                    <span className="font-medium">{year_group_names[subject.level]} {subject.title}</span>
+                    <span>•</span>
+                    <span>Contributed by {authorName}</span>
+                </div>
+            </div>
+
+            {user && (
+                <div className="mb-6">
+                    <h2 className="text-lg font-medium mb-2">My Knowledge Level</h2>
+                    <ColourSelector nid={note.id} uid={user.id} subject={subject.id} original={colour}/>
+                </div>
+            )}
+
+            {/* Two-column layout */}
+            <div className="flex flex-col md:flex-row gap-8">
+                {/* Main content - grows to fill space */}
+                <div className="flex-grow md:w-2/3">
+                    <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
+                        <h2 className="text-xl font-semibold mb-4">Description</h2>
+                        <div className="prose max-w-none">
+                            <MDViewer content={note.desc}/>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Sidebar for files - fixed width */}
+                <div className="md:w-1/3">
+                    <div className="bg-white rounded-lg shadow-sm border p-6 sticky top-20">
+                        <h2 className="text-xl font-semibold mb-4 flex items-center">
+                            <LuFileText className="mr-2" />
+                            Attachments
+                            <span className="ml-2 text-sm font-normal text-gray-500">
+                                ({note.files.length})
+                            </span>
+                        </h2>
+                        
+                        {note.files.length > 0 ? (
+                            <FileList files={note.files} />
+                        ) : (
+                            <div className="text-center py-8 text-gray-500">
+                                <LuFile className="mx-auto h-10 w-10 mb-2" />
+                                <p>No files attached</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+
+    async function getUserColor(userId: string, noteId: number) {
+        const record = await prisma.user.findUnique({
+            where: {
+                id: userId
+            }
+        });
+
+        if (!record) {
+            return -1;
+        }
+
+        return Get_Colour(record, noteId);
+    }
 }
