@@ -54,13 +54,6 @@ export default function OlympiadUploadForm({ olympiad, author }: { olympiad: num
         if (!response2.ok) {
             throw new Error("Failed to update database");
         }
-        else{
-            if (titleRef.current) titleRef.current.value = '';
-            if (descriptionRef.current) descriptionRef.current.value = '';
-            if (inputFileRef.current) inputFileRef.current.value = '';
-            setSelectedFiles(0);
-            setDescription("");
-        }
     }
 
     
