@@ -28,11 +28,6 @@ export function OlympiadCard({ olympiad }: {
 }) {
     // Get appropriate icon based on olympiad area
     const OlympiadIcon = getOlympiadIcon(olympiad.area);
-    
-    // Create a truncated description
-    const shortDesc = olympiad.desc 
-        ? truncateDescription(olympiad.desc, 100) 
-        : "Explore resources and materials for this olympiad competition";
         
     // Count resources if available
     const resourceCount = olympiad.resources ? olympiad.resources.length : 0;
@@ -67,11 +62,6 @@ export function OlympiadCard({ olympiad }: {
                             </h3>
                         </div>
                         
-                        {/* Description */}
-                        <p className="mt-3 text-sm text-gray-600 line-clamp-3 mb-4">
-                            {shortDesc}
-                        </p>
-                        
                         {/* Footer */}
                         <div className="mt-auto pt-4 border-t border-gray-200 flex justify-between items-center">
                             <div className="text-gray-600 text-xs font-medium">
@@ -94,6 +84,7 @@ export function OlympiadCard({ olympiad }: {
 }
 
 // Function to truncate description text
+/*
 function truncateDescription(text: string, maxLength: number): string {
     // Remove any Markdown formatting
     const plainText = text.replace(/[#*_~`]/g, '');
@@ -101,6 +92,7 @@ function truncateDescription(text: string, maxLength: number): string {
     if (plainText.length <= maxLength) return plainText;
     return plainText.substring(0, maxLength) + '...';
 }
+*/
 
 // Helper function to get appropriate icon based on olympiad area
 function getOlympiadIcon(area: string) {

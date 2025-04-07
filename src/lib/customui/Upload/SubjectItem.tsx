@@ -28,11 +28,6 @@ export function SubjectItem({ subject }: {
     // Get appropriate icon based on subject title or other criteria
     const SubjectIcon = getSubjectIcon(subject.title);
     
-    // Create a truncated description
-    const shortDesc = subject.desc 
-        ? truncateDescription(subject.desc, 80) 
-        : "Explore materials and resources for this subject";
-
     return (
         <div className="p-3">
             <Link href={`/revision/${subject.id}`} className="block h-full">
@@ -62,10 +57,6 @@ export function SubjectItem({ subject }: {
                             </Badge>
                         </div>
                         
-                        {/* Description */}
-                        <p className="mt-3 text-sm text-gray-600 line-clamp-2">
-                            {shortDesc}
-                        </p>
                         
                         {/* Footer - view button */}
                         <div className="mt-4 flex items-center text-sm font-medium">
@@ -82,6 +73,7 @@ export function SubjectItem({ subject }: {
 }
 
 // Function to truncate description text
+/*
 function truncateDescription(text: string, maxLength: number): string {
     // Remove any Markdown formatting
     const plainText = text.replace(/[#*_~`]/g, '');
@@ -89,6 +81,7 @@ function truncateDescription(text: string, maxLength: number): string {
     if (plainText.length <= maxLength) return plainText;
     return plainText.substring(0, maxLength) + '...';
 }
+*/
 
 // Helper function to get appropriate icon based on subject name
 function getSubjectIcon(subjectTitle: string) {
