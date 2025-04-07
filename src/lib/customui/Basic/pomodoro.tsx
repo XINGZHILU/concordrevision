@@ -141,6 +141,7 @@ const HorizontalPomodoro: React.FC = () => {
     useEffect(() => {
         const intervalType = isWorkInterval ? 'Work' : (isLongBreak ? 'Long Break' : 'Break');
         const taskText = activeTaskId !== null 
+            // @ts-expect-error: may be undefined
             ? ` - ${tasks.find(t => t.id === activeTaskId)?.text.substring(0, 20)}${tasks.find(t => t.id === activeTaskId)?.text.length > 20 ? '...' : ''}`
             : '';
         document.title = `${intervalType} - ${formatTime(timeLeft)}${taskText}`;
@@ -299,9 +300,9 @@ const HorizontalPomodoro: React.FC = () => {
         setShowTaskPanel(!showTaskPanel);
     };
 
-    const closePopup = () => {
-        setShowPopup(false);
-    };
+    // const closePopup = () => {
+    //     setShowPopup(false);
+    // };
 
     // Calculate progress for progress bar
     const calculateProgress = () => {
@@ -595,7 +596,7 @@ const HorizontalPomodoro: React.FC = () => {
             )}
             
             {/* Popup notifications */}
-            {showPopup && (
+            {/* {showPopup && (
                 <div className="popup">
                     <div className="popup-content">
                         <h2>
@@ -618,7 +619,7 @@ const HorizontalPomodoro: React.FC = () => {
                         </div>
                     </div>
                 </div>
-            )}
+            )} */}
         </div>
     );
 };
