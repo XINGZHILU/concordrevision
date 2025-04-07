@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 'use client';
 
 import { Toaster, toaster } from "@/components/ui/toaster"
@@ -5,17 +8,25 @@ import { useState, useRef } from 'react';
 import { StorageURLOlympiads } from "@/lib/utils";
 import { createClient } from "@/utils/supabase/client";
 import cuid from "cuid";
+import MDEditor from "@uiw/react-md-editor";
 
 export default function OlympiadUploadForm({ olympiad, author }: { olympiad: number, author: string }) {
+    const inputFileRef = useRef<HTMLInputElement>(null);
+    const [description, setDescription] = useState<string>("");
+    const titleRef = useRef<HTMLInputElement>(null);
+    const [cantUpload, setCantUpload] = useState<boolean>(false);
+    const [selectedFiles, setSelectedFiles] = useState<number>(0);
+    const supabase = createClient();
+    
     async function upload(files: FileList, title: string, desc: string) {
         const urls = [];
         const names = [];
         for (const file of files) {
             const response = await supabase.storage.from('olympiads-storage').upload(cuid() + file.name,
                 file, {
-                    cacheControl: '3600',
-                    upsert: false
-                });
+                cacheControl: '3600',
+                upsert: false
+            });
 
             if (response.error) {
                 throw new Error("Failed to upload files, there is probably a file with the same name");
@@ -45,12 +56,7 @@ export default function OlympiadUploadForm({ olympiad, author }: { olympiad: num
         }
     }
 
-    const inputFileRef = useRef<HTMLInputElement>(null);
-    const descriptionRef = useRef<HTMLTextAreaElement>(null);
-    const titleRef = useRef<HTMLInputElement>(null);
-    const [cantUpload, setCantUpload] = useState<boolean>(false);
-    const [selectedFiles, setSelectedFiles] = useState<number>(0);
-    const supabase = createClient();
+    
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
@@ -85,9 +91,8 @@ export default function OlympiadUploadForm({ olympiad, author }: { olympiad: num
                             return;
                         }
                         const title = titleRef.current?.value || 'No title';
-                        const desc = descriptionRef.current?.value || '';
 
-                        toaster.promise(upload(files, title, desc), {
+                        toaster.promise(upload(files, title, description), {
                             success: {
                                 title: "Successfully uploaded!",
                                 description: "The resource will be available for view after being approved by teachers",
@@ -100,7 +105,7 @@ export default function OlympiadUploadForm({ olympiad, author }: { olympiad: num
                         })
 
                         setCantUpload(false);
-                        
+
                     }}
                 >
                     <div>
@@ -121,13 +126,14 @@ export default function OlympiadUploadForm({ olympiad, author }: { olympiad: num
                         <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
                             Description
                         </label>
-                        <textarea
-                            name="description"
-                            placeholder="Provide details about these materials"
-                            ref={descriptionRef}
-                            rows={6}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                        ></textarea>
+                        <MDEditor
+                            textareaProps={{
+                                placeholder: "Describe what this resource covers and how it can be used"
+                            }}
+                            value={description}
+                            height={450}
+                            onChange={setDescription}
+                        />
                     </div>
 
                     <div>
@@ -195,11 +201,10 @@ export default function OlympiadUploadForm({ olympiad, author }: { olympiad: num
                         </button>
                         <button
                             type="submit"
-                            className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
-                                cantUpload
+                            className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${cantUpload
                                     ? 'bg-indigo-300 cursor-not-allowed'
                                     : 'bg-indigo-600 hover:bg-indigo-700'
-                            }`}
+                                }`}
                             disabled={cantUpload}
                         >
                             {cantUpload ? (

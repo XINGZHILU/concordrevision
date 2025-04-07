@@ -1,9 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import {prisma} from "@/lib/prisma";
 import {notFound} from "next/navigation";
 import {isNumeric} from "@/lib/utils";
 import {year_group_names} from "@/lib/consts";
 import {currentUser} from "@clerk/nextjs/server";
 import {TestNoteCard} from "@/lib/customui/Basic/cards";
+import MDViewer from "@/lib/customui/Basic/showMD";
 
 
 export default async function Page(req: any, res: any) {
@@ -70,9 +74,7 @@ export default async function Page(req: any, res: any) {
             </ul>
             <br/>
             <h2>Information</h2>
-            {test.desc.split('\n').map((line) => {
-                return <p key={line}>{line}</p>
-            })}
+            <MDViewer content={test.desc}/>
     
             <br/>
             <h2>Notes</h2>

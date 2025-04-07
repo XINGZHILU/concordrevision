@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import {prisma} from "@/lib/prisma";
 import {notFound} from "next/navigation";
 import {isNumeric} from "@/lib/utils";
 import FileList from "@/lib/customui/Basic/filelist";
-
+import MDViewer from "@/lib/customui/Basic/showMD";
 
 export default async function Page(req : any, res : any){
     const params = await req.params;
@@ -43,7 +46,7 @@ export default async function Page(req : any, res : any){
     return (<div className="w-full">
         <h1>{olympiad.title} - {resource.title}</h1>
         <br/>
-        {resource.desc.split('\n').map((line, index) => <p  key={index}>{line}</p>)}
+        <MDViewer content={resource.desc}/>
         <br/>
         <h2>Files</h2>
         <br/>

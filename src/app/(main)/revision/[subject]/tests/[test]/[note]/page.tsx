@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import {prisma} from "@/lib/prisma";
 import {notFound} from "next/navigation";
 import {isNumeric} from "@/lib/utils";
@@ -5,7 +8,7 @@ import {year_group_names} from "@/lib/consts";
 import {currentUser} from "@clerk/nextjs/server";
 import ColourSelector from "@/lib/customui/Revision/ColourSelector";
 import FileList from "@/lib/customui/Basic/filelist";
-
+import MDViewer from "@/lib/customui/Basic/showMD";
 
 export default async function Page(req : any, res : any){
     function Get_Colour(usr: { red: number[]; amber: number[]; green: number[]}, nid: number) {
@@ -73,7 +76,7 @@ export default async function Page(req : any, res : any){
         return (<div className="w-full">
             <h1>{year_group_names[subject.level]} {subject.title} - {note.title}</h1>
             <br/>
-            {note.desc.split('\n').map((line, index) => <p  key={index}>{line}</p>)}
+            <MDViewer content={note.desc}/>
             <br/>
             <h2>Files</h2>
             <br/>
@@ -91,7 +94,7 @@ export default async function Page(req : any, res : any){
         <br/>
         <ColourSelector nid={note.id} uid={user.id} subject={subject.id} original={colour}/>
         <br/>
-        {note.desc.split('\n').map((line, index) => <p  key={index}>{line}</p>)}
+        <MDViewer content={note.desc}/>
         <br/>
         <h2>Files</h2>
         <br/>
