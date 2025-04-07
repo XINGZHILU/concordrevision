@@ -101,13 +101,6 @@
     margin-bottom: 16px;
 }
 
-.drag-icon {
-    cursor: grab;
-    user-select: none;
-    color: #adb5bd;
-    margin-right: auto;
-}
-
 .lock-button, .task-button, .size-button {
     width: 30px;
     height: 30px;
@@ -361,6 +354,12 @@
     padding: 8px 6px;
 }
 
+.stat-icon {
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+    color: #4361ee;
+}
+
 .stat-value {
     font-size: 1.5rem;
     font-weight: 700;
@@ -385,12 +384,6 @@
     font-size: 0.8rem;
     color: #868e96;
     margin-top: 2px;
-}
-
-.medium .stat-icon {
-    font-size: 1.1rem;
-    margin-bottom: 4px;
-    color: #4361ee;
 }
 
 /* Settings section */
@@ -751,6 +744,11 @@
     .stats {
         flex-wrap: wrap;
     }
+    
+    .stat-item {
+        min-width: calc(50% - 5px);
+    }
+}
     
     .stat-item {
         min-width: calc(50% - 5px);
