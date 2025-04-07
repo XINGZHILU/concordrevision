@@ -134,7 +134,7 @@ const HorizontalPomodoro: React.FC = () => {
         }
         
         setIsRunning(false);
-        setShowPopup(true);
+        //setShowPopup(true);
     }, [isWorkInterval, isLongBreak, workTime, breakTime, longBreakTime]);
 
     // Update document title with timer progress
