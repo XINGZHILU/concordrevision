@@ -55,6 +55,13 @@ export default function ResourceUploadForm({ subject, author }: { subject: numbe
         if (!response2.ok) {
             throw new Error("Failed to upload");
         }
+        else{
+            if (titleRef.current) titleRef.current.value = '';
+            if (descriptionRef.current) descriptionRef.current.value = '';
+            if (inputFileRef.current) inputFileRef.current.value = '';
+            setSelectedFiles(0);
+            setDescription("");
+        }
     }
 
     async function store(event: React.FormEvent) {
@@ -193,6 +200,7 @@ export default function ResourceUploadForm({ subject, author }: { subject: numbe
                                 if (descriptionRef.current) descriptionRef.current.value = '';
                                 if (inputFileRef.current) inputFileRef.current.value = '';
                                 setSelectedFiles(0);
+                                setDescription("");
                             }}
                         >
                             Reset
