@@ -59,7 +59,7 @@ export default async function Page(req: any, res: any) {
         notFound();
     }
 
-    const notes = test.notes.filter((note) => {return (note.type === 2 && note.approved)});
+    const notes = test.notes.filter((note) => {return (note.approved)});
 
     const user = await currentUser();
     if (!user) {
