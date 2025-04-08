@@ -2,7 +2,23 @@
 
 import { useRef, useState } from "react";
 import { Toaster, toaster } from "@/components/ui/toaster";
+import { LuCircleAlert, LuCircleCheck, LuCircleEllipsis, LuCircleHelp } from "react-icons/lu";
 
+
+function GetSymbol({colour} : {colour : number}){
+    if (colour === -1){
+        return <LuCircleHelp/>
+    }
+    else if (colour === 0){
+        return <LuCircleCheck/>
+    }
+    else if (colour === 1){
+        return <LuCircleEllipsis/>
+    }
+    return <LuCircleAlert/>
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ColourSelector({ nid, uid, subject, original }: {
     nid: number,
     uid: string,
@@ -59,6 +75,7 @@ export default function ColourSelector({ nid, uid, subject, original }: {
                     description: "Failed to update knowledge level"
                 });
             }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
             toaster.error({
                 title: "Error",
@@ -70,7 +87,7 @@ export default function ColourSelector({ nid, uid, subject, original }: {
     }
 
     // Get the currently selected color info
-    const currentColor = colorOptions.find(option => option.value === selectedColor) || colorOptions[0];
+    // const currentColor = colorOptions.find(option => option.value === selectedColor) || colorOptions[0];
 
     return (
         <div>
@@ -97,7 +114,7 @@ export default function ColourSelector({ nid, uid, subject, original }: {
                                 }
                             }}
                         >
-                            <span className={`w-2 h-2 rounded-full mr-1 ${option.bgClass.replace('100', '500')}`}></span>
+                            <GetSymbol colour = {option.value}/>
                             {option.label}
                         </button>
                     ))}

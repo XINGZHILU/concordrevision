@@ -54,22 +54,3 @@ details > *:not(summary){
     margin-left: 2em;
 }
 
-.desktop-pdf {
-    display: none;
-}
-
-.mobile-pdf {
-    display: block;
-}
-@media only screen  and (min-width : 1025px) {
-
-    .mobile-pdf {
-        display: none;
-    }
-
-    .desktop-pdf {
-        display: block;
-    }
-}
-
-

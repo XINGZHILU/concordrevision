@@ -6,7 +6,7 @@ import { currentUser } from '@clerk/nextjs/server'
 import {TestLinkCard} from "@/lib/customui/Basic/cards";
 
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
 export default async function Page(req: any, res: any) {
     const params = await req.params;
     const sid = params.subject;

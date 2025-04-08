@@ -1,9 +1,10 @@
 import Link from "next/link";
 import React from "react";
-import {Badge} from "@chakra-ui/react";
-import {LuCalendar} from "react-icons/lu";
+import { Badge } from "@chakra-ui/react";
+import { LuCalendar } from "react-icons/lu";
+import { TestBadge } from "./Badges";
 
-export function NoteCard({note, colour}: {
+export function NoteCard({ note, colour }: {
     note: {
         id: number,
         title: string,
@@ -18,13 +19,13 @@ export function NoteCard({note, colour}: {
             <div
                 className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
                 <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{note.title}</h5>
-                <BadgeSymbol colour={colour}/>
+                <BadgeSymbol colour={colour} />
             </div>
         </Link>
     );
 }
 
-export function TestNoteCard({note, colour}: {
+export function TestNoteCard({ note, colour }: {
     note: {
         id: number,
         title: string,
@@ -40,7 +41,7 @@ export function TestNoteCard({note, colour}: {
             <div
                 className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
                 <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{note.title}</h5>
-                <BadgeSymbol colour={colour}/>
+                <BadgeSymbol colour={colour} />
             </div>
         </Link>
     );
@@ -48,7 +49,7 @@ export function TestNoteCard({note, colour}: {
 
 
 
-export function BadgeSymbol({colour}: { colour: number }) {
+export function BadgeSymbol({ colour }: { colour: number }) {
     if (colour === 0) {
         return (
             <Badge colorPalette="green">Green</Badge>
@@ -68,7 +69,7 @@ export function BadgeSymbol({colour}: { colour: number }) {
     }
 }
 
-export function TestCard({test}: {
+export function TestCard({ test }: {
     test: {
         id: number,
         title: string,
@@ -78,45 +79,19 @@ export function TestCard({test}: {
         date: Date
     }
 }) {
-    if (test.type === 0) {
-        return (
-            <Link href={`/revision/${test.subjectId}/tests/${test.id}`}>
-                <div
-                    className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
-                    <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{test.title}</h5>
-                    <Badge colorPalette='green'>Saturday Test</Badge><br/>
-                    <Badge><LuCalendar/>{test.date.toDateString()}</Badge>
-                </div>
-
-            </Link>
-        );
-    } else if (test.type === 1) {
-        return (
-            <Link href={`/revision/${test.subjectId}/tests/${test.id}`}>
-                <div
-                    className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
-                    <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{test.title}</h5>
-                    <Badge colorPalette='yellow'>End of term exam</Badge><br/>
-                    <Badge><LuCalendar/>{test.date.toDateString()}</Badge>
-                </div>
-
-            </Link>
-        );
-    } else {
-        return (
-            <Link href={`/revision/${test.subjectId}/tests/${test.id}`}>
-                <div
-                    className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
-                    <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{test.title}</h5>
-                    <Badge colorPalette='red'>Public exam</Badge><br/>
-                    <Badge><LuCalendar/>{test.date.toDateString()}</Badge>
-                </div>
-            </Link>
-        );
-    }
+    return (
+        <Link href={`/revision/${test.subjectId}/tests/${test.id}`}>
+            <div
+                className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
+                <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{test.title}</h5>
+                <TestBadge type={test.type} /><br />
+                <Badge><LuCalendar />{test.date.toDateString()}</Badge>
+            </div>
+        </Link>
+    );
 }
 
-export function TestLinkCard({test}: {
+export function TestLinkCard({ test }: {
     test: {
         id: number,
         title: string,
@@ -126,45 +101,17 @@ export function TestLinkCard({test}: {
         date: Date
     }
 }) {
-    if (test.type === 0) {
-        return (
-            <Link href={`/upload/revision/${test.subjectId}/test-revision/${test.id}`}>
-                <div
-                    className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
-                    <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{test.title}</h5>
-                    <Badge colorPalette='green'>Saturday Test</Badge><br/>
-                    <Badge><LuCalendar/>{test.date.toDateString()}</Badge>
-                </div>
-
-            </Link>
-        );
-    } else if (test.type === 1) {
-        return (
-            <Link href={`/upload/revision/${test.subjectId}/test-revision/${test.id}`}>
-                <div
-                    className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
-                    <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{test.title}</h5>
-                    <Badge colorPalette='yellow'>End of term exam</Badge><br/>
-                    <Badge><LuCalendar/>{test.date.toDateString()}</Badge>
-                </div>
-
-            </Link>
-        );
-    } else {
-        return (
-            <Link href={`/upload/revision/${test.subjectId}/test-revision/${test.id}`}>
-                <div
-                    className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
-                    <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{test.title}</h5>
-                    <Badge colorPalette='red'>Public exam</Badge><br/>
-                    <Badge><LuCalendar/>{test.date.toDateString()}</Badge>
-                </div>
-            </Link>
-        );
-    }
+    return <Link href={`/upload/revision/${test.subjectId}/test-revision/${test.id}`}>
+        <div
+            className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
+            <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{test.title}</h5>
+            <TestBadge type={test.type} /><br />
+            <Badge><LuCalendar />{test.date.toDateString()}</Badge>
+        </div>
+    </Link>;
 }
 
-export function OlympiadResourceCard({resource}: {
+export function OlympiadResourceCard({ resource }: {
     resource: {
         id: number,
         title: string,
