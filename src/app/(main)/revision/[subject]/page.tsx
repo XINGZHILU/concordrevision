@@ -179,7 +179,7 @@ export default async function Page(req: any, res: any) {
                         <LuFolder />
                         Resources
                     </Tabs.Trigger>
-                    <Tabs.Trigger value="tests" p="2">
+                    <Tabs.Trigger value="upcoming_tests" p="2">
                         <LuBook />
                         Upcoming tests
                     </Tabs.Trigger>
