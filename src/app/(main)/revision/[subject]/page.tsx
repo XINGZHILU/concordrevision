@@ -50,6 +50,24 @@ export default async function Page(req: any, res: any) {
         notFound();
     }
 
+    subject.tests.sort((a, b) => a.date.getTime() - b.date.getTime());
+
+    const today = new Date();
+
+    const test_list = subject.tests.filter((test) => ((test.date.getTime() - today.getTime()) >= (-86400000))).map((test) => (
+        <div key={test.id + 'div'}>
+            <TestCard test={test} key={test.id} />
+            <br key={test.id + 'br'} />
+        </div>
+    ));
+
+    const past_test_list = subject.tests.filter((test) => ((test.date.getTime() - today.getTime()) < (-86400000))).map((test) => (
+        <div key={test.id + 'div'}>
+            <TestCard test={test} key={test.id} />
+            <br key={test.id + 'br'} />
+        </div>
+    ));
+
 
     const user = await currentUser();
     if (!user) {
@@ -60,16 +78,7 @@ export default async function Page(req: any, res: any) {
             </div>
         ));
 
-        subject.tests.sort((a, b) => a.date.getTime() - b.date.getTime());
 
-        const today = new Date();
-
-        const test_list = subject.tests.filter((test) => ((test.date.getTime() - today.getTime()) >= (-86400000))).map((test) => (
-            <div key={test.id + 'div'}>
-                <TestCard test={test} key={test.id} />
-                <br key={test.id + 'br'} />
-            </div>
-        ));
 
 
         return (<div>
@@ -90,9 +99,13 @@ export default async function Page(req: any, res: any) {
                             <LuFolder />
                             Resources
                         </Tabs.Trigger>
-                        <Tabs.Trigger value="tests" p="2">
+                        <Tabs.Trigger value="upcoming_tests" p="2">
                             <LuBookCheck />
                             Upcoming tests
+                        </Tabs.Trigger>
+                        <Tabs.Trigger value="past_tests" p="2">
+                            <LuBookCheck />
+                            Past tests
                         </Tabs.Trigger>
                         <Tabs.Indicator rounded="l2" />
                     </Tabs.List>
@@ -106,12 +119,21 @@ export default async function Page(req: any, res: any) {
                             </div>
                         )}
                     </Tabs.Content>
-                    <Tabs.Content value="tests">
+                    <Tabs.Content value="upcoming_tests">
                         {test_list.length === 0 ? (
                             <p>No upcoming tests</p>
                         ) : (
                             <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll'}>
                                 {test_list}
+                            </div>
+                        )}
+                    </Tabs.Content>
+                    <Tabs.Content value="past_tests">
+                        {past_test_list.length === 0 ? (
+                            <p>No past tests</p>
+                        ) : (
+                            <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll'}>
+                                {past_test_list}
                             </div>
                         )}
                     </Tabs.Content>
@@ -132,22 +154,10 @@ export default async function Page(req: any, res: any) {
     }
 
 
-
     const resource_list = subject.notes.filter((note) => { return (note.type === 2 && note.approved) }).map((note) => (
         <div key={note.id + 'div'}>
             <NoteCard note={note} key={note.id} colour={Get_Colour(record, note.id)} />
             <br key={note.id + 'br'} />
-        </div>
-    ));
-
-    subject.tests.sort((a, b) => a.date.getTime() - b.date.getTime());
-
-    const today = new Date();
-
-    const test_list = subject.tests.filter((test) => ((test.date.getTime() - today.getTime()) >= (-86400000))).map((test) => (
-        <div key={test.id + 'div'}>
-            <TestCard test={test} key={test.id} />
-            <br key={test.id + 'br'} />
         </div>
     ));
 
@@ -173,6 +183,10 @@ export default async function Page(req: any, res: any) {
                         <LuBookCheck />
                         Upcoming tests
                     </Tabs.Trigger>
+                    <Tabs.Trigger value="past_tests" p="2">
+                            <LuBookCheck />
+                            Past tests
+                        </Tabs.Trigger>
                     <Tabs.Indicator rounded="l2" />
                 </Tabs.List>
 
@@ -185,15 +199,24 @@ export default async function Page(req: any, res: any) {
                         </div>
                     )}
                 </Tabs.Content>
-                <Tabs.Content value="tests">
-                    {test_list.length === 0 ? (
-                        <p>No upcoming tests</p>
-                    ) : (
-                        <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll'}>
-                            {test_list}
-                        </div>
-                    )}
-                </Tabs.Content>
+                <Tabs.Content value="upcoming_tests">
+                        {test_list.length === 0 ? (
+                            <p>No upcoming tests</p>
+                        ) : (
+                            <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll'}>
+                                {test_list}
+                            </div>
+                        )}
+                    </Tabs.Content>
+                    <Tabs.Content value="past_tests">
+                        {past_test_list.length === 0 ? (
+                            <p>No past tests</p>
+                        ) : (
+                            <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll'}>
+                                {past_test_list}
+                            </div>
+                        )}
+                    </Tabs.Content>
             </Tabs.Root>
         </div>
 
