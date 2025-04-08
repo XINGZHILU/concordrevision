@@ -11,7 +11,7 @@ import { NoteCard, TestCard } from "@/lib/customui/Basic/cards";
 import { currentUser } from "@clerk/nextjs/server";
 
 import { Collapsible, Tabs } from "@chakra-ui/react"
-import { LuFolder, LuBookCheck } from "react-icons/lu"
+import { LuFolder, LuBookCheck, LuBook } from "react-icons/lu"
 
 import MDViewer from "@/lib/customui/Basic/showMD";
 
@@ -88,7 +88,7 @@ export default async function Page(req: any, res: any) {
             <Collapsible.Root defaultOpen>
                 <Collapsible.Trigger paddingY="3"><h2>About</h2></Collapsible.Trigger>
                 <Collapsible.Content>
-                    <MDViewer content={subject.desc}/>
+                    <MDViewer content={subject.desc} />
                 </Collapsible.Content>
             </Collapsible.Root>
             <br />
@@ -100,7 +100,7 @@ export default async function Page(req: any, res: any) {
                             Resources
                         </Tabs.Trigger>
                         <Tabs.Trigger value="upcoming_tests" p="2">
-                            <LuBookCheck />
+                            <LuBook />
                             Upcoming tests
                         </Tabs.Trigger>
                         <Tabs.Trigger value="past_tests" p="2">
@@ -180,13 +180,13 @@ export default async function Page(req: any, res: any) {
                         Resources
                     </Tabs.Trigger>
                     <Tabs.Trigger value="tests" p="2">
-                        <LuBookCheck />
+                        <LuBook />
                         Upcoming tests
                     </Tabs.Trigger>
                     <Tabs.Trigger value="past_tests" p="2">
-                            <LuBookCheck />
-                            Past tests
-                        </Tabs.Trigger>
+                        <LuBookCheck />
+                        Past tests
+                    </Tabs.Trigger>
                     <Tabs.Indicator rounded="l2" />
                 </Tabs.List>
 
@@ -200,23 +200,23 @@ export default async function Page(req: any, res: any) {
                     )}
                 </Tabs.Content>
                 <Tabs.Content value="upcoming_tests">
-                        {test_list.length === 0 ? (
-                            <p>No upcoming tests</p>
-                        ) : (
-                            <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll'}>
-                                {test_list}
-                            </div>
-                        )}
-                    </Tabs.Content>
-                    <Tabs.Content value="past_tests">
-                        {past_test_list.length === 0 ? (
-                            <p>No past tests</p>
-                        ) : (
-                            <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll'}>
-                                {past_test_list}
-                            </div>
-                        )}
-                    </Tabs.Content>
+                    {test_list.length === 0 ? (
+                        <p>No upcoming tests</p>
+                    ) : (
+                        <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll'}>
+                            {test_list}
+                        </div>
+                    )}
+                </Tabs.Content>
+                <Tabs.Content value="past_tests">
+                    {past_test_list.length === 0 ? (
+                        <p>No past tests</p>
+                    ) : (
+                        <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll'}>
+                            {past_test_list}
+                        </div>
+                    )}
+                </Tabs.Content>
             </Tabs.Root>
         </div>
 

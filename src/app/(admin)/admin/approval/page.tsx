@@ -4,6 +4,8 @@ import { prisma } from "@/lib/prisma";
 import { Tabs } from "@chakra-ui/react";
 import FilteredNoteList from "./filtered-note-list";
 import FilteredOlympiadResourceList from "./filtered-olympiad-resource-list";
+import { FlaskConical } from "lucide-react";
+import { LuFolder } from "react-icons/lu"
 
 export default async function AdminApprovalPage() {
 
@@ -77,10 +79,12 @@ export default async function AdminApprovalPage() {
             <div className="bg-white shadow-md rounded-lg p-6 mb-6">
                 <Tabs.Root defaultValue="notes" variant="enclosed">
                     <Tabs.List mb="4" bg="bg.muted" rounded="l3" p='1'>
-                        <Tabs.Trigger value="notes">
+                        <Tabs.Trigger value="notes" p="2">
+                            <LuFolder/>
                             Notes & Resources ({unapprovedNotes.length})
                         </Tabs.Trigger>
-                        <Tabs.Trigger value="olympiads">
+                        <Tabs.Trigger value="olympiads" p="2">
+                            <FlaskConical />
                             Olympiad Resources ({unapprovedResources.length})
                         </Tabs.Trigger>
                     </Tabs.List>
