@@ -79,7 +79,7 @@ export default async function AdminApprovalPage() {
                 <Tabs.Root defaultValue="notes" variant="enclosed">
                     <Tabs.List mb="4" bg="bg.muted" rounded="l3" p='1'>
                         <Tabs.Trigger value="notes" p="2">
-                            <LuFolder/>
+                            <LuFolder />
                             Notes & Resources ({unapprovedNotes.length})
                         </Tabs.Trigger>
                         <Tabs.Trigger value="olympiads" p="2">
