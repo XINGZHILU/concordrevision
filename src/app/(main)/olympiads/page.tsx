@@ -8,7 +8,6 @@ export default async function Page(){
         }
     });
     return <div className={'content-center'}>
-        <h1>Olympiads</h1>
         <OlympiadsList olympiads={olympiads}/>
     </div>;
 }
