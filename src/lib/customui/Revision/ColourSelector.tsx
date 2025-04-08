@@ -19,12 +19,13 @@ function GetSymbol({colour} : {colour : number}){
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function ColourSelector({ nid, uid, subject, original }: {
+export default function ColourSelector({ nid, uid, subject, Original }: {
     nid: number,
     uid: string,
     subject: number,
-    original: number
+    Original: number
 }) {
+    let original = Original;
     const [selectedColor, setSelectedColor] = useState(original);
     const [isLoading, setIsLoading] = useState(false);
     const colourRef = useRef<HTMLSelectElement>(null);
