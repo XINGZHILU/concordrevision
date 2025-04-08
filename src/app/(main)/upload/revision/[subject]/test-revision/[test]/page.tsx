@@ -3,9 +3,10 @@ import {isNumeric} from "@/lib/utils";
 import {year_group_names} from "@/lib/consts";
 import { currentUser } from '@clerk/nextjs/server'
 import TestUploadForm from "@/lib/customui/Upload/TestUploadForm";
+import { MaxSizeAlert } from "@/lib/customui/Upload/Alert";
 
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
 export default async function Page(req: any, res: any) {
     const params = await req.params;
     const sid = params.subject;
@@ -57,7 +58,7 @@ export default async function Page(req: any, res: any) {
     else{
         return (<div>
             <h1>{year_group_names[subject.level]} {subject.title} revision resources upload</h1>
-
+            <MaxSizeAlert/>
             <TestUploadForm subject={subject.id} author={user.id} test={test_record.id} type={0}></TestUploadForm>
         </div>);
     }

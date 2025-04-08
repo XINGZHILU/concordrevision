@@ -1,9 +1,12 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import {prisma} from "@/lib/prisma";
 import {notFound} from "next/navigation";
 import OlympiadUploadForm from "@/lib/customui/Upload/OlympiadUploadForm";
 import {currentUser} from "@clerk/nextjs/server";
+import { MaxSizeAlert } from "@/lib/customui/Upload/Alert";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function Page(req : any, res : any){
     const user = await currentUser();
 
@@ -44,7 +47,7 @@ export default async function Page(req : any, res : any){
 
     return <div>
         <h1>{olympiad.title} upload</h1>
-        <br/>
+        <MaxSizeAlert/>
         <OlympiadUploadForm olympiad={olympiad.id} author={user.id}/>
     </div>;
 }
