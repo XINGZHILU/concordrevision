@@ -84,6 +84,7 @@ export default function ColourSelector({ nid, uid, subject, original }: {
         } finally {
             setIsLoading(false);
         }
+        original = colour;
     }
 
     // Get the currently selected color info
@@ -114,8 +115,7 @@ export default function ColourSelector({ nid, uid, subject, original }: {
                                 }
                             }}
                         >
-                            <GetSymbol colour = {option.value}/>
-                            {option.label}
+                            <GetSymbol colour = {option.value}/> {option.label}
                         </button>
                     ))}
                 </div>
@@ -139,7 +139,7 @@ export default function ColourSelector({ nid, uid, subject, original }: {
 
                 <button
                     type="submit"
-                    disabled={isLoading}
+                    disabled={isLoading || selectedColor === original}
                     className={`
                         inline-flex items-center px-3 py-1.5 text-xs font-medium rounded 
                         focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-indigo-500
