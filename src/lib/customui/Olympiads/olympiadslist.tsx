@@ -217,7 +217,7 @@ export function OlympiadsUploadList({ olympiads }: {
                 {filteredOlympiads.length === 0 ? (
                     <p className="text-gray-500 py-4">No olympiads available for the selected filter.</p>
                 ) : (
-                    <ul className="divide-y divide-gray-200 list-none">
+                    <ul className="divide-y divide-gray-200 !list-none">
                         {filteredOlympiads.map((olympiad) => (
                             <li key={olympiad.id} className="py-3">
                                 <a 
