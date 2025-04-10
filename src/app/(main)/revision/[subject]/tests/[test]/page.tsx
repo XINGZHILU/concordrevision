@@ -8,6 +8,7 @@ import {year_group_names} from "@/lib/consts";
 import {currentUser} from "@clerk/nextjs/server";
 import {TestNoteCard} from "@/lib/customui/Basic/cards";
 import MDViewer from "@/lib/customui/Basic/showMD";
+import { TestBadge } from "@/lib/customui/Basic/Badges";
 
 
 export default async function Page(req: any, res: any) {
@@ -68,7 +69,7 @@ export default async function Page(req: any, res: any) {
             <br/>
             <ul>
                 <li><b>Test
-                    Type:</b> {test.type === 0 ? 'Saturday Test' : test.type === 1 ? 'End of term exam' : 'Public exam'}
+                    Type:</b> <TestBadge type={test.type}/>
                 </li>
                 <li><b>Test Date:</b> {test.date.toDateString()}</li>
             </ul>
@@ -116,10 +117,7 @@ export default async function Page(req: any, res: any) {
         </ul>
         <br/>
         <h2>Information</h2>
-        {test.desc.split('\n').map((line) => {
-            return <p key={line}>{line}</p>
-        })}
-
+        <MDViewer content={test.desc}/>
         <br/>
         <h2>Notes</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll">
