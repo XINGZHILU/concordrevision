@@ -188,7 +188,11 @@ export default function PPQRecordsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredRecords.map(record => {
               const { percentage, marksDisplay } = getAveragePerformance(record)
-              const completionPercentage = (record.papers_finished.length / (record.paper_count * (record.specimen ? (new Date().getFullYear() - record.start_year + 2) : (new Date().getFullYear() - record.start_year + 1)))) * 100
+              // Calculate completion percentage excluding current year
+              const totalPaperCount = record.paper_count * (record.specimen ? 
+                (new Date().getFullYear() - record.start_year + 1) : // +1 for specimen
+                (new Date().getFullYear() - record.start_year)) // no current year
+              const completionPercentage = (record.papers_finished.length / totalPaperCount) * 100
               
               // Determine color based on performance
               const performanceColor = 
@@ -245,7 +249,7 @@ export default function PPQRecordsPage() {
                         <div className="flex justify-between items-center mb-1">
                           <span className="text-xs font-medium text-gray-500 dark:text-gray-400">Completion</span>
                           <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
-                            {record.papers_finished.length} of {record.paper_count * (record.specimen ? (new Date().getFullYear() - record.start_year + 2) : (new Date().getFullYear() - record.start_year + 1))} papers
+                            {record.papers_finished.length} of {totalPaperCount} papers
                           </span>
                         </div>
                         <div className="relative w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">

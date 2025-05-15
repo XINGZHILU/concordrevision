@@ -232,13 +232,14 @@ export default function RecordDetailPage() {
     )
   }
 
-  // Calculate years from start_year to current year (plus specimen if included)
+  // Calculate years from start_year to last year (plus specimen if included)
   const years: string[] = []
   if (record.specimen) {
     years.push("Specimen")
   }
   
-  for (let year = record.start_year; year <= currentYear; year++) {
+  // Only include years up to last year, not the current year
+  for (let year = record.start_year; year < currentYear; year++) {
     years.push(year.toString())
   }
 

@@ -99,6 +99,11 @@ export default function PPQPage() {
         setLoading(true)
 
         try {
+            // Calculate years excluding current year
+            const yearCount = isSpecimen ? 
+                (currentYear - startYear) + 1 :  // +1 for specimen, but exclude current year
+                (currentYear - startYear);       // exclude current year
+                
             const response = await fetch("/api/pastpaper-records", {
                 method: "POST",
                 headers: {
@@ -111,6 +116,7 @@ export default function PPQPage() {
                     startYear: parseInt(startYear.toString()),
                     paperCount: parseInt(paperCount.toString()),
                     max_marks: maxMarks,
+                    yearCount: yearCount, // Let the server know how many years we're considering
                 }),
             })
 
