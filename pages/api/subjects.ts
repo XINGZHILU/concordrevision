@@ -7,7 +7,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { userId } = getAuth(req)
-  
+
   if (!userId) {
     return res.status(401).json({ message: "Unauthorized" })
   }
@@ -19,7 +19,7 @@ export default async function handler(
           title: "asc",
         },
       })
-      
+
       return res.status(200).json(subjects)
     } catch (error) {
       console.error("Error fetching subjects:", error)

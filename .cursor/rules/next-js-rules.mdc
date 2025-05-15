@@ -1,6 +1,0 @@
----
-description: 
-globs: *.tsx
-alwaysApply: false
----
-Make sure your code create web contents that have the same style as the code previously written

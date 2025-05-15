@@ -16,6 +16,7 @@ interface PastPaperRecord {
   subject: Subject
   specimen: boolean
   start_year: number
+  end_year: number
   paper_count: number
   papers_finished: number[]
   paper_marks: number[]
@@ -27,7 +28,7 @@ export default function PPQRecordsPage() {
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedSubject, setSelectedSubject] = useState<number | null>(null)
-  
+
   // Extract unique subjects from records
   const subjects = Array.from(new Set(records.map(record => record.subject?.title || "Unknown")))
     .map(title => {
@@ -71,7 +72,7 @@ export default function PPQRecordsPage() {
   // Filter records based on search term and selected subject
   const filteredRecords = records.filter(record => {
     const matchesSearch = record.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         record.subject?.title.toLowerCase().includes(searchTerm.toLowerCase())
+      record.subject?.title.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesSubject = selectedSubject === null || record.subjectId === selectedSubject
     return matchesSearch && matchesSubject
   })
@@ -81,11 +82,11 @@ export default function PPQRecordsPage() {
     if (!record.paper_marks || !record.max_marks || record.paper_marks.length === 0) {
       return { percentage: 0, marksDisplay: "" }
     }
-    
+
     let totalMarks = 0
     let totalMaxMarks = 0
     let validEntries = 0
-    
+
     // For each paper with marks, calculate total
     record.paper_marks.forEach((mark, index) => {
       // Get the corresponding max mark
@@ -97,12 +98,12 @@ export default function PPQRecordsPage() {
         validEntries++
       }
     })
-    
+
     if (validEntries === 0) return { percentage: 0, marksDisplay: "" }
-    
+
     const percentage = Math.round((totalMarks / totalMaxMarks) * 100)
     const marksDisplay = `${totalMarks}/${totalMaxMarks}`
-    
+
     return { percentage, marksDisplay }
   }
 
@@ -110,8 +111,8 @@ export default function PPQRecordsPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
         <h1 className="text-2xl md:text-3xl font-bold">Past Paper Records</h1>
-        <Link href="/revision/practice/ppq" 
-              className="inline-flex items-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+        <Link href="/revision/practice/ppq"
+          className="inline-flex items-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
           </svg>
@@ -136,8 +137,8 @@ export default function PPQRecordsPage() {
           <p className="text-gray-600 dark:text-gray-400 mb-6">
             You haven&apos;t created any past paper records yet. Create your first record to start tracking your progress.
           </p>
-          <Link href="/revision/practice/ppq" 
-                className="inline-flex items-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+          <Link href="/revision/practice/ppq"
+            className="inline-flex items-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
             </svg>
@@ -189,25 +190,25 @@ export default function PPQRecordsPage() {
             {filteredRecords.map(record => {
               const { percentage, marksDisplay } = getAveragePerformance(record)
               // Calculate completion percentage excluding current year
-              const totalPaperCount = record.paper_count * (record.specimen ? 
+              const totalPaperCount = record.paper_count * (record.specimen ?
                 (new Date().getFullYear() - record.start_year + 1) : // +1 for specimen
                 (new Date().getFullYear() - record.start_year)) // no current year
               const completionPercentage = (record.papers_finished.length / totalPaperCount) * 100
-              
+
               // Determine color based on performance
-              const performanceColor = 
+              const performanceColor =
                 percentage >= 80 ? 'text-green-600 dark:text-green-400' :
-                percentage >= 60 ? 'text-blue-600 dark:text-blue-400' :
-                percentage >= 40 ? 'text-yellow-600 dark:text-yellow-400' :
-                'text-red-600 dark:text-red-400';
-              
+                  percentage >= 60 ? 'text-blue-600 dark:text-blue-400' :
+                    percentage >= 40 ? 'text-yellow-600 dark:text-yellow-400' :
+                      'text-red-600 dark:text-red-400';
+
               return (
                 <div key={record.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-all hover:shadow-lg">
                   <div className="p-5">
                     <div className="flex justify-between items-start mb-2">
                       <h2 className="text-lg font-semibold line-clamp-1">{record.name}</h2>
                       <div className="flex space-x-1">
-                        <Link 
+                        <Link
                           href={`/revision/practice/ppq/records/${record.id}`}
                           className="text-blue-600 hover:text-blue-800 p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
                           aria-label="Edit record"
@@ -227,7 +228,7 @@ export default function PPQRecordsPage() {
                         </button>
                       </div>
                     </div>
-                    
+
                     <div className="mb-3">
                       <div className="flex items-center text-sm text-gray-600 dark:text-gray-400 mb-1">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
@@ -239,10 +240,10 @@ export default function PPQRecordsPage() {
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
                           <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
                         </svg>
-                        {record.start_year} to present • {record.specimen ? "With" : "Without"} Specimen
+                        {record.start_year} to {record.end_year} • {record.specimen ? "With" : "Without"} Specimen
                       </div>
                     </div>
-                    
+
                     <div className="space-y-3 mb-4">
                       {/* Completion Progress */}
                       <div>
@@ -253,13 +254,13 @@ export default function PPQRecordsPage() {
                           </span>
                         </div>
                         <div className="relative w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                          <div 
+                          <div
                             className="absolute top-0 left-0 h-full bg-blue-500"
                             style={{ width: `${Math.min(100, Math.max(0, completionPercentage))}%` }}
                           />
                         </div>
                       </div>
-                      
+
                       {/* Performance Progress */}
                       {marksDisplay && (
                         <div>
@@ -270,21 +271,20 @@ export default function PPQRecordsPage() {
                             </span>
                           </div>
                           <div className="relative w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                            <div 
-                              className={`absolute top-0 left-0 h-full ${
-                                percentage >= 80 ? 'bg-green-500' :
-                                percentage >= 60 ? 'bg-blue-500' :
-                                percentage >= 40 ? 'bg-yellow-500' :
-                                'bg-red-500'
-                              }`}
+                            <div
+                              className={`absolute top-0 left-0 h-full ${percentage >= 80 ? 'bg-green-500' :
+                                  percentage >= 60 ? 'bg-blue-500' :
+                                    percentage >= 40 ? 'bg-yellow-500' :
+                                      'bg-red-500'
+                                }`}
                               style={{ width: `${Math.min(100, Math.max(0, percentage))}%` }}
                             />
                           </div>
                         </div>
                       )}
                     </div>
-                    
-                    <Link 
+
+                    <Link
                       href={`/revision/practice/ppq/records/${record.id}`}
                       className="block w-full text-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
                     >

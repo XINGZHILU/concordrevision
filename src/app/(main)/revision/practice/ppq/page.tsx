@@ -18,6 +18,7 @@ export default function PPQPage() {
     const [selectedLevel, setSelectedLevel] = useState(0) // Default to F3 (level 0)
     const [isSpecimen, setIsSpecimen] = useState(true)
     const [startYear, setStartYear] = useState(2015)
+    const [endYear, setEndYear] = useState(new Date().getFullYear())
     const [paperCount, setPaperCount] = useState(3)
     const [maxMarks, setMaxMarks] = useState<number[]>([])
     const [loading, setLoading] = useState(false)
@@ -101,8 +102,8 @@ export default function PPQPage() {
         try {
             // Calculate years excluding current year
             const yearCount = isSpecimen ? 
-                (currentYear - startYear) + 1 :  // +1 for specimen, but exclude current year
-                (currentYear - startYear);       // exclude current year
+                (endYear - startYear) + 1 :  // +1 for specimen, but exclude current year
+                (endYear - startYear);       // exclude current year
                 
             const response = await fetch("/api/pastpaper-records", {
                 method: "POST",
@@ -114,6 +115,7 @@ export default function PPQPage() {
                     subjectId: parseInt(selectedSubject),
                     specimen: isSpecimen,
                     startYear: parseInt(startYear.toString()),
+                    endYear: parseInt(endYear.toString()),
                     paperCount: parseInt(paperCount.toString()),
                     max_marks: maxMarks,
                     yearCount: yearCount, // Let the server know how many years we're considering
@@ -222,6 +224,19 @@ export default function PPQPage() {
                                 value={startYear}
                                 onChange={(e) => setStartYear(parseInt(e.target.value))}
                                 min="2000"
+                                max={endYear}
+                                required
+                                className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+                            />
+                        </div>
+
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium mb-1">End Year</label>
+                            <input
+                                type="number"
+                                value={endYear}
+                                onChange={(e) => setEndYear(parseInt(e.target.value))}
+                                min={startYear}
                                 max={currentYear}
                                 required
                                 className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
@@ -276,14 +291,32 @@ export default function PPQPage() {
                                         <tr className="hover:bg-gray-50 dark:hover:bg-gray-700">
                                             {Array.from({ length: paperCount }).map((_, paperNum) => (
                                                 <td key={paperNum} className="px-4 py-2 whitespace-nowrap">
-                                                    <input
-                                                        type="number"
-                                                        value={maxMarks[paperNum] || 100}
-                                                        onChange={(e) => updateMaxMark(paperNum, parseInt(e.target.value) || 100)}
-                                                        min="1"
-                                                        required
-                                                        className="w-16 p-1 text-sm border rounded-md dark:bg-gray-700 dark:border-gray-600"
-                                                    />
+                                                    <div className="flex items-center">
+                                                        <button 
+                                                            type="button"
+                                                            onClick={() => updateMaxMark(paperNum, Math.max(1, (maxMarks[paperNum] || 100) - 5))}
+                                                            className="px-2 py-1 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-l-md hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none"
+                                                            aria-label={`Decrease max mark for paper ${paperNum + 1}`}
+                                                        >
+                                                            <span className="text-sm">−</span>
+                                                        </button>
+                                                        <input
+                                                            type="number"
+                                                            value={maxMarks[paperNum] || 100}
+                                                            onChange={(e) => updateMaxMark(paperNum, parseInt(e.target.value) || 1)}
+                                                            min="1"
+                                                            required
+                                                            className="w-16 text-center p-1 text-sm border-y border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                                        />
+                                                        <button 
+                                                            type="button"
+                                                            onClick={() => updateMaxMark(paperNum, Math.min(999, (maxMarks[paperNum] || 100) + 5))}
+                                                            className="px-2 py-1 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-r-md hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none"
+                                                            aria-label={`Increase max mark for paper ${paperNum + 1}`}
+                                                        >
+                                                            <span className="text-sm">+</span>
+                                                        </button>
+                                                    </div>
                                                 </td>
                                             ))}
                                         </tr>

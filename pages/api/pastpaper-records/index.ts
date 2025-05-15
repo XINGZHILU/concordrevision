@@ -7,7 +7,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { userId } = getAuth(req)
-  
+
   if (!userId) {
     return res.status(401).json({ message: "Unauthorized" })
   }
@@ -26,17 +26,17 @@ export default async function handler(
           name: "asc",
         },
       })
-      
+
       return res.status(200).json(records)
     } catch (error) {
       console.error("Error fetching past paper records:", error)
       return res.status(500).json({ message: "Error fetching past paper records" })
     }
-  } 
-  
+  }
+
   // POST - Create a new past paper record
   else if (req.method === "POST") {
-    const { name, subjectId, specimen, startYear, paperCount, max_marks } = req.body
+    const { name, subjectId, specimen, startYear, endYear, paperCount, max_marks } = req.body
 
     if (!name || !subjectId) {
       return res.status(400).json({ message: "Name and subject are required" })
@@ -61,6 +61,7 @@ export default async function handler(
           subjectId,
           specimen: specimen ?? true,
           start_year: startYear ?? 2015,
+          end_year: endYear ?? 2025,
           paper_count: paperCount ?? 3,
           papers_finished: [],
           paper_marks: [],

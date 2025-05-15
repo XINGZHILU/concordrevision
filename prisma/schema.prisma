@@ -125,6 +125,7 @@ model PastPaperRecord {
     subjectId       Int
     specimen        Boolean @default(true)
     start_year      Int     @default(2015)
+    end_year        Int     @default(2025)
     paper_count     Int     @default(3)
     papers_finished Int[]
     paper_marks     Int[]
