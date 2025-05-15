@@ -123,36 +123,36 @@ export default async function UserDetailPage({ params }: { params: { id: string 
                                     <div className="bg-gray-50 rounded-lg p-4 overflow-x-auto">
                                         <table className="min-w-full">
                                             <thead>
-                                            <tr>
-                                                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
-                                                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
-                                                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
-                                            </tr>
+                                                <tr>
+                                                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                                                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
+                                                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                                </tr>
                                             </thead>
                                             <tbody className="divide-y divide-gray-200">
-                                            {notes.map(note => (
-                                                <tr key={note.id} className="hover:bg-gray-100">
-                                                    <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">{note.title}</td>
-                                                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">{note.subject.title}</td>
-                                                    <td className="px-4 py-2 whitespace-nowrap text-sm">
-                                                        <Badge colorPalette={note.approved ? 'green' : 'yellow'}>
-                                                            {note.approved ? 'Approved' : 'Pending'}
-                                                        </Badge>
-                                                    </td>
-                                                    <td className="px-4 py-2 whitespace-nowrap text-sm text-indigo-600">
-                                                        {note.approved ? (
-                                                            <Link href={`/revision/${note.subject.id}/resources/${note.id}`}>
-                                                                View
-                                                            </Link>
-                                                        ) : (
-                                                            <Link href={`/admin/approval/${note.id}`}>
-                                                                Review
-                                                            </Link>
-                                                        )}
-                                                    </td>
-                                                </tr>
-                                            ))}
+                                                {notes.map(note => (
+                                                    <tr key={note.id} className="hover:bg-gray-100">
+                                                        <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">{note.title}</td>
+                                                        <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">{note.subject.title}</td>
+                                                        <td className="px-4 py-2 whitespace-nowrap text-sm">
+                                                            <Badge colorPalette={note.approved ? 'green' : 'yellow'}>
+                                                                {note.approved ? 'Approved' : 'Pending'}
+                                                            </Badge>
+                                                        </td>
+                                                        <td className="px-4 py-2 whitespace-nowrap text-sm text-indigo-600">
+                                                            {note.approved ? (
+                                                                <Link href={`/revision/${note.subject.id}/resources/${note.id}`}>
+                                                                    View
+                                                                </Link>
+                                                            ) : (
+                                                                <Link href={`/admin/approval/${note.id}`}>
+                                                                    Review
+                                                                </Link>
+                                                            )}
+                                                        </td>
+                                                    </tr>
+                                                ))}
                                             </tbody>
                                         </table>
                                     </div>

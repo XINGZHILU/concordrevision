@@ -1,6 +1,6 @@
-import {prisma} from "@/lib/prisma";
-import {isNumeric} from "@/lib/utils";
-import {year_group_names} from "@/lib/consts";
+import { prisma } from "@/lib/prisma";
+import { isNumeric } from "@/lib/utils";
+import { year_group_names } from "@/lib/consts";
 import { currentUser } from '@clerk/nextjs/server'
 import TestUploadForm from "@/lib/customui/Upload/TestUploadForm";
 import { MaxSizeAlert } from "@/lib/customui/Upload/Alert";
@@ -48,17 +48,17 @@ export default async function Page(req: any, res: any) {
     }
 
 
-    if (test_record.type === 2){
+    if (test_record.type === 2) {
         return (<div>
             <h1>{year_group_names[subject.level]} {subject.title} revision resources upload</h1>
 
             <TestUploadForm subject={subject.id} author={user.id} test={test_record.id} type={1}></TestUploadForm>
         </div>);
     }
-    else{
+    else {
         return (<div>
             <h1>{year_group_names[subject.level]} {subject.title} revision resources upload</h1>
-            <MaxSizeAlert/>
+            <MaxSizeAlert />
             <TestUploadForm subject={subject.id} author={user.id} test={test_record.id} type={0}></TestUploadForm>
         </div>);
     }

@@ -51,7 +51,7 @@ export default async function Page(req: any, res: any) {
 
     return (<div>
         <h1>{year_group_names[subject.level]} {subject.title} revision resources upload</h1>
-        <MaxSizeAlert/>
+        <MaxSizeAlert />
         <ResourceUploadForm subject={subject.id} author={user.id}></ResourceUploadForm>
     </div>)
 

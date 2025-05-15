@@ -2,11 +2,11 @@
 
 // File: app/admin/users/user-list.tsx
 
-import React, {useState, useMemo} from 'react';
+import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
-import {Badge} from "@chakra-ui/react";
-import {toaster, Toaster} from "@/components/ui/toaster";
-import {year_group_names} from "@/lib/consts";
+import { Badge } from "@chakra-ui/react";
+import { toaster, Toaster } from "@/components/ui/toaster";
+import { year_group_names } from "@/lib/consts";
 
 // Define user type with notes count
 type UserWithCount = {
@@ -26,7 +26,7 @@ interface UserListProps {
     users: UserWithCount[];
 }
 
-export default function UserList({users}: UserListProps) {
+export default function UserList({ users }: UserListProps) {
     // State for search and filters
     const [searchTerm, setSearchTerm] = useState('');
     const [showTeachers, setShowTeachers] = useState<boolean | 'all'>('all');
@@ -39,7 +39,7 @@ export default function UserList({users}: UserListProps) {
         return users.filter(user => {
             const matchesSearch =
                 user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                (user.firstname && user.firstname.toLowerCase().includes(searchTerm.toLowerCase())) || 
+                (user.firstname && user.firstname.toLowerCase().includes(searchTerm.toLowerCase())) ||
                 (user.lastname && user.lastname.toLowerCase().includes(searchTerm.toLowerCase()));
 
             const matchesTeacher =
@@ -92,7 +92,7 @@ export default function UserList({users}: UserListProps) {
 
     return (
         <div>
-            <Toaster/>
+            <Toaster />
 
             {/* Search and Filters */}
             <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
@@ -112,10 +112,10 @@ export default function UserList({users}: UserListProps) {
                             />
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                     <path fillRule="evenodd"
-                                          d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                          clipRule="evenodd"/>
+                                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                        clipRule="evenodd" />
                                 </svg>
                             </div>
                         </div>
@@ -166,8 +166,8 @@ export default function UserList({users}: UserListProps) {
                 Users ({filteredUsers.length})
                 {filteredUsers.length !== users.length && (
                     <span className="text-sm font-normal text-gray-500 ml-2">
-            (Filtered from {users.length} total)
-        </span>
+                        (Filtered from {users.length} total)
+                    </span>
                 )}
             </h2>
 
@@ -175,9 +175,9 @@ export default function UserList({users}: UserListProps) {
             {filteredUsers.length === 0 ? (
                 <div className="text-center py-10 bg-white rounded-lg">
                     <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor"
-                         viewBox="0 0 24 24">
+                        viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                              d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                     </svg>
                     {users.length === 0 ? (
                         <>
@@ -195,69 +195,69 @@ export default function UserList({users}: UserListProps) {
                 <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
-                        <tr>
-                            <th scope="col"
-                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Name/Email
-                            </th>
-                            <th scope="col"
-                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Role
-                            </th>
-                            <th scope="col"
-                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Year Group
-                            </th>
-                            <th scope="col"
-                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Upload Permission
-                            </th>
-                            <th scope="col"
-                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Contributions
-                            </th>
-                            <th scope="col"
-                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Actions
-                            </th>
-                        </tr>
+                            <tr>
+                                <th scope="col"
+                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Name/Email
+                                </th>
+                                <th scope="col"
+                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Role
+                                </th>
+                                <th scope="col"
+                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Year Group
+                                </th>
+                                <th scope="col"
+                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Upload Permission
+                                </th>
+                                <th scope="col"
+                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Contributions
+                                </th>
+                                <th scope="col"
+                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Actions
+                                </th>
+                            </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                        {filteredUsers.map((user) => (
-                            <tr key={user.id} className="hover:bg-gray-50">
-                                <td className="px-6 py-4">
-                                    <div
-                                    className="text-sm font-medium text-gray-900">{`${user.firstname} ${user.lastname}` || 'Anonymous User'}</div>
-                                    <div className="text-sm text-gray-500">{user.email}</div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <Badge colorPalette={user.teacher ? 'indigo' : 'gray'}>
-                                        {user.teacher ? 'Teacher' : 'Student'}
-                                    </Badge>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {user.year !== -1 ? `${year_group_names[user.year]}` : 'Not specified'}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <Badge colorPalette={user.upload_permission ? 'green' : 'red'}>
-                                        {user.upload_permission ? 'Granted' : 'Not Granted'}
-                                    </Badge>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {user._count.notes} notes
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <div className="flex space-x-2">
-                                        <Link
-                                            href={`/admin/users/${user.id}`}
-                                            className="text-indigo-600 hover:text-indigo-900"
-                                        >
-                                            View Details
-                                        </Link>
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
+                            {filteredUsers.map((user) => (
+                                <tr key={user.id} className="hover:bg-gray-50">
+                                    <td className="px-6 py-4">
+                                        <div
+                                            className="text-sm font-medium text-gray-900">{`${user.firstname} ${user.lastname}` || 'Anonymous User'}</div>
+                                        <div className="text-sm text-gray-500">{user.email}</div>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <Badge colorPalette={user.teacher ? 'indigo' : 'gray'}>
+                                            {user.teacher ? 'Teacher' : 'Student'}
+                                        </Badge>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {user.year !== -1 ? `${year_group_names[user.year]}` : 'Not specified'}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <Badge colorPalette={user.upload_permission ? 'green' : 'red'}>
+                                            {user.upload_permission ? 'Granted' : 'Not Granted'}
+                                        </Badge>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {user._count.notes} notes
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div className="flex space-x-2">
+                                            <Link
+                                                href={`/admin/users/${user.id}`}
+                                                className="text-indigo-600 hover:text-indigo-900"
+                                            >
+                                                View Details
+                                            </Link>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>

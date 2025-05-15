@@ -2,10 +2,10 @@
 
 // File: app/admin/subjects/subject-list.tsx
 
-import React, {useState, useMemo} from 'react';
+import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
-import {Badge} from "@chakra-ui/react";
-import {year_group_names} from "@/lib/consts";
+import { Badge } from "@chakra-ui/react";
+import { year_group_names } from "@/lib/consts";
 
 // Define subject type with notes count
 type SubjectWithCount = {
@@ -22,7 +22,7 @@ interface SubjectListProps {
     subjects: SubjectWithCount[];
 }
 
-export default function SubjectList({subjects}: SubjectListProps) {
+export default function SubjectList({ subjects }: SubjectListProps) {
     // State for search and filter
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedLevel, setSelectedLevel] = useState<number | 'all'>('all');
@@ -64,10 +64,10 @@ export default function SubjectList({subjects}: SubjectListProps) {
                             />
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                     <path fillRule="evenodd"
-                                          d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                          clipRule="evenodd"/>
+                                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                        clipRule="evenodd" />
                                 </svg>
                             </div>
                         </div>
@@ -99,8 +99,8 @@ export default function SubjectList({subjects}: SubjectListProps) {
                 Subjects ({filteredSubjects.length})
                 {filteredSubjects.length !== subjects.length && (
                     <span className="text-sm font-normal text-gray-500 ml-2">
-            (Filtered from {subjects.length} total)
-          </span>
+                        (Filtered from {subjects.length} total)
+                    </span>
                 )}
             </h2>
 
@@ -108,9 +108,9 @@ export default function SubjectList({subjects}: SubjectListProps) {
             {filteredSubjects.length === 0 ? (
                 <div className="text-center py-10 bg-white rounded-lg">
                     <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor"
-                         viewBox="0 0 24 24">
+                        viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                     {subjects.length === 0 ? (
                         <>
@@ -128,58 +128,58 @@ export default function SubjectList({subjects}: SubjectListProps) {
                 <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
-                        <tr>
-                            <th scope="col"
-                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Title
-                            </th>
-                            <th scope="col"
-                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Year Group
-                            </th>
-                            <th scope="col"
-                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Description
-                            </th>
-                            <th scope="col"
-                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Notes Count
-                            </th>
-                            <th scope="col"
-                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Actions
-                            </th>
-                        </tr>
+                            <tr>
+                                <th scope="col"
+                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Title
+                                </th>
+                                <th scope="col"
+                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Year Group
+                                </th>
+                                <th scope="col"
+                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Description
+                                </th>
+                                <th scope="col"
+                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Notes Count
+                                </th>
+                                <th scope="col"
+                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Actions
+                                </th>
+                            </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                        {filteredSubjects.map((subject) => (
-                            <tr key={subject.id} className="hover:bg-gray-50">
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="text-sm font-medium text-gray-900">{subject.title}</div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <Badge colorPalette="purple">
-                                        {year_group_names[subject.level]}
-                                    </Badge>
-                                </td>
-                                <td className="px-6 py-4">
-                                    <div className="text-sm text-gray-500 line-clamp-2">{subject.desc}</div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {subject._count.notes}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <div className="flex space-x-2">
-                                        <Link
-                                            href={`/admin/subjects/${subject.id}`}
-                                            className="text-indigo-600 hover:text-indigo-900"
-                                        >
-                                            Edit
-                                        </Link>
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
+                            {filteredSubjects.map((subject) => (
+                                <tr key={subject.id} className="hover:bg-gray-50">
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <div className="text-sm font-medium text-gray-900">{subject.title}</div>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <Badge colorPalette="purple">
+                                            {year_group_names[subject.level]}
+                                        </Badge>
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <div className="text-sm text-gray-500 line-clamp-2">{subject.desc}</div>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {subject._count.notes}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div className="flex space-x-2">
+                                            <Link
+                                                href={`/admin/subjects/${subject.id}`}
+                                                className="text-indigo-600 hover:text-indigo-900"
+                                            >
+                                                Edit
+                                            </Link>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>

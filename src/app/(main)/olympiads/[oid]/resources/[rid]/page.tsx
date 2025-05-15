@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import {prisma} from "@/lib/prisma";
-import {notFound} from "next/navigation";
-import {isNumeric} from "@/lib/utils";
+import { prisma } from "@/lib/prisma";
+import { notFound } from "next/navigation";
+import { isNumeric } from "@/lib/utils";
 import FileList from "@/lib/customui/Basic/filelist";
 import MDViewer from "@/lib/customui/Basic/showMD";
 import Link from "next/link";
 import { LuArrowLeft, LuFileText, LuFile, LuExternalLink } from "react-icons/lu";
 
-export default async function Page(req : any, res : any){
+export default async function Page(req: any, res: any) {
     const params = await req.params;
     const oid = params.oid;
     const rid = params.rid;
@@ -48,7 +48,7 @@ export default async function Page(req : any, res : any){
     }
 
     const resourceType = getResourceTypeLabel(resource.type);
-    const authorName = resource.author.firstname && resource.author.lastname 
+    const authorName = resource.author.firstname && resource.author.lastname
         ? `${resource.author.firstname} ${resource.author.lastname}`
         : "Anonymous";
 
@@ -56,7 +56,7 @@ export default async function Page(req : any, res : any){
         <div className="container mx-auto px-4 py-6 max-w-7xl">
             {/* Breadcrumb */}
             <div className="mb-6">
-                <Link 
+                <Link
                     href={`/olympiads/${olympiad.id}`}
                     className="flex items-center text-indigo-600 hover:text-indigo-800 transition-colors"
                 >
@@ -93,7 +93,7 @@ export default async function Page(req : any, res : any){
                         <div className="rounded-lg shadow-md border border-blue-100 p-8 mb-6">
                             <h2 className="text-2xl font-semibold mb-5 text-blue-800 border-b pb-3 border-blue-200">Olympiad Resource Content</h2>
                             <div className="prose prose-lg max-w-none text-gray-800">
-                                <MDViewer content={resource.desc}/>
+                                <MDViewer content={resource.desc} />
                             </div>
                         </div>
                     </div>
@@ -118,7 +118,7 @@ export default async function Page(req : any, res : any){
                     <div className=" rounded-lg shadow-md border border-blue-100 p-8 mb-6">
                         <h2 className="text-2xl font-semibold mb-5 text-blue-800 border-b pb-3 border-blue-200">Olympiad Resource Content</h2>
                         <div className="prose prose-lg max-w-none text-gray-800">
-                            <MDViewer content={resource.desc}/>
+                            <MDViewer content={resource.desc} />
                         </div>
                     </div>
                 </div>
@@ -128,7 +128,7 @@ export default async function Page(req : any, res : any){
 }
 
 function getResourceTypeLabel(type: number): string {
-    switch(type) {
+    switch (type) {
         case 0: return "Past Paper";
         case 1: return "Solution";
         case 2: return "Other";

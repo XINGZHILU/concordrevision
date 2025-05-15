@@ -126,11 +126,10 @@ export default function UserActions({ userId, uploadPermission, isTeacher }: Use
             <div className="flex flex-wrap gap-2">
                 <button
                     onClick={() => openDialog('upload')}
-                    className={`px-4 py-2 rounded-md text-white ${
-                        uploadPermission
+                    className={`px-4 py-2 rounded-md text-white ${uploadPermission
                             ? 'bg-red-600 hover:bg-red-700'
                             : 'bg-green-600 hover:bg-green-700'
-                    } ${isUpdating ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        } ${isUpdating ? 'opacity-50 cursor-not-allowed' : ''}`}
                     disabled={isUpdating}
                 >
                     {uploadPermission ? 'Revoke Upload Permission' : 'Grant Upload Permission'}
@@ -138,11 +137,10 @@ export default function UserActions({ userId, uploadPermission, isTeacher }: Use
 
                 <button
                     onClick={() => openDialog('teacher')}
-                    className={`px-4 py-2 rounded-md text-white ${
-                        isTeacher
+                    className={`px-4 py-2 rounded-md text-white ${isTeacher
                             ? 'bg-gray-600 hover:bg-gray-700'
                             : 'bg-indigo-600 hover:bg-indigo-700'
-                    } ${isUpdating ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        } ${isUpdating ? 'opacity-50 cursor-not-allowed' : ''}`}
                     disabled={isUpdating}
                 >
                     {isTeacher ? 'Convert to Student' : 'Convert to Teacher'}
@@ -188,11 +186,10 @@ export default function UserActions({ userId, uploadPermission, isTeacher }: Use
                         </button>
                         <button
                             onClick={handleConfirmAction}
-                            className={`px-4 py-2 text-white rounded transition-colors ${
-                                dialogAction === 'upload'
+                            className={`px-4 py-2 text-white rounded transition-colors ${dialogAction === 'upload'
                                     ? (uploadPermission ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700')
                                     : (isTeacher ? 'bg-gray-600 hover:bg-gray-700' : 'bg-indigo-600 hover:bg-indigo-700')
-                            } ${isUpdating ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                } ${isUpdating ? 'opacity-50 cursor-not-allowed' : ''}`}
                             disabled={isUpdating}
                         >
                             {isUpdating ? 'Updating...' : 'Confirm'}

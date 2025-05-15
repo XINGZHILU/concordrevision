@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import {prisma} from "@/lib/prisma";
-import {notFound} from "next/navigation";
-import {isNumeric} from "@/lib/utils";
-import {year_group_names} from "@/lib/consts";
-import {currentUser} from "@clerk/nextjs/server";
+import { prisma } from "@/lib/prisma";
+import { notFound } from "next/navigation";
+import { isNumeric } from "@/lib/utils";
+import { year_group_names } from "@/lib/consts";
+import { currentUser } from "@clerk/nextjs/server";
 import ColourSelector from "@/lib/customui/Revision/ColourSelector";
 import FileList from "@/lib/customui/Basic/filelist";
 import MDViewer from "@/lib/customui/Basic/showMD";
 import Link from "next/link";
 import { LuArrowLeft, LuFileText, LuFile } from "react-icons/lu";
 
-export default async function Page(req : any, res : any){
-    function Get_Colour(usr: { red: number[]; amber: number[]; green: number[]}, nid: number) {
+export default async function Page(req: any, res: any) {
+    function Get_Colour(usr: { red: number[]; amber: number[]; green: number[] }, nid: number) {
         if (usr.red.includes(nid)) {
             return 2;
         }
@@ -41,7 +41,7 @@ export default async function Page(req : any, res : any){
             id: +sid
         },
     });
-    
+
 
     if (!subject) {
         notFound();
@@ -65,15 +65,15 @@ export default async function Page(req : any, res : any){
     if (!note) {
         notFound();
     }
-    
-    if (!note.approved){
+
+    if (!note.approved) {
         notFound();
     }
 
     const user = await currentUser();
     const colour = user ? await getUserColor(user.id, note.id) : -1;
 
-    const authorName = note.author.firstname && note.author.lastname 
+    const authorName = note.author.firstname && note.author.lastname
         ? `${note.author.firstname} ${note.author.lastname}`
         : "Anonymous";
 
@@ -81,7 +81,7 @@ export default async function Page(req : any, res : any){
         <div className="container mx-auto px-4 py-6 max-w-7xl">
             {/* Breadcrumb */}
             <div className="mb-6">
-                <Link 
+                <Link
                     href={`/revision/${subject.id}`}
                     className="flex items-center text-indigo-600 hover:text-indigo-800 transition-colors"
                 >
@@ -105,7 +105,7 @@ export default async function Page(req : any, res : any){
             {user && (
                 <div className="mb-6">
                     <h2 className="text-lg font-medium mb-2">My Knowledge Level</h2>
-                    <ColourSelector nid={note.id} uid={user.id} subject={subject.id} original={colour}/>
+                    <ColourSelector nid={note.id} uid={user.id} subject={subject.id} original={colour} />
                 </div>
             )}
 
@@ -116,7 +116,7 @@ export default async function Page(req : any, res : any){
                     <div className="bg-white rounded-lg shadow-md border border-indigo-100 p-8 mb-6">
                         <h2 className="text-2xl font-semibold mb-5 text-indigo-800 border-b pb-3 border-indigo-100">Content</h2>
                         <div className="prose prose-lg max-w-none text-gray-800">
-                            <MDViewer content={note.desc}/>
+                            <MDViewer content={note.desc} />
                         </div>
                     </div>
                 </div>
@@ -131,7 +131,7 @@ export default async function Page(req : any, res : any){
                                 ({note.files.length})
                             </span>
                         </h2>
-                        
+
                         {note.files.length > 0 ? (
                             <FileList files={note.files} />
                         ) : (

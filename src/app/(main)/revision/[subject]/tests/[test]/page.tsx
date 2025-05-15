@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import {prisma} from "@/lib/prisma";
-import {notFound} from "next/navigation";
-import {isNumeric} from "@/lib/utils";
-import {year_group_names} from "@/lib/consts";
-import {currentUser} from "@clerk/nextjs/server";
-import {TestNoteCard} from "@/lib/customui/Basic/cards";
+import { prisma } from "@/lib/prisma";
+import { notFound } from "next/navigation";
+import { isNumeric } from "@/lib/utils";
+import { year_group_names } from "@/lib/consts";
+import { currentUser } from "@clerk/nextjs/server";
+import { TestNoteCard } from "@/lib/customui/Basic/cards";
 import MDViewer from "@/lib/customui/Basic/showMD";
 import { TestBadge } from "@/lib/customui/Basic/Badges";
 
@@ -60,24 +60,24 @@ export default async function Page(req: any, res: any) {
         notFound();
     }
 
-    const notes = test.notes.filter((note) => {return (note.approved)});
+    const notes = test.notes.filter((note) => { return (note.approved) });
 
     const user = await currentUser();
     if (!user) {
         return (<div className="w-full">
             <h1>{year_group_names[subject.level]} {subject.title} - {test.title}</h1>
-            <br/>
+            <br />
             <ul>
                 <li><b>Test
-                    Type:</b> <TestBadge type={test.type}/>
+                    Type:</b> <TestBadge type={test.type} />
                 </li>
                 <li><b>Test Date:</b> {test.date.toDateString()}</li>
             </ul>
-            <br/>
+            <br />
             <h2>Information</h2>
-            <MDViewer content={test.desc}/>
-    
-            <br/>
+            <MDViewer content={test.desc} />
+
+            <br />
             <h2>Notes</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll">
                 {
@@ -86,8 +86,8 @@ export default async function Page(req: any, res: any) {
                     ) : (
                         notes.map((note) => {
                             // @ts-ignore
-                            return <div key={note.id + 'div'}> <TestNoteCard note={note} key={note.id} colour={-1}/>
-                                <br key={note.id + 'br'}/>
+                            return <div key={note.id + 'div'}> <TestNoteCard note={note} key={note.id} colour={-1} />
+                                <br key={note.id + 'br'} />
                             </div>;
                         })
                     )
@@ -108,17 +108,17 @@ export default async function Page(req: any, res: any) {
 
     return (<div className="w-full">
         <h1>{year_group_names[subject.level]} {subject.title} - {test.title}</h1>
-        <br/>
+        <br />
         <ul>
             <li><b>Test
                 Type:</b> {test.type === 0 ? 'Saturday Test' : test.type === 1 ? 'End of term exam' : 'Public exam'}
             </li>
             <li><b>Test Date:</b> {test.date.toDateString()}</li>
         </ul>
-        <br/>
+        <br />
         <h2>Information</h2>
-        <MDViewer content={test.desc}/>
-        <br/>
+        <MDViewer content={test.desc} />
+        <br />
         <h2>Notes</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll">
             {
@@ -127,8 +127,8 @@ export default async function Page(req: any, res: any) {
                 ) : (
                     notes.map((note) => {
                         // @ts-ignore
-                        return <div key={note.id + 'div'}> <TestNoteCard note={note} key={note.id} colour={Get_Colour(record, note.id)}/>
-                            <br key={note.id + 'br'}/>
+                        return <div key={note.id + 'div'}> <TestNoteCard note={note} key={note.id} colour={Get_Colour(record, note.id)} />
+                            <br key={note.id + 'br'} />
                         </div>;
                     })
                 )

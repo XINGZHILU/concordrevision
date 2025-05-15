@@ -4,15 +4,15 @@ import React from 'react';
 import Link from 'next/link';
 import { year_group_names } from "@/lib/consts";
 import { Badge } from "@chakra-ui/react";
-import { 
-    LuBook, 
-    LuBeaker, 
-    LuPencilRuler, 
-    LuCalculator, 
-    LuLanguages, 
-    LuFlaskConical, 
-    LuAtom, 
-    LuBookOpen, 
+import {
+    LuBook,
+    LuBeaker,
+    LuPencilRuler,
+    LuCalculator,
+    LuLanguages,
+    LuFlaskConical,
+    LuAtom,
+    LuBookOpen,
     LuGlobe,
     LuArrowRight
 } from "react-icons/lu";
@@ -27,16 +27,16 @@ export function SubjectItem({ subject }: {
 }) {
     // Get appropriate icon based on subject title or other criteria
     const SubjectIcon = getSubjectIcon(subject.title);
-    
+
     return (
         <div className="p-3">
             <Link href={`/revision/${subject.id}`} className="block h-full">
-                <div 
+                <div
                     className="group relative overflow-hidden h-full rounded-xl border border-gray-200 bg-white transition-all duration-300 hover:shadow-lg"
                 >
                     {/* Decorative band on left side */}
                     <div className="absolute left-0 top-0 h-full w-1.5 bg-gray-300" />
-                    
+
                     {/* Card content */}
                     <div className="p-5 pl-6">
                         {/* Header with subject title and year badge */}
@@ -49,15 +49,15 @@ export function SubjectItem({ subject }: {
                                     {subject.title}
                                 </h3>
                             </div>
-                            <Badge 
+                            <Badge
                                 className="bg-gray-100 text-gray-700 ml-2"
                                 size="sm"
                             >
                                 {year_group_names[subject.level]}
                             </Badge>
                         </div>
-                        
-                        
+
+
                         {/* Footer - view button */}
                         <div className="mt-4 flex items-center text-sm font-medium">
                             <span className="text-gray-700 group-hover:underline flex items-center">
@@ -86,7 +86,7 @@ function truncateDescription(text: string, maxLength: number): string {
 // Helper function to get appropriate icon based on subject name
 function getSubjectIcon(subjectTitle: string) {
     const title = subjectTitle.toLowerCase();
-    
+
     if (title.includes('math') || title.includes('maths')) return LuCalculator;
     if (title.includes('physics')) return LuAtom;
     if (title.includes('chemistry')) return LuFlaskConical;
@@ -95,7 +95,7 @@ function getSubjectIcon(subjectTitle: string) {
     if (title.includes('language') || title.includes('spanish') || title.includes('french')) return LuLanguages;
     if (title.includes('geography') || title.includes('earth')) return LuGlobe;
     if (title.includes('art') || title.includes('design')) return LuPencilRuler;
-    
+
     // Default icon
     return LuBook;
 }

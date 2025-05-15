@@ -142,8 +142,8 @@ export default function FilteredNoteList({ notes }: FilteredNoteListProps) {
                 Pending Approvals ({filteredNotes.length})
                 {filteredNotes.length !== notes.length && (
                     <span className="text-sm font-normal text-gray-500 ml-2">
-            (Filtered from {notes.length} total)
-          </span>
+                        (Filtered from {notes.length} total)
+                    </span>
                 )}
             </h2>
 
@@ -168,62 +168,62 @@ export default function FilteredNoteList({ notes }: FilteredNoteListProps) {
                 <div className="overflow-x-auto bg-white shadow-md rounded-lg">
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
-                        <tr>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Title
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Subject
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Author
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Type
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Files
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Action
-                            </th>
-                        </tr>
+                            <tr>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Title
+                                </th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Subject
+                                </th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Author
+                                </th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Type
+                                </th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Files
+                                </th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Action
+                                </th>
+                            </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                        {filteredNotes.map((note) => (
-                            <tr key={note.id} className="hover:bg-gray-50">
-                                <td className="px-6 py-4">
-                                    <div className="text-sm font-medium text-gray-900">{note.title}</div>
-                                    <div className="text-sm text-gray-500 truncate max-w-xs">{note.desc.substring(0, 50)}{note.desc.length > 50 ? '...' : ''}</div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="text-sm text-gray-900">{note.subject.title}</div>
-                                    <div className="text-xs text-gray-500">{year_group_names[note.subject.level]}</div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="text-sm text-gray-900">{`${note.author.firstname} ${note.author.lastname}` || 'Unknown'}</div>
-                                    <div className="text-xs text-gray-500">{note.author.email}</div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <Badge
-                                        colorPalette={note.type === 0 ? 'green' : note.type === 1 ? 'orange' : 'blue'}
-                                    >
-                                        {getNoteTypeLabel(note.type)}
-                                    </Badge>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {note.files.length} file{note.files.length !== 1 ? 's' : ''}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <Link
-                                        href={`/admin/approval/revision/${note.id}`}
-                                        className="text-indigo-600 hover:text-indigo-900 px-3 py-1 rounded border border-indigo-600 hover:bg-indigo-50"
-                                    >
-                                        Review
-                                    </Link>
-                                </td>
-                            </tr>
-                        ))}
+                            {filteredNotes.map((note) => (
+                                <tr key={note.id} className="hover:bg-gray-50">
+                                    <td className="px-6 py-4">
+                                        <div className="text-sm font-medium text-gray-900">{note.title}</div>
+                                        <div className="text-sm text-gray-500 truncate max-w-xs">{note.desc.substring(0, 50)}{note.desc.length > 50 ? '...' : ''}</div>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <div className="text-sm text-gray-900">{note.subject.title}</div>
+                                        <div className="text-xs text-gray-500">{year_group_names[note.subject.level]}</div>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <div className="text-sm text-gray-900">{`${note.author.firstname} ${note.author.lastname}` || 'Unknown'}</div>
+                                        <div className="text-xs text-gray-500">{note.author.email}</div>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <Badge
+                                            colorPalette={note.type === 0 ? 'green' : note.type === 1 ? 'orange' : 'blue'}
+                                        >
+                                            {getNoteTypeLabel(note.type)}
+                                        </Badge>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {note.files.length} file{note.files.length !== 1 ? 's' : ''}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <Link
+                                            href={`/admin/approval/revision/${note.id}`}
+                                            className="text-indigo-600 hover:text-indigo-900 px-3 py-1 rounded border border-indigo-600 hover:bg-indigo-50"
+                                        >
+                                            Review
+                                        </Link>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>

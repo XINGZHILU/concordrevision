@@ -47,19 +47,20 @@ export default async function handler(
             },
         });
 
-        try{
+        try {
             await resend.emails.send({
                 from: email_from,
                 to: [updatedNote.author.email],
                 subject: 'Upload approved',
                 // @ts-expect-error: type might not match
-                react: ApprovedEmailTemplate({ name: updatedNote.author.firstname,
+                react: ApprovedEmailTemplate({
+                    name: updatedNote.author.firstname,
                     title: updatedNote.title,
                     area: `${year_group_names[updatedNote.subject.level]} ${updatedNote.subject.title}`
                 }),
             });
         }
-        finally{
+        finally {
             console.log('Email send attempted');
         }
 

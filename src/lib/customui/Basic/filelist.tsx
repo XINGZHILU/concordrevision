@@ -1,11 +1,11 @@
 import React from 'react';
-import { 
-    File, 
-    FileSpreadsheet, 
-    FileText, 
-    FileImage, 
-    FileVideo, 
-    FileAudio, 
+import {
+    File,
+    FileSpreadsheet,
+    FileText,
+    FileImage,
+    FileVideo,
+    FileAudio,
     FileArchive,
     ExternalLink
 } from 'lucide-react';
@@ -49,18 +49,18 @@ function getFileIcon(filename: string) {
 // Helper to truncate long filenames with ellipsis in the middle
 function truncateFilename(filename: string, maxLength = 30) {
     if (filename.length <= maxLength) return filename;
-    
+
     const extension = filename.includes('.') ? filename.split('.').pop() : '';
-    const nameWithoutExt = filename.includes('.') ? 
-        filename.substring(0, filename.lastIndexOf('.')) : 
+    const nameWithoutExt = filename.includes('.') ?
+        filename.substring(0, filename.lastIndexOf('.')) :
         filename;
-    
+
     if (!extension) return `${nameWithoutExt.substring(0, maxLength - 3)}...`;
-    
+
     const availableChars = maxLength - extension.length - 4; // 4 for "..." and "."
     const start = nameWithoutExt.substring(0, Math.ceil(availableChars / 2));
     const end = nameWithoutExt.substring(nameWithoutExt.length - Math.floor(availableChars / 2));
-    
+
     return `${start}...${end}.${extension}`;
 }
 
@@ -70,13 +70,13 @@ export default function FileList({ files }: { files: FileItemProps[] }) {
             <p className="text-gray-500 text-center py-4">No files available</p>
         );
     }
-    
+
     return (
         <div className="space-y-3">
             {files.map((file) => {
                 const FileIcon = getFileIcon(file.filename);
                 const displayName = truncateFilename(file.filename);
-                
+
                 return (
                     <div key={file.id} className="group">
                         <a
@@ -89,7 +89,7 @@ export default function FileList({ files }: { files: FileItemProps[] }) {
                             <div className="flex-shrink-0 p-2 bg-indigo-100 rounded-md text-indigo-700 mr-3">
                                 <FileIcon size={20} />
                             </div>
-                            
+
                             <div className="flex-grow min-w-0">
                                 <p className="text-sm font-medium text-gray-900 truncate">
                                     {displayName}
@@ -98,7 +98,7 @@ export default function FileList({ files }: { files: FileItemProps[] }) {
                                     {file.filename.split('.').pop()?.toUpperCase()}
                                 </p>
                             </div>
-                            
+
                             <div className="flex-shrink-0 ml-2 text-gray-400 group-hover:text-indigo-600">
                                 <ExternalLink size={16} />
                             </div>

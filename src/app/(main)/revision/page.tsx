@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import RevisionSubjectList from "@/lib/customui/Revision/RevisionSubjectList";
-import {currentUser} from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 
 export default async function Home() {
     const subjects = await prisma.subject.findMany({
@@ -10,10 +10,10 @@ export default async function Home() {
     });
 
     const user = await currentUser();
-    if (!user){
+    if (!user) {
         return (
             <>
-                <RevisionSubjectList subjects={subjects} year = {0}/>
+                <RevisionSubjectList subjects={subjects} year={0} />
             </>
         )
     }
@@ -24,13 +24,13 @@ export default async function Home() {
         }
     });
 
-    if (!user_data){
+    if (!user_data) {
         return <h1>User not found</h1>;
     }
 
     return (
         <>
-            <RevisionSubjectList subjects={subjects} year = {user_data.year}/>
+            <RevisionSubjectList subjects={subjects} year={user_data.year} />
         </>
     )
 }

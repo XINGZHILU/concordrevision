@@ -1,8 +1,8 @@
-import {currentUser} from "@clerk/nextjs/server";
-import {prisma} from "@/lib/prisma";
+import { currentUser } from "@clerk/nextjs/server";
+import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 
-export default async function RootLayout({children}: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
     const user = await currentUser();
     if (!user) {
         notFound();
@@ -15,7 +15,7 @@ export default async function RootLayout({children}: { children: React.ReactNode
     if (!record) {
         notFound();
     }
-    if (!record.teacher && !record.upload_permission){
+    if (!record.teacher && !record.upload_permission) {
         notFound();
     }
     return (

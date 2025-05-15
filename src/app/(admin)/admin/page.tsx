@@ -32,8 +32,8 @@ function AdminCard({ title, description, icon, href, count, variant = "primary" 
                     </div>
                     {count !== undefined && (
                         <span className="inline-flex items-center justify-center px-3 py-1 text-sm font-medium rounded-full bg-white">
-              {count}
-            </span>
+                            {count}
+                        </span>
                     )}
                 </div>
                 <h3 className="mt-4 text-lg font-medium">{title}</h3>

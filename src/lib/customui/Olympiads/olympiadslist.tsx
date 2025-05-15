@@ -3,11 +3,11 @@
 import { useState } from "react";
 import { olympiad_subjects } from "@/lib/consts";
 import { OlympiadCard } from '@/lib/customui/Olympiads/OlympiadCard';
-import { 
+import {
     LuCalculator,
-    LuFlaskConical, 
-    LuAtom, 
-    LuBrain, 
+    LuFlaskConical,
+    LuAtom,
+    LuBrain,
     LuMicroscope,
     LuActivity,
     LuGlobe,
@@ -28,11 +28,11 @@ export default function OlympiadsList({ olympiads }: {
 }) {
     const [selectedArea, setSelectedArea] = useState<string>("All");
     const [searchQuery, setSearchQuery] = useState<string>("");
-    
+
     // Get area icon
     const getAreaIcon = (area: string) => {
         const subject = area.toLowerCase();
-        
+
         if (subject.includes('math')) return <LuCalculator className="mr-2 h-5 w-5" />;
         if (subject.includes('physics')) return <LuAtom className="mr-2 h-5 w-5" />;
         if (subject.includes('chemistry')) return <LuFlaskConical className="mr-2 h-5 w-5" />;
@@ -40,17 +40,17 @@ export default function OlympiadsList({ olympiads }: {
         if (subject.includes('computer')) return <LuBraces className="mr-2 h-5 w-5" />;
         if (subject.includes('economics')) return <LuActivity className="mr-2 h-5 w-5" />;
         if (subject.includes('geography')) return <LuGlobe className="mr-2 h-5 w-5" />;
-        
+
         return <LuBrain className="mr-2 h-5 w-5" />;
     };
-    
+
     // Filter olympiads by area and search query
     const filteredOlympiads = olympiads.filter((olympiad) => {
         const matchesArea = selectedArea === "All" || olympiad.area === selectedArea;
-        const matchesSearch = searchQuery === "" || 
+        const matchesSearch = searchQuery === "" ||
             olympiad.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
             olympiad.desc.toLowerCase().includes(searchQuery.toLowerCase());
-        
+
         return matchesArea && matchesSearch;
     });
 
@@ -62,7 +62,7 @@ export default function OlympiadsList({ olympiads }: {
                     Explore international competitions, preparation materials, and resources for academic olympiads
                 </p>
             </div>
-            
+
             {/* Search and Filter Section */}
             <div className="bg-white rounded-xl shadow-md p-6 mb-8">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -79,7 +79,7 @@ export default function OlympiadsList({ olympiads }: {
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
                     </div>
-                    
+
                     {/* Filter by subject area */}
                     <div className="flex items-center">
                         <LuFilter className="h-5 w-5 text-gray-500 mr-2" />
@@ -87,24 +87,22 @@ export default function OlympiadsList({ olympiads }: {
                         <div className="flex flex-wrap gap-2">
                             <button
                                 onClick={() => setSelectedArea("All")}
-                                className={`px-3 py-1.5 text-sm rounded-lg transition-all ${
-                                    selectedArea === "All"
+                                className={`px-3 py-1.5 text-sm rounded-lg transition-all ${selectedArea === "All"
                                         ? "bg-gray-800 text-white font-medium"
                                         : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                                }`}
+                                    }`}
                             >
                                 All
                             </button>
-                            
+
                             {olympiad_subjects.map((area) => (
                                 <button
                                     key={area}
                                     onClick={() => setSelectedArea(area)}
-                                    className={`px-3 py-1.5 text-sm rounded-lg transition-all flex items-center ${
-                                        selectedArea === area
+                                    className={`px-3 py-1.5 text-sm rounded-lg transition-all flex items-center ${selectedArea === area
                                             ? "bg-gray-800 text-white font-medium"
                                             : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                                    }`}
+                                        }`}
                                 >
                                     {getAreaIcon(area)}
                                     {area}
@@ -114,7 +112,7 @@ export default function OlympiadsList({ olympiads }: {
                     </div>
                 </div>
             </div>
-            
+
             {/* Results count */}
             <div className="mb-6 flex justify-between items-center">
                 <h2 className="text-xl font-semibold text-gray-800">
@@ -124,7 +122,7 @@ export default function OlympiadsList({ olympiads }: {
                     </span>
                 </h2>
             </div>
-            
+
             {/* Olympiads grid */}
             {filteredOlympiads.length === 0 ? (
                 <div className="bg-gray-50 border border-gray-200 rounded-lg p-8 text-center">
@@ -159,7 +157,7 @@ export function OlympiadsUploadList({ olympiads }: {
     }[]
 }) {
     const [selectedArea, setSelectedArea] = useState<string>("All");
-    
+
     // Filter olympiads by area
     const filteredOlympiads = olympiads.filter((olympiad) => {
         return selectedArea === "All" || olympiad.area === selectedArea;
@@ -173,38 +171,36 @@ export function OlympiadsUploadList({ olympiads }: {
                     Select an olympiad to upload competition materials or resources
                 </p>
             </div>
-            
+
             {/* Filter by subject area */}
             <div className="mb-8 bg-white rounded-lg shadow-sm p-4 border border-gray-200">
                 <div className="flex items-center flex-wrap gap-2">
                     <span className="text-sm font-medium text-gray-600 mr-2">Filter by subject:</span>
                     <button
                         onClick={() => setSelectedArea("All")}
-                        className={`px-3 py-1.5 text-sm rounded-lg transition-all ${
-                            selectedArea === "All"
+                        className={`px-3 py-1.5 text-sm rounded-lg transition-all ${selectedArea === "All"
                                 ? "bg-gray-800 text-white font-medium"
                                 : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                        }`}
+                            }`}
                     >
                         All
                     </button>
-                    
+
                     {olympiad_subjects.map((area) => (
                         <button
                             key={area}
                             onClick={() => setSelectedArea(area)}
-                            className={`px-3 py-1.5 text-sm rounded-lg transition-all ${
-                                selectedArea === area
+                            className={`px-3 py-1.5 text-sm rounded-lg transition-all ${selectedArea === area
                                     ? "bg-gray-800 text-white font-medium"
                                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                            }`}
+                                }`}
                         >
                             {area}
                         </button>
                     ))}
                 </div>
             </div>
-            
+
             {/* Olympiads list */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                 <h2 className="text-lg font-medium mb-4">
@@ -213,14 +209,14 @@ export function OlympiadsUploadList({ olympiads }: {
                         ({filteredOlympiads.length} available)
                     </span>
                 </h2>
-                
+
                 {filteredOlympiads.length === 0 ? (
                     <p className="text-gray-500 py-4">No olympiads available for the selected filter.</p>
                 ) : (
                     <ul className="divide-y divide-gray-200 !list-none">
                         {filteredOlympiads.map((olympiad) => (
                             <li key={olympiad.id} className="py-3">
-                                <a 
+                                <a
                                     href={`/upload/olympiads/${olympiad.id}`}
                                     className="flex items-center hover:bg-gray-50 p-2 rounded-lg transition-colors"
                                 >
@@ -244,7 +240,7 @@ export function OlympiadsUploadList({ olympiads }: {
 // Helper function to get icon based on olympiad area
 function getAreaIcon(area: string) {
     const subject = area.toLowerCase();
-    
+
     if (subject.includes('math')) return <LuCalculator className="mr-2 h-5 w-5 text-gray-600" />;
     if (subject.includes('physics')) return <LuAtom className="mr-2 h-5 w-5 text-gray-600" />;
     if (subject.includes('chemistry')) return <LuFlaskConical className="mr-2 h-5 w-5 text-gray-600" />;
@@ -252,6 +248,6 @@ function getAreaIcon(area: string) {
     if (subject.includes('computer')) return <LuBraces className="mr-2 h-5 w-5 text-gray-600" />;
     if (subject.includes('economics')) return <LuActivity className="mr-2 h-5 w-5 text-gray-600" />;
     if (subject.includes('geography')) return <LuGlobe className="mr-2 h-5 w-5 text-gray-600" />;
-    
+
     return <LuBrain className="mr-2 h-5 w-5 text-gray-600" />;
 }

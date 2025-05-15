@@ -22,15 +22,17 @@ model User {
     red                Int[]
     amber              Int[]
     green              Int[]
+    ppq_records        PastPaperRecord[]
 }
 
 model Subject {
-    id    Int    @id @default(autoincrement())
-    title String
-    desc  String
-    level Int // 0 = F3, 1 = F4, etc.
-    notes Note[]
-    tests Test[]
+    id          Int               @id @default(autoincrement())
+    title       String
+    desc        String
+    level       Int // 0 = F3, 1 = F4, etc.
+    notes       Note[]
+    tests       Test[]
+    ppq_records PastPaperRecord[]
 }
 
 model Test {
@@ -112,4 +114,19 @@ model StorageFile {
     noteId            Int?
     olympiad_resource Olympiad_Resource? @relation(fields: [olympiadId], references: [id])
     olympiadId        Int?
+}
+
+model PastPaperRecord {
+    id              String  @id @default(cuid())
+    name            String
+    user            User    @relation(fields: [userId], references: [id])
+    userId          String
+    subject         Subject @relation(fields: [subjectId], references: [id])
+    subjectId       Int
+    specimen        Boolean @default(true)
+    start_year      Int     @default(2015)
+    paper_count     Int     @default(3)
+    papers_finished Int[]
+    paper_marks     Int[]
+    max_marks       Int[]
 }

@@ -3,36 +3,36 @@ import { CloseButton } from "./close-button"
 import * as React from "react"
 
 interface ActionBarContentProps extends ActionBar.ContentProps {
-  portalled?: boolean
-  portalRef?: React.RefObject<HTMLElement>
+    portalled?: boolean
+    portalRef?: React.RefObject<HTMLElement>
 }
 
 export const ActionBarContent = React.forwardRef<
-  HTMLDivElement,
-  ActionBarContentProps
+    HTMLDivElement,
+    ActionBarContentProps
 >(function ActionBarContent(props, ref) {
-  const { children, portalled = true, portalRef, ...rest } = props
+    const { children, portalled = true, portalRef, ...rest } = props
 
-  return (
-    <Portal disabled={!portalled} container={portalRef}>
-      <ActionBar.Positioner>
-        <ActionBar.Content ref={ref} {...rest} asChild={false}>
-          {children}
-        </ActionBar.Content>
-      </ActionBar.Positioner>
-    </Portal>
-  )
+    return (
+        <Portal disabled={!portalled} container={portalRef}>
+            <ActionBar.Positioner>
+                <ActionBar.Content ref={ref} {...rest} asChild={false}>
+                    {children}
+                </ActionBar.Content>
+            </ActionBar.Positioner>
+        </Portal>
+    )
 })
 
 export const ActionBarCloseTrigger = React.forwardRef<
-  HTMLButtonElement,
-  ActionBar.CloseTriggerProps
+    HTMLButtonElement,
+    ActionBar.CloseTriggerProps
 >(function ActionBarCloseTrigger(props, ref) {
-  return (
-    <ActionBar.CloseTrigger {...props} asChild ref={ref}>
-      <CloseButton size="sm" />
-    </ActionBar.CloseTrigger>
-  )
+    return (
+        <ActionBar.CloseTrigger {...props} asChild ref={ref}>
+            <CloseButton size="sm" />
+        </ActionBar.CloseTrigger>
+    )
 })
 
 export const ActionBarRoot = ActionBar.Root

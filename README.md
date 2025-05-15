@@ -1,10 +1,10 @@
 # Concord Revision
+
 This is a website where students and teachers can upload and download resources for their classes.
 
 ## Contents
+
 [TOC]
-
-
 
 ## Subjects Provided
 
@@ -35,6 +35,7 @@ This is a website where students and teachers can upload and download resources 
 | Statistics                   |              |                     |
 
 ### A Levels
+
 | Subject             | Exam board | Resources available |
 | ------------------- | ---------- | ------------------- |
 | Art                 |            |                     |

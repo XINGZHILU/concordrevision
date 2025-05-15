@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import {prisma} from "@/lib/prisma";
-import {notFound} from "next/navigation";
+import { prisma } from "@/lib/prisma";
+import { notFound } from "next/navigation";
 import OlympiadUploadForm from "@/lib/customui/Upload/OlympiadUploadForm";
-import {currentUser} from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 import { MaxSizeAlert } from "@/lib/customui/Upload/Alert";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default async function Page(req : any, res : any){
+export default async function Page(req: any, res: any) {
     const user = await currentUser();
 
     if (!user) {
@@ -20,11 +20,11 @@ export default async function Page(req : any, res : any){
         }
     });
 
-    if (!record){
+    if (!record) {
         return <h1>User not found</h1>;
     }
 
-    if (!record.upload_permission){
+    if (!record.upload_permission) {
         return <h1>You do not have permission to access this page</h1>;
     }
 
@@ -40,14 +40,14 @@ export default async function Page(req : any, res : any){
         }
     });
 
-    if (!olympiad){
+    if (!olympiad) {
         notFound();
     }
 
 
     return <div>
         <h1>{olympiad.title} upload</h1>
-        <MaxSizeAlert/>
-        <OlympiadUploadForm olympiad={olympiad.id} author={user.id}/>
+        <MaxSizeAlert />
+        <OlympiadUploadForm olympiad={olympiad.id} author={user.id} />
     </div>;
 }

@@ -7,18 +7,18 @@ export default async function handler(
     res: NextApiResponse,
 ) {
     const { userId } = getAuth(req);
-    
+
     if (!userId) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
 
     const record = await prisma.user.findUnique({
         where: {
-            id : userId,
+            id: userId,
         }
     });
 
-    if (!record){
+    if (!record) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
 
@@ -55,7 +55,7 @@ export default async function handler(
     }
 
 
-    res.status(200).json({approved: record.teacher});
+    res.status(200).json({ approved: record.teacher });
 }
 
 export const config = {

@@ -1,4 +1,4 @@
-export default function PdfViewer({url, title}: {
+export default function PdfViewer({ url, title }: {
     url: string;
     title: string;
 }) {

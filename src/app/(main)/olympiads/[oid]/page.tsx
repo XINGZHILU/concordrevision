@@ -34,7 +34,7 @@ export default async function Page(req: any, res: any) {
         <Collapsible.Root defaultOpen>
             <Collapsible.Trigger paddingY="3"><h2>About</h2></Collapsible.Trigger>
             <Collapsible.Content>
-                <MDViewer content={olympiad.desc}/>
+                <MDViewer content={olympiad.desc} />
             </Collapsible.Content>
         </Collapsible.Root>
         <br />

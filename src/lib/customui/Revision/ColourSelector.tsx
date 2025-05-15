@@ -5,17 +5,17 @@ import { Toaster, toaster } from "@/components/ui/toaster";
 import { LuCircleAlert, LuCircleCheck, LuCircleEllipsis, LuCircleHelp } from "react-icons/lu";
 
 
-function GetSymbol({colour} : {colour : number}){
-    if (colour === -1){
-        return <LuCircleHelp/>
+function GetSymbol({ colour }: { colour: number }) {
+    if (colour === -1) {
+        return <LuCircleHelp />
     }
-    else if (colour === 0){
-        return <LuCircleCheck/>
+    else if (colour === 0) {
+        return <LuCircleCheck />
     }
-    else if (colour === 1){
-        return <LuCircleEllipsis/>
+    else if (colour === 1) {
+        return <LuCircleEllipsis />
     }
-    return <LuCircleAlert/>
+    return <LuCircleAlert />
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -76,7 +76,7 @@ export default function ColourSelector({ nid, uid, subject, Original }: {
                     description: "Failed to update knowledge level"
                 });
             }
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
             toaster.error({
                 title: "Error",
@@ -105,9 +105,9 @@ export default function ColourSelector({ nid, uid, subject, Original }: {
                                 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
                                 transition-colors border
                                 ${selectedColor === option.value ?
-                                `${option.bgClass} border-${option.bgClass.split('-')[1]}-500` :
-                                'bg-white border-gray-200 hover:bg-gray-50'
-                            }
+                                    `${option.bgClass} border-${option.bgClass.split('-')[1]}-500` :
+                                    'bg-white border-gray-200 hover:bg-gray-50'
+                                }
                             `}
                             onClick={() => {
                                 if (colourRef.current) {
@@ -116,7 +116,7 @@ export default function ColourSelector({ nid, uid, subject, Original }: {
                                 }
                             }}
                         >
-                            <GetSymbol colour = {option.value}/> {option.label}
+                            <GetSymbol colour={option.value} /> {option.label}
                         </button>
                     ))}
                 </div>
@@ -145,9 +145,9 @@ export default function ColourSelector({ nid, uid, subject, Original }: {
                         inline-flex items-center px-3 py-1.5 text-xs font-medium rounded 
                         focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-indigo-500
                         ${selectedColor !== original && !isLoading ?
-                        'bg-indigo-600 text-white hover:bg-indigo-700' :
-                        'bg-gray-100 text-gray-400 cursor-not-allowed'
-                    }
+                            'bg-indigo-600 text-white hover:bg-indigo-700' :
+                            'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        }
                     `}
                 >
                     {isLoading ? (

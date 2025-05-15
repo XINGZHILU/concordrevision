@@ -14,11 +14,11 @@ export default async function handler(
 
     const record = await prisma.user.findUnique({
         where: {
-            id : userId,
+            id: userId,
         }
     });
 
-    if (!record){
+    if (!record) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
 

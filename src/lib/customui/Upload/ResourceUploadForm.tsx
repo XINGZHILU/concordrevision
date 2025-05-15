@@ -24,9 +24,9 @@ export default function ResourceUploadForm({ subject, author }: { subject: numbe
         for (const file of files) {
             const response = await supabase.storage.from('notes-storage').upload(cuid() + file.name,
                 file, {
-                    cacheControl: '3600',
-                    upsert: false
-                });
+                cacheControl: '3600',
+                upsert: false
+            });
 
             if (response.error) {
                 throw new Error("Failed to upload files, there is probably a file with the same name");
@@ -55,7 +55,7 @@ export default function ResourceUploadForm({ subject, author }: { subject: numbe
         if (!response2.ok) {
             throw new Error("Failed to upload");
         }
-        else{
+        else {
             if (titleRef.current) titleRef.current.value = '';
             if (inputFileRef.current) inputFileRef.current.value = '';
             setSelectedFiles(0);
@@ -93,7 +93,7 @@ export default function ResourceUploadForm({ subject, author }: { subject: numbe
         setCantUpload(false);
     }
 
-    
+
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
@@ -205,11 +205,10 @@ export default function ResourceUploadForm({ subject, author }: { subject: numbe
                         </button>
                         <button
                             type="submit"
-                            className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
-                                cantUpload
+                            className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${cantUpload
                                     ? 'bg-indigo-300 cursor-not-allowed'
                                     : 'bg-indigo-600 hover:bg-indigo-700'
-                            }`}
+                                }`}
                             disabled={cantUpload}
                         >
                             {cantUpload ? (

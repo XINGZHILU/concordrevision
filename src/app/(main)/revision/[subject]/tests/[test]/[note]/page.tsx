@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import {prisma} from "@/lib/prisma";
-import {notFound} from "next/navigation";
-import {isNumeric} from "@/lib/utils";
-import {year_group_names} from "@/lib/consts";
-import {currentUser} from "@clerk/nextjs/server";
+import { prisma } from "@/lib/prisma";
+import { notFound } from "next/navigation";
+import { isNumeric } from "@/lib/utils";
+import { year_group_names } from "@/lib/consts";
+import { currentUser } from "@clerk/nextjs/server";
 import ColourSelector from "@/lib/customui/Revision/ColourSelector";
 import FileList from "@/lib/customui/Basic/filelist";
 import MDViewer from "@/lib/customui/Basic/showMD";
 import Link from "next/link";
 import { LuArrowLeft, LuFileText, LuCalendar } from "react-icons/lu";
 
-export default async function Page(req : any, res : any){
-    function Get_Colour(usr: { red: number[]; amber: number[]; green: number[]}, nid: number) {
+export default async function Page(req: any, res: any) {
+    function Get_Colour(usr: { red: number[]; amber: number[]; green: number[] }, nid: number) {
         if (usr.red.includes(nid)) {
             return 2;
         }
@@ -72,7 +72,7 @@ export default async function Page(req : any, res : any){
         }
     });
 
-    if (!note || !note.approved){
+    if (!note || !note.approved) {
         notFound();
     }
 
@@ -80,7 +80,7 @@ export default async function Page(req : any, res : any){
     const colour = user ? await getUserColor(user.id, note.id) : -1;
 
     const testType = getTestTypeLabel(test.type);
-    const authorName = note.author.firstname && note.author.lastname 
+    const authorName = note.author.firstname && note.author.lastname
         ? `${note.author.firstname} ${note.author.lastname}`
         : "Anonymous";
 
@@ -88,7 +88,7 @@ export default async function Page(req : any, res : any){
         <div className="container mx-auto px-4 py-6 max-w-7xl">
             {/* Breadcrumb */}
             <div className="mb-6">
-                <Link 
+                <Link
                     href={`/revision/${subject.id}/tests/${test.id}`}
                     className="flex items-center text-indigo-600 hover:text-indigo-800 transition-colors"
                 >
@@ -121,7 +121,7 @@ export default async function Page(req : any, res : any){
             {user && (
                 <div className="mb-6">
                     <h2 className="text-lg font-medium mb-2">My Knowledge Level</h2>
-                    <ColourSelector nid={note.id} uid={user.id} subject={subject.id} original={colour}/>
+                    <ColourSelector nid={note.id} uid={user.id} subject={subject.id} Original={colour} />
                 </div>
             )}
 
@@ -139,7 +139,7 @@ export default async function Page(req : any, res : any){
                                 </span>
                             </div>
                             <div className="prose prose-lg max-w-none text-gray-800">
-                                <MDViewer content={note.desc}/>
+                                <MDViewer content={note.desc} />
                             </div>
                         </div>
                     </div>
@@ -169,7 +169,7 @@ export default async function Page(req : any, res : any){
                             </span>
                         </div>
                         <div className="prose prose-lg max-w-none text-gray-800">
-                            <MDViewer content={note.desc}/>
+                            <MDViewer content={note.desc} />
                         </div>
                     </div>
                 </div>
@@ -193,7 +193,7 @@ export default async function Page(req : any, res : any){
 }
 
 function getTestTypeLabel(type: number): string {
-    switch(type) {
+    switch (type) {
         case 0: return "Saturday Test";
         case 1: return "End of Term Exam";
         case 2: return "Public Exam";

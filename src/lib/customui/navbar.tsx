@@ -44,8 +44,8 @@ export default function NavBar({ can_upload, teacher }: { can_upload: boolean, t
                             <Link
                                 href="/"
                                 className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/')
-                                        ? 'text-indigo-600 bg-indigo-50'
-                                        : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
+                                    ? 'text-indigo-600 bg-indigo-50'
+                                    : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
                                     }`}
                             >
                                 Home
@@ -53,8 +53,8 @@ export default function NavBar({ can_upload, teacher }: { can_upload: boolean, t
                             <Link
                                 href="/revision"
                                 className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/revision')
-                                        ? 'text-indigo-600 bg-indigo-50'
-                                        : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
+                                    ? 'text-indigo-600 bg-indigo-50'
+                                    : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
                                     }`}
                             >
                                 Revision
@@ -62,8 +62,8 @@ export default function NavBar({ can_upload, teacher }: { can_upload: boolean, t
                             <Link
                                 href="/olympiads"
                                 className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/olympiads')
-                                        ? 'text-indigo-600 bg-indigo-50'
-                                        : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
+                                    ? 'text-indigo-600 bg-indigo-50'
+                                    : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
                                     }`}
                             >
                                 Olympiads
@@ -71,8 +71,8 @@ export default function NavBar({ can_upload, teacher }: { can_upload: boolean, t
                             <Link
                                 href="/ec"
                                 className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/ec')
-                                        ? 'text-indigo-600 bg-indigo-50'
-                                        : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
+                                    ? 'text-indigo-600 bg-indigo-50'
+                                    : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
                                     }`}
                             >
                                 Extracurriculars
@@ -81,8 +81,8 @@ export default function NavBar({ can_upload, teacher }: { can_upload: boolean, t
                             {can_upload ? (<Link
                                 href="/upload"
                                 className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/upload')
-                                        ? 'text-indigo-600 bg-indigo-50'
-                                        : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
+                                    ? 'text-indigo-600 bg-indigo-50'
+                                    : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
                                     }`}
                             >
                                 Upload
@@ -92,8 +92,8 @@ export default function NavBar({ can_upload, teacher }: { can_upload: boolean, t
                             {teacher ? (<Link
                                 href="/admin"
                                 className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/admin')
-                                        ? 'text-indigo-600 bg-indigo-50'
-                                        : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
+                                    ? 'text-indigo-600 bg-indigo-50'
+                                    : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
                                     }`}
                             >
                                 Admin
@@ -175,8 +175,8 @@ export default function NavBar({ can_upload, teacher }: { can_upload: boolean, t
                         <Link
                             href="/"
                             className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/')
-                                    ? 'text-indigo-600 bg-indigo-50'
-                                    : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
+                                ? 'text-indigo-600 bg-indigo-50'
+                                : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
                                 }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
@@ -185,8 +185,8 @@ export default function NavBar({ can_upload, teacher }: { can_upload: boolean, t
                         <Link
                             href="/revision"
                             className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/revision')
-                                    ? 'text-indigo-600 bg-indigo-50'
-                                    : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
+                                ? 'text-indigo-600 bg-indigo-50'
+                                : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
                                 }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
@@ -195,8 +195,8 @@ export default function NavBar({ can_upload, teacher }: { can_upload: boolean, t
                         <Link
                             href="/olympiads"
                             className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/olympiads')
-                                    ? 'text-indigo-600 bg-indigo-50'
-                                    : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
+                                ? 'text-indigo-600 bg-indigo-50'
+                                : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
                                 }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
@@ -205,8 +205,8 @@ export default function NavBar({ can_upload, teacher }: { can_upload: boolean, t
                         <Link
                             href="/ec"
                             className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/ec')
-                                    ? 'text-indigo-600 bg-indigo-50'
-                                    : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
+                                ? 'text-indigo-600 bg-indigo-50'
+                                : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
                                 }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
@@ -215,8 +215,8 @@ export default function NavBar({ can_upload, teacher }: { can_upload: boolean, t
                         {can_upload ? (<Link
                             href="/upload"
                             className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/upload')
-                                    ? 'text-indigo-600 bg-indigo-50'
-                                    : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
+                                ? 'text-indigo-600 bg-indigo-50'
+                                : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
                                 }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
@@ -225,8 +225,8 @@ export default function NavBar({ can_upload, teacher }: { can_upload: boolean, t
                         {teacher ? (<Link
                             href="/admin"
                             className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/admin')
-                                    ? 'text-indigo-600 bg-indigo-50'
-                                    : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
+                                ? 'text-indigo-600 bg-indigo-50'
+                                : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
                                 }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >

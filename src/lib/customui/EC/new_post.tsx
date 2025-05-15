@@ -4,11 +4,11 @@
 'use client';
 
 import MDEditor from '@uiw/react-md-editor';
-import {toaster} from "@/components/ui/toaster"
-import {Alert, Button} from "@chakra-ui/react";
-import React, {useState, useRef} from "react";
+import { toaster } from "@/components/ui/toaster"
+import { Alert, Button } from "@chakra-ui/react";
+import React, { useState, useRef } from "react";
 
-export default function PostForm({author}: { author: string }) {
+export default function PostForm({ author }: { author: string }) {
     const [value, setValue] = useState("");
     const titleRef = useRef<HTMLInputElement>(null);
 
@@ -55,17 +55,17 @@ export default function PostForm({author}: { author: string }) {
     return (
         <div className="container w-full">
             <Alert.Root status="warning">
-                <Alert.Indicator/>
+                <Alert.Indicator />
                 <Alert.Title>
                     Click <a href={'https://www.markdownguide.org/basic-syntax/'} target="_blank"
-                             rel="noopener noreferrer"><b>here</b></a> for how to write your
+                        rel="noopener noreferrer"><b>here</b></a> for how to write your
                     post
                 </Alert.Title>
             </Alert.Root>
             <form onSubmit={submit}>
                 <label htmlFor={'title'}>Title: </label>
                 <input type="text" ref={titleRef} name={'title'} placeholder={'Enter the title of the post'}
-                       required={true}/> <br/>
+                    required={true} /> <br />
 
                 <MDEditor
                     textareaProps={{

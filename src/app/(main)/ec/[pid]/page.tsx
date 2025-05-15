@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import {prisma} from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import MDViewer from "@/lib/customui/Basic/showMD";
-import {notFound} from "next/navigation";
-import {isNumeric} from "@/lib/utils";
+import { notFound } from "next/navigation";
+import { isNumeric } from "@/lib/utils";
 
 export default async function Page(req: any, res: any) {
     const params = await req.params;
@@ -15,7 +15,7 @@ export default async function Page(req: any, res: any) {
     }
 
     const post = await prisma.post.findUnique({
-        where: {id: +pid}
+        where: { id: +pid }
     });
 
     if (!post) {
@@ -23,7 +23,7 @@ export default async function Page(req: any, res: any) {
     }
 
     return <div>
-        <h1>{post.title}</h1> <br/>
-        <MDViewer content={`${post.content}`}/>
+        <h1>{post.title}</h1> <br />
+        <MDViewer content={`${post.content}`} />
     </div>;
 }

@@ -1,5 +1,5 @@
 import PostForm from "@/lib/customui/EC/new_post";
-import {currentUser} from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 
 
 export default async function Page() {
@@ -10,6 +10,6 @@ export default async function Page() {
     }
 
     return <div className={'content-center'}>
-        <PostForm author={user.id}/>
+        <PostForm author={user.id} />
     </div>;
 }

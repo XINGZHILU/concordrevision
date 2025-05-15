@@ -105,7 +105,7 @@ export default async function OlympiadResourceReviewPage({ params }: { params: {
                         <h3 className="text-lg font-medium mb-2">Description:</h3>
                         <div className="bg-gray-50 p-4 rounded border border-gray-200">
                             {resource.desc ? (
-                                <MDViewer content={resource.desc}/>
+                                <MDViewer content={resource.desc} />
                             ) : (
                                 <p className="text-gray-500 italic">No description provided</p>
                             )}

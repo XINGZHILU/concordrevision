@@ -17,7 +17,7 @@ export default function OlympiadUploadForm({ olympiad, author }: { olympiad: num
     const [cantUpload, setCantUpload] = useState<boolean>(false);
     const [selectedFiles, setSelectedFiles] = useState<number>(0);
     const supabase = createClient();
-    
+
     async function upload(files: FileList, title: string, desc: string) {
         const urls = [];
         const names = [];
@@ -54,7 +54,7 @@ export default function OlympiadUploadForm({ olympiad, author }: { olympiad: num
         if (!response2.ok) {
             throw new Error("Failed to update database");
         }
-        else{
+        else {
             if (titleRef.current) titleRef.current.value = '';
             if (inputFileRef.current) inputFileRef.current.value = '';
             setSelectedFiles(0);
@@ -62,7 +62,7 @@ export default function OlympiadUploadForm({ olympiad, author }: { olympiad: num
         }
     }
 
-    
+
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
@@ -207,8 +207,8 @@ export default function OlympiadUploadForm({ olympiad, author }: { olympiad: num
                         <button
                             type="submit"
                             className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${cantUpload
-                                    ? 'bg-indigo-300 cursor-not-allowed'
-                                    : 'bg-indigo-600 hover:bg-indigo-700'
+                                ? 'bg-indigo-300 cursor-not-allowed'
+                                : 'bg-indigo-600 hover:bg-indigo-700'
                                 }`}
                             disabled={cantUpload}
                         >

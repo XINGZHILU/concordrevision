@@ -5,7 +5,7 @@ import React from 'react';
 //import ReactMarkdown from 'react-markdown';
 //import MarkdownRenderer from './customMDRenderer';
 
-export default function MDViewer({content} : {content : string}){
+export default function MDViewer({ content }: { content: string }) {
     return <div className="container" data-color-mode="light">
         <MDEditor.Markdown source={content} />
         {/* <div style={{ 

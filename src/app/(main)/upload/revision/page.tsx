@@ -1,4 +1,4 @@
-import {prisma} from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import SubjectList from "@/lib/customui/Upload/UploadSubjectsList";
 import { currentUser } from '@clerk/nextjs/server'
 
@@ -15,14 +15,14 @@ export default async function Page() {
         }
     });
 
-    if (!record){
+    if (!record) {
         return <h1>User not found</h1>;
     }
 
-    if (!record.upload_permission){
+    if (!record.upload_permission) {
         return <h1>You do not have permission to access this page</h1>;
     }
-    
+
     const subjects = await prisma.subject.findMany({
         orderBy: {
             title: 'asc'

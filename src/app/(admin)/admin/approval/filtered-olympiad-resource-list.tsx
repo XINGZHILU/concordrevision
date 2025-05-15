@@ -65,13 +65,13 @@ export default function FilteredOlympiadResourceList({ resources }: FilteredReso
     // Filter resources based on search and area
     const filteredResources = useMemo(() => {
         return resources.filter(resource => {
-            const matchesSearch = 
-                resource.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+            const matchesSearch =
+                resource.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 resource.desc.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 resource.olympiad.title.toLowerCase().includes(searchTerm.toLowerCase());
-            
+
             const matchesArea = selectedArea === 'all' || resource.olympiad.area === selectedArea;
-            
+
             return matchesSearch && matchesArea;
         });
     }, [resources, searchTerm, selectedArea]);
@@ -149,62 +149,62 @@ export default function FilteredOlympiadResourceList({ resources }: FilteredReso
                 <div className="overflow-x-auto bg-white shadow-md rounded-lg">
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
-                        <tr>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Title
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Olympiad
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Author
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Type
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Files
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Action
-                            </th>
-                        </tr>
+                            <tr>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Title
+                                </th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Olympiad
+                                </th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Author
+                                </th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Type
+                                </th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Files
+                                </th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Action
+                                </th>
+                            </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                        {filteredResources.map((resource) => (
-                            <tr key={resource.id} className="hover:bg-gray-50">
-                                <td className="px-6 py-4">
-                                    <div className="text-sm font-medium text-gray-900">{resource.title}</div>
-                                    <div className="text-sm text-gray-500 truncate max-w-xs">{resource.desc.substring(0, 50)}{resource.desc.length > 50 ? '...' : ''}</div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="text-sm text-gray-900">{resource.olympiad.title}</div>
-                                    <div className="text-xs text-gray-500">{resource.olympiad.area}</div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="text-sm text-gray-900">{`${resource.author.firstname} ${resource.author.lastname}` || 'Unknown'}</div>
-                                    <div className="text-xs text-gray-500">{resource.author.email}</div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <Badge
-                                        colorPalette={resource.type === 0 ? 'blue' : resource.type === 1 ? 'green' : 'purple'}
-                                    >
-                                        {getResourceTypeLabel(resource.type)}
-                                    </Badge>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {resource.files.length} file{resource.files.length !== 1 ? 's' : ''}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <Link
-                                        href={`/admin/approval/olympiad/${resource.id}`}
-                                        className="text-indigo-600 hover:text-indigo-900 px-3 py-1 rounded border border-indigo-600 hover:bg-indigo-50"
-                                    >
-                                        Review
-                                    </Link>
-                                </td>
-                            </tr>
-                        ))}
+                            {filteredResources.map((resource) => (
+                                <tr key={resource.id} className="hover:bg-gray-50">
+                                    <td className="px-6 py-4">
+                                        <div className="text-sm font-medium text-gray-900">{resource.title}</div>
+                                        <div className="text-sm text-gray-500 truncate max-w-xs">{resource.desc.substring(0, 50)}{resource.desc.length > 50 ? '...' : ''}</div>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <div className="text-sm text-gray-900">{resource.olympiad.title}</div>
+                                        <div className="text-xs text-gray-500">{resource.olympiad.area}</div>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <div className="text-sm text-gray-900">{`${resource.author.firstname} ${resource.author.lastname}` || 'Unknown'}</div>
+                                        <div className="text-xs text-gray-500">{resource.author.email}</div>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <Badge
+                                            colorPalette={resource.type === 0 ? 'blue' : resource.type === 1 ? 'green' : 'purple'}
+                                        >
+                                            {getResourceTypeLabel(resource.type)}
+                                        </Badge>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {resource.files.length} file{resource.files.length !== 1 ? 's' : ''}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <Link
+                                            href={`/admin/approval/olympiad/${resource.id}`}
+                                            className="text-indigo-600 hover:text-indigo-900 px-3 py-1 rounded border border-indigo-600 hover:bg-indigo-50"
+                                        >
+                                            Review
+                                        </Link>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>

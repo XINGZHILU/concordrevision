@@ -11,7 +11,7 @@ const RevisionSubjectList = ({ subjects, year }: {
         title: string,
         desc: string,
         level: number
-    }[], 
+    }[],
     year: number
 }) => {
     // Group subjects by level
@@ -20,13 +20,13 @@ const RevisionSubjectList = ({ subjects, year }: {
     const f5 = subjects.filter((subject) => subject.level === 2);
     const f61 = subjects.filter((subject) => subject.level === 3);
     const f62 = subjects.filter((subject) => subject.level === 4);
-    
+
     const tabIds = ['f3', 'f4', 'f5', '61', '62'];
     const defaultTab = tabIds[year] || 'f3';
-    
+
     // Get year group icon
     const getYearGroupIcon = (level: number) => {
-        switch(level) {
+        switch (level) {
             case 0: return <LuBookOpen className="w-4 h-4 mr-2" />;
             case 1: return <LuBookPlus className="w-4 h-4 mr-2" />;
             case 2: return <LuBookUp className="w-4 h-4 mr-2" />;
@@ -44,12 +44,12 @@ const RevisionSubjectList = ({ subjects, year }: {
                     Access study materials, practice questions, and resources for all subjects
                 </p>
             </div>
-            
+
             <Tabs.Root defaultValue={defaultTab} variant='plain'>
                 <div className="border-b border-gray-200 mb-8">
                     <div className="flex justify-center">
-                        <Tabs.List 
-                            className="flex space-x-8 overflow-x-auto pb-1" 
+                        <Tabs.List
+                            className="flex space-x-8 overflow-x-auto pb-1"
                             bg="bg.subtle"
                         >
                             <Tabs.Trigger value="f3" className="flex items-center px-3 py-2 text-sm font-medium">
@@ -72,8 +72,8 @@ const RevisionSubjectList = ({ subjects, year }: {
                                 {getYearGroupIcon(4)}
                                 {year_group_names[4]}
                             </Tabs.Trigger>
-                            <Tabs.Indicator 
-                                className="h-0.5 bg-indigo-600" 
+                            <Tabs.Indicator
+                                className="h-0.5 bg-indigo-600"
                                 rounded="full"
                             />
                         </Tabs.List>
@@ -101,7 +101,7 @@ const RevisionSubjectList = ({ subjects, year }: {
 };
 
 // Subject list content with empty state handling
-function SubjectListContent({ subjects, level }: { 
+function SubjectListContent({ subjects, level }: {
     subjects: {
         id: number,
         title: string,
@@ -114,14 +114,14 @@ function SubjectListContent({ subjects, level }: {
         return (
             <div className="text-center py-12 bg-gray-50 rounded-lg border border-gray-200">
                 <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
-                    {level <= 2 ? 
-                        <LuBookOpen className="h-8 w-8 text-gray-400" /> : 
+                    {level <= 2 ?
+                        <LuBookOpen className="h-8 w-8 text-gray-400" /> :
                         <LuBookKey className="h-8 w-8 text-gray-400" />
                     }
                 </div>
                 <h3 className="text-lg font-medium text-gray-900 mb-1">No subjects available</h3>
                 <p className="text-gray-500 max-w-md mx-auto">
-                    There are currently no subjects available for {year_group_names[level]}. 
+                    There are currently no subjects available for {year_group_names[level]}.
                     Check back later or explore other year groups.
                 </p>
             </div>

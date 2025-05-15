@@ -12,16 +12,16 @@ const DEFAULT_POMODORO_COUNT = 4;
 
 // Size modes enum
 enum SizeMode {
-  COLLAPSED = "collapsed",
-  MEDIUM = "medium",
-  FULL = "full"
+    COLLAPSED = "collapsed",
+    MEDIUM = "medium",
+    FULL = "full"
 }
 
 // Format seconds into mm:ss display
 const formatTime = (seconds: number) => {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-  return `${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
 };
 
 const HorizontalPomodoro: React.FC = () => {
@@ -30,7 +30,7 @@ const HorizontalPomodoro: React.FC = () => {
     const [breakTime, setBreakTime] = useState<number>(DEFAULT_BREAK_TIME);
     const [longBreakTime, setLongBreakTime] = useState<number>(DEFAULT_LONG_BREAK_TIME);
     const [maxPomodoros, setMaxPomodoros] = useState<number>(DEFAULT_POMODORO_COUNT);
-    
+
     // Timer functionality state
     const [timeLeft, setTimeLeft] = useState<number>(workTime);
     const [isRunning, setIsRunning] = useState<boolean>(false);
@@ -39,27 +39,27 @@ const HorizontalPomodoro: React.FC = () => {
     const [sizeMode, setSizeMode] = useState<SizeMode>(SizeMode.MEDIUM);
     const [showPopup, setShowPopup] = useState<boolean>(false);
     const [canResize, setCanResize] = useState<boolean>(true);
-    
+
     // Session tracking state
     const [pomodoroCount, setPomodoroCount] = useState<number>(0);
     const [completedPomodoros, setCompletedPomodoros] = useState<number>(0);
     const [totalWorkTime, setTotalWorkTime] = useState<number>(0);
-    
+
     // Task management state
-    const [tasks, setTasks] = useState<Array<{id: number, text: string, completed: boolean, pomodoros: number}>>([]);
+    const [tasks, setTasks] = useState<Array<{ id: number, text: string, completed: boolean, pomodoros: number }>>([]);
     const [newTaskText, setNewTaskText] = useState<string>("");
     const [activeTaskId, setActiveTaskId] = useState<number | null>(null);
     const [showTaskPanel, setShowTaskPanel] = useState<boolean>(false);
-    
+
     // Audio references
     const workCompleteSound = useRef<HTMLAudioElement | null>(null);
     const breakCompleteSound = useRef<HTMLAudioElement | null>(null);
-    
+
     // Initialize audio elements
     useEffect(() => {
         workCompleteSound.current = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-bell-notification-933.mp3");
         breakCompleteSound.current = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3");
-        
+
         return () => {
             if (workCompleteSound.current) workCompleteSound.current = null;
             if (breakCompleteSound.current) breakCompleteSound.current = null;
@@ -69,49 +69,49 @@ const HorizontalPomodoro: React.FC = () => {
     // Timer logic
     useEffect(() => {
         let timer: NodeJS.Timeout;
-        
+
         if (isRunning) {
             timer = setInterval(() => {
                 setTimeLeft((prevTime) => {
                     if (prevTime <= 1) {
                         clearInterval(timer);
-                        
+
                         if (isWorkInterval) {
                             // Work session completed
                             const newPomodoroCount = pomodoroCount + 1;
                             setPomodoroCount(newPomodoroCount);
                             setCompletedPomodoros(prev => prev + 1);
                             setTotalWorkTime(prev => prev + workTime);
-                            
+
                             // Update active task pomodoro count if applicable
                             if (activeTaskId !== null) {
-                                setTasks(prevTasks => 
-                                    prevTasks.map(task => 
-                                        task.id === activeTaskId 
+                                setTasks(prevTasks =>
+                                    prevTasks.map(task =>
+                                        task.id === activeTaskId
                                             ? { ...task, pomodoros: task.pomodoros + 1 }
                                             : task
                                     )
                                 );
                             }
-                            
+
                             // Should next break be a long break?
                             const shouldTakeLongBreak = newPomodoroCount % maxPomodoros === 0;
                             setIsLongBreak(shouldTakeLongBreak);
-                            
+
                             // Play work complete sound
                             if (workCompleteSound.current) workCompleteSound.current.play();
-                            
+
                             // Show browser notification
                             showNotification("Work session complete!", "Time for a break!");
-                            
+
                             return shouldTakeLongBreak ? longBreakTime : breakTime;
                         } else {
                             // Break completed
                             if (breakCompleteSound.current) breakCompleteSound.current.play();
-                            
+
                             // Show browser notification
                             showNotification("Break is over!", "Time to focus!");
-                            
+
                             return workTime;
                         }
                     }
@@ -119,7 +119,7 @@ const HorizontalPomodoro: React.FC = () => {
                 });
             }, 1000);
         }
-        
+
         return () => clearInterval(timer);
     }, [isRunning, isWorkInterval, workTime, breakTime, longBreakTime, pomodoroCount, maxPomodoros, activeTaskId]);
 
@@ -132,7 +132,7 @@ const HorizontalPomodoro: React.FC = () => {
             setTimeLeft(isLongBreak ? longBreakTime : breakTime);
             document.title = `${isLongBreak ? 'Long Break' : 'Break'} - ${formatTime(isLongBreak ? longBreakTime : breakTime)}`;
         }
-        
+
         setIsRunning(false);
         //setShowPopup(true);
     }, [isWorkInterval, isLongBreak, workTime, breakTime, longBreakTime]);
@@ -140,12 +140,12 @@ const HorizontalPomodoro: React.FC = () => {
     // Update document title with timer progress
     useEffect(() => {
         const intervalType = isWorkInterval ? 'Work' : (isLongBreak ? 'Long Break' : 'Break');
-        const taskText = activeTaskId !== null 
+        const taskText = activeTaskId !== null
             // @ts-expect-error: may be undefined
             ? ` - ${tasks.find(t => t.id === activeTaskId)?.text.substring(0, 20)}${tasks.find(t => t.id === activeTaskId)?.text.length > 20 ? '...' : ''}`
             : '';
         document.title = `${intervalType} - ${formatTime(timeLeft)}${taskText}`;
-        
+
         return () => {
             document.title = 'Pomodoro Timer';
         };
@@ -157,7 +157,7 @@ const HorizontalPomodoro: React.FC = () => {
             console.log("Browser doesn't support notifications");
             return;
         }
-        
+
         if (Notification.permission === "granted") {
             new Notification(title, { body });
         } else if (Notification.permission !== "denied") {
@@ -200,15 +200,15 @@ const HorizontalPomodoro: React.FC = () => {
 
     // Time input handlers
     const handleTimeChange = (
-        e: React.ChangeEvent<HTMLInputElement>, 
+        e: React.ChangeEvent<HTMLInputElement>,
         type: 'minutes' | 'seconds',
         timeType: 'work' | 'break' | 'longBreak'
     ) => {
         const value = parseInt(e.target.value);
         if (isNaN(value) || value < 0) return;
-        
+
         let currentTime: number, setterFunction: React.Dispatch<React.SetStateAction<number>>;
-        
+
         switch (timeType) {
             case 'work':
                 currentTime = workTime;
@@ -223,16 +223,16 @@ const HorizontalPomodoro: React.FC = () => {
                 setterFunction = setLongBreakTime;
                 break;
         }
-        
-        const newTime = type === 'minutes' 
+
+        const newTime = type === 'minutes'
             ? value * 60 + (currentTime % 60)
             : Math.floor(currentTime / 60) * 60 + value;
-        
+
         setterFunction(newTime);
-        
+
         // Update timeLeft if this is the current interval type
         if (
-            (timeType === 'work' && isWorkInterval) || 
+            (timeType === 'work' && isWorkInterval) ||
             (timeType === 'break' && !isWorkInterval && !isLongBreak) ||
             (timeType === 'longBreak' && !isWorkInterval && isLongBreak)
         ) {
@@ -244,36 +244,36 @@ const HorizontalPomodoro: React.FC = () => {
     const addNewTask = (e: React.FormEvent) => {
         e.preventDefault();
         if (!newTaskText.trim()) return;
-        
+
         const newTask = {
             id: Date.now(),
             text: newTaskText.trim(),
             completed: false,
             pomodoros: 0
         };
-        
+
         setTasks([...tasks, newTask]);
         setNewTaskText("");
-        
+
         // If no task is active, make this one active
         if (activeTaskId === null) {
             setActiveTaskId(newTask.id);
         }
     };
-    
+
     const toggleTaskCompletion = (id: number) => {
-        setTasks(tasks.map(task => 
+        setTasks(tasks.map(task =>
             task.id === id ? { ...task, completed: !task.completed } : task
         ));
     };
-    
+
     const deleteTask = (id: number) => {
         setTasks(tasks.filter(task => task.id !== id));
         if (activeTaskId === id) {
             setActiveTaskId(null);
         }
     };
-    
+
     const setActiveTask = (id: number) => {
         setActiveTaskId(id);
     };
@@ -281,7 +281,7 @@ const HorizontalPomodoro: React.FC = () => {
     // UI size mode handlers
     const cycleSize = () => {
         if (!canResize) return;
-        
+
         // Cycle through size modes
         if (sizeMode === SizeMode.COLLAPSED) {
             setSizeMode(SizeMode.MEDIUM);
@@ -309,7 +309,7 @@ const HorizontalPomodoro: React.FC = () => {
         const totalTime = isWorkInterval ? workTime : (isLongBreak ? longBreakTime : breakTime);
         return ((totalTime - timeLeft) / totalTime) * 100;
     };
-    
+
     // Calculate time left in current pomodoro cycle
     const pomodorosUntilLongBreak = maxPomodoros - (pomodoroCount % maxPomodoros);
 
@@ -331,7 +331,7 @@ const HorizontalPomodoro: React.FC = () => {
     const renderTaskPanel = () => (
         <>
             <h3>Tasks</h3>
-            
+
             <form onSubmit={addNewTask} className="add-task-form">
                 <input
                     type="text"
@@ -342,13 +342,13 @@ const HorizontalPomodoro: React.FC = () => {
                 />
                 <button type="submit" className="add-task-button">+</button>
             </form>
-            
+
             <div className="task-list">
                 {tasks.length === 0 ? (
                     <div className="empty-tasks">No tasks yet. Add one to get started!</div>
                 ) : (
                     tasks.map(task => (
-                        <div 
+                        <div
                             key={task.id}
                             className={`task-item ${task.completed ? "completed" : ""} ${activeTaskId === task.id ? "active-task" : ""}`}
                         >
@@ -360,19 +360,19 @@ const HorizontalPomodoro: React.FC = () => {
                                     id={`task-${task.id}`}
                                 />
                             </div>
-                            
-                            <div 
+
+                            <div
                                 className="task-text"
                                 onClick={() => setActiveTask(task.id)}
                             >
                                 {task.text}
                             </div>
-                            
+
                             <div className="task-pomodoros">
                                 {task.pomodoros > 0 && `🍅 ${task.pomodoros}`}
                             </div>
-                            
-                            <button 
+
+                            <button
                                 onClick={() => deleteTask(task.id)}
                                 className="delete-task-button"
                             >
@@ -390,26 +390,26 @@ const HorizontalPomodoro: React.FC = () => {
             <div className="horizontal-layout">
                 <div className="timer-section">
                     <div className="drag-handle">
-                        <button 
-                            onClick={(e) => { e.stopPropagation(); toggleCanResize(); }} 
+                        <button
+                            onClick={(e) => { e.stopPropagation(); toggleCanResize(); }}
                             className={`lock-button ${!canResize ? "locked" : ""}`}
                             title={canResize ? "Lock size state" : "Unlock size state"}
                         >
                             {canResize ? "🔓" : "🔒"}
                         </button>
-                        
+
                         {sizeMode !== SizeMode.COLLAPSED && (
-                            <button 
-                                onClick={(e) => { e.stopPropagation(); toggleTaskPanel(); }} 
+                            <button
+                                onClick={(e) => { e.stopPropagation(); toggleTaskPanel(); }}
                                 className={`task-button ${showTaskPanel ? "active" : ""}`}
                                 title="Toggle task panel"
                             >
                                 📋
                             </button>
                         )}
-                        
-                        <button 
-                            onClick={(e) => { e.stopPropagation(); cycleSize(); }} 
+
+                        <button
+                            onClick={(e) => { e.stopPropagation(); cycleSize(); }}
                             className="size-button"
                             disabled={!canResize}
                             title="Change size"
@@ -417,34 +417,34 @@ const HorizontalPomodoro: React.FC = () => {
                             {getSizeButtonText()}
                         </button>
                     </div>
-                    
+
                     {sizeMode !== SizeMode.COLLAPSED && (
                         <>
                             <div className="progress-container">
-                                <div 
-                                    className="progress-bar" 
+                                <div
+                                    className="progress-bar"
                                     style={{ width: `${calculateProgress()}%` }}
                                 />
                             </div>
-                            
+
                             <div className="interval-indicator">
                                 <div className="interval">
-                                    {isWorkInterval 
-                                        ? "FOCUS TIME" 
+                                    {isWorkInterval
+                                        ? "FOCUS TIME"
                                         : (isLongBreak ? "LONG BREAK" : "SHORT BREAK")}
                                 </div>
-                                
+
                                 {activeTaskId !== null && (
                                     <div className="active-task-display">
                                         {tasks.find(t => t.id === activeTaskId)?.text}
                                     </div>
                                 )}
                             </div>
-                            
+
                             <div className="timer">
                                 {formatTime(timeLeft)}
                             </div>
-                            
+
                             <div className="controls">
                                 <button onClick={handleStartPause} className="primary-button">
                                     {isRunning ? "Pause" : "Start"}
@@ -454,7 +454,7 @@ const HorizontalPomodoro: React.FC = () => {
                             </div>
                         </>
                     )}
-                    
+
                     {/* Collapsed mode only displays minimal info */}
                     {sizeMode === SizeMode.COLLAPSED && (
                         <div className="collapsed-content">
@@ -467,7 +467,7 @@ const HorizontalPomodoro: React.FC = () => {
                         </div>
                     )}
                 </div>
-                
+
                 <div className="details-section">
                     {/* Stats - visible in medium & full mode */}
                     {sizeMode !== SizeMode.COLLAPSED && (
@@ -489,14 +489,14 @@ const HorizontalPomodoro: React.FC = () => {
                             </div>
                         </div>
                     )}
-                    
+
                     {/* Task panel for MEDIUM mode - Inside details-section */}
                     {showTaskPanel && sizeMode === SizeMode.MEDIUM && (
                         <div className="task-panel medium-tasks">
                             {renderTaskPanel()}
                         </div>
                     )}
-                    
+
                     {/* Settings - only in full mode */}
                     {sizeMode === SizeMode.FULL && (
                         <div className="settings">
@@ -521,7 +521,7 @@ const HorizontalPomodoro: React.FC = () => {
                                     />
                                     sec
                                 </div>
-                                
+
                                 <div className="time-input">
                                     <label>Break Time</label>
                                     <input
@@ -541,7 +541,7 @@ const HorizontalPomodoro: React.FC = () => {
                                     />
                                     sec
                                 </div>
-                                
+
                                 <div className="time-input">
                                     <label>Long Break</label>
                                     <input
@@ -561,7 +561,7 @@ const HorizontalPomodoro: React.FC = () => {
                                     />
                                     sec
                                 </div>
-                                
+
                                 <div className="time-input">
                                     <label>Cycle Length</label>
                                     <input
@@ -579,7 +579,7 @@ const HorizontalPomodoro: React.FC = () => {
                                     pomodoros
                                 </div>
                             </div>
-                            
+
                             <button onClick={handleFullReset} className="danger-button">
                                 Reset All Settings
                             </button>
@@ -587,14 +587,14 @@ const HorizontalPomodoro: React.FC = () => {
                     )}
                 </div>
             </div>
-            
+
             {/* Task panel - Only shown outside layout for FULL mode */}
             {showTaskPanel && sizeMode === SizeMode.FULL && (
                 <div className="task-panel">
                     {renderTaskPanel()}
                 </div>
             )}
-            
+
             {/* Popup notifications */}
             {/* {showPopup && (
                 <div className="popup">
