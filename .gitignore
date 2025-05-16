@@ -91,3 +91,7 @@ package.copy.json
 .vercel
 
 /prisma/migrations/.gitattributes
+
+.cursor/
+/.cursor/
+.cursor

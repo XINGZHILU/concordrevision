@@ -29,6 +29,7 @@ interface PastPaperRecord {
     papers_finished: number[] // Array of 6-digit paper IDs
     paper_marks: number[]
     max_marks: number[]
+    notes?: string
 }
 
 export default function RecordDetailPage() {
@@ -37,6 +38,7 @@ export default function RecordDetailPage() {
     const [loading, setLoading] = useState(true)
     const [paperData, setPaperData] = useState<PaperData[]>([])
     const [saving, setSaving] = useState(false)
+    const [notes, setNotes] = useState<string>("")
 
     // Generate a paper ID from year and paper number (e.g., 2023 and 1 => 202301)
     const generatePaperId = (year: string | number, paperNum: number): number => {
@@ -56,6 +58,7 @@ export default function RecordDetailPage() {
                 const response = await fetch(`/api/pastpaper-records/${params.id}`)
                 const data = await response.json()
                 setRecord(data)
+                setNotes(data.notes || "")
 
                 // Initialize paper data from record
                 const papers: PaperData[] = []
@@ -205,6 +208,7 @@ export default function RecordDetailPage() {
                 body: JSON.stringify({
                     papers_finished,
                     paper_marks,
+                    notes,
                 }),
             })
 
@@ -321,6 +325,7 @@ export default function RecordDetailPage() {
                         })()}
                     </div>
 
+                    {/* Paper Progress Section */}
                     <div className="p-6">
                         <h2 className="text-xl font-semibold mb-4">Paper Progress</h2>
 
@@ -460,24 +465,38 @@ export default function RecordDetailPage() {
                         </div>
                     </div>
 
-                    <div className="p-6 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
-                        <div className="flex justify-end">
-                            <button
-                                onClick={saveChanges}
-                                disabled={saving}
-                                className={`bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors ${saving ? 'opacity-70 cursor-not-allowed' : ''}`}
-                            >
-                                {saving ? (
-                                    <span className="flex items-center">
-                                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                        </svg>
-                                        Saving...
-                                    </span>
-                                ) : "Save Progress"}
-                            </button>
+                    {/* Notes Section */}
+                    <div className="mt-8">
+                        <h2 className="text-xl font-semibold mb-4">Notes</h2>
+                        <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                            <textarea
+                                value={notes}
+                                onChange={(e) => setNotes(e.target.value)}
+                                placeholder="Add any notes about your revision progress here..."
+                                rows={5}
+                                className="w-full p-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                            ></textarea>
                         </div>
+                    </div>
+                </div>
+
+                <div className="p-6 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+                    <div className="flex justify-end">
+                        <button
+                            onClick={saveChanges}
+                            disabled={saving}
+                            className={`bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors ${saving ? 'opacity-70 cursor-not-allowed' : ''}`}
+                        >
+                            {saving ? (
+                                <span className="flex items-center">
+                                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    Saving...
+                                </span>
+                            ) : "Save Progress"}
+                        </button>
                     </div>
                 </div>
             </div>

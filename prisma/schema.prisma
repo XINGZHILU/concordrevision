@@ -130,4 +130,5 @@ model PastPaperRecord {
     papers_finished Int[]
     paper_marks     Int[]
     max_marks       Int[]
+    notes       String @default("")
 }

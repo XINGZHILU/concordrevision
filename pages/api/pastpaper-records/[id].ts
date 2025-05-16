@@ -34,14 +34,15 @@ export default async function handler(
 
     // PATCH - Update a record (for updating paper status)
     if (req.method === "PATCH") {
-      const { papers_finished, paper_marks, max_marks } = req.body
+      const { papers_finished, paper_marks, max_marks, notes } = req.body
 
       const updatedRecord = await prisma.pastPaperRecord.update({
         where: { id: recordId },
         data: { 
           papers_finished,
           paper_marks,
-          max_marks
+          max_marks,
+          notes
         }
       })
 
