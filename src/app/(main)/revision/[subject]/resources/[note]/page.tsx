@@ -10,7 +10,7 @@ import ColourSelector from "@/lib/customui/Revision/ColourSelector";
 import FileList from "@/lib/customui/Basic/filelist";
 import MDViewer from "@/lib/customui/Basic/showMD";
 import Link from "next/link";
-import { LuArrowLeft, LuFileText, LuFile } from "react-icons/lu";
+import { LuArrowLeft, LuFileText, LuFile, LuPencil } from "react-icons/lu";
 
 export default async function Page(req: any, res: any) {
     function Get_Colour(usr: { red: number[]; amber: number[]; green: number[] }, nid: number) {
@@ -55,6 +55,7 @@ export default async function Page(req: any, res: any) {
             files: true,
             author: {
                 select: {
+                    id: true,
                     firstname: true,
                     lastname: true
                 }
@@ -77,6 +78,9 @@ export default async function Page(req: any, res: any) {
         ? `${note.author.firstname} ${note.author.lastname}`
         : "Anonymous";
 
+    // Check if current user is the author
+    const canEdit = user && note.author.id === user.id;
+
     return (
         <div className="container mx-auto px-4 py-6 max-w-7xl">
             {/* Breadcrumb */}
@@ -92,20 +96,37 @@ export default async function Page(req: any, res: any) {
 
             {/* Page Header */}
             <div className="mb-8 border-b pb-4">
-                <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                    {note.title}
-                </h1>
-                <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600">
-                    <span className="font-medium">{year_group_names[subject.level]} {subject.title}</span>
-                    <span>•</span>
-                    <span>Contributed by {authorName}</span>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div>
+                        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                            {note.title}
+                        </h1>
+                        <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600">
+                            <span className="font-medium">{year_group_names[subject.level]} {subject.title}</span>
+                            <span>•</span>
+                            <span>Contributed by {authorName}</span>
+                        </div>
+                    </div>
+                    
+                    {/* Edit button - only show for authors */}
+                    {canEdit && (
+                        <div className="flex-shrink-0">
+                            <Link
+                                href={`/upload/revision/${subject.id}/resources/${note.id}/edit`}
+                                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
+                            >
+                                <LuPencil className="h-4 w-4 mr-2" />
+                                Edit Resource
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </div>
 
             {user && (
                 <div className="mb-6">
                     <h2 className="text-lg font-medium mb-2">My Knowledge Level</h2>
-                    <ColourSelector nid={note.id} uid={user.id} subject={subject.id} original={colour} />
+                    <ColourSelector nid={note.id} uid={user.id} subject={subject.id} Original={colour} />
                 </div>
             )}
 

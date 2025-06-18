@@ -7,27 +7,11 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { isNumeric } from "@/lib/utils";
 import { year_group_names } from "@/lib/consts";
-import { NoteCard, TestCard } from "@/lib/customui/Basic/cards";
 import { currentUser } from "@clerk/nextjs/server";
-
-import { Collapsible, Tabs } from "@chakra-ui/react"
-import { LuFolder, LuBookCheck, LuBook } from "react-icons/lu"
-
-import MDViewer from "@/lib/customui/Basic/showMD";
+import SearchableSubjectContent from "@/lib/customui/Revision/SearchableSubjectContent";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default async function Page(req: any, res: any) {
-    function Get_Colour(usr: { red: number[]; amber: number[]; green: number[] }, nid: number) {
-        if (usr.red.includes(nid)) {
-            return 2;
-        } else if (usr.amber.includes(nid)) {
-            return 1;
-        } else if (usr.green.includes(nid)) {
-            return 0;
-        } else {
-            return -1;
-        }
-    }
 
     const params = await req.params;
     const sid = params.subject;
@@ -41,7 +25,17 @@ export default async function Page(req: any, res: any) {
             id: +sid
         },
         include: {
-            notes: true,
+            notes: {
+                include: {
+                    author: {
+                        select: {
+                            id: true,
+                            firstname: true,
+                            lastname: true
+                        }
+                    }
+                }
+            },
             tests: true
         }
     });
@@ -50,176 +44,35 @@ export default async function Page(req: any, res: any) {
         notFound();
     }
 
-    subject.tests.sort((a, b) => a.date.getTime() - b.date.getTime());
-
-    const today = new Date();
-
-    const test_list = subject.tests.filter((test) => ((test.date.getTime() - today.getTime()) >= (-86400000))).map((test) => (
-        <div key={test.id + 'div'}>
-            <TestCard test={test} key={test.id} />
-            <br key={test.id + 'br'} />
-        </div>
-    ));
-
-    const past_test_list = subject.tests.filter((test) => ((test.date.getTime() - today.getTime()) < (-86400000))).map((test) => (
-        <div key={test.id + 'div'}>
-            <TestCard test={test} key={test.id} />
-            <br key={test.id + 'br'} />
-        </div>
-    ));
-
-
+    // Get user data for color preferences
     const user = await currentUser();
-    if (!user) {
-        const resource_list = subject.notes.filter((note) => { return (note.type === 2 && note.approved) }).map((note) => (
-            <div key={note.id + 'div'}>
-                <NoteCard note={note} key={note.id} colour={-1} />
-                <br key={note.id + 'br'} />
-            </div>
-        ));
+    let userColours: { red: number[]; amber: number[]; green: number[] } | undefined;
 
+    if (user) {
+        const record = await prisma.user.findUnique({
+            where: {
+                id: user.id
+            }
+        });
 
-
-
-        return (<div>
-            <h1>{year_group_names[subject.level]} {subject.title}</h1>
-            <br />
-
-            <Collapsible.Root defaultOpen>
-                <Collapsible.Trigger paddingY="3"><h2>About</h2></Collapsible.Trigger>
-                <Collapsible.Content>
-                    <MDViewer content={subject.desc} />
-                </Collapsible.Content>
-            </Collapsible.Root>
-            <br />
-            <div>
-                <Tabs.Root defaultValue="resources" variant='plain' rounded="l3">
-                    <Tabs.List bg="bg.muted" rounded="l3" p="1">
-                        <Tabs.Trigger value="resources" p="2">
-                            <LuFolder />
-                            Resources
-                        </Tabs.Trigger>
-                        <Tabs.Trigger value="upcoming_tests" p="2">
-                            <LuBook />
-                            Upcoming tests
-                        </Tabs.Trigger>
-                        <Tabs.Trigger value="past_tests" p="2">
-                            <LuBookCheck />
-                            Past tests
-                        </Tabs.Trigger>
-                        <Tabs.Indicator rounded="l2" />
-                    </Tabs.List>
-
-                    <Tabs.Content value="resources">
-                        {resource_list.length === 0 ? (
-                            <p>No resources found</p>
-                        ) : (
-                            <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll'}>
-                                {resource_list}
-                            </div>
-                        )}
-                    </Tabs.Content>
-                    <Tabs.Content value="upcoming_tests">
-                        {test_list.length === 0 ? (
-                            <p>No upcoming tests</p>
-                        ) : (
-                            <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll'}>
-                                {test_list}
-                            </div>
-                        )}
-                    </Tabs.Content>
-                    <Tabs.Content value="past_tests">
-                        {past_test_list.length === 0 ? (
-                            <p>No past tests</p>
-                        ) : (
-                            <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll'}>
-                                {past_test_list}
-                            </div>
-                        )}
-                    </Tabs.Content>
-                </Tabs.Root>
-            </div>
-
-        </div>);
-    }
-
-    const record = await prisma.user.findUnique({
-        where: {
-            id: user.id
+        if (record) {
+            userColours = {
+                red: record.red,
+                amber: record.amber,
+                green: record.green
+            };
         }
-    });
-
-    if (!record) {
-        return <h1>User not found</h1>;
     }
 
-
-    const resource_list = subject.notes.filter((note) => { return (note.type === 2 && note.approved) }).map((note) => (
-        <div key={note.id + 'div'}>
-            <NoteCard note={note} key={note.id} colour={Get_Colour(record, note.id)} />
-            <br key={note.id + 'br'} />
-        </div>
-    ));
-
-    return (<div>
-        <h1>{year_group_names[subject.level]} {subject.title}</h1>
-        <br />
-
-        <Collapsible.Root defaultOpen>
-            <Collapsible.Trigger paddingY="3"><h2>About</h2></Collapsible.Trigger>
-            <Collapsible.Content>
-                {subject.desc.split('\n').map((line, index) => <p key={index}>{line}</p>)}
-            </Collapsible.Content>
-        </Collapsible.Root>
-        <br />
-        <div>
-            <Tabs.Root defaultValue="resources" variant='plain' rounded="l3">
-                <Tabs.List bg="bg.muted" rounded="l3" p="1">
-                    <Tabs.Trigger value="resources" p="2">
-                        <LuFolder />
-                        Resources
-                    </Tabs.Trigger>
-                    <Tabs.Trigger value="upcoming_tests" p="2">
-                        <LuBook />
-                        Upcoming tests
-                    </Tabs.Trigger>
-                    <Tabs.Trigger value="past_tests" p="2">
-                        <LuBookCheck />
-                        Past tests
-                    </Tabs.Trigger>
-                    <Tabs.Indicator rounded="l2" />
-                </Tabs.List>
-
-                <Tabs.Content value="resources">
-                    {resource_list.length === 0 ? (
-                        <p>No resources found</p>
-                    ) : (
-                        <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll'}>
-                            {resource_list}
-                        </div>
-                    )}
-                </Tabs.Content>
-                <Tabs.Content value="upcoming_tests">
-                    {test_list.length === 0 ? (
-                        <p>No upcoming tests</p>
-                    ) : (
-                        <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll'}>
-                            {test_list}
-                        </div>
-                    )}
-                </Tabs.Content>
-                <Tabs.Content value="past_tests">
-                    {past_test_list.length === 0 ? (
-                        <p>No past tests</p>
-                    ) : (
-                        <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-screen overflow-y-scroll'}>
-                            {past_test_list}
-                        </div>
-                    )}
-                </Tabs.Content>
-            </Tabs.Root>
-        </div>
-
-    </div>)
+    return (
+        <SearchableSubjectContent
+            subject={subject}
+            notes={subject.notes}
+            tests={subject.tests}
+            userColours={userColours}
+            yearGroupName={year_group_names[subject.level]}
+            currentUserId={user?.id}
+        />
+    )
 
 }
