@@ -14,6 +14,7 @@ model User {
     firstname          String?
     lastname           String?
     teacher            Boolean             @default(false)
+    admin              Boolean             @default(false)
     upload_permission  Boolean             @default(false)
     year               Int                 @default(-1)
     // posts              Post[]
@@ -23,6 +24,7 @@ model User {
     amber              Int[]
     green              Int[]
     ppq_records        PastPaperRecord[]
+    ucasPosts          UCASPost[]
 }
 
 model Subject {
@@ -47,15 +49,6 @@ model Test {
     date      DateTime @default(now()) @db.Date
 }
 
-/*
-model Activity {
-    id    Int    @id @default(autoincrement())
-    title String
-    desc  String @default("")
-    posts Post[]
-}
-*/
-
 model Note {
     id        Int           @id @default(autoincrement())
     title     String
@@ -72,19 +65,6 @@ model Note {
     approved  Boolean       @default(false)
     files     StorageFile[]
 }
-
-/*
-model Post {
-    id         Int       @id @default(autoincrement())
-    title      String
-    content    String?
-    published  Boolean   @default(false)
-    author     User      @relation(fields: [authorId], references: [id])
-    authorId   String
-    Activity   Activity? @relation(fields: [activityId], references: [id])
-    activityId Int?
-}
-*/
 
 model Olympiad {
     id                Int                 @id @default(autoincrement())
@@ -118,6 +98,8 @@ model StorageFile {
     noteId            Int?
     olympiad_resource Olympiad_Resource? @relation(fields: [olympiadId], references: [id])
     olympiadId        Int?
+    ucasPost          UCASPost?          @relation(fields: [ucasPostId], references: [id])
+    ucasPostId        Int?
 }
 
 model PastPaperRecord {
@@ -134,20 +116,50 @@ model PastPaperRecord {
     papers_finished Int[]
     paper_marks     Int[]
     max_marks       Int[]
-    notes       String @default("")
+    notes           String  @default("")
 }
 
 model University {
-    id String @id
-    name String
-    uk Boolean
-    courses Course[]
+    id        String       @id
+    name      String       @unique
+    uk        Boolean
+    courses   UcasCourse[]
+    ucasPosts UCASPost[]
+
+    @@index([name])
 }
 
-model Course {
-    id Int @id
-    name String
-    university_id String
-    university University @relation(fields: [university_id], references: [id])
+model UcasCourse {
+    id                      String     @id
+    name                    String
+    universityId            String
+    university              University @relation(fields: [universityId], references: [id], onDelete: Cascade)
+    qualification           String
+    duration_years          Int
+    summary                 String     @db.Text
+    entry_requirements_text String     @db.Text
+    alevel_requirements     String?
+    ib_requirements         String?
+    required_subjects       String[]
+    recommended_subjects    String[]
+    url                     String?
+    ucasPosts               UCASPost[]
+    slug                    String @default("")
+
+    @@index([universityId])
 }
 
+model UCASPost {
+    id           Int           @id @default(autoincrement())
+    type         Int           @default(0) // 0 = General, 1 = University Specific, 2 = Course Specific
+    title        String
+    content      String        @default("")
+    university   University?   @relation(fields: [universityId], references: [id])
+    universityId String?
+    course       UcasCourse?   @relation(fields: [courseId], references: [id])
+    courseId     String?
+    author       User          @relation(fields: [authorId], references: [id])
+    authorId     String
+    files        StorageFile[]
+    approved     Boolean       @default(false)
+}

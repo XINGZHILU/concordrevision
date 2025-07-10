@@ -22,15 +22,12 @@ export function OlympiadCard({ olympiad }: {
         title: string,
         desc: string,
         area: string,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        resources?: any[]
     }
 }) {
     // Get appropriate icon based on olympiad area
     const OlympiadIcon = getOlympiadIcon(olympiad.area);
 
     // Count resources if available
-    const resourceCount = olympiad.resources ? olympiad.resources.length : 0;
 
     return (
         <div className="p-3">
@@ -66,13 +63,6 @@ export function OlympiadCard({ olympiad }: {
 
                         {/* Footer */}
                         <div className="mt-auto pt-4 border-t border-border flex justify-between items-center">
-                            <div className="text-muted-foreground text-xs font-medium">
-                                {resourceCount > 0 ? (
-                                    <span>{resourceCount} resource{resourceCount !== 1 ? 's' : ''} available</span>
-                                ) : (
-                                    <span>Competition resources</span>
-                                )}
-                            </div>
                             <span className="inline-flex items-center text-accent-foreground font-medium text-sm">
                                 Explore
                                 <LuArrowUpRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:translate-y-[-0.25rem]" />

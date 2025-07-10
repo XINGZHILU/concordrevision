@@ -38,7 +38,7 @@ export default async function handler(
             authorId: author,
             desc: desc,
             type: type,
-            approved: record.teacher
+            approved: record.teacher || record.admin
         }
     })
 

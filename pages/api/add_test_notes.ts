@@ -40,7 +40,7 @@ export default async function handler(
       desc: desc,
       type: type,
       testId: test,
-      approved: record.teacher
+      approved: record.teacher || record.admin
     }
   })
 

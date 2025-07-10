@@ -60,7 +60,7 @@ export default async function Page(req: any, res: any) {
         notFound();
     }
 
-    const notes = test.notes.filter((note) => { return (note.approved) });
+    const notes = test.notes.filter((note) => note.approved && note.testId !== null);
 
     const user = await currentUser();
     if (!user) {
@@ -84,12 +84,11 @@ export default async function Page(req: any, res: any) {
                     notes.length === 0 ? (
                         <p>No notes found</p>
                     ) : (
-                        notes.map((note) => {
-                            // @ts-ignore
-                            return <div key={note.id + 'div'}> <TestNoteCard note={note} key={note.id} colour={-1} />
-                                <br key={note.id + 'br'} />
-                            </div>;
-                        })
+                        notes.map((note) => (
+                            <div key={note.id}>
+                                <TestNoteCard note={note as any} colour={-1} />
+                            </div>
+                        ))
                     )
                 }
             </div>
@@ -125,12 +124,11 @@ export default async function Page(req: any, res: any) {
                 notes.length === 0 ? (
                     <p>No notes found</p>
                 ) : (
-                    notes.map((note) => {
-                        // @ts-ignore
-                        return <div key={note.id + 'div'}> <TestNoteCard note={note} key={note.id} colour={Get_Colour(record, note.id)} />
-                            <br key={note.id + 'br'} />
-                        </div>;
-                    })
+                    notes.map((note) => (
+                        <div key={note.id}>
+                            <TestNoteCard note={note as any} colour={Get_Colour(record, note.id)} />
+                        </div>
+                    ))
                 )
             }
         </div>

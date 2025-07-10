@@ -28,10 +28,10 @@ export default async function handler(
     // Check if user is a teacher
     const user = await prisma.user.findUnique({
         where: { id: userId },
-        select: { teacher: true }
+        select: { teacher: true, admin : true }
     });
 
-    if (!user || !user.teacher) {
+    if (!user || (!user.teacher && !user.admin)) {
         return res.status(403).json({ error: 'Forbidden - Teacher access required' });
     }
 
@@ -62,9 +62,8 @@ export default async function handler(
                 from: email_from,
                 to: [updatedResource.author.email],
                 subject: 'Upload approved',
-                // @ts-expect-error: type might not match
                 react: ApprovedEmailTemplate({
-                    name: updatedResource.author.firstname,
+                    name: updatedResource.author.firstname || "User",
                     title: updatedResource.title,
                     area: updatedResource.olympiad.title
                 }),

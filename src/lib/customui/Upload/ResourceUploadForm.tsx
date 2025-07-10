@@ -3,22 +3,43 @@
 
 'use client';
 
-import { Toaster, toaster } from "../../../components/ui/toaster"
-import { useState, useRef } from 'react';
+import { toaster } from "../../../components/ui/toaster"
+import { useState, useRef, useEffect } from 'react';
 import { createClient } from "@/utils/supabase/client";
 import { StorageURLNotes } from "@/lib/utils";
 import cuid from "cuid";
 import MDEditor from "@uiw/react-md-editor";
+import { ImageUploader } from "./upload_image";
+import { DialogRoot as Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { XIcon } from 'lucide-react';
 
 export default function ResourceUploadForm({ subject, author }: { subject: number, author: string }) {
     const inputFileRef = useRef<HTMLInputElement>(null);
     const [description, setDescription] = useState<string>("");
+    const [title, setTitle] = useState<string>("");
+    const [isImageDialogOpen, setImageDialogOpen] = useState(false);
     const titleRef = useRef<HTMLInputElement>(null);
     const [cantUpload, setCantUpload] = useState<boolean>(false);
-    const [selectedFiles, setSelectedFiles] = useState<number>(0);
+    const [stagedFiles, setStagedFiles] = useState<File[]>([]);
     const supabase = createClient();
+    const storageKey = `resource-form-${subject}`;
 
-    async function upload(files: FileList, title: string, desc: string) {
+    useEffect(() => {
+        const saved = sessionStorage.getItem(storageKey);
+        if (saved) {
+            const { title, description } = JSON.parse(saved);
+            setTitle(title || "");
+            setDescription(description || "");
+        }
+    }, [storageKey]);
+
+    useEffect(() => {
+        const data = JSON.stringify({ title, description });
+        sessionStorage.setItem(storageKey, data);
+    }, [title, description, storageKey]);
+
+    async function upload(files: File[], title: string, desc: string) {
         const urls = [];
         const names = [];
         for (const file of files) {
@@ -58,27 +79,24 @@ export default function ResourceUploadForm({ subject, author }: { subject: numbe
         else {
             if (titleRef.current) titleRef.current.value = '';
             if (inputFileRef.current) inputFileRef.current.value = '';
-            setSelectedFiles(0);
+            setStagedFiles([]);
             setDescription("");
+            setTitle("");
+            sessionStorage.removeItem(storageKey);
         }
     }
 
     async function store(event: React.FormEvent) {
         event.preventDefault();
 
-        if (!inputFileRef.current?.files) {
-            throw new Error("No file selected");
+        if (stagedFiles.length === 0) {
+            toaster.error({ title: "No files selected", description: "Please select at least one file to upload." });
+            return;
         }
 
         setCantUpload(true);
 
-        const files = inputFileRef.current.files;
-        if (!files) {
-            return;
-        }
-        const title = titleRef.current?.value || 'No title';
-
-        toaster.promise(upload(files, title, description), {
+        toaster.promise(upload(stagedFiles, title, description), {
             success: {
                 title: "Successfully uploaded!",
                 description: "The resource will be available for view after being approved by teachers",
@@ -97,15 +115,30 @@ export default function ResourceUploadForm({ subject, author }: { subject: numbe
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
-            setSelectedFiles(e.target.files.length);
-        } else {
-            setSelectedFiles(0);
+            const newFiles = Array.from(e.target.files);
+            setStagedFiles(prevFiles => {
+                const existingFileNames = prevFiles.map(f => f.name);
+                const uniqueNewFiles = newFiles.filter(f => !existingFileNames.includes(f.name));
+                return [...prevFiles, ...uniqueNewFiles];
+            });
         }
     };
 
+    const removeStagedFile = (fileName: string) => {
+        setStagedFiles(prevFiles => prevFiles.filter(f => f.name !== fileName));
+        if (inputFileRef.current) {
+            inputFileRef.current.value = "";
+        }
+    }
+
+    const handleInsertImage = (url: string) => {
+        const newDescription = `${description || ''}\n![Image](${url})\n`;
+        setDescription(newDescription);
+        setImageDialogOpen(false); // Close the dialog
+    }
+
     return (
         <>
-            <Toaster />
             <div className="w-full mx-auto bg-card rounded-lg shadow p-6">
                 <div className="mb-6">
                     <h2 className="text-xl font-semibold text-card-foreground">Upload Resource</h2>
@@ -119,7 +152,8 @@ export default function ResourceUploadForm({ subject, author }: { subject: numbe
                         </label>
                         <input
                             name="title"
-                            ref={titleRef}
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
                             type="text"
                             placeholder="Enter a descriptive title"
                             className="w-full px-4 py-2 border border-input bg-background rounded-md shadow-sm focus:ring-2 focus:ring-ring"
@@ -128,25 +162,53 @@ export default function ResourceUploadForm({ subject, author }: { subject: numbe
                     </div>
 
                     <div>
-                        <label htmlFor="description" className="block text-sm font-medium text-foreground mb-1">
-                            Resource Description
-                        </label>
+                        <div className="flex justify-between items-center mb-1">
+                            <label htmlFor="description" className="block text-sm font-medium text-foreground">
+                                Resource Description
+                            </label>
+                            <Button variant="outline" type="button" onClick={() => setImageDialogOpen(true)}>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l-1-1m6 4H4a2 2 0 01-2-2V6a2 2 0 012-2h16a2 2 0 012 2v8a2 2 0 01-2 2z" />
+                                </svg>
+                                Add Image
+                            </Button>
+                        </div>
                         <MDEditor
                             textareaProps={{
                                 placeholder: "Describe what this resource covers and how it can be used"
                             }}
                             value={description}
                             height={450}
-                            onChange={setDescription}
+                            onChange={(value) => setDescription(value || "")}
                             data-color-mode={typeof window !== 'undefined' && document.documentElement.classList.contains('dark') ? 'dark' : 'light'}
                         />
+                         <Dialog open={isImageDialogOpen} onOpenChange={setImageDialogOpen}>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>Upload an Image</DialogTitle>
+                                </DialogHeader>
+                                <ImageUploader onUploadFinished={handleInsertImage} />
+                            </DialogContent>
+                        </Dialog>
                     </div>
 
                     <div>
                         <label htmlFor="file" className="block text-sm font-medium text-foreground mb-1">
                             Select Files (PDF)
                         </label>
-                        <div className="mt-1 flex justify-center px-6 py-4 border-2 border-border border-dashed rounded-md">
+                        {stagedFiles.length > 0 && (
+                            <div className="mt-4 space-y-2">
+                                {stagedFiles.map(file => (
+                                    <div key={file.name} className="flex items-center justify-between p-2 bg-muted rounded-md">
+                                        <span className="text-sm text-muted-foreground truncate">{file.name}</span>
+                                        <Button variant="ghost" size="icon" onClick={() => removeStagedFile(file.name)}>
+                                            <XIcon className="h-4 w-4" />
+                                        </Button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                        <div className="mt-4 flex justify-center px-6 py-4 border-2 border-border border-dashed rounded-md">
                             <div className="space-y-1 text-center">
                                 <svg
                                     className="mx-auto h-12 w-12 text-muted-foreground"
@@ -182,9 +244,9 @@ export default function ResourceUploadForm({ subject, author }: { subject: numbe
                                     <p className="pl-1">or drag and drop</p>
                                 </div>
                                 <p className="text-xs text-muted-foreground">PDF files only</p>
-                                {selectedFiles > 0 && (
+                                {stagedFiles.length > 0 && (
                                     <p className="text-sm text-primary font-medium">
-                                        {selectedFiles} file{selectedFiles !== 1 ? 's' : ''} selected
+                                        {stagedFiles.length} file{stagedFiles.length !== 1 ? 's' : ''} selected
                                     </p>
                                 )}
                             </div>
@@ -198,8 +260,10 @@ export default function ResourceUploadForm({ subject, author }: { subject: numbe
                             onClick={() => {
                                 if (titleRef.current) titleRef.current.value = '';
                                 if (inputFileRef.current) inputFileRef.current.value = '';
-                                setSelectedFiles(0);
+                                setStagedFiles([]);
                                 setDescription("");
+                                setTitle("");
+                                sessionStorage.removeItem(storageKey);
                             }}
                         >
                             Reset

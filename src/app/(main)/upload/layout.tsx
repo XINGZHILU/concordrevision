@@ -15,7 +15,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     if (!record) {
         notFound();
     }
-    if (!record.teacher && !record.upload_permission) {
+    if (!record.teacher && !record.upload_permission && !record.admin) {
         notFound();
     }
     return (

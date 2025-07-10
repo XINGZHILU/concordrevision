@@ -8,8 +8,8 @@ export function SubjectTabs({ f3, f4, f5, f61, f62, defaultval }: {
     f62: React.JSX.Element[],
     defaultval: string
 }) {
-    const className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-w-9/10';
-    return (<div className="w-screen">
+    const className = 'grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4';
+    return (<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Tabs.Root defaultValue={defaultval} variant='plain' rounded="l3">
             <Tabs.List p="1">
                 <Tabs.Trigger value="f3" asChild p="2">

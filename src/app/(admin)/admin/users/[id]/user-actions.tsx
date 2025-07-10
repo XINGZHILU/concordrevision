@@ -4,15 +4,15 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { toaster, Toaster } from "@/components/ui/toaster";
+import { toaster } from "@/components/ui/toaster";
 import {
-    DialogRoot,
+    Dialog,
     DialogContent,
     DialogHeader,
-    DialogTitle,
     DialogFooter,
-    DialogTrigger,
+    DialogTitle,
     DialogDescription,
+    DialogTrigger,
     DialogClose
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -105,9 +105,8 @@ export default function UserActions({ userId, uploadPermission, isTeacher }: Use
 
     return (
         <div>
-            <Toaster />
             <div className="flex flex-wrap gap-2">
-                <DialogRoot>
+                <Dialog>
                     <DialogTrigger asChild>
                         <Button variant={uploadPermission ? "destructive" : "default"} disabled={isUpdating}>
                             {uploadPermission ? 'Revoke Upload Permission' : 'Grant Upload Permission'}
@@ -139,9 +138,9 @@ export default function UserActions({ userId, uploadPermission, isTeacher }: Use
                             </Button>
                         </DialogFooter>
                     </DialogContent>
-                </DialogRoot>
+                </Dialog>
 
-                <DialogRoot>
+                <Dialog>
                     <DialogTrigger asChild>
                         <Button variant={isTeacher ? "secondary" : "default"} disabled={isUpdating}>
                              {isTeacher ? 'Convert to Student' : 'Convert to Teacher'}
@@ -170,7 +169,7 @@ export default function UserActions({ userId, uploadPermission, isTeacher }: Use
                             </Button>
                         </DialogFooter>
                     </DialogContent>
-                </DialogRoot>
+                </Dialog>
             </div>
         </div>
     );

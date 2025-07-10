@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { getAuth } from "@clerk/nextjs/server";
 import { Resend } from 'resend';
 import { ApprovedEmailTemplate } from "@/email/email-templates";
-import { email_from, year_group_names } from "@/lib/consts";
+import { email_from } from "@/lib/consts";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -52,11 +52,10 @@ export default async function handler(
                 from: email_from,
                 to: [updatedNote.author.email],
                 subject: 'Upload approved',
-                // @ts-expect-error: type might not match
                 react: ApprovedEmailTemplate({
-                    name: updatedNote.author.firstname,
+                    name: updatedNote.author.firstname || "User",
                     title: updatedNote.title,
-                    area: `${year_group_names[updatedNote.subject.level]} ${updatedNote.subject.title}`
+                    area: updatedNote.subject.title
                 }),
             });
         }

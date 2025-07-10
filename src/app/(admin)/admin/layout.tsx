@@ -29,7 +29,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   if (!record) {
     return <h1>User not found</h1>;
   }
-  if (!record.teacher) {
+  if (!record.admin) {
     notFound();
   }
 
@@ -61,9 +61,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                         </Link>
 
                         <nav className="hidden md:flex space-x-4">
-                          <Link href="/admin/approval" className="hover:bg-primary/80 px-2 py-1 rounded">
-                            Resource Approvals
-                          </Link>
                           <Link href="/admin/users" className="hover:bg-primary/80 px-2 py-1 rounded">
                             Users
                           </Link>
@@ -72,6 +69,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                           </Link>
                           <Link href="/admin/olympiads" className="hover:bg-primary/80 px-2 py-1 rounded">
                             Olympiads
+                          </Link>
+                          <Link href="/admin/ucas" className="hover:bg-primary/80 px-2 py-1 rounded">
+                            UCAS
                           </Link>
                         </nav>
                       </div>
@@ -107,9 +107,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                       <Link href="/admin" className="whitespace-nowrap hover:bg-primary/80 px-2 py-1 rounded">
                         Dashboard
                       </Link>
-                      <Link href="/admin/approval" className="whitespace-nowrap hover:bg-primary/80 px-2 py-1 rounded">
-                        Approvals
-                      </Link>
                       <Link href="/admin/users" className="whitespace-nowrap hover:bg-primary/80 px-2 py-1 rounded">
                         Users
                       </Link>
@@ -118,6 +115,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                       </Link>
                       <Link href="/admin/olympiads" className="whitespace-nowrap hover:bg-primary/80 px-2 py-1 rounded">
                         Olympiads
+                      </Link>
+                      <Link href="/admin/ucas" className="whitespace-nowrap hover:bg-primary/80 px-2 py-1 rounded">
+                        UCAS
                       </Link>
                     </nav>
                   </div>

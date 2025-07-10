@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { getAuth } from "@clerk/nextjs/server";
 import { Resend } from 'resend';
 import { RejectedEmailTemplate } from "@/email/email-templates";
-import { email_from, year_group_names } from "@/lib/consts";
+import { email_from } from "@/lib/consts";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -51,8 +51,9 @@ export default async function handler(
                 subject: 'Upload rejected',
                 // @ts-expect-error: type might not match
                 react: RejectedEmailTemplate({
-                    name: deleted.author.firstname, title: deleted.title,
-                    area: `${year_group_names[deleted.subject.level]} ${deleted.subject.title}`
+                    name: deleted.author.firstname || "User",
+                    title: deleted.title,
+                    area: deleted.subject.title
                 }),
             });
         }

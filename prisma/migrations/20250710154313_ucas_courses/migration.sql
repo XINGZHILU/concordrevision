@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "UcasCourse" ADD COLUMN     "slug" TEXT NOT NULL DEFAULT '',
+ALTER COLUMN "url" DROP NOT NULL;

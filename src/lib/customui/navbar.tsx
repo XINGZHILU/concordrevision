@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { key_pages } from "../consts";
 //import Image from "next/image";
 
-export default function NavBar({ can_upload, teacher }: { can_upload: boolean, teacher: boolean }) {
+export default function NavBar({ can_upload, teacher, admin }: { can_upload: boolean, teacher: boolean, admin: boolean }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
@@ -72,6 +72,17 @@ export default function NavBar({ can_upload, teacher }: { can_upload: boolean, t
               ) : (<></>)}
 
               {teacher ? (<Link
+                href="/teachers"
+                className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/teachers')
+                  ? 'text-primary bg-primary/10'
+                  : 'text-foreground hover:text-primary hover:bg-muted'
+                  }`}
+              >
+                Teachers
+              </Link>
+              ) : (<></>)}
+
+              {admin ? (<Link
                 href="/admin"
                 className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/admin')
                   ? 'text-primary bg-primary/10'

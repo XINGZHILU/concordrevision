@@ -10,7 +10,7 @@ import { year_group_names } from "@/lib/consts";
 import { currentUser } from "@clerk/nextjs/server";
 import SearchableSubjectContent from "@/lib/customui/Revision/SearchableSubjectContent";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 export default async function Page(req: any, res: any) {
 
     const params = await req.params;

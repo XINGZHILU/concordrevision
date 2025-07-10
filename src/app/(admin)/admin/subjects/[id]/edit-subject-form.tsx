@@ -1,8 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 'use client';
-
-// File: app/admin/subjects/[id]/edit-subject-form.tsx
 
 import React, { useState } from 'react';
 import Link from 'next/link';
@@ -33,11 +29,10 @@ export default function EditSubjectForm({ subject }: EditSubjectFormProps) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
         setIsSubmitting(true);
 
         try {
-            const response = await fetch(`/api/admin/subjects`, {
+            const response = await fetch('/api/admin/subjects', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -49,24 +44,18 @@ export default function EditSubjectForm({ subject }: EditSubjectFormProps) {
             });
 
             if (!response.ok) {
-                throw new Error('Failed to update subject');
+                throw new Error('Failed to save subject');
             }
 
             toaster.success({
-                title: "Success",
-                description: "Subject updated successfully"
+                title: 'Subject Saved',
+                description: `The description for ${subject.title} has been updated.`,
             });
-
-            // Navigate back to subjects list after a short delay
-            // setTimeout(() => {
-            //     router.push('/admin/subjects');
-            //     router.refresh();
-            // }, 1500);
+            // router.push('/admin/subjects');
         } catch (error) {
-            console.error('Error updating subject:', error);
             toaster.error({
-                title: "Error",
-                description: "Failed to update subject. Please try again."
+                title: 'Save Failed',
+                description: (error as Error).message,
             });
         } finally {
             setIsSubmitting(false);

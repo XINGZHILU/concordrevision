@@ -22,8 +22,6 @@ export default function OlympiadsList({ olympiads }: {
         title: string,
         desc: string,
         area: string,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        resources?: any[]
     }[]
 }) {
     const [selectedArea, setSelectedArea] = useState<string>("All");

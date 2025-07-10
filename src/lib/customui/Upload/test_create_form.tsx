@@ -3,12 +3,17 @@
 
 'use client';
 
-import { Toaster, toaster } from "../../../components/ui/toaster";
 import { useState, useRef } from 'react';
 import MDEditor from "@uiw/react-md-editor";
+import { ImageUploader } from "./upload_image";
+import { DialogRoot as Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { toaster } from "../../../components/ui/toaster";
+
 
 export default function NewTestForm({ subject }: { subject: number }) {
     const [description, setDescription] = useState<string>("");
+    const [isImageDialogOpen, setImageDialogOpen] = useState(false);
     const titleRef = useRef<HTMLInputElement>(null);
     const typeRef = useRef<HTMLSelectElement>(null);
     const dateRef = useRef<HTMLInputElement>(null);
@@ -40,14 +45,17 @@ export default function NewTestForm({ subject }: { subject: number }) {
         }
     }
 
-
+    const handleInsertImage = (url: string) => {
+        const newDescription = `${description || ''}\n![Image](${url})\n`;
+        setDescription(newDescription);
+        setImageDialogOpen(false); // Close the dialog
+    }
 
     // Calculate minimum date (today) for the date picker
     const today = new Date().toISOString().split('T')[0];
 
     return (
         <>
-            <Toaster />
             <div className="w-full mx-auto bg-card rounded-lg shadow p-6">
                 <div className="mb-6">
                     <h2 className="text-xl font-semibold text-card-foreground">Schedule a New Test</h2>
@@ -131,18 +139,34 @@ export default function NewTestForm({ subject }: { subject: number }) {
                     </div>
 
                     <div>
-                        <label htmlFor="description" className="block text-sm font-medium text-foreground mb-1">
-                            Test Information
-                        </label>
+                        <div className="flex justify-between items-center mb-1">
+                            <label htmlFor="description" className="block text-sm font-medium text-foreground">
+                                Test Information
+                            </label>
+                            <Button variant="outline" type="button" onClick={() => setImageDialogOpen(true)}>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l-1-1m6 4H4a2 2 0 01-2-2V6a2 2 0 012-2h16a2 2 0 012 2v8a2 2 0 01-2 2z" />
+                                </svg>
+                                Add Image
+                            </Button>
+                        </div>
                         <MDEditor
                             textareaProps={{
                                 placeholder: "Provide details about this test (topics covered, preparation guidance, etc.)"
                             }}
                             value={description}
                             height={450}
-                            onChange={setDescription}
+                            onChange={(value) => setDescription(value || "")}
                             data-color-mode={typeof window !== 'undefined' && document.documentElement.classList.contains('dark') ? 'dark' : 'light'}
                         />
+                        <Dialog open={isImageDialogOpen} onOpenChange={setImageDialogOpen}>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>Upload an Image</DialogTitle>
+                                </DialogHeader>
+                                <ImageUploader onUploadFinished={handleInsertImage} />
+                            </DialogContent>
+                        </Dialog>
                     </div>
 
                     <div className="flex items-center justify-end">

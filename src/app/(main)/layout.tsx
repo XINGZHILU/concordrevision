@@ -9,6 +9,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { Provider } from "@/components/ui/provider";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Student Hub",
@@ -27,7 +28,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <meta charSet="utf-8" />
           </head>
 
-          <body className="font-sans">
+          <body className={`font-sans ${bodyFont.variable} ${headingFont.variable}`}>
             <Provider>
               <ThemeProvider
                 attribute="class"
@@ -35,12 +36,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 enableSystem
                 disableTransitionOnChange
               >
-                <NavBar teacher={false} can_upload={false} />
+                <NavBar teacher={false} can_upload={false} admin={false} />
                 <div className={'w-11/12 min-h-screen p-2 mx-auto markdown-body'}>
                   {children}
                 </div>
                 <br />
                 <Footer />
+                <Toaster />
               </ThemeProvider>
             </Provider>
 
@@ -65,7 +67,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <meta charSet="utf-8" />
         </head>
 
-        <body className="font-sans">
+        <body className={`font-sans ${bodyFont.variable} ${headingFont.variable}`}>
           <Provider>
             <ThemeProvider
               attribute="class"
@@ -73,12 +75,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               enableSystem
               disableTransitionOnChange
             >
-              <NavBar teacher={record.teacher} can_upload={record.upload_permission || record.teacher} />
+              <NavBar teacher={record.teacher} can_upload={record.upload_permission || record.teacher || record.admin} admin={record.admin} />
               <div className={'w-11/12 min-h-screen p-2 mx-auto markdown-body'}>
                 {children}
               </div>
               <br />
               <Footer />
+              <Toaster />
             </ThemeProvider>
           </Provider>
         </body>

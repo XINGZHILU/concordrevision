@@ -35,7 +35,7 @@ export default async function handler(
             olympiadId: olympiad,
             desc: desc,
             authorId: author,
-            approved: record.teacher
+            approved: record.teacher || record.admin
         }
     });
 

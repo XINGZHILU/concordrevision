@@ -3,22 +3,44 @@
 
 'use client';
 
-import { Toaster, toaster } from "../../../components/ui/toaster"
-import { useState, useRef } from 'react';
+import { toaster } from "../../../components/ui/toaster"
+import { useState, useRef, useEffect } from 'react';
 import { StorageURLOlympiads } from "@/lib/utils";
 import { createClient } from "@/utils/supabase/client";
 import cuid from "cuid";
 import MDEditor from "@uiw/react-md-editor";
+import { ImageUploader } from "./upload_image";
+import { DialogRoot as Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { XIcon } from 'lucide-react';
+import { useEdgeStore } from '../../../lib/edgestore';
 
 export default function OlympiadUploadForm({ olympiad, author }: { olympiad: number, author: string }) {
     const inputFileRef = useRef<HTMLInputElement>(null);
     const [description, setDescription] = useState<string>("");
-    const titleRef = useRef<HTMLInputElement>(null);
+    const [title, setTitle] = useState<string>("");
+    const [isImageDialogOpen, setImageDialogOpen] = useState(false);
     const [cantUpload, setCantUpload] = useState<boolean>(false);
-    const [selectedFiles, setSelectedFiles] = useState<number>(0);
+    const { edgestore } = useEdgeStore();
+    const [stagedFiles, setStagedFiles] = useState<File[]>([]);
     const supabase = createClient();
+    const storageKey = `olympiad-form-${olympiad}`;
 
-    async function upload(files: FileList, title: string, desc: string) {
+    useEffect(() => {
+        const saved = sessionStorage.getItem(storageKey);
+        if (saved) {
+            const { title, description } = JSON.parse(saved);
+            setTitle(title || "");
+            setDescription(description || "");
+        }
+    }, [storageKey]);
+
+    useEffect(() => {
+        const data = JSON.stringify({ title, description });
+        sessionStorage.setItem(storageKey, data);
+    }, [title, description, storageKey]);
+
+    async function upload(files: File[], title: string, desc: string) {
         const urls = [];
         const names = [];
         for (const file of files) {
@@ -55,10 +77,11 @@ export default function OlympiadUploadForm({ olympiad, author }: { olympiad: num
             throw new Error("Failed to update database");
         }
         else {
-            if (titleRef.current) titleRef.current.value = '';
             if (inputFileRef.current) inputFileRef.current.value = '';
-            setSelectedFiles(0);
+            setStagedFiles([]);
             setDescription("");
+            setTitle("");
+            sessionStorage.removeItem(storageKey);
         }
     }
 
@@ -66,39 +89,101 @@ export default function OlympiadUploadForm({ olympiad, author }: { olympiad: num
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
-            setSelectedFiles(e.target.files.length);
-        } else {
-            setSelectedFiles(0);
+            const newFiles = Array.from(e.target.files);
+            setStagedFiles(prevFiles => {
+                const existingFileNames = prevFiles.map(f => f.name);
+                const uniqueNewFiles = newFiles.filter(f => !existingFileNames.includes(f.name));
+                return [...prevFiles, ...uniqueNewFiles];
+            });
         }
     };
 
+    const removeStagedFile = (fileName: string) => {
+        setStagedFiles(prevFiles => prevFiles.filter(f => f.name !== fileName));
+        if (inputFileRef.current) {
+            inputFileRef.current.value = "";
+        }
+    }
+
+    const handleInsertImage = (url: string) => {
+        const newDescription = `${description || ''}\n![Image](${url})\n`;
+        setDescription(newDescription);
+        setImageDialogOpen(false); // Close the dialog
+    }
+
     return (
-        <>
-            <Toaster />
-            <div className="w-full mx-auto bg-card rounded-lg shadow p-6">
-                <div className="mb-6">
-                    <h2 className="text-xl font-semibold text-card-foreground">Upload Olympiad Materials</h2>
-                    <p className="text-muted-foreground mt-1">Share resources to help students prepare for olympiads</p>
+        <div className="w-full max-w-lg mx-auto p-6 bg-card rounded-lg shadow-md">
+            <h2 className="text-2xl font-bold text-card-foreground mb-6">Upload Olympiad Resource</h2>
+            <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                <div>
+                    <label htmlFor="title" className="block text-sm font-medium text-foreground mb-1">
+                        Title
+                    </label>
+                    <input
+                        name="title"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        type="text"
+                        placeholder="Enter a descriptive title"
+                        className="w-full px-4 py-2 border border-input bg-background rounded-md shadow-sm focus:ring-2 focus:ring-ring"
+                        required
+                    />
                 </div>
 
-                <form
-                    className="space-y-6"
-                    onSubmit={async (event) => {
-                        event.preventDefault();
+                <div>
+                    <div className="flex justify-between items-center mb-1">
+                        <label htmlFor="description" className="block text-sm font-medium text-foreground">
+                            Description
+                        </label>
+                        <Button variant="outline" type="button" onClick={() => setImageDialogOpen(true)}>
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l-1-1m6 4H4a2 2 0 01-2-2V6a2 2 0 012-2h16a2 2 0 012 2v8a2 2 0 01-2 2z" />
+                            </svg>
+                            Add Image
+                        </Button>
+                    </div>
+                    <MDEditor
+                        textareaProps={{
+                            placeholder: "Describe what this resource covers and how it can be used"
+                        }}
+                        value={description}
+                        height={450}
+                        onChange={(value) => setDescription(value || "")}
+                        data-color-mode={typeof window !== 'undefined' && document.documentElement.classList.contains('dark') ? 'dark' : 'light'}
+                    />
+                    <Dialog open={isImageDialogOpen} onOpenChange={setImageDialogOpen}>
+                        <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>Upload an Image</DialogTitle>
+                            </DialogHeader>
+                            <ImageUploader onUploadFinished={handleInsertImage} />
+                        </DialogContent>
+                    </Dialog>
+                </div>
 
-                        if (!inputFileRef.current?.files) {
-                            throw new Error("No file selected");
-                        }
+                <div>
+                    <label htmlFor="file" className="block text-sm font-medium text-foreground mb-1">
+                        Select Files (PDF)
+                    </label>
+                    {stagedFiles.length > 0 && (
+                        <div className="mt-4">
+                            <p className="font-semibold text-foreground">{stagedFiles.length} file(s) staged for upload:</p>
+                            <ul className="list-disc list-inside text-muted-foreground">
+                                {stagedFiles.map((file, index) => (
+                                    <li key={index}>{file.name}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                </div>
 
-                        setCantUpload(true);
-
-                        const files = inputFileRef.current.files;
-                        if (!files) {
+                <Button
+                    onClick={async () => {
+                        if (stagedFiles.length === 0) {
+                            toaster.error({ title: "No files selected", description: "Please select at least one file to upload." });
                             return;
                         }
-                        const title = titleRef.current?.value || 'No title';
-
-                        toaster.promise(upload(files, title, description), {
+                        toaster.promise(upload(stagedFiles, title, description), {
                             success: {
                                 title: "Successfully uploaded!",
                                 description: "The resource will be available for view after being approved by teachers",
@@ -110,120 +195,14 @@ export default function OlympiadUploadForm({ olympiad, author }: { olympiad: num
                             loading: { title: "Uploading...", description: "Please do not leave the page" },
                         })
 
-                        setCantUpload(false);
-
+                        setStagedFiles([]);
                     }}
+                    className="w-full"
+                    disabled={stagedFiles.length === 0 || !title}
                 >
-                    <div>
-                        <label htmlFor="title" className="block text-sm font-medium text-foreground mb-1">
-                            Title
-                        </label>
-                        <input
-                            name="title"
-                            ref={titleRef}
-                            type="text"
-                            placeholder="Enter a descriptive title"
-                            className="w-full px-4 py-2 border border-input bg-background rounded-md shadow-sm focus:ring-2 focus:ring-ring"
-                            required
-                        />
-                    </div>
-
-                    <div>
-                        <label htmlFor="description" className="block text-sm font-medium text-foreground mb-1">
-                            Description
-                        </label>
-                        <MDEditor
-                            textareaProps={{
-                                placeholder: "Describe what this resource covers and how it can be used"
-                            }}
-                            value={description}
-                            height={450}
-                            onChange={setDescription}
-                            data-color-mode={typeof window !== 'undefined' && document.documentElement.classList.contains('dark') ? 'dark' : 'light'}
-                        />
-                    </div>
-
-                    <div>
-                        <label htmlFor="file" className="block text-sm font-medium text-foreground mb-1">
-                            Select Files (PDF)
-                        </label>
-                        <div className="mt-1 flex justify-center px-6 py-4 border-2 border-border border-dashed rounded-md">
-                            <div className="space-y-1 text-center">
-                                <svg
-                                    className="mx-auto h-12 w-12 text-muted-foreground"
-                                    stroke="currentColor"
-                                    fill="none"
-                                    viewBox="0 0 48 48"
-                                    aria-hidden="true"
-                                >
-                                    <path
-                                        d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H8m36-4h-4m4 0v-8"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    />
-                                </svg>
-                                <div className="flex text-sm text-muted-foreground">
-                                    <label
-                                        htmlFor="file-upload"
-                                        className="relative cursor-pointer bg-card rounded-md font-medium text-primary hover:text-primary/90 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-ring"
-                                    >
-                                        <span>Upload files</span>
-                                        <input
-                                            id="file-upload"
-                                            name="file"
-                                            type="file"
-                                            className="sr-only"
-                                            ref={inputFileRef}
-                                            onChange={handleFileChange}
-                                            accept=".pdf"
-                                            multiple
-                                        />
-                                    </label>
-                                    <p className="pl-1">or drag and drop</p>
-                                </div>
-                                <p className="text-xs text-muted-foreground">PDF files only</p>
-                                {selectedFiles > 0 && (
-                                    <p className="text-sm text-primary font-medium">
-                                        {selectedFiles} file{selectedFiles !== 1 ? 's' : ''} selected
-                                    </p>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="flex items-center justify-end">
-                        <button
-                            type="button"
-                            className="mr-4 px-4 py-2 border border-input rounded-md shadow-sm text-sm font-medium text-foreground bg-background hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring"
-                            onClick={() => {
-                                if (titleRef.current) titleRef.current.value = '';
-                                if (inputFileRef.current) inputFileRef.current.value = '';
-                                setSelectedFiles(0);
-                                setDescription("");
-                            }}
-                        >
-                            Reset
-                        </button>
-                        <button
-                            type="submit"
-                            className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-primary-foreground focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring ${cantUpload
-                                ? 'bg-primary/50 cursor-not-allowed'
-                                : 'bg-primary hover:bg-primary/90'
-                                }`}
-                            disabled={cantUpload}
-                        >
-                            {cantUpload ? (
-                                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-primary-foreground" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
-                            ) : null}
-                            {cantUpload ? 'Uploading...' : 'Upload'}
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </>
+                    Upload Resource
+                </Button>
+            </form>
+        </div>
     );
 }

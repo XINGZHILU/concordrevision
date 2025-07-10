@@ -140,9 +140,9 @@ const HorizontalPomodoro: React.FC = () => {
     // Update document title with timer progress
     useEffect(() => {
         const intervalType = isWorkInterval ? 'Work' : (isLongBreak ? 'Long Break' : 'Break');
-        const taskText = activeTaskId !== null
-            // @ts-expect-error: may be undefined
-            ? ` - ${tasks.find(t => t.id === activeTaskId)?.text.substring(0, 20)}${tasks.find(t => t.id === activeTaskId)?.text.length > 20 ? '...' : ''}`
+        const activeTask = tasks.find(t => t.id === activeTaskId);
+        const taskText = activeTask
+            ? ` - ${activeTask.text.substring(0, 20)}${activeTask.text.length > 20 ? '...' : ''}`
             : '';
         document.title = `${intervalType} - ${formatTime(timeLeft)}${taskText}`;
 
