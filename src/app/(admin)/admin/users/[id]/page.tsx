@@ -3,7 +3,7 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
-import { Badge } from "@chakra-ui/react";
+import { Badge } from "@/components/ui/badge";
 import UserActions from "./user-actions";
 
 export default async function UserDetailPage({ params }: { params: { id: string } }) {
@@ -54,24 +54,24 @@ export default async function UserDetailPage({ params }: { params: { id: string 
                 <h1 className="text-2xl font-bold">User Details</h1>
                 <Link
                     href="/admin/users"
-                    className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition-colors"
+                    className="px-4 py-2 bg-muted rounded hover:bg-accent transition-colors"
                 >
                     Back to Users
                 </Link>
             </div>
 
-            <div className="bg-white shadow-md rounded-lg overflow-hidden mb-6">
-                <div className="p-6 border-b border-gray-200">
+            <div className="bg-card shadow-md rounded-lg overflow-hidden mb-6">
+                <div className="p-6 border-b border-border">
                     <div className="flex flex-col md:flex-row md:justify-between md:items-center">
                         <div>
-                            <h2 className="text-xl font-bold text-gray-900">{`${userDetails.firstname} ${userDetails.lastname}` || 'Anonymous User'}</h2>
-                            <p className="text-gray-600">{userDetails.email}</p>
+                            <h2 className="text-xl font-bold text-foreground">{`${userDetails.firstname} ${userDetails.lastname}` || 'Anonymous User'}</h2>
+                            <p className="text-muted-foreground">{userDetails.email}</p>
                         </div>
                         <div className="mt-4 md:mt-0 flex space-x-2">
-                            <Badge colorPalette={userDetails.teacher ? 'indigo' : 'gray'}>
+                            <Badge variant={userDetails.teacher ? 'default' : 'secondary'}>
                                 {userDetails.teacher ? 'Teacher' : 'Student'}
                             </Badge>
-                            <Badge colorPalette={userDetails.upload_permission ? 'green' : 'red'}>
+                            <Badge variant={userDetails.upload_permission ? 'default' : 'destructive'}>
                                 {userDetails.upload_permission ? 'Upload Permission' : 'No Upload Permission'}
                             </Badge>
                         </div>
@@ -80,17 +80,17 @@ export default async function UserDetailPage({ params }: { params: { id: string 
 
                 <div className="p-6">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                        <div className="p-4 bg-blue-50 rounded-lg border border-blue-100">
-                            <div className="text-2xl font-bold text-blue-700">{userDetails._count.notes}</div>
-                            <div className="text-sm text-blue-600">Notes</div>
+                        <div className="p-4 bg-primary/10 rounded-lg border border-primary/20">
+                            <div className="text-2xl font-bold text-primary">{userDetails._count.notes}</div>
+                            <div className="text-sm text-primary/80">Notes</div>
                         </div>
-                        <div className="p-4 bg-purple-50 rounded-lg border border-purple-100">
-                            <div className="text-2xl font-bold text-purple-700">{userDetails._count.posts}</div>
-                            <div className="text-sm text-purple-600">Posts</div>
+                        <div className="p-4 bg-purple-500/10 rounded-lg border border-purple-500/20">
+                            <div className="text-2xl font-bold text-purple-500">{userDetails._count.posts}</div>
+                            <div className="text-sm text-purple-500/80">Posts</div>
                         </div>
-                        <div className="p-4 bg-green-50 rounded-lg border border-green-100">
-                            <div className="text-2xl font-bold text-green-700">{userDetails._count.olympiad_resources}</div>
-                            <div className="text-sm text-green-600">Olympiad Resources</div>
+                        <div className="p-4 bg-green-500/10 rounded-lg border border-green-500/20">
+                            <div className="text-2xl font-bold text-green-500">{userDetails._count.olympiad_resources}</div>
+                            <div className="text-sm text-green-500/80">Olympiad Resources</div>
                         </div>
                     </div>
 
@@ -103,44 +103,44 @@ export default async function UserDetailPage({ params }: { params: { id: string 
             </div>
 
             {/* User's contributions */}
-            <div className="bg-white shadow-md rounded-lg overflow-hidden">
+            <div className="bg-card shadow-md rounded-lg overflow-hidden">
                 <div className="p-6">
                     <h3 className="text-lg font-bold mb-4">Recent Contributions</h3>
 
                     {userDetails.notes.length === 0 ? (
-                        <p className="text-gray-500">This user hasn&#39;t made any contributions yet.</p>
+                        <p className="text-muted-foreground">This user hasn&#39;t made any contributions yet.</p>
                     ) : (
                         <>
                             <div className="mb-4">
-                                <p className="text-gray-600">Showing {userDetails.notes.length} most recent notes</p>
+                                <p className="text-muted-foreground">Showing {userDetails.notes.length} most recent notes</p>
                             </div>
 
                             {Object.entries(notesByYearGroup).map(([yearGroupIndex, notes]) => (
                                 <div key={yearGroupIndex} className="mb-6">
-                                    <h4 className="text-md font-semibold mb-2 text-gray-700">
+                                    <h4 className="text-md font-semibold mb-2 text-foreground">
                                         Year Group: {yearGroupIndex} ({notes.length} notes)
                                     </h4>
-                                    <div className="bg-gray-50 rounded-lg p-4 overflow-x-auto">
+                                    <div className="bg-muted rounded-lg p-4 overflow-x-auto">
                                         <table className="min-w-full">
                                             <thead>
                                                 <tr>
-                                                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
-                                                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
-                                                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                                    <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Title</th>
+                                                    <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Subject</th>
+                                                    <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
+                                                    <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Action</th>
                                                 </tr>
                                             </thead>
-                                            <tbody className="divide-y divide-gray-200">
+                                            <tbody className="divide-y divide-border">
                                                 {notes.map(note => (
-                                                    <tr key={note.id} className="hover:bg-gray-100">
-                                                        <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">{note.title}</td>
-                                                        <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">{note.subject.title}</td>
+                                                    <tr key={note.id} className="hover:bg-accent">
+                                                        <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-foreground">{note.title}</td>
+                                                        <td className="px-4 py-2 whitespace-nowrap text-sm text-muted-foreground">{note.subject.title}</td>
                                                         <td className="px-4 py-2 whitespace-nowrap text-sm">
-                                                            <Badge colorPalette={note.approved ? 'green' : 'yellow'}>
+                                                            <Badge variant={note.approved ? 'default' : 'secondary'}>
                                                                 {note.approved ? 'Approved' : 'Pending'}
                                                             </Badge>
                                                         </td>
-                                                        <td className="px-4 py-2 whitespace-nowrap text-sm text-indigo-600">
+                                                        <td className="px-4 py-2 whitespace-nowrap text-sm text-primary">
                                                             {note.approved ? (
                                                                 <Link href={`/revision/${note.subject.id}/resources/${note.id}`}>
                                                                     View

@@ -12,7 +12,7 @@ import MDViewer from "@/lib/customui/Basic/showMD";
 import Link from "next/link";
 import { LuArrowLeft, LuFileText, LuFile, LuPencil } from "react-icons/lu";
 
-export default async function Page(req: any, res: any) {
+export default async function Page({ params }: { params: { subject: string, note: string } }) {
     function Get_Colour(usr: { red: number[]; amber: number[]; green: number[] }, nid: number) {
         if (usr.red.includes(nid)) {
             return 2;
@@ -28,7 +28,6 @@ export default async function Page(req: any, res: any) {
         }
     }
 
-    const params = await req.params;
     const sid = params.subject;
     const nid = params.note;
 
@@ -87,7 +86,7 @@ export default async function Page(req: any, res: any) {
             <div className="mb-6">
                 <Link
                     href={`/revision/${subject.id}`}
-                    className="flex items-center text-indigo-600 hover:text-indigo-800 transition-colors"
+                    className="flex items-center text-primary hover:text-primary/80 transition-colors"
                 >
                     <LuArrowLeft className="mr-2" />
                     <span>Back to {subject.title}</span>
@@ -98,10 +97,10 @@ export default async function Page(req: any, res: any) {
             <div className="mb-8 border-b pb-4">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div>
-                        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                        <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
                             {note.title}
                         </h1>
-                        <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600">
+                        <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
                             <span className="font-medium">{year_group_names[subject.level]} {subject.title}</span>
                             <span>•</span>
                             <span>Contributed by {authorName}</span>
@@ -113,7 +112,7 @@ export default async function Page(req: any, res: any) {
                         <div className="flex-shrink-0">
                             <Link
                                 href={`/upload/revision/${subject.id}/resources/${note.id}/edit`}
-                                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
+                                className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors shadow-sm"
                             >
                                 <LuPencil className="h-4 w-4 mr-2" />
                                 Edit Resource
@@ -134,9 +133,9 @@ export default async function Page(req: any, res: any) {
             <div className="flex flex-col md:flex-row gap-8">
                 {/* Main content - larger proportion */}
                 <div className="flex-grow md:w-3/4">
-                    <div className="bg-white rounded-lg shadow-md border border-indigo-100 p-8 mb-6">
-                        <h2 className="text-2xl font-semibold mb-5 text-indigo-800 border-b pb-3 border-indigo-100">Content</h2>
-                        <div className="prose prose-lg max-w-none text-gray-800">
+                    <div className="bg-card rounded-lg shadow-md border border-border p-8 mb-6">
+                        <h2 className="text-2xl font-semibold mb-5 text-primary border-b pb-3 border-border">Content</h2>
+                        <div className="prose prose-lg max-w-none text-foreground">
                             <MDViewer content={note.desc} />
                         </div>
                     </div>
@@ -144,11 +143,11 @@ export default async function Page(req: any, res: any) {
 
                 {/* Sidebar for files - narrower */}
                 <div className="md:w-1/4">
-                    <div className="bg-white rounded-lg shadow-sm border p-6 sticky top-20">
+                    <div className="bg-card rounded-lg shadow-sm border p-6 sticky top-20">
                         <h2 className="text-lg font-semibold mb-4 flex items-center">
                             <LuFileText className="mr-2" />
                             Attachments
-                            <span className="ml-2 text-sm font-normal text-gray-500">
+                            <span className="ml-2 text-sm font-normal text-muted-foreground">
                                 ({note.files.length})
                             </span>
                         </h2>
@@ -156,7 +155,7 @@ export default async function Page(req: any, res: any) {
                         {note.files.length > 0 ? (
                             <FileList files={note.files} />
                         ) : (
-                            <div className="text-center py-8 text-gray-500">
+                            <div className="text-center py-8 text-muted-foreground">
                                 <LuFile className="mx-auto h-10 w-10 mb-2" />
                                 <p>No files attached</p>
                             </div>

@@ -27,7 +27,7 @@ export default async function SubjectManagementPage() {
             </div>
 
 
-            <div className="bg-white shadow-md rounded-lg p-6">
+            <div className="bg-card shadow-md rounded-lg p-6">
                 <SubjectList subjects={subjects} />
             </div>
         </div>

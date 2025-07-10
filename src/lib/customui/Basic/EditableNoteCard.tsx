@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import React from "react";
-import { Badge } from "@chakra-ui/react";
+import { Badge } from "../../../components/ui/badge";
 import { LuPencil, LuUser } from "react-icons/lu";
 import { BadgeSymbol } from "./cards";
 
@@ -32,14 +32,14 @@ export function EditableNoteCard({ note, colour, canEdit }: EditableNoteCardProp
         : note.author.firstname || note.author.lastname || 'Unknown Author';
 
     return (
-        <div className="relative group w-full bg-white border-gray-200 border-2 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+        <div className="relative group w-full bg-card border-border border-2 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
             {/* Main content - clickable link */}
             <Link href={`/revision/${note.subjectId}/resources/${note.id}`} className="block p-8">
-                <h5 className="mb-3 text-xl font-bold tracking-tight text-gray-900 leading-relaxed">{note.title}</h5>
-                <p className="mb-4 text-sm text-gray-600 line-clamp-2">{note.desc || "No description available"}</p>
+                <h5 className="mb-3 text-xl font-bold tracking-tight text-card-foreground leading-relaxed">{note.title}</h5>
+                <p className="mb-4 text-sm text-muted-foreground line-clamp-2">{note.desc || "No description available"}</p>
                 <div className="flex items-center justify-between">
                     <BadgeSymbol colour={colour} />
-                    <div className="flex items-center text-xs text-gray-500">
+                    <div className="flex items-center text-xs text-muted-foreground">
                         <LuUser className="h-3 w-3 mr-1" />
                         <span className="truncate max-w-32">{authorName}</span>
                     </div>
@@ -51,7 +51,7 @@ export function EditableNoteCard({ note, colour, canEdit }: EditableNoteCardProp
                 <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                     <Link 
                         href={`/upload/revision/${note.subjectId}/resources/${note.id}/edit`}
-                        className="inline-flex items-center justify-center w-8 h-8 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-sm transition-colors duration-200"
+                        className="inline-flex items-center justify-center w-8 h-8 bg-primary hover:bg-primary/90 text-primary-foreground rounded-full shadow-sm transition-colors duration-200"
                         title="Edit this resource"
                         onClick={(e) => e.stopPropagation()} // Prevent the main link from being triggered
                     >
@@ -63,7 +63,7 @@ export function EditableNoteCard({ note, colour, canEdit }: EditableNoteCardProp
             {/* Author indicator for own content */}
             {canEdit && (
                 <div className="absolute top-2 left-2">
-                    <Badge colorPalette="blue" size="xs">
+                    <Badge variant="default">
                         Your resource
                     </Badge>
                 </div>

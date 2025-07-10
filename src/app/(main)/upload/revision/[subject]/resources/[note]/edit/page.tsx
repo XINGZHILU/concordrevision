@@ -79,12 +79,12 @@ export default async function EditResourcePage({ params }: PageProps) {
     if (note.authorId !== user.id) {
         return (
             <div className="container mx-auto px-4 py-8">
-                <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-                    <h1 className="text-xl font-bold text-red-800 mb-2">Access Denied</h1>
-                    <p className="text-red-700">You can only edit resources that you uploaded.</p>
+                <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-6 text-center">
+                    <h1 className="text-xl font-bold text-destructive mb-2">Access Denied</h1>
+                    <p className="text-destructive/80">You can only edit resources that you uploaded.</p>
                     <Link 
                         href={`/revision/${subject.id}/resources/${note.id}`}
-                        className="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                        className="mt-4 inline-block bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors"
                     >
                         Back to Resource
                     </Link>
@@ -99,41 +99,41 @@ export default async function EditResourcePage({ params }: PageProps) {
                 <nav className="flex" aria-label="Breadcrumb">
                     <ol className="inline-flex items-center space-x-1 md:space-x-3">
                         <li className="inline-flex items-center">
-                            <Link href="/revision" className="text-gray-700 hover:text-blue-600">
+                            <Link href="/revision" className="text-muted-foreground hover:text-primary">
                                 Revision
                             </Link>
                         </li>
                         <li>
                             <div className="flex items-center">
-                                <span className="mx-2 text-gray-400">/</span>
-                                <Link href={`/revision/${subject.id}`} className="text-gray-700 hover:text-blue-600">
+                                <span className="mx-2 text-muted-foreground">/</span>
+                                <Link href={`/revision/${subject.id}`} className="text-muted-foreground hover:text-primary">
                                     {subject.title}
                                 </Link>
                             </div>
                         </li>
                         <li>
                             <div className="flex items-center">
-                                <span className="mx-2 text-gray-400">/</span>
-                                <Link href={`/revision/${subject.id}/resources/${note.id}`} className="text-gray-700 hover:text-blue-600">
+                                <span className="mx-2 text-muted-foreground">/</span>
+                                <Link href={`/revision/${subject.id}/resources/${note.id}`} className="text-muted-foreground hover:text-primary">
                                     {note.title}
                                 </Link>
                             </div>
                         </li>
                         <li aria-current="page">
                             <div className="flex items-center">
-                                <span className="mx-2 text-gray-400">/</span>
-                                <span className="text-gray-500">Edit</span>
+                                <span className="mx-2 text-muted-foreground">/</span>
+                                <span className="text-foreground">Edit</span>
                             </div>
                         </li>
                     </ol>
                 </nav>
             </div>
 
-            <div className="bg-white rounded-lg shadow-md p-6">
-                <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            <div className="bg-card rounded-lg shadow-md p-6">
+                <h1 className="text-2xl font-bold text-foreground mb-2">
                     Edit Resource: {note.title}
                 </h1>
-                <p className="text-gray-600 mb-6">
+                <p className="text-muted-foreground mb-6">
                     {year_group_names[subject.level]} {subject.title}
                 </p>
 

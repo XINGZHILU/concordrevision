@@ -116,38 +116,38 @@ export default function NewOlympiadPage() {
                 <h1 className="text-2xl font-bold">Add New Olympiad</h1>
                 <Link
                     href="/admin/olympiads"
-                    className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition-colors"
+                    className="px-4 py-2 bg-muted rounded hover:bg-accent transition-colors"
                 >
                     Cancel
                 </Link>
             </div>
 
-            <div className="bg-white shadow-md rounded-lg p-6">
+            <div className="bg-card shadow-md rounded-lg p-6">
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-                            Olympiad Title <span className="text-red-500">*</span>
+                        <label htmlFor="title" className="block text-sm font-medium text-foreground mb-1">
+                            Olympiad Title <span className="text-destructive">*</span>
                         </label>
                         <input
                             type="text"
                             id="title"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                            className="w-full p-2 border border-input bg-background rounded-md shadow-sm focus:ring-ring"
                             placeholder="e.g., International Physics Olympiad, International Mathematical Olympiad"
                             required
                         />
                     </div>
 
                     <div className="mb-4">
-                        <label htmlFor="area" className="block text-sm font-medium text-gray-700 mb-1">
-                            Subject Area <span className="text-red-500">*</span>
+                        <label htmlFor="area" className="block text-sm font-medium text-foreground mb-1">
+                            Subject Area <span className="text-destructive">*</span>
                         </label>
                         <select
                             id="area"
                             value={area}
                             onChange={(e) => setArea(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                            className="w-full p-2 border border-input bg-background rounded-md shadow-sm focus:ring-ring"
                             required
                         >
                             {olympiad_subjects.map((subject) => (
@@ -159,7 +159,7 @@ export default function NewOlympiadPage() {
                     </div>
 
                     <div className="mb-4">
-                        <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+                        <label htmlFor="description" className="block text-sm font-medium text-foreground mb-1">
                             Description
                         </label>
                         <MDEditor
@@ -169,11 +169,12 @@ export default function NewOlympiadPage() {
                             value={description}
                             height={450}
                             onChange={setDescription}
+                            data-color-mode={typeof window !== 'undefined' && document.documentElement.classList.contains('dark') ? 'dark' : 'light'}
                         />
                     </div>
 
                     <div className="mb-6">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-foreground mb-1">
                             External Links
                         </label>
 
@@ -183,7 +184,7 @@ export default function NewOlympiadPage() {
                                     type="url"
                                     value={newLink}
                                     onChange={(e) => setNewLink(e.target.value)}
-                                    className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                                    className="w-full p-2 border border-input bg-background rounded-md shadow-sm focus:ring-ring"
                                     placeholder="https://example.com"
                                 />
                             </div>
@@ -192,7 +193,7 @@ export default function NewOlympiadPage() {
                                     type="text"
                                     value={newLinkDescription}
                                     onChange={(e) => setNewLinkDescription(e.target.value)}
-                                    className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                                    className="w-full p-2 border border-input bg-background rounded-md shadow-sm focus:ring-ring"
                                     placeholder="Link description (optional)"
                                 />
                             </div>
@@ -200,7 +201,7 @@ export default function NewOlympiadPage() {
                                 <button
                                     type="button"
                                     onClick={addLink}
-                                    className="w-full px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors"
+                                    className="w-full px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-colors"
                                 >
                                     Add
                                 </button>
@@ -208,9 +209,9 @@ export default function NewOlympiadPage() {
                         </div>
 
                         {links.length > 0 && (
-                            <div className="mt-3 bg-gray-50 p-3 rounded-md border border-gray-200">
-                                <h3 className="text-sm font-medium text-gray-700 mb-2">Added Links</h3>
-                                <ul className="divide-y divide-gray-200">
+                            <div className="mt-3 bg-muted p-3 rounded-md border border-border">
+                                <h3 className="text-sm font-medium text-foreground mb-2">Added Links</h3>
+                                <ul className="divide-y divide-border">
                                     {links.map((link, index) => (
                                         <li key={index} className="py-3">
                                             <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
@@ -219,7 +220,7 @@ export default function NewOlympiadPage() {
                                                         href={link}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="text-sm text-indigo-600 hover:underline block truncate"
+                                                        className="text-sm text-primary hover:underline block truncate"
                                                     >
                                                         {link}
                                                     </a>
@@ -229,7 +230,7 @@ export default function NewOlympiadPage() {
                                                         type="text"
                                                         value={linkDescriptions[index] || ''}
                                                         onChange={(e) => updateLinkDescription(index, e.target.value)}
-                                                        className="w-full p-1 text-sm border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                                                        className="w-full p-1 text-sm border border-input bg-background rounded-md shadow-sm focus:ring-ring"
                                                         placeholder="Add description"
                                                     />
                                                 </div>
@@ -237,7 +238,7 @@ export default function NewOlympiadPage() {
                                                     <button
                                                         type="button"
                                                         onClick={() => removeLink(index)}
-                                                        className="text-red-600 hover:text-red-800 p-1"
+                                                        className="text-destructive hover:text-destructive/80 p-1"
                                                     >
                                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -255,13 +256,13 @@ export default function NewOlympiadPage() {
                     <div className="flex justify-end">
                         <Link
                             href="/admin/olympiads"
-                            className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition-colors mr-2"
+                            className="px-4 py-2 bg-muted rounded hover:bg-accent transition-colors mr-2"
                         >
                             Cancel
                         </Link>
                         <button
                             type="submit"
-                            className={`px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+                            className={`px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-colors ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
                                 }`}
                             disabled={isSubmitting}
                         >

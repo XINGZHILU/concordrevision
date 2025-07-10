@@ -16,14 +16,12 @@ export default function PomodoroActionBar() {
         <>
             <Checkbox
                 checked={checked}
-                onCheckedChange={(e) => setChecked(!!e.checked)}
-            >
-                <p className="text-gray-500">Pomodoro Timer</p>
-            </Checkbox>
+                onChange={(e) => setChecked(e.target.checked)}
+                label="Pomodoro Timer"
+            />
             <ActionBarRoot
                 open={checked}
                 onOpenChange={(e) => setChecked(e.open)}
-                closeOnInteractOutside={false}
             >
                 <ActionBarContent>
                     <Pomodoro />

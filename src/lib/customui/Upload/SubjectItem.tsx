@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { year_group_names } from "@/lib/consts";
-import { Badge } from "@chakra-ui/react";
+import { Badge } from "../../../components/ui/badge";
 import {
     LuBook,
     LuBeaker,
@@ -32,26 +32,26 @@ export function SubjectItem({ subject }: {
         <div className="p-3">
             <Link href={`/revision/${subject.id}`} className="block h-full">
                 <div
-                    className="group relative overflow-hidden h-full rounded-xl border border-gray-200 bg-white transition-all duration-300 hover:shadow-lg"
+                    className="group relative overflow-hidden h-full rounded-xl border border-border bg-card transition-all duration-300 hover:shadow-lg"
                 >
                     {/* Decorative band on left side */}
-                    <div className="absolute left-0 top-0 h-full w-1.5 bg-gray-300" />
+                    <div className="absolute left-0 top-0 h-full w-1.5 bg-muted" />
 
                     {/* Card content */}
                     <div className="p-5 pl-6">
                         {/* Header with subject title and year badge */}
                         <div className="flex items-start justify-between">
                             <div className="flex items-center">
-                                <div className="mr-3 p-2 rounded-lg bg-gray-100">
-                                    <SubjectIcon className="h-5 w-5 text-gray-600" />
+                                <div className="mr-3 p-2 rounded-lg bg-muted">
+                                    <SubjectIcon className="h-5 w-5 text-muted-foreground" />
                                 </div>
-                                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-gray-900">
+                                <h3 className="text-lg font-semibold text-card-foreground group-hover:text-primary">
                                     {subject.title}
                                 </h3>
                             </div>
                             <Badge
-                                className="bg-gray-100 text-gray-700 ml-2"
-                                size="sm"
+                                variant="secondary"
+                                className="ml-2"
                             >
                                 {year_group_names[subject.level]}
                             </Badge>
@@ -60,7 +60,7 @@ export function SubjectItem({ subject }: {
 
                         {/* Footer - view button */}
                         <div className="mt-4 flex items-center text-sm font-medium">
-                            <span className="text-gray-700 group-hover:underline flex items-center">
+                            <span className="text-accent-foreground group-hover:underline flex items-center">
                                 View Resources
                                 <LuArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
                             </span>

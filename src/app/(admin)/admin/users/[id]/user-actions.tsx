@@ -5,7 +5,17 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toaster, Toaster } from "@/components/ui/toaster";
-import { DialogRoot, DialogContent, DialogHeader, DialogTitle, DialogBody, DialogFooter } from "@/components/ui/dialog";
+import {
+    DialogRoot,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogFooter,
+    DialogTrigger,
+    DialogDescription,
+    DialogClose
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 interface UserActionsProps {
     userId: string;
@@ -15,23 +25,8 @@ interface UserActionsProps {
 
 export default function UserActions({ userId, uploadPermission, isTeacher }: UserActionsProps) {
     const [isUpdating, setIsUpdating] = useState(false);
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [dialogAction, setDialogAction] = useState<'upload' | 'teacher' | null>(null);
     const router = useRouter();
 
-    // Open confirmation dialog
-    const openDialog = (action: 'upload' | 'teacher') => {
-        setDialogAction(action);
-        setIsDialogOpen(true);
-    };
-
-    // Close dialog
-    const closeDialog = () => {
-        setIsDialogOpen(false);
-        setDialogAction(null);
-    };
-
-    // Toggle upload permission
     const toggleUploadPermission = async () => {
         setIsUpdating(true);
 
@@ -67,11 +62,9 @@ export default function UserActions({ userId, uploadPermission, isTeacher }: Use
             });
         } finally {
             setIsUpdating(false);
-            closeDialog();
         }
     };
 
-    // Toggle teacher status
     const toggleTeacherStatus = async () => {
         setIsUpdating(true);
 
@@ -107,96 +100,78 @@ export default function UserActions({ userId, uploadPermission, isTeacher }: Use
             });
         } finally {
             setIsUpdating(false);
-            closeDialog();
-        }
-    };
-
-    const handleConfirmAction = () => {
-        if (dialogAction === 'upload') {
-            toggleUploadPermission();
-        } else if (dialogAction === 'teacher') {
-            toggleTeacherStatus();
         }
     };
 
     return (
         <div>
             <Toaster />
-
             <div className="flex flex-wrap gap-2">
-                <button
-                    onClick={() => openDialog('upload')}
-                    className={`px-4 py-2 rounded-md text-white ${uploadPermission
-                            ? 'bg-red-600 hover:bg-red-700'
-                            : 'bg-green-600 hover:bg-green-700'
-                        } ${isUpdating ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    disabled={isUpdating}
-                >
-                    {uploadPermission ? 'Revoke Upload Permission' : 'Grant Upload Permission'}
-                </button>
-
-                <button
-                    onClick={() => openDialog('teacher')}
-                    className={`px-4 py-2 rounded-md text-white ${isTeacher
-                            ? 'bg-gray-600 hover:bg-gray-700'
-                            : 'bg-indigo-600 hover:bg-indigo-700'
-                        } ${isUpdating ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    disabled={isUpdating}
-                >
-                    {isTeacher ? 'Convert to Student' : 'Convert to Teacher'}
-                </button>
-            </div>
-
-            {/* @ts-ignore */}
-            <DialogRoot open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>
-                            {dialogAction === 'upload'
-                                ? (uploadPermission ? 'Revoke Upload Permission' : 'Grant Upload Permission')
-                                : (isTeacher ? 'Convert to Student' : 'Convert to Teacher')
+                <DialogRoot>
+                    <DialogTrigger asChild>
+                        <Button variant={uploadPermission ? "destructive" : "default"} disabled={isUpdating}>
+                            {uploadPermission ? 'Revoke Upload Permission' : 'Grant Upload Permission'}
+                        </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>
+                                {uploadPermission ? 'Revoke Upload Permission' : 'Grant Upload Permission'}
+                            </DialogTitle>
+                        </DialogHeader>
+                        <DialogDescription>
+                            Are you sure you want to {uploadPermission ? 'revoke' : 'grant'} upload permission for this user?
+                            {uploadPermission
+                                ? ' They will no longer be able to upload new resources.'
+                                : ' They will be able to upload new notes, resources, and materials.'
                             }
-                        </DialogTitle>
-                    </DialogHeader>
-                    <DialogBody>
-                        {dialogAction === 'upload' && (
-                            <p>
-                                Are you sure you want to {uploadPermission ? 'revoke' : 'grant'} upload permission for this user?
-                                {uploadPermission
-                                    ? ' They will no longer be able to upload new resources.'
-                                    : ' They will be able to upload new notes, resources, and materials.'
-                                }
-                            </p>
-                        )}
+                        </DialogDescription>
+                        <DialogFooter>
+                            <DialogClose asChild>
+                                <Button variant="ghost">Cancel</Button>
+                            </DialogClose>
+                            <Button
+                                onClick={toggleUploadPermission}
+                                disabled={isUpdating}
+                                variant={uploadPermission ? "destructive" : "default"}
+                            >
+                                {isUpdating ? 'Updating...' : 'Confirm'}
+                            </Button>
+                        </DialogFooter>
+                    </DialogContent>
+                </DialogRoot>
 
-                        {dialogAction === 'teacher' && (
-                            <p>
-                                Are you sure you want to change this user&#39;s role from {isTeacher ? 'Teacher' : 'Student'} to {isTeacher ? 'Student' : 'Teacher'}?
-                                This may affect their access to certain features.
-                            </p>
-                        )}
-                    </DialogBody>
-                    <DialogFooter>
-                        <button
-                            onClick={closeDialog}
-                            className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition-colors mr-2"
-                            disabled={isUpdating}
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            onClick={handleConfirmAction}
-                            className={`px-4 py-2 text-white rounded transition-colors ${dialogAction === 'upload'
-                                    ? (uploadPermission ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700')
-                                    : (isTeacher ? 'bg-gray-600 hover:bg-gray-700' : 'bg-indigo-600 hover:bg-indigo-700')
-                                } ${isUpdating ? 'opacity-50 cursor-not-allowed' : ''}`}
-                            disabled={isUpdating}
-                        >
-                            {isUpdating ? 'Updating...' : 'Confirm'}
-                        </button>
-                    </DialogFooter>
-                </DialogContent>
-            </DialogRoot>
+                <DialogRoot>
+                    <DialogTrigger asChild>
+                        <Button variant={isTeacher ? "secondary" : "default"} disabled={isUpdating}>
+                             {isTeacher ? 'Convert to Student' : 'Convert to Teacher'}
+                        </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>
+                                {isTeacher ? 'Convert to Student' : 'Convert to Teacher'}
+                            </DialogTitle>
+                        </DialogHeader>
+                        <DialogDescription>
+                            Are you sure you want to change this user&apos;s role from {isTeacher ? 'Teacher' : 'Student'} to {isTeacher ? 'Student' : 'Teacher'}?
+                            This may affect their access to certain features.
+                        </DialogDescription>
+                        <DialogFooter>
+                             <DialogClose asChild>
+                                <Button variant="ghost">Cancel</Button>
+                            </DialogClose>
+                            <Button
+                                onClick={toggleTeacherStatus}
+                                disabled={isUpdating}
+                                variant={isTeacher ? "destructive" : "default"}
+                            >
+                                {isUpdating ? 'Updating...' : 'Confirm'}
+                            </Button>
+                        </DialogFooter>
+                    </DialogContent>
+                </DialogRoot>
+            </div>
         </div>
     );
 }

@@ -30,7 +30,7 @@ export default async function UserManagementPage() {
                 <h1 className="text-2xl font-bold">User Management</h1>
             </div>
 
-            <div className="bg-white shadow-md rounded-lg p-6">
+            <div className="bg-card shadow-md rounded-lg p-6">
                 <UserList users={users} />
             </div>
         </div>

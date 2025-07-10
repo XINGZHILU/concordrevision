@@ -1,33 +1,32 @@
-import { Field as ChakraField } from "@chakra-ui/react"
-import * as React from "react"
+'use client';
 
-export interface FieldProps extends Omit<ChakraField.RootProps, "label"> {
+import * as React from "react"
+import { Label } from "@/components/ui/label"
+import { cn } from "@/lib/utils"
+
+export interface FieldProps extends React.HTMLAttributes<HTMLDivElement> {
     label?: React.ReactNode
     helperText?: React.ReactNode
     errorText?: React.ReactNode
     optionalText?: React.ReactNode
 }
 
-export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
-    function Field(props, ref) {
-        const { label, children, helperText, errorText, optionalText, ...rest } =
-            props
+const Field = React.forwardRef<HTMLDivElement, FieldProps>(
+    ({ className, label, children, helperText, errorText, optionalText, ...props }, ref) => {
+        const id = React.useId()
         return (
-            <ChakraField.Root ref={ref} {...rest}>
-                {label && (
-                    <ChakraField.Label>
-                        {label}
-                        <ChakraField.RequiredIndicator fallback={optionalText} />
-                    </ChakraField.Label>
-                )}
-                {children}
-                {helperText && (
-                    <ChakraField.HelperText>{helperText}</ChakraField.HelperText>
-                )}
-                {errorText && (
-                    <ChakraField.ErrorText>{errorText}</ChakraField.ErrorText>
-                )}
-            </ChakraField.Root>
+            <div ref={ref} className={cn("grid gap-2", className)} {...props}>
+                <div className="flex items-center justify-between">
+                    {label && <Label htmlFor={id}>{label}</Label>}
+                    {optionalText && <span className="text-sm text-gray-400">{optionalText}</span>}
+                </div>
+                {React.isValidElement(children) ? React.cloneElement(children, { id } as React.HTMLAttributes<HTMLElement>) : children}
+                {helperText && <p className="text-sm text-gray-400">{helperText}</p>}
+                {errorText && <p className="text-sm text-red-600">{errorText}</p>}
+            </div>
         )
-    },
+    }
 )
+Field.displayName = "Field"
+
+export { Field }

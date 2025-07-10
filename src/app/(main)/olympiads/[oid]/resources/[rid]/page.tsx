@@ -9,8 +9,7 @@ import MDViewer from "@/lib/customui/Basic/showMD";
 import Link from "next/link";
 import { LuArrowLeft, LuFileText, LuFile, LuExternalLink } from "react-icons/lu";
 
-export default async function Page(req: any, res: any) {
-    const params = await req.params;
+export default async function Page({ params }: { params: { oid: string, rid: string } }) {
     const oid = params.oid;
     const rid = params.rid;
 
@@ -58,7 +57,7 @@ export default async function Page(req: any, res: any) {
             <div className="mb-6">
                 <Link
                     href={`/olympiads/${olympiad.id}`}
-                    className="flex items-center text-indigo-600 hover:text-indigo-800 transition-colors"
+                    className="flex items-center text-primary hover:text-primary/80 transition-colors"
                 >
                     <LuArrowLeft className="mr-2" />
                     <span>Back to {olympiad.title}</span>
@@ -68,14 +67,14 @@ export default async function Page(req: any, res: any) {
             {/* Page Header */}
             <div className="mb-8 border-b pb-4">
                 <div className="flex flex-wrap items-center justify-between">
-                    <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                    <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
                         {resource.title}
                     </h1>
-                    <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                    <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
                         {resourceType}
                     </span>
                 </div>
-                <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600">
+                <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
                     <span className="font-medium">{olympiad.title}</span>
                     <span>•</span>
                     <span>{olympiad.area}</span>
@@ -90,9 +89,9 @@ export default async function Page(req: any, res: any) {
                 <div className="flex flex-col md:flex-row gap-8">
                     {/* Main content - larger proportion */}
                     <div className="flex-grow md:w-3/4">
-                        <div className="rounded-lg shadow-md border border-blue-100 p-8 mb-6">
-                            <h2 className="text-2xl font-semibold mb-5 text-blue-800 border-b pb-3 border-blue-200">Olympiad Resource Content</h2>
-                            <div className="prose prose-lg max-w-none text-gray-800">
+                        <div className="rounded-lg shadow-md border border-border p-8 mb-6">
+                            <h2 className="text-2xl font-semibold mb-5 text-primary border-b pb-3 border-border">Olympiad Resource Content</h2>
+                            <div className="prose prose-lg max-w-none text-foreground">
                                 <MDViewer content={resource.desc} />
                             </div>
                         </div>
@@ -100,11 +99,11 @@ export default async function Page(req: any, res: any) {
 
                     {/* Sidebar for files - only shown when there are files */}
                     <div className="md:w-1/4">
-                        <div className="bg-white rounded-lg shadow-sm border p-6 sticky top-20">
+                        <div className="bg-card rounded-lg shadow-sm border p-6 sticky top-20">
                             <h2 className="text-lg font-semibold mb-4 flex items-center">
                                 <LuFileText className="mr-2" />
                                 Attachments
-                                <span className="ml-2 text-sm font-normal text-gray-500">
+                                <span className="ml-2 text-sm font-normal text-muted-foreground">
                                     ({resource.files.length})
                                 </span>
                             </h2>
@@ -115,9 +114,9 @@ export default async function Page(req: any, res: any) {
             ) : (
                 /* Full width content when no files */
                 <div className="w-full">
-                    <div className=" rounded-lg shadow-md border border-blue-100 p-8 mb-6">
-                        <h2 className="text-2xl font-semibold mb-5 text-blue-800 border-b pb-3 border-blue-200">Olympiad Resource Content</h2>
-                        <div className="prose prose-lg max-w-none text-gray-800">
+                    <div className=" rounded-lg shadow-md border border-border p-8 mb-6">
+                        <h2 className="text-2xl font-semibold mb-5 text-primary border-b pb-3 border-border">Olympiad Resource Content</h2>
+                        <div className="prose prose-lg max-w-none text-foreground">
                             <MDViewer content={resource.desc} />
                         </div>
                     </div>

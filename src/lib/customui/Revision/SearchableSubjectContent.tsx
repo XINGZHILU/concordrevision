@@ -139,7 +139,7 @@ const SearchableSubjectContent = ({
         if (resources.length === 0) {
             return searchQuery ? (
                 <div className="text-center py-8">
-                    <p className="text-gray-500">No resources found for &quot;{searchQuery}&quot;</p>
+                    <p className="text-muted-foreground">No resources found for &quot;{searchQuery}&quot;</p>
                 </div>
             ) : (
                 <p>No resources found</p>
@@ -167,7 +167,7 @@ const SearchableSubjectContent = ({
         if (testList.length === 0) {
             return searchQuery ? (
                 <div className="text-center py-8">
-                    <p className="text-gray-500">No tests found for &quot;{searchQuery}&quot;</p>
+                    <p className="text-muted-foreground">No tests found for &quot;{searchQuery}&quot;</p>
                 </div>
             ) : (
                 <p>No tests found</p>
@@ -206,26 +206,26 @@ const SearchableSubjectContent = ({
             <div className="mb-6">
                 <div className="relative max-w-md">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <LuSearch className="h-4 w-4 text-gray-400" />
+                        <LuSearch className="h-4 w-4 text-muted-foreground" />
                     </div>
                     <input
                         type="text"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Search resources and tests..."
-                        className="block w-full pl-9 pr-8 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white"
+                        className="block w-full pl-9 pr-8 py-2 border border-input bg-background rounded-lg text-sm focus:ring-2 focus:ring-ring"
                     />
                     {searchQuery && (
                         <button
                             onClick={clearSearch}
                             className="absolute inset-y-0 right-0 pr-3 flex items-center"
                         >
-                            <LuX className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+                            <LuX className="h-4 w-4 text-muted-foreground hover:text-foreground" />
                         </button>
                     )}
                 </div>
                 {searchQuery && (
-                    <p className="mt-2 text-sm text-gray-600">
+                    <p className="mt-2 text-sm text-muted-foreground">
                         Searching for: <span className="font-medium">&quot;{searchQuery}&quot;</span>
                     </p>
                 )}
@@ -239,7 +239,7 @@ const SearchableSubjectContent = ({
                             <LuFolder />
                             Resources
                             {searchQuery && filteredResources.length > 0 && (
-                                <span className="ml-1 text-xs bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded-full">
+                                <span className="ml-1 text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">
                                     {filteredResources.length}
                                 </span>
                             )}
@@ -248,7 +248,7 @@ const SearchableSubjectContent = ({
                             <LuBook />
                             Upcoming tests
                             {searchQuery && upcomingTests.length > 0 && (
-                                <span className="ml-1 text-xs bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded-full">
+                                <span className="ml-1 text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">
                                     {upcomingTests.length}
                                 </span>
                             )}
@@ -257,7 +257,7 @@ const SearchableSubjectContent = ({
                             <LuBookCheck />
                             Past tests
                             {searchQuery && pastTests.length > 0 && (
-                                <span className="ml-1 text-xs bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded-full">
+                                <span className="ml-1 text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">
                                     {pastTests.length}
                                 </span>
                             )}

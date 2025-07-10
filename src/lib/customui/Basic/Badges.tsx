@@ -1,15 +1,15 @@
-import { Badge } from "@chakra-ui/react";
+import { Badge } from "../../../components/ui/badge";
 
 export function SatTestBadge() {
-    return <Badge colorPalette='green'>Saturday Test</Badge>;
+    return <Badge variant='default'>Saturday Test</Badge>;
 }
 
 export function EOTBadge() {
-    return <Badge colorPalette='yellow'>End of term exam</Badge>;
+    return <Badge variant='secondary'>End of term exam</Badge>;
 }
 
 export function PublicExamBadge() {
-    return <Badge colorPalette='red'>Public exam</Badge>;
+    return <Badge variant='destructive'>Public exam</Badge>;
 }
 
 export function TestBadge({ type }: { type: number }) {

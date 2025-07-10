@@ -1,12 +1,31 @@
 export const year_group_names = ["Form 3", "Form 4", "Form 5", "6.1", "6.2"]
 
 export const olympiad_subjects = [
-    'Biology',
-    'Chemistry',
-    'Physics',
-    'Mathematics',
-    'Computer Science',
-    'Economics',
+  'Biology',
+  'Chemistry',
+  'Physics',
+  'Mathematics',
+  'Computer Science',
+  'Economics',
 ]
 
 export const email_from = "Concord Student Hub Team <noreply@concord-hub.com>";
+
+export const key_pages = [
+  {
+    name: 'Home',
+    link: '/'
+  },
+  {
+    name: 'Revision',
+    link: '/revision'
+  },
+  {
+    name: 'Olympiads',
+    link: '/olympiads'
+  },
+  {
+    name: 'UCAS',
+    link: '/ucas'
+  },
+]

@@ -15,10 +15,10 @@ function AdminCard({ title, description, icon, href, count, variant = "primary" 
 }) {
     // Define color variants
     const variants = {
-        primary: "bg-indigo-50 border-indigo-200 text-indigo-700",
-        secondary: "bg-purple-50 border-purple-200 text-purple-700",
-        warning: "bg-amber-50 border-amber-200 text-amber-700",
-        success: "bg-green-50 border-green-200 text-green-700"
+        primary: "bg-blue-500/10 border-blue-500/20 text-blue-500",
+        secondary: "bg-purple-500/10 border-purple-500/20 text-purple-500",
+        warning: "bg-amber-500/10 border-amber-500/20 text-amber-500",
+        success: "bg-green-500/10 border-green-500/20 text-green-500"
     };
 
     const colorClass = variants[variant];
@@ -31,7 +31,7 @@ function AdminCard({ title, description, icon, href, count, variant = "primary" 
                         {icon}
                     </div>
                     {count !== undefined && (
-                        <span className="inline-flex items-center justify-center px-3 py-1 text-sm font-medium rounded-full bg-white">
+                        <span className="inline-flex items-center justify-center px-3 py-1 text-sm font-medium rounded-full bg-background">
                             {count}
                         </span>
                     )}
@@ -72,73 +72,73 @@ export default async function AdminHomePage() {
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="mb-8">
-                <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-                <p className="mt-1 text-lg text-gray-600">
+                <h1 className="text-3xl font-bold text-foreground">Admin Dashboard</h1>
+                <p className="mt-1 text-lg text-muted-foreground">
                     Manage content, users, and system settings
                 </p>
             </div>
 
             {/* Quick stats overview */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div className="bg-white rounded-lg shadow p-6">
+                <div className="bg-card rounded-lg shadow p-6">
                     <div className="flex items-center">
-                        <div className="p-3 rounded-full bg-indigo-100 text-indigo-600">
+                        <div className="p-3 rounded-full bg-primary/10 text-primary">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
                         </div>
                         <div className="ml-4">
-                            <h2 className="text-sm font-medium text-gray-600">Pending Approvals</h2>
-                            <p className="text-2xl font-semibold text-gray-900">{unapprovedCount}</p>
+                            <h2 className="text-sm font-medium text-muted-foreground">Pending Approvals</h2>
+                            <p className="text-2xl font-semibold text-foreground">{unapprovedCount}</p>
                         </div>
                     </div>
                 </div>
 
-                <div className="bg-white rounded-lg shadow p-6">
+                <div className="bg-card rounded-lg shadow p-6">
                     <div className="flex items-center">
-                        <div className="p-3 rounded-full bg-green-100 text-green-600">
+                        <div className="p-3 rounded-full bg-green-500/10 text-green-500">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                             </svg>
                         </div>
                         <div className="ml-4">
-                            <h2 className="text-sm font-medium text-gray-600">Total Resources</h2>
-                            <p className="text-2xl font-semibold text-gray-900">{totalResourcesCount}</p>
+                            <h2 className="text-sm font-medium text-muted-foreground">Total Resources</h2>
+                            <p className="text-2xl font-semibold text-foreground">{totalResourcesCount}</p>
                         </div>
                     </div>
                 </div>
 
-                <div className="bg-white rounded-lg shadow p-6">
+                <div className="bg-card rounded-lg shadow p-6">
                     <div className="flex items-center">
-                        <div className="p-3 rounded-full bg-purple-100 text-purple-600">
+                        <div className="p-3 rounded-full bg-purple-500/10 text-purple-500">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                             </svg>
                         </div>
                         <div className="ml-4">
-                            <h2 className="text-sm font-medium text-gray-600">Subjects</h2>
-                            <p className="text-2xl font-semibold text-gray-900">{totalSubjectsCount}</p>
+                            <h2 className="text-sm font-medium text-muted-foreground">Subjects</h2>
+                            <p className="text-2xl font-semibold text-foreground">{totalSubjectsCount}</p>
                         </div>
                     </div>
                 </div>
 
-                <div className="bg-white rounded-lg shadow p-6">
+                <div className="bg-card rounded-lg shadow p-6">
                     <div className="flex items-center">
-                        <div className="p-3 rounded-full bg-blue-100 text-blue-600">
+                        <div className="p-3 rounded-full bg-blue-500/10 text-blue-500">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                             </svg>
                         </div>
                         <div className="ml-4">
-                            <h2 className="text-sm font-medium text-gray-600">Users</h2>
-                            <p className="text-2xl font-semibold text-gray-900">{totalUsersCount}</p>
+                            <h2 className="text-sm font-medium text-muted-foreground">Users</h2>
+                            <p className="text-2xl font-semibold text-foreground">{totalUsersCount}</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             {/* Admin functions */}
-            <h2 className="text-xl font-bold text-gray-800 mb-4">Admin Functions</h2>
+            <h2 className="text-xl font-bold text-foreground mb-4">Admin Functions</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
                 <AdminCard
                     title="Resource Approval"

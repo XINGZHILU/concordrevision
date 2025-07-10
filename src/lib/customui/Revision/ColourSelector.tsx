@@ -1,8 +1,9 @@
 'use client';
 
 import { useRef, useState } from "react";
-import { Toaster, toaster } from "@/components/ui/toaster";
+import { Toaster, toaster } from "../../../components/ui/toaster";
 import { LuCircleAlert, LuCircleCheck, LuCircleEllipsis, LuCircleHelp } from "react-icons/lu";
+import { cva } from "class-variance-authority";
 
 
 function GetSymbol({ colour }: { colour: number }) {
@@ -18,6 +19,46 @@ function GetSymbol({ colour }: { colour: number }) {
     return <LuCircleAlert />
 }
 
+const colorButtonVariants = cva(
+    "inline-flex items-center px-3 py-1 rounded-full text-xs font-medium transition-colors border",
+    {
+        variants: {
+            color: {
+                unclassified: "bg-muted text-muted-foreground border-border hover:bg-accent",
+                green: "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/50 dark:text-green-300 dark:border-green-800",
+                amber: "bg-amber-100 text-amber-800 border-amber-200 dark:bg-amber-900/50 dark:text-amber-300 dark:border-amber-800",
+                red: "bg-red-100 text-red-800 border-red-200 dark:bg-red-900/50 dark:text-red-300 dark:border-red-800",
+            },
+            selected: {
+                true: "border-primary",
+                false: "",
+            }
+        },
+        compoundVariants: [
+            {
+                color: "unclassified",
+                selected: true,
+                className: "bg-accent text-accent-foreground border-primary"
+            },
+            {
+                color: "green",
+                selected: true,
+                className: "border-green-500"
+            },
+            {
+                color: "amber",
+                selected: true,
+                className: "border-amber-500"
+            },
+            {
+                color: "red",
+                selected: true,
+                className: "border-red-500"
+            }
+        ]
+    }
+);
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ColourSelector({ nid, uid, subject, Original }: {
     nid: number,
@@ -31,10 +72,10 @@ export default function ColourSelector({ nid, uid, subject, Original }: {
     const colourRef = useRef<HTMLSelectElement>(null);
 
     const colorOptions = [
-        { value: -1, label: "Unclassified", bgClass: "bg-gray-100", textClass: "text-gray-800" },
-        { value: 0, label: "Green", bgClass: "bg-green-100", textClass: "text-green-800" },
-        { value: 1, label: "Amber", bgClass: "bg-amber-100", textClass: "text-amber-800" },
-        { value: 2, label: "Red", bgClass: "bg-red-100", textClass: "text-red-800" }
+        { value: -1, label: "Unclassified", variant: "unclassified" },
+        { value: 0, label: "Green", variant: "green" },
+        { value: 1, label: "Amber", variant: "amber" },
+        { value: 2, label: "Red", variant: "red" }
     ];
 
     async function submit(event: React.FormEvent<HTMLFormElement>) {
@@ -101,14 +142,7 @@ export default function ColourSelector({ nid, uid, subject, Original }: {
                         <button
                             key={option.value}
                             type="button"
-                            className={`
-                                inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
-                                transition-colors border
-                                ${selectedColor === option.value ?
-                                    `${option.bgClass} border-${option.bgClass.split('-')[1]}-500` :
-                                    'bg-white border-gray-200 hover:bg-gray-50'
-                                }
-                            `}
+                            className={colorButtonVariants({ color: option.variant as "unclassified" | "green" | "amber" | "red", selected: selectedColor === option.value })}
                             onClick={() => {
                                 if (colourRef.current) {
                                     colourRef.current.value = option.value.toString();
@@ -143,10 +177,10 @@ export default function ColourSelector({ nid, uid, subject, Original }: {
                     disabled={isLoading || selectedColor === original}
                     className={`
                         inline-flex items-center px-3 py-1.5 text-xs font-medium rounded 
-                        focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-indigo-500
+                        focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-ring
                         ${selectedColor !== original && !isLoading ?
-                            'bg-indigo-600 text-white hover:bg-indigo-700' :
-                            'bg-gray-100 text-gray-400 cursor-not-allowed'
+                            'bg-primary text-primary-foreground hover:bg-primary/90' :
+                            'bg-muted text-muted-foreground cursor-not-allowed'
                         }
                     `}
                 >

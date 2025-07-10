@@ -1,7 +1,7 @@
 // File: app/admin/approval/page.tsx
 
 import { prisma } from "@/lib/prisma";
-import { Tabs } from "@chakra-ui/react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FilteredNoteList from "./filtered-note-list";
 import FilteredOlympiadResourceList from "./filtered-olympiad-resource-list";
 import { LuFolder, LuFlaskConical } from "react-icons/lu"
@@ -69,31 +69,31 @@ export default async function AdminApprovalPage() {
             <div className="flex justify-between items-center mb-6">
                 <div>
                     <h1 className="text-2xl font-bold">Content Approval Dashboard</h1>
-                    <p className="text-gray-600 mt-1">
+                    <p className="text-muted-foreground mt-1">
                         {totalPendingApprovals} item{totalPendingApprovals !== 1 ? 's' : ''} pending approval
                     </p>
                 </div>
             </div>
 
-            <div className="bg-white shadow-md rounded-lg p-6 mb-6">
-                <Tabs.Root defaultValue="notes" variant="enclosed">
-                    <Tabs.List mb="4" bg="bg.muted" rounded="l3" p='1'>
-                        <Tabs.Trigger value="notes" p="2">
-                            <LuFolder />
+            <div className="bg-card shadow-md rounded-lg p-6 mb-6">
+                <Tabs defaultValue="notes">
+                    <TabsList>
+                        <TabsTrigger value="notes">
+                            <LuFolder className="mr-2" />
                             Notes & Resources ({unapprovedNotes.length})
-                        </Tabs.Trigger>
-                        <Tabs.Trigger value="olympiads" p="2">
-                            <LuFlaskConical />
+                        </TabsTrigger>
+                        <TabsTrigger value="olympiads">
+                            <LuFlaskConical className="mr-2" />
                             Olympiad Resources ({unapprovedResources.length})
-                        </Tabs.Trigger>
-                    </Tabs.List>
-                    <Tabs.Content value="notes">
+                        </TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="notes">
                         <FilteredNoteList notes={unapprovedNotes} />
-                    </Tabs.Content>
-                    <Tabs.Content value="olympiads">
+                    </TabsContent>
+                    <TabsContent value="olympiads">
                         <FilteredOlympiadResourceList resources={unapprovedResources} />
-                    </Tabs.Content>
-                </Tabs.Root>
+                    </TabsContent>
+                </Tabs>
             </div>
         </div>
     );

@@ -16,7 +16,7 @@ model User {
     teacher            Boolean             @default(false)
     upload_permission  Boolean             @default(false)
     year               Int                 @default(-1)
-    posts              Post[]
+    // posts              Post[]
     notes              Note[]
     olympiad_resources Olympiad_Resource[]
     red                Int[]
@@ -47,12 +47,14 @@ model Test {
     date      DateTime @default(now()) @db.Date
 }
 
+/*
 model Activity {
     id    Int    @id @default(autoincrement())
     title String
     desc  String @default("")
     posts Post[]
 }
+*/
 
 model Note {
     id        Int           @id @default(autoincrement())
@@ -71,6 +73,7 @@ model Note {
     files     StorageFile[]
 }
 
+/*
 model Post {
     id         Int       @id @default(autoincrement())
     title      String
@@ -81,6 +84,7 @@ model Post {
     Activity   Activity? @relation(fields: [activityId], references: [id])
     activityId Int?
 }
+*/
 
 model Olympiad {
     id                Int                 @id @default(autoincrement())
@@ -132,3 +136,18 @@ model PastPaperRecord {
     max_marks       Int[]
     notes       String @default("")
 }
+
+model University {
+    id String @id
+    name String
+    uk Boolean
+    courses Course[]
+}
+
+model Course {
+    id Int @id
+    name String
+    university_id String
+    university University @relation(fields: [university_id], references: [id])
+}
+

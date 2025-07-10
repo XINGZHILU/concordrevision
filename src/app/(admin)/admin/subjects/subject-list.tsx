@@ -4,7 +4,7 @@
 
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { Badge } from "@chakra-ui/react";
+import { Badge } from "@/components/ui/badge";
 import { year_group_names } from "@/lib/consts";
 
 // Define subject type with notes count
@@ -47,10 +47,10 @@ export default function SubjectList({ subjects }: SubjectListProps) {
     return (
         <div>
             {/* Search and Filter */}
-            <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <div className="mb-6 p-4 bg-muted rounded-lg border border-border">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="md:col-span-2">
-                        <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-1">
+                        <label htmlFor="search" className="block text-sm font-medium text-foreground mb-1">
                             Search Subjects
                         </label>
                         <div className="relative">
@@ -60,10 +60,10 @@ export default function SubjectList({ subjects }: SubjectListProps) {
                                 placeholder="Search by title or description..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full p-2 pl-10 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                                className="w-full p-2 pl-10 border border-input bg-background rounded-md shadow-sm focus:ring-ring"
                             />
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
+                                <svg className="h-5 w-5 text-muted-foreground" xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                     <path fillRule="evenodd"
                                         d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
@@ -74,14 +74,14 @@ export default function SubjectList({ subjects }: SubjectListProps) {
                     </div>
 
                     <div>
-                        <label htmlFor="levelFilter" className="block text-sm font-medium text-gray-700 mb-1">
+                        <label htmlFor="levelFilter" className="block text-sm font-medium text-foreground mb-1">
                             Year Group
                         </label>
                         <select
                             id="levelFilter"
                             value={selectedLevel.toString()}
                             onChange={(e) => setSelectedLevel(e.target.value === 'all' ? 'all' : parseInt(e.target.value))}
-                            className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                            className="w-full p-2 border border-input bg-background rounded-md shadow-sm focus:ring-ring"
                         >
                             <option value="all">All Year Groups</option>
                             {uniqueLevels.map((level) => (
@@ -98,7 +98,7 @@ export default function SubjectList({ subjects }: SubjectListProps) {
             <h2 className="text-lg font-semibold mb-4">
                 Subjects ({filteredSubjects.length})
                 {filteredSubjects.length !== subjects.length && (
-                    <span className="text-sm font-normal text-gray-500 ml-2">
+                    <span className="text-sm font-normal text-muted-foreground ml-2">
                         (Filtered from {subjects.length} total)
                     </span>
                 )}
@@ -106,73 +106,73 @@ export default function SubjectList({ subjects }: SubjectListProps) {
 
             {/* Subjects List */}
             {filteredSubjects.length === 0 ? (
-                <div className="text-center py-10 bg-white rounded-lg">
-                    <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor"
+                <div className="text-center py-10 bg-card rounded-lg">
+                    <svg className="mx-auto h-12 w-12 text-muted-foreground" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                     {subjects.length === 0 ? (
                         <>
-                            <h3 className="mt-2 text-lg font-medium text-gray-900">No subjects found</h3>
-                            <p className="mt-1 text-gray-500">Get started by adding your first subject.</p>
+                            <h3 className="mt-2 text-lg font-medium text-foreground">No subjects found</h3>
+                            <p className="mt-1 text-muted-foreground">Get started by adding your first subject.</p>
                         </>
                     ) : (
                         <>
-                            <h3 className="mt-2 text-lg font-medium text-gray-900">No matching subjects</h3>
-                            <p className="mt-1 text-gray-500">Try adjusting your search or filter criteria.</p>
+                            <h3 className="mt-2 text-lg font-medium text-foreground">No matching subjects</h3>
+                            <p className="mt-1 text-muted-foreground">Try adjusting your search or filter criteria.</p>
                         </>
                     )}
                 </div>
             ) : (
                 <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
+                    <table className="min-w-full divide-y divide-border">
+                        <thead className="bg-muted">
                             <tr>
                                 <th scope="col"
-                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                                     Title
                                 </th>
                                 <th scope="col"
-                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                                     Year Group
                                 </th>
                                 <th scope="col"
-                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                                     Description
                                 </th>
                                 <th scope="col"
-                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                                     Notes Count
                                 </th>
                                 <th scope="col"
-                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                                     Actions
                                 </th>
                             </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
+                        <tbody className="bg-card divide-y divide-border">
                             {filteredSubjects.map((subject) => (
-                                <tr key={subject.id} className="hover:bg-gray-50">
+                                <tr key={subject.id} className="hover:bg-accent">
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm font-medium text-gray-900">{subject.title}</div>
+                                        <div className="text-sm font-medium text-foreground">{subject.title}</div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <Badge colorPalette="purple">
+                                        <Badge variant="secondary">
                                             {year_group_names[subject.level]}
                                         </Badge>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <div className="text-sm text-gray-500 line-clamp-2">{subject.desc}</div>
+                                        <div className="text-sm text-muted-foreground line-clamp-2">{subject.desc}</div>
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
                                         {subject._count.notes}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <div className="flex space-x-2">
                                             <Link
                                                 href={`/admin/subjects/${subject.id}`}
-                                                className="text-indigo-600 hover:text-indigo-900"
+                                                className="text-primary hover:text-primary/80"
                                             >
                                                 Edit
                                             </Link>

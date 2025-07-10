@@ -144,12 +144,12 @@ export default function PPQPage() {
                 <div className="flex justify-between items-center mb-6">
                     <h1 className="text-2xl font-bold">Create Past Paper Record</h1>
                     <Link href="/revision/practice/ppq/records"
-                        className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+                        className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors">
                         View Records
                     </Link>
                 </div>
 
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                <div className="bg-card p-6 rounded-lg shadow-md">
                     <form onSubmit={handleSubmit}>
                         <div className="mb-4">
                             <label className="block text-sm font-medium mb-1">Record Name</label>
@@ -158,7 +158,7 @@ export default function PPQPage() {
                                 onChange={(e) => setName(e.target.value)}
                                 placeholder="e.g., Biology 2023 Papers"
                                 required
-                                className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+                                className="w-full p-2 border rounded-md bg-background border-input"
                             />
                         </div>
 
@@ -172,8 +172,8 @@ export default function PPQPage() {
                                         onClick={() => handleLevelChange(group.level)}
                                         className={`p-2 rounded-md ${
                                             selectedLevel === group.level 
-                                            ? 'bg-blue-600 text-white' 
-                                            : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'
+                                            ? 'bg-primary text-primary-foreground' 
+                                            : 'bg-muted hover:bg-accent'
                                         }`}
                                     >
                                         {group.label}
@@ -188,7 +188,7 @@ export default function PPQPage() {
                                 <select
                                     value={selectedSubject}
                                     onChange={(e) => setSelectedSubject(e.target.value)}
-                                    className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+                                    className="w-full p-2 border rounded-md bg-background border-input"
                                     required
                                 >
                                     {filteredSubjects.map((subject) => (
@@ -198,7 +198,7 @@ export default function PPQPage() {
                                     ))}
                                 </select>
                             ) : (
-                                <p className="text-yellow-600 dark:text-yellow-400 p-2 border border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-900 bg-opacity-30 rounded-md">
+                                <p className="text-yellow-500 p-2 border border-yellow-500/20 bg-yellow-500/10 rounded-md">
                                     No subjects available for this year group. Please select a different year group.
                                 </p>
                             )}
@@ -210,7 +210,7 @@ export default function PPQPage() {
                                 checked={isSpecimen}
                                 onChange={(e) => setIsSpecimen(e.target.checked)}
                                 id="specimen"
-                                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                className="h-4 w-4 text-primary focus:ring-ring border-input rounded"
                             />
                             <label htmlFor="specimen" className="ml-2 text-sm font-medium">
                                 Include Specimen Papers
@@ -226,7 +226,7 @@ export default function PPQPage() {
                                 min="2000"
                                 max={endYear}
                                 required
-                                className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+                                className="w-full p-2 border rounded-md bg-background border-input"
                             />
                         </div>
 
@@ -239,7 +239,7 @@ export default function PPQPage() {
                                 min={startYear}
                                 max={currentYear}
                                 required
-                                className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+                                className="w-full p-2 border rounded-md bg-background border-input"
                             />
                         </div>
 
@@ -249,7 +249,7 @@ export default function PPQPage() {
                                 <button 
                                     type="button"
                                     onClick={() => setPaperCount(Math.max(1, paperCount - 1))}
-                                    className="px-3 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-l-md hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none"
+                                    className="px-3 py-2 bg-muted border border-input rounded-l-md hover:bg-accent focus:outline-none"
                                     aria-label="Decrease paper count"
                                 >
                                     <span className="text-lg">−</span>
@@ -261,12 +261,12 @@ export default function PPQPage() {
                                     min="1"
                                     max="10"
                                     required
-                                    className="w-16 text-center p-2 border-y border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                    className="w-16 text-center p-2 border-y border-input bg-background focus:outline-none focus:ring-ring"
                                 />
                                 <button 
                                     type="button"
                                     onClick={() => setPaperCount(Math.min(10, paperCount + 1))}
-                                    className="px-3 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-r-md hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none"
+                                    className="px-3 py-2 bg-muted border border-input rounded-r-md hover:bg-accent focus:outline-none"
                                     aria-label="Increase paper count"
                                 >
                                     <span className="text-lg">+</span>
@@ -277,25 +277,25 @@ export default function PPQPage() {
                         <div className="mb-6">
                             <label className="block text-sm font-medium mb-4">Maximum Marks for Each Paper</label>
                             <div className="overflow-x-auto">
-                                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                                    <thead className="bg-gray-50 dark:bg-gray-700">
+                                <table className="min-w-full divide-y divide-border">
+                                    <thead className="bg-muted">
                                         <tr>
                                             {Array.from({ length: paperCount }).map((_, i) => (
-                                                <th key={i} scope="col" className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                <th key={i} scope="col" className="px-4 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                                                     Paper {i + 1}
                                                 </th>
                                             ))}
                                         </tr>
                                     </thead>
-                                    <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                        <tr className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <tbody className="bg-card divide-y divide-border">
+                                        <tr className="hover:bg-accent">
                                             {Array.from({ length: paperCount }).map((_, paperNum) => (
                                                 <td key={paperNum} className="px-4 py-2 whitespace-nowrap">
                                                     <div className="flex items-center">
                                                         <button 
                                                             type="button"
                                                             onClick={() => updateMaxMark(paperNum, Math.max(1, (maxMarks[paperNum] || 100) - 5))}
-                                                            className="px-2 py-1 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-l-md hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none"
+                                                            className="px-2 py-1 bg-muted border border-input rounded-l-md hover:bg-accent focus:outline-none"
                                                             aria-label={`Decrease max mark for paper ${paperNum + 1}`}
                                                         >
                                                             <span className="text-sm">−</span>
@@ -306,12 +306,12 @@ export default function PPQPage() {
                                                             onChange={(e) => updateMaxMark(paperNum, parseInt(e.target.value) || 1)}
                                                             min="1"
                                                             required
-                                                            className="w-16 text-center p-1 text-sm border-y border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                                            className="w-16 text-center p-1 text-sm border-y border-input bg-background focus:outline-none focus:ring-ring"
                                                         />
                                                         <button 
                                                             type="button"
                                                             onClick={() => updateMaxMark(paperNum, Math.min(999, (maxMarks[paperNum] || 100) + 5))}
-                                                            className="px-2 py-1 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-r-md hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none"
+                                                            className="px-2 py-1 bg-muted border border-input rounded-r-md hover:bg-accent focus:outline-none"
                                                             aria-label={`Increase max mark for paper ${paperNum + 1}`}
                                                         >
                                                             <span className="text-sm">+</span>
@@ -327,7 +327,7 @@ export default function PPQPage() {
 
                         <button
                             type="submit"
-                            className={`w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                            className={`w-full bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
                             disabled={loading}
                         >
                             {loading ? "Creating..." : "Create Record"}

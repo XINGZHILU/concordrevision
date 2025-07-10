@@ -230,9 +230,9 @@ export default function RecordDetailPage() {
             <div className="container mx-auto py-8 px-4">
                 <div className="flex justify-center items-center py-12">
                     <div className="animate-pulse flex flex-col items-center">
-                        <div className="rounded-full bg-slate-200 dark:bg-slate-700 h-10 w-10 mb-2"></div>
-                        <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded w-24 mb-4"></div>
-                        <span className="text-gray-500 dark:text-gray-400">Loading record...</span>
+                        <div className="rounded-full bg-muted h-10 w-10 mb-2"></div>
+                        <div className="h-2 bg-muted rounded w-24 mb-4"></div>
+                        <span className="text-muted-foreground">Loading record...</span>
                     </div>
                 </div>
             </div>
@@ -242,15 +242,15 @@ export default function RecordDetailPage() {
     if (!record) {
         return (
             <div className="container mx-auto py-8 px-4">
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 text-center max-w-xl mx-auto">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto text-gray-400 dark:text-gray-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="bg-card rounded-lg shadow-md p-8 text-center max-w-xl mx-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto text-muted-foreground mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                     </svg>
                     <h2 className="text-xl font-semibold mb-4">Record not found</h2>
-                    <p className="text-gray-600 dark:text-gray-400 mb-6">
+                    <p className="text-muted-foreground mb-6">
                         We couldn&apos;t find the record you were looking for.
                     </p>
-                    <Link href="/revision/practice/ppq/records" className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+                    <Link href="/revision/practice/ppq/records" className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors">
                         Back to Records
                     </Link>
                 </div>
@@ -274,7 +274,7 @@ export default function RecordDetailPage() {
             <ToastContainer />
             <div className="container mx-auto py-8 px-4">
                 <div className="mb-6">
-                    <Link href="/revision/practice/ppq/records" className="inline-flex items-center text-blue-600 hover:text-blue-800">
+                    <Link href="/revision/practice/ppq/records" className="inline-flex items-center text-primary hover:text-primary/80">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
                         </svg>
@@ -282,17 +282,17 @@ export default function RecordDetailPage() {
                     </Link>
                 </div>
 
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-                    <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+                <div className="bg-card rounded-lg shadow-md overflow-hidden">
+                    <div className="p-6 border-b border-border">
                         <h1 className="text-2xl font-bold">{record.name}</h1>
                         <div className="mt-2 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6">
-                            <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                            <div className="flex items-center text-sm text-muted-foreground">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
                                     <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
                                 </svg>
                                 {record.subject?.title || "Unknown Subject"}
                             </div>
-                            <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                            <div className="flex items-center text-sm text-muted-foreground">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
                                     <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
                                 </svg>
@@ -308,10 +308,10 @@ export default function RecordDetailPage() {
                             if (totalMaxMarks > 0) {
                                 // Determine color based on performance
                                 const scoreColor =
-                                    percentage >= 80 ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' :
-                                        percentage >= 60 ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300' :
-                                            percentage >= 40 ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300' :
-                                                'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
+                                    percentage >= 80 ? 'bg-green-500/10 text-green-500' :
+                                        percentage >= 60 ? 'bg-blue-500/10 text-blue-500' :
+                                            percentage >= 40 ? 'bg-yellow-500/10 text-yellow-500' :
+                                                'bg-red-500/10 text-red-500';
 
                                 return (
                                     <div className="mt-4 flex items-center">
@@ -330,23 +330,23 @@ export default function RecordDetailPage() {
                         <h2 className="text-xl font-semibold mb-4">Paper Progress</h2>
 
                         <div className="overflow-x-auto">
-                            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                                <thead className="bg-gray-50 dark:bg-gray-700">
+                            <table className="min-w-full divide-y divide-border">
+                                <thead className="bg-muted">
                                     <tr>
-                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                                             Year
                                         </th>
                                         {Array.from({ length: record.paper_count }).map((_, i) => (
-                                            <th key={i} scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                            <th key={i} scope="col" className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                                                 Paper {i + 1}
                                             </th>
                                         ))}
                                     </tr>
                                 </thead>
-                                <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                <tbody className="bg-card divide-y divide-border">
                                     {years.map((year) => {
                                         return (
-                                            <tr key={year} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                            <tr key={year} className="hover:bg-accent">
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     {year}
                                                 </td>
@@ -359,7 +359,7 @@ export default function RecordDetailPage() {
                                                     const paperMaxMark = record.max_marks[paperIndex] || 0;
 
                                                     if (!paper) return (
-                                                        <td key={paperNum} className="px-6 py-4 whitespace-nowrap text-gray-400 dark:text-gray-500">
+                                                        <td key={paperNum} className="px-6 py-4 whitespace-nowrap text-muted-foreground">
                                                             No data
                                                         </td>
                                                     );
@@ -372,7 +372,7 @@ export default function RecordDetailPage() {
                                                                         type="checkbox"
                                                                         checked={paper.completed}
                                                                         onChange={() => togglePaperStatus(paperId)}
-                                                                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                                                        className="h-4 w-4 text-primary focus:ring-ring border-input rounded"
                                                                     />
                                                                     <span className="ml-2 text-sm font-medium">Completed</span>
                                                                 </div>
@@ -385,7 +385,7 @@ export default function RecordDetailPage() {
                                                                                 const currentMark = paper.mark === undefined ? 0 : paper.mark;
                                                                                 updatePaperMark(paperId, Math.max(0, currentMark - 1));
                                                                             }}
-                                                                            className="px-2 py-1 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-l-md hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none"
+                                                                            className="px-2 py-1 bg-muted border border-input rounded-l-md hover:bg-accent focus:outline-none"
                                                                             aria-label="Decrease mark"
                                                                         >
                                                                             <span className="text-sm">−</span>
@@ -419,8 +419,8 @@ export default function RecordDetailPage() {
                                                                             }}
                                                                             placeholder="Mark"
                                                                             max={paperMaxMark}
-                                                                            className={`w-16 text-center p-1 text-sm border-y border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${paper.completed && paper.mark === undefined
-                                                                                    ? 'border-red-500 dark:border-red-500 bg-red-50 dark:bg-red-900 dark:bg-opacity-20'
+                                                                            className={`w-16 text-center p-1 text-sm border-y border-input bg-background focus:outline-none focus:ring-ring ${paper.completed && paper.mark === undefined
+                                                                                    ? 'border-destructive bg-destructive/10'
                                                                                     : ''
                                                                                 }`}
                                                                         />
@@ -432,14 +432,14 @@ export default function RecordDetailPage() {
                                                                                 const maxMark = record.max_marks[paperIndex] || 0;
                                                                                 updatePaperMark(paperId, Math.min(currentMark + 1, maxMark));
                                                                             }}
-                                                                            className="px-2 py-1 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-r-md hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none"
+                                                                            className="px-2 py-1 bg-muted border border-input rounded-r-md hover:bg-accent focus:outline-none"
                                                                             aria-label="Increase mark"
                                                                         >
                                                                             <span className="text-sm">+</span>
                                                                         </button>
                                                                     </div>
                                                                     <span className="text-sm">/</span>
-                                                                    <span className="w-16 p-1 text-sm text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 rounded-md text-center">
+                                                                    <span className="w-16 p-1 text-sm text-muted-foreground bg-muted rounded-md text-center">
                                                                         {paperMaxMark || 0}
                                                                     </span>
                                                                 </div>
@@ -460,7 +460,7 @@ export default function RecordDetailPage() {
                             </table>
                         </div>
 
-                        <div className="mt-4 text-sm text-gray-600 dark:text-gray-400 italic">
+                        <div className="mt-4 text-sm text-muted-foreground italic">
                             <p>* When a paper is marked as completed, you must enter a mark before saving.</p>
                         </div>
                     </div>
@@ -468,24 +468,24 @@ export default function RecordDetailPage() {
                     {/* Notes Section */}
                     <div className="mt-8">
                         <h2 className="text-xl font-semibold mb-4">Notes</h2>
-                        <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                        <div className="border border-border rounded-lg overflow-hidden">
                             <textarea
                                 value={notes}
                                 onChange={(e) => setNotes(e.target.value)}
                                 placeholder="Add any notes about your revision progress here..."
                                 rows={5}
-                                className="w-full p-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                className="w-full p-4 bg-background text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
                             ></textarea>
                         </div>
                     </div>
                 </div>
 
-                <div className="p-6 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+                <div className="p-6 bg-muted border-t border-border">
                     <div className="flex justify-end">
                         <button
                             onClick={saveChanges}
                             disabled={saving}
-                            className={`bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors ${saving ? 'opacity-70 cursor-not-allowed' : ''}`}
+                            className={`bg-primary text-primary-foreground px-6 py-2 rounded-md hover:bg-primary/90 transition-colors ${saving ? 'opacity-70 cursor-not-allowed' : ''}`}
                         >
                             {saving ? (
                                 <span className="flex items-center">

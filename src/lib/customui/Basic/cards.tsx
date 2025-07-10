@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import { Badge } from "@chakra-ui/react";
+import { Badge } from "../../../components/ui/badge";
 import { LuCalendar } from "react-icons/lu";
 import { TestBadge } from "./Badges";
 
@@ -17,8 +17,8 @@ export function NoteCard({ note, colour }: {
     return (
         <Link href={`/revision/${note.subjectId}/resources/${note.id}`}>
             <div
-                className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
-                <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{note.title}</h5>
+                className={`max-w-sm p-6 bg-card border-border border-2 rounded-lg shadow-sm`}>
+                <h5 className="mb-2 text-xl font-bold tracking-tight text-card-foreground">{note.title}</h5>
                 <BadgeSymbol colour={colour} />
             </div>
         </Link>
@@ -39,8 +39,8 @@ export function TestNoteCard({ note, colour }: {
     return (
         <Link href={`/revision/${note.subjectId}/tests/${note.testId}/${note.id}`}>
             <div
-                className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
-                <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{note.title}</h5>
+                className={`max-w-sm p-6 bg-card border-border border-2 rounded-lg shadow-sm`}>
+                <h5 className="mb-2 text-xl font-bold tracking-tight text-card-foreground">{note.title}</h5>
                 <BadgeSymbol colour={colour} />
             </div>
         </Link>
@@ -52,19 +52,19 @@ export function TestNoteCard({ note, colour }: {
 export function BadgeSymbol({ colour }: { colour: number }) {
     if (colour === 0) {
         return (
-            <Badge colorPalette="green">Green</Badge>
+            <Badge variant="default">Green</Badge>
         );
     } else if (colour === 1) {
         return (
-            <Badge colorPalette="yellow">Amber</Badge>
+            <Badge variant="secondary">Amber</Badge>
         );
     } else if (colour === 2) {
         return (
-            <Badge colorPalette="red">Red</Badge>
+            <Badge variant="destructive">Red</Badge>
         );
     } else {
         return (
-            <Badge>Unclassified</Badge>
+            <Badge variant="outline">Unclassified</Badge>
         );
     }
 }
@@ -82,8 +82,8 @@ export function TestCard({ test }: {
     return (
         <Link href={`/revision/${test.subjectId}/tests/${test.id}`}>
             <div
-                className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
-                <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{test.title}</h5>
+                className={`max-w-sm p-6 bg-card border-border border-2 rounded-lg shadow-sm`}>
+                <h5 className="mb-2 text-xl font-bold tracking-tight text-card-foreground">{test.title}</h5>
                 <TestBadge type={test.type} /><br />
                 <Badge><LuCalendar />{test.date.toDateString()}</Badge>
             </div>
@@ -103,8 +103,8 @@ export function TestLinkCard({ test }: {
 }) {
     return <Link href={`/upload/revision/${test.subjectId}/test-revision/${test.id}`}>
         <div
-            className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
-            <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{test.title}</h5>
+            className={`max-w-sm p-6 bg-card border-border border-2 rounded-lg shadow-sm`}>
+            <h5 className="mb-2 text-xl font-bold tracking-tight text-card-foreground">{test.title}</h5>
             <TestBadge type={test.type} /><br />
             <Badge><LuCalendar />{test.date.toDateString()}</Badge>
         </div>
@@ -123,8 +123,8 @@ export function OlympiadResourceCard({ resource }: {
         <>
             <Link href={`/olympiads/${resource.olympiadId}/resources/${resource.id}`}>
                 <div
-                    className={`max-w-sm p-6 bg-white border-gray-200 border-2 rounded-lg shadow-sm`}>
-                    <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{resource.title}</h5>
+                    className={`max-w-sm p-6 bg-card border-border border-2 rounded-lg shadow-sm`}>
+                    <h5 className="mb-2 text-xl font-bold tracking-tight text-card-foreground">{resource.title}</h5>
                 </div>
             </Link>
         </>

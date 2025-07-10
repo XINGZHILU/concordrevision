@@ -39,7 +39,7 @@ const RevisionSubjectList = ({ subjects, year }: {
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="text-center mb-8">
-                <h1 className="text-3xl font-bold text-gray-900">Revision Resources</h1>
+                <h1 className="text-3xl font-bold text-foreground">Revision Resources</h1>
                 <p className="mt-2 text-gray-600 max-w-2xl mx-auto">
                     Access study materials, practice questions, and resources for all subjects
                 </p>

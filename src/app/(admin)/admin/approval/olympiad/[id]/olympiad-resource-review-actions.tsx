@@ -3,17 +3,19 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Button } from "@chakra-ui/react";
 import { toaster, Toaster } from "@/components/ui/toaster";
 import { useRouter } from 'next/navigation';
 import {
     DialogRoot,
     DialogContent,
     DialogHeader,
-    DialogBody,
     DialogFooter,
-    DialogTitle
+    DialogTitle,
+    DialogDescription,
+    DialogTrigger,
+    DialogClose
 } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 interface ResourceReviewActionsProps {
     resourceId: number;
@@ -22,17 +24,12 @@ interface ResourceReviewActionsProps {
 export default function ResourceReviewActions({ resourceId }: ResourceReviewActionsProps) {
     const [isApproving, setIsApproving] = useState(false);
     const [isRejecting, setIsRejecting] = useState(false);
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const isSubmitting = isApproving || isRejecting;
     const router = useRouter();
-
-    const openDialog = () => setIsDialogOpen(true);
-    const closeDialog = () => setIsDialogOpen(false);
 
     // Handle approve action
     const handleApprove = async () => {
         setIsApproving(true);
-        setIsSubmitting(true);
 
         try {
             const response = await fetch('/api/admin/approve-olympiad-resource', {
@@ -67,14 +64,12 @@ export default function ResourceReviewActions({ resourceId }: ResourceReviewActi
             });
         } finally {
             setIsApproving(false);
-            setIsSubmitting(false);
         }
     };
 
     // Handle reject action
     const handleReject = async () => {
         setIsRejecting(true);
-        setIsSubmitting(true);
 
         try {
             const response = await fetch('/api/admin/reject-olympiad-resource', {
@@ -109,8 +104,6 @@ export default function ResourceReviewActions({ resourceId }: ResourceReviewActi
             });
         } finally {
             setIsRejecting(false);
-            setIsSubmitting(false);
-            closeDialog();
         }
     };
 
@@ -118,54 +111,42 @@ export default function ResourceReviewActions({ resourceId }: ResourceReviewActi
         <>
             <Toaster />
             <div className="flex space-x-4">
-                <Button
-                    colorScheme="red"
-                    onClick={openDialog}
-                    loading={isRejecting}
-                    loadingText="Rejecting..."
-                    disabled={isSubmitting}
-                >
-                    Reject
-                </Button>
+                <DialogRoot>
+                    <DialogTrigger asChild>
+                        <Button variant="destructive" disabled={isSubmitting}>
+                            {isRejecting ? "Rejecting..." : "Reject"}
+                        </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Reject Resource</DialogTitle>
+                        </DialogHeader>
+                        <DialogDescription>
+                            Are you sure you want to reject this olympiad resource? This action cannot be undone.
+                        </DialogDescription>
+                        <DialogFooter>
+                            <DialogClose asChild>
+                                <Button variant="ghost" disabled={isSubmitting}>Cancel</Button>
+                            </DialogClose>
+                            <Button
+                                variant="destructive"
+                                onClick={handleReject}
+                                disabled={isSubmitting}
+                            >
+                                {isRejecting ? "Rejecting..." : "Reject"}
+                            </Button>
+                        </DialogFooter>
+                    </DialogContent>
+                </DialogRoot>
 
                 <Button
-                    colorScheme="green"
+                    variant="default"
                     onClick={handleApprove}
-                    loading={isApproving}
-                    loadingText="Approving..."
                     disabled={isSubmitting}
                 >
-                    Approve
+                    {isApproving ? "Approving..." : "Approve"}
                 </Button>
             </div>
-
-            {/* Confirmation Dialog for Rejection */}
-            {/* @ts-ignore */}
-            <DialogRoot open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Reject Resource</DialogTitle>
-                    </DialogHeader>
-                    <DialogBody>
-                        Are you sure you want to reject this olympiad resource? This action cannot be undone.
-                    </DialogBody>
-                    <DialogFooter>
-                        <Button onClick={closeDialog} disabled={isSubmitting}>
-                            Cancel
-                        </Button>
-                        <Button
-                            colorScheme="red"
-                            onClick={handleReject}
-                            ml={3}
-                            loading={isRejecting}
-                            loadingText="Rejecting..."
-                            disabled={isSubmitting}
-                        >
-                            Reject
-                        </Button>
-                    </DialogFooter>
-                </DialogContent>
-            </DialogRoot>
         </>
     );
 }

@@ -109,8 +109,8 @@ const SearchableOlympiadContent = ({
     return (
         <div>
             <h1>{olympiad.title}</h1>
-            <div className="text-sm text-gray-600 mb-4">
-                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+            <div className="text-sm text-muted-foreground mb-4">
+                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
                     {olympiad.area}
                 </span>
             </div>
@@ -127,30 +127,30 @@ const SearchableOlympiadContent = ({
             <div className="mb-6">
                 <div className="relative max-w-md">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <LuSearch className="h-4 w-4 text-gray-400" />
+                        <LuSearch className="h-4 w-4 text-muted-foreground" />
                     </div>
                     <input
                         type="text"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Search resources and links..."
-                        className="block w-full pl-9 pr-8 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white"
+                        className="block w-full pl-9 pr-8 py-2 border border-input bg-background rounded-lg text-sm focus:ring-2 focus:ring-ring"
                     />
                     {searchQuery && (
                         <button
                             onClick={clearSearch}
                             className="absolute inset-y-0 right-0 pr-3 flex items-center"
                         >
-                            <LuX className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+                            <LuX className="h-4 w-4 text-muted-foreground hover:text-foreground" />
                         </button>
                     )}
                 </div>
                 {searchQuery && (
                     <div className="mt-2 flex items-center justify-between">
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-muted-foreground">
                             Searching for: <span className="font-medium">&quot;{searchQuery}&quot;</span>
                         </p>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-muted-foreground">
                             {totalResults} result{totalResults !== 1 ? 's' : ''} found
                         </p>
                     </div>
@@ -163,7 +163,7 @@ const SearchableOlympiadContent = ({
                     <LuExternalLink className="h-5 w-5 mr-2" />
                     External Links
                     {searchQuery && filteredLinks.length > 0 && (
-                        <span className="ml-2 text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
+                        <span className="ml-2 text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
                             {filteredLinks.length}
                         </span>
                     )}
@@ -171,15 +171,15 @@ const SearchableOlympiadContent = ({
                 
                 {filteredLinks.length === 0 ? (
                     searchQuery ? (
-                        <div className="text-center py-6 bg-gray-50 rounded-lg">
-                            <p className="text-gray-500">No external links found for &quot;{searchQuery}&quot;</p>
+                        <div className="text-center py-6 bg-muted rounded-lg">
+                            <p className="text-muted-foreground">No external links found for &quot;{searchQuery}&quot;</p>
                         </div>
                     ) : (
-                        <div className="text-center py-6 bg-gray-50 rounded-lg">
-                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 mb-3">
-                                <LuExternalLink className="h-6 w-6 text-gray-400" />
+                        <div className="text-center py-6 bg-muted rounded-lg">
+                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-background mb-3">
+                                <LuExternalLink className="h-6 w-6 text-muted-foreground" />
                             </div>
-                            <p className="text-gray-500">No external links available</p>
+                            <p className="text-muted-foreground">No external links available</p>
                         </div>
                     )
                 ) : (
@@ -190,14 +190,14 @@ const SearchableOlympiadContent = ({
                                 href={item.link}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="group block bg-white rounded-lg border border-gray-200 p-4 hover:border-blue-300 hover:shadow-md transition-all duration-200 transform hover:-translate-y-1"
+                                className="group block bg-card rounded-lg border border-border p-4 hover:border-primary hover:shadow-md transition-all duration-200 transform hover:-translate-y-1"
                             >
                                 <div className="flex items-start justify-between">
                                     <div className="flex-1 min-w-0">
-                                        <h3 className="text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors duration-200 mb-2">
+                                        <h3 className="text-sm font-medium text-card-foreground group-hover:text-primary transition-colors duration-200 mb-2">
                                             {item.description}
                                         </h3>
-                                        <div className="flex items-center text-xs text-gray-500 group-hover:text-blue-500 transition-colors duration-200">
+                                        <div className="flex items-center text-xs text-muted-foreground group-hover:text-primary transition-colors duration-200">
                                             <LuExternalLink className="h-3 w-3 mr-1 flex-shrink-0" />
                                             <span className="truncate">
                                                 {item.link.replace(/^https?:\/\//, '')}
@@ -205,14 +205,14 @@ const SearchableOlympiadContent = ({
                                         </div>
                                     </div>
                                     <div className="ml-3 flex-shrink-0">
-                                        <div className="w-8 h-8 bg-blue-50 group-hover:bg-blue-100 rounded-full flex items-center justify-center transition-colors duration-200">
-                                            <LuExternalLink className="h-4 w-4 text-blue-600 group-hover:text-blue-700 transition-colors duration-200" />
+                                        <div className="w-8 h-8 bg-primary/10 group-hover:bg-primary/20 rounded-full flex items-center justify-center transition-colors duration-200">
+                                            <LuExternalLink className="h-4 w-4 text-primary group-hover:text-primary/90 transition-colors duration-200" />
                                         </div>
                                     </div>
                                 </div>
                                 
                                 {/* Subtle animation line */}
-                                <div className="mt-3 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 scale-x-0 group-hover:scale-x-100 transform transition-transform duration-300 origin-left rounded-full"></div>
+                                <div className="mt-3 h-0.5 bg-gradient-to-r from-primary to-purple-500 scale-x-0 group-hover:scale-x-100 transform transition-transform duration-300 origin-left rounded-full"></div>
                             </a>
                         ))}
                     </div>
@@ -225,7 +225,7 @@ const SearchableOlympiadContent = ({
                     <LuFileText className="h-5 w-5 mr-2" />
                     Resources
                     {searchQuery && filteredResources.length > 0 && (
-                        <span className="ml-2 text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
+                        <span className="ml-2 text-xs bg-green-500/10 text-green-500 px-2 py-1 rounded-full">
                             {filteredResources.length}
                         </span>
                     )}
@@ -233,20 +233,20 @@ const SearchableOlympiadContent = ({
 
                 {filteredResources.length === 0 ? (
                     searchQuery ? (
-                        <div className="text-center py-8 bg-gray-50 rounded-lg">
-                            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
-                                <LuFileText className="h-8 w-8 text-gray-400" />
+                        <div className="text-center py-8 bg-muted rounded-lg">
+                            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-background mb-4">
+                                <LuFileText className="h-8 w-8 text-muted-foreground" />
                             </div>
-                            <h3 className="text-lg font-medium text-gray-900 mb-1">No resources found</h3>
-                            <p className="text-gray-500">No resources found for &quot;{searchQuery}&quot;</p>
+                            <h3 className="text-lg font-medium text-foreground mb-1">No resources found</h3>
+                            <p className="text-muted-foreground">No resources found for &quot;{searchQuery}&quot;</p>
                         </div>
                     ) : (
-                        <div className="text-center py-8 bg-gray-50 rounded-lg">
-                            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
-                                <LuFileText className="h-8 w-8 text-gray-400" />
+                        <div className="text-center py-8 bg-muted rounded-lg">
+                            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-background mb-4">
+                                <LuFileText className="h-8 w-8 text-muted-foreground" />
                             </div>
-                            <h3 className="text-lg font-medium text-gray-900 mb-1">No resources available</h3>
-                            <p className="text-gray-500">This olympiad doesn&apos;t have any resources yet.</p>
+                            <h3 className="text-lg font-medium text-foreground mb-1">No resources available</h3>
+                            <p className="text-muted-foreground">This olympiad doesn&apos;t have any resources yet.</p>
                         </div>
                     )
                 ) : (
@@ -257,9 +257,9 @@ const SearchableOlympiadContent = ({
                                 {/* Resource type badge */}
                                 <div className="absolute top-2 right-2">
                                     <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                                        resource.type === 0 ? 'bg-blue-100 text-blue-800' :
-                                        resource.type === 1 ? 'bg-green-100 text-green-800' :
-                                        'bg-purple-100 text-purple-800'
+                                        resource.type === 0 ? 'bg-blue-500/10 text-blue-500' :
+                                        resource.type === 1 ? 'bg-green-500/10 text-green-500' :
+                                        'bg-purple-500/10 text-purple-500'
                                     }`}>
                                         {getResourceTypeLabel(resource.type)}
                                     </span>

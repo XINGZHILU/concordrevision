@@ -1,4 +1,13 @@
-import { Inter, Outfit } from 'next/font/google';
+import { Merriweather, Lato } from 'next/font/google';
 
-export const inter = Inter({ subsets: ['latin'] });
-export const outfit = Outfit({ subsets: ['latin'], weight: ["400", "500", "600", "700"] });
+export const headingFont = Merriweather({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-heading',
+});
+
+export const bodyFont = Lato({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-body',
+});

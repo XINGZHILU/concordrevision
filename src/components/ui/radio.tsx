@@ -1,24 +1,38 @@
-import { RadioGroup as ChakraRadioGroup } from "@chakra-ui/react"
+'use client';
+
 import * as React from "react"
+import * as RadioGroupPrimitive from "@radix-ui/react-radio-group"
+import { Circle } from "lucide-react"
 
-export interface RadioProps extends ChakraRadioGroup.ItemProps {
-    rootRef?: React.Ref<HTMLDivElement>
-    inputProps?: React.InputHTMLAttributes<HTMLInputElement>
-}
+import { cn } from "@/lib/utils"
 
-export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
-    function Radio(props, ref) {
-        const { children, inputProps, rootRef, ...rest } = props
-        return (
-            <ChakraRadioGroup.Item ref={rootRef} {...rest}>
-                <ChakraRadioGroup.ItemHiddenInput ref={ref} {...inputProps} />
-                <ChakraRadioGroup.ItemIndicator />
-                {children && (
-                    <ChakraRadioGroup.ItemText>{children}</ChakraRadioGroup.ItemText>
-                )}
-            </ChakraRadioGroup.Item>
-        )
-    },
-)
+const RadioGroup = React.forwardRef<
+  React.ElementRef<typeof RadioGroupPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>
+>(({ className, ...props }, ref) => {
+  return <RadioGroupPrimitive.Root className={cn("grid gap-2", className)} {...props} ref={ref} />
+})
+RadioGroup.displayName = RadioGroupPrimitive.Root.displayName
 
-export const RadioGroup = ChakraRadioGroup.Root
+const Radio = React.forwardRef<
+  React.ElementRef<typeof RadioGroupPrimitive.Item>,
+  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item>
+>(({ className, ...props }, ref) => {
+  return (
+    <RadioGroupPrimitive.Item
+      ref={ref}
+      className={cn(
+        "aspect-square h-4 w-4 rounded-full border border-concord-primary text-concord-primary ring-offset-white focus:outline-none focus-visible:ring-2 focus-visible:ring-concord-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+        className
+      )}
+      {...props}
+    >
+      <RadioGroupPrimitive.Indicator className="flex items-center justify-center">
+        <Circle className="h-2.5 w-2.5 fill-current text-current" />
+      </RadioGroupPrimitive.Indicator>
+    </RadioGroupPrimitive.Item>
+  )
+})
+Radio.displayName = RadioGroupPrimitive.Item.displayName
+
+export { RadioGroup, Radio }

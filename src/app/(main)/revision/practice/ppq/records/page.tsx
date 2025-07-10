@@ -112,7 +112,7 @@ export default function PPQRecordsPage() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
         <h1 className="text-2xl md:text-3xl font-bold">Past Paper Records</h1>
         <Link href="/revision/practice/ppq"
-          className="inline-flex items-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+          className="inline-flex items-center bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
           </svg>
@@ -123,22 +123,22 @@ export default function PPQRecordsPage() {
       {loading ? (
         <div className="flex justify-center items-center py-12">
           <div className="animate-pulse flex flex-col items-center">
-            <div className="rounded-full bg-slate-200 dark:bg-slate-700 h-10 w-10 mb-2"></div>
-            <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded w-24 mb-4"></div>
-            <span className="text-gray-500 dark:text-gray-400">Loading records...</span>
+            <div className="rounded-full bg-muted h-10 w-10 mb-2"></div>
+            <div className="h-2 bg-muted rounded w-24 mb-4"></div>
+            <span className="text-muted-foreground">Loading records...</span>
           </div>
         </div>
       ) : records.length === 0 ? (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 text-center max-w-xl mx-auto">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto text-gray-400 dark:text-gray-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div className="bg-card rounded-lg shadow-md p-8 text-center max-w-xl mx-auto">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto text-muted-foreground mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
           <h2 className="text-xl font-semibold mb-4">No Records Found</h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
+          <p className="text-muted-foreground mb-6">
             You haven&apos;t created any past paper records yet. Create your first record to start tracking your progress.
           </p>
           <Link href="/revision/practice/ppq"
-            className="inline-flex items-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+            className="inline-flex items-center bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
             </svg>
@@ -147,13 +147,13 @@ export default function PPQRecordsPage() {
         </div>
       ) : (
         <>
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-6">
+          <div className="bg-card rounded-lg shadow-md p-4 mb-6">
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex-grow">
                 <label htmlFor="searchRecords" className="sr-only">Search records</label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <svg className="h-5 w-5 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
                     </svg>
                   </div>
@@ -163,7 +163,7 @@ export default function PPQRecordsPage() {
                     placeholder="Search records by name or subject"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="pl-10 w-full rounded-md border-input bg-background shadow-sm focus:border-ring focus:ring-ring"
                   />
                 </div>
               </div>
@@ -173,7 +173,7 @@ export default function PPQRecordsPage() {
                   id="filterSubject"
                   value={selectedSubject === null ? "" : selectedSubject}
                   onChange={(e) => setSelectedSubject(e.target.value ? parseInt(e.target.value) : null)}
-                  className="w-full sm:w-auto rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  className="w-full sm:w-auto rounded-md border-input bg-background shadow-sm focus:border-ring focus:ring-ring"
                 >
                   <option value="">All Subjects</option>
                   {subjects.map((subject) => (
@@ -197,20 +197,20 @@ export default function PPQRecordsPage() {
 
               // Determine color based on performance
               const performanceColor =
-                percentage >= 80 ? 'text-green-600 dark:text-green-400' :
-                  percentage >= 60 ? 'text-blue-600 dark:text-blue-400' :
-                    percentage >= 40 ? 'text-yellow-600 dark:text-yellow-400' :
-                      'text-red-600 dark:text-red-400';
+                percentage >= 80 ? 'text-green-500' :
+                  percentage >= 60 ? 'text-blue-500' :
+                    percentage >= 40 ? 'text-yellow-500' :
+                      'text-red-500';
 
               return (
-                <div key={record.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-all hover:shadow-lg">
+                <div key={record.id} className="bg-card rounded-lg shadow-md overflow-hidden transition-all hover:shadow-lg">
                   <div className="p-5">
                     <div className="flex justify-between items-start mb-2">
                       <h2 className="text-lg font-semibold line-clamp-1">{record.name}</h2>
                       <div className="flex space-x-1">
                         <Link
                           href={`/revision/practice/ppq/records/${record.id}`}
-                          className="text-blue-600 hover:text-blue-800 p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                          className="text-primary hover:text-primary/80 p-1 rounded hover:bg-accent"
                           aria-label="Edit record"
                         >
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -219,7 +219,7 @@ export default function PPQRecordsPage() {
                         </Link>
                         <button
                           onClick={() => deleteRecord(record.id)}
-                          className="text-red-600 hover:text-red-800 p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                          className="text-destructive hover:text-destructive/80 p-1 rounded hover:bg-accent"
                           aria-label="Delete record"
                         >
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -230,13 +230,13 @@ export default function PPQRecordsPage() {
                     </div>
 
                     <div className="mb-3">
-                      <div className="flex items-center text-sm text-gray-600 dark:text-gray-400 mb-1">
+                      <div className="flex items-center text-sm text-muted-foreground mb-1">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
                           <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
                         </svg>
                         {record.subject?.title || "Unknown Subject"}
                       </div>
-                      <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                      <div className="flex items-center text-sm text-muted-foreground">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
                           <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
                         </svg>
@@ -248,12 +248,12 @@ export default function PPQRecordsPage() {
                       {/* Completion Progress */}
                       <div>
                         <div className="flex justify-between items-center mb-1">
-                          <span className="text-xs font-medium text-gray-500 dark:text-gray-400">Completion</span>
-                          <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                          <span className="text-xs font-medium text-muted-foreground">Completion</span>
+                          <span className="text-xs font-medium text-foreground">
                             {record.papers_finished.length} of {totalPaperCount} papers
                           </span>
                         </div>
-                        <div className="relative w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                        <div className="relative w-full h-2 bg-muted rounded-full overflow-hidden">
                           <div
                             className="absolute top-0 left-0 h-full bg-blue-500"
                             style={{ width: `${Math.min(100, Math.max(0, completionPercentage))}%` }}
@@ -265,12 +265,12 @@ export default function PPQRecordsPage() {
                       {marksDisplay && (
                         <div>
                           <div className="flex justify-between items-center mb-1">
-                            <span className="text-xs font-medium text-gray-500 dark:text-gray-400">Average Score</span>
+                            <span className="text-xs font-medium text-muted-foreground">Average Score</span>
                             <span className={`text-xs font-medium ${performanceColor}`}>
                               {percentage}%
                             </span>
                           </div>
-                          <div className="relative w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                          <div className="relative w-full h-2 bg-muted rounded-full overflow-hidden">
                             <div
                               className={`absolute top-0 left-0 h-full ${percentage >= 80 ? 'bg-green-500' :
                                   percentage >= 60 ? 'bg-blue-500' :
@@ -286,7 +286,7 @@ export default function PPQRecordsPage() {
 
                     <Link
                       href={`/revision/practice/ppq/records/${record.id}`}
-                      className="block w-full text-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+                      className="block w-full text-center bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors"
                     >
                       View & Edit Record
                     </Link>
@@ -297,9 +297,9 @@ export default function PPQRecordsPage() {
           </div>
 
           {filteredRecords.length === 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 text-center">
+            <div className="bg-card rounded-lg shadow-md p-8 text-center">
               <h2 className="text-xl font-semibold mb-2">No matching records found</h2>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-muted-foreground">
                 Try adjusting your search or filter criteria.
               </p>
             </div>

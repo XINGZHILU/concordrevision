@@ -1,40 +1,79 @@
-import { ActionBar, Portal } from "@chakra-ui/react"
-import { CloseButton } from "./close-button"
-import * as React from "react"
+'use client';
 
-interface ActionBarContentProps extends ActionBar.ContentProps {
-    portalled?: boolean
-    portalRef?: React.RefObject<HTMLElement>
+import React, { useEffect, useRef } from "react";
+import { CloseButton } from "./close-button";
+
+interface ActionBarRootProps {
+    open: boolean;
+    onOpenChange: (props: { open: boolean }) => void;
+    children: React.ReactNode;
+    closeOnInteractOutside?: boolean;
 }
 
-export const ActionBarContent = React.forwardRef<
-    HTMLDivElement,
-    ActionBarContentProps
->(function ActionBarContent(props, ref) {
-    const { children, portalled = true, portalRef, ...rest } = props
+export const ActionBarRoot: React.FC<ActionBarRootProps> = ({ open, onOpenChange, children, closeOnInteractOutside = true }) => {
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!open || !closeOnInteractOutside) return;
+
+        const handleClickOutside = (event: MouseEvent) => {
+            if (ref.current && !ref.current.contains(event.target as Node)) {
+                onOpenChange({ open: false });
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [open, onOpenChange, closeOnInteractOutside]);
+
+
+    if (!open) return null;
 
     return (
-        <Portal disabled={!portalled} container={portalRef}>
-            <ActionBar.Positioner>
-                <ActionBar.Content ref={ref} {...rest} asChild={false}>
+        <ActionBarContext.Provider value={{ onOpenChange }}>
+            <div className="fixed inset-x-0 bottom-4 z-50 flex justify-center" ref={ref}>
+                {children}
+            </div>
+        </ActionBarContext.Provider>
+    );
+};
+
+interface ActionBarContentProps {
+    children: React.ReactNode;
+}
+
+export const ActionBarContent: React.FC<ActionBarContentProps> = ({ children }) => {
+    return (
+        <div className="bg-background shadow-2xl rounded-lg border border-border flex items-center space-x-4 p-2">
                     {children}
-                </ActionBar.Content>
-            </ActionBar.Positioner>
-        </Portal>
-    )
-})
+        </div>
+    );
+};
 
 export const ActionBarCloseTrigger = React.forwardRef<
     HTMLButtonElement,
-    ActionBar.CloseTriggerProps
+    React.ButtonHTMLAttributes<HTMLButtonElement>
 >(function ActionBarCloseTrigger(props, ref) {
+    const { onClick, ...rest } = props;
+    const { onOpenChange } = React.useContext(ActionBarContext);
     return (
-        <ActionBar.CloseTrigger {...props} asChild ref={ref}>
-            <CloseButton size="sm" />
-        </ActionBar.CloseTrigger>
+        <CloseButton ref={ref} {...rest} onClick={(e) => {
+            onClick?.(e);
+            onOpenChange({ open: false });
+        }} size="sm" />
     )
 })
 
-export const ActionBarRoot = ActionBar.Root
-export const ActionBarSelectionTrigger = ActionBar.SelectionTrigger
-export const ActionBarSeparator = ActionBar.Separator
+const ActionBarContext = React.createContext<{
+    onOpenChange: (props: { open: boolean }) => void;
+}>({
+    onOpenChange: () => {},
+});
+
+export const ActionBarSeparator = () => (
+    <div className="h-6 w-px bg-border" />
+);
+
+export const ActionBarSelectionTrigger = () => null;

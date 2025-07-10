@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Badge } from "@chakra-ui/react";
+import { Badge } from "../../../components/ui/badge";
 import {
     LuTrophy,
     LuCalculator,
@@ -36,43 +36,44 @@ export function OlympiadCard({ olympiad }: {
         <div className="p-3">
             <Link href={`/olympiads/${olympiad.id}`} className="block h-full">
                 <div
-                    className="group relative h-full overflow-hidden rounded-xl border border-gray-200 bg-white transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+                    className="group relative h-full overflow-hidden rounded-xl border border-border bg-card transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
                 >
                     {/* Trophy decoration - top right */}
                     <div className="absolute top-4 right-4 opacity-10">
-                        <LuTrophy className="h-24 w-24 text-gray-500" />
+                        <LuTrophy className="h-24 w-24 text-muted-foreground" />
                     </div>
 
                     {/* Card content */}
                     <div className="relative z-10 p-6">
                         {/* Subject area badge */}
                         <Badge
-                            className="bg-gray-200 text-gray-700 font-medium px-2.5 py-1 rounded-full text-xs uppercase tracking-wider"
+                            variant="secondary"
+                            className="font-medium px-2.5 py-1 rounded-full text-xs uppercase tracking-wider"
                         >
                             {olympiad.area}
                         </Badge>
 
                         {/* Title and icon */}
                         <div className="mt-3 flex items-start">
-                            <div className="mr-3 p-2 rounded-full bg-gray-100">
-                                <OlympiadIcon className="h-5 w-5 text-gray-700" />
+                            <div className="mr-3 p-2 rounded-full bg-muted">
+                                <OlympiadIcon className="h-5 w-5 text-muted-foreground" />
                             </div>
-                            <h3 className="text-xl font-bold text-gray-900 group-hover:text-gray-700">
+                            <h3 className="text-xl font-bold text-card-foreground group-hover:text-primary">
                                 {olympiad.title}
                             </h3>
                         </div>
                         <br />
 
                         {/* Footer */}
-                        <div className="mt-auto pt-4 border-t border-gray-200 flex justify-between items-center">
-                            <div className="text-gray-600 text-xs font-medium">
+                        <div className="mt-auto pt-4 border-t border-border flex justify-between items-center">
+                            <div className="text-muted-foreground text-xs font-medium">
                                 {resourceCount > 0 ? (
                                     <span>{resourceCount} resource{resourceCount !== 1 ? 's' : ''} available</span>
                                 ) : (
                                     <span>Competition resources</span>
                                 )}
                             </div>
-                            <span className="inline-flex items-center text-gray-700 font-medium text-sm">
+                            <span className="inline-flex items-center text-accent-foreground font-medium text-sm">
                                 Explore
                                 <LuArrowUpRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:translate-y-[-0.25rem]" />
                             </span>

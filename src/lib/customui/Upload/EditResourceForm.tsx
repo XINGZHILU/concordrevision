@@ -3,7 +3,7 @@
 
 'use client';
 
-import { Toaster, toaster } from "@/components/ui/toaster";
+import { Toaster, toaster } from "../../../components/ui/toaster";
 import { useState, useRef, useEffect } from 'react';
 import { createClient } from "@/utils/supabase/client";
 import { StorageURLNotes } from "@/lib/utils";
@@ -210,10 +210,10 @@ export default function EditResourceForm({ noteId, subjectId, initialData }: Edi
     return (
         <>
             <Toaster />
-            <div className="w-full mx-auto bg-white rounded-lg">
+            <div className="w-full mx-auto bg-card rounded-lg">
                 <form className="space-y-6" onSubmit={handleSubmit}>
                     <div>
-                        <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+                        <label htmlFor="title" className="block text-sm font-medium text-foreground mb-1">
                             Resource Title
                         </label>
                         <input
@@ -221,13 +221,13 @@ export default function EditResourceForm({ noteId, subjectId, initialData }: Edi
                             ref={titleRef}
                             type="text"
                             placeholder="Enter a descriptive title"
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                            className="w-full px-4 py-2 border border-input bg-background rounded-md shadow-sm focus:ring-2 focus:ring-ring"
                             required
                         />
                     </div>
 
                     <div>
-                        <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+                        <label htmlFor="description" className="block text-sm font-medium text-foreground mb-1">
                             Resource Description
                         </label>
                         <MDEditor
@@ -237,31 +237,32 @@ export default function EditResourceForm({ noteId, subjectId, initialData }: Edi
                             value={description}
                             height={400}
                             onChange={setDescription}
+                            data-color-mode={typeof window !== 'undefined' && document.documentElement.classList.contains('dark') ? 'dark' : 'light'}
                         />
                     </div>
 
                     {/* Display existing files */}
                     {existingFiles.length > 0 && (
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className="block text-sm font-medium text-foreground mb-2">
                                 Current Files ({existingFiles.length})
                             </label>
-                            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                            <div className="bg-muted rounded-lg p-4 border border-border">
                                 <div className="space-y-3">
                                     {existingFiles.map((file) => (
-                                        <div key={file.id} className="flex items-center justify-between bg-white p-4 rounded-lg border hover:border-gray-300 transition-colors">
+                                        <div key={file.id} className="flex items-center justify-between bg-background p-4 rounded-lg border border-border hover:border-primary transition-colors">
                                             <div className="flex items-center flex-1 min-w-0">
-                                                <svg className="h-8 w-8 text-red-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <svg className="h-8 w-8 text-destructive mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
                                                 </svg>
-                                                <span className="text-sm font-medium text-gray-900 truncate">{file.filename}</span>
+                                                <span className="text-sm font-medium text-foreground truncate">{file.filename}</span>
                                             </div>
                                             <div className="flex items-center space-x-2 ml-4">
                                                 <a
                                                     href={file.path}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="inline-flex items-center px-2 py-1 text-xs font-medium text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded transition-colors"
+                                                    className="inline-flex items-center px-2 py-1 text-xs font-medium text-primary hover:text-primary/80 hover:bg-primary/10 rounded transition-colors"
                                                     title="View file"
                                                 >
                                                     <LuEye className="h-3 w-3 mr-1" />
@@ -270,7 +271,7 @@ export default function EditResourceForm({ noteId, subjectId, initialData }: Edi
                                                 <button
                                                     onClick={() => deleteFile(file.id)}
                                                     disabled={isDeleting === file.id}
-                                                    className="inline-flex items-center px-2 py-1 text-xs font-medium text-red-600 hover:text-red-800 hover:bg-red-50 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                                    className="inline-flex items-center px-2 py-1 text-xs font-medium text-destructive hover:text-destructive/80 hover:bg-destructive/10 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                                     title="Delete file"
                                                 >
                                                     {isDeleting === file.id ? (
@@ -287,7 +288,7 @@ export default function EditResourceForm({ noteId, subjectId, initialData }: Edi
                                         </div>
                                     ))}
                                 </div>
-                                <p className="text-xs text-gray-500 mt-3 bg-blue-50 p-2 rounded">
+                                <p className="text-xs text-muted-foreground mt-3 bg-primary/10 p-2 rounded">
                                     💡 <strong>Tip:</strong> You can delete files you no longer need or add new files below.
                                 </p>
                             </div>
@@ -296,13 +297,13 @@ export default function EditResourceForm({ noteId, subjectId, initialData }: Edi
 
                     {/* Upload new files */}
                     <div>
-                        <label htmlFor="file" className="block text-sm font-medium text-gray-700 mb-1">
+                        <label htmlFor="file" className="block text-sm font-medium text-foreground mb-1">
                             Add New Files (PDF) - Optional
                         </label>
-                        <div className="mt-1 flex justify-center px-6 py-4 border-2 border-gray-300 border-dashed rounded-md">
+                        <div className="mt-1 flex justify-center px-6 py-4 border-2 border-border border-dashed rounded-md">
                             <div className="space-y-1 text-center">
                                 <svg
-                                    className="mx-auto h-12 w-12 text-gray-400"
+                                    className="mx-auto h-12 w-12 text-muted-foreground"
                                     stroke="currentColor"
                                     fill="none"
                                     viewBox="0 0 48 48"
@@ -315,10 +316,10 @@ export default function EditResourceForm({ noteId, subjectId, initialData }: Edi
                                         strokeLinejoin="round"
                                     />
                                 </svg>
-                                <div className="flex text-sm text-gray-600">
+                                <div className="flex text-sm text-muted-foreground">
                                     <label
                                         htmlFor="file-upload"
-                                        className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                                        className="relative cursor-pointer bg-card rounded-md font-medium text-primary hover:text-primary/90 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-ring"
                                     >
                                         <span>Upload additional files</span>
                                         <input
@@ -334,9 +335,9 @@ export default function EditResourceForm({ noteId, subjectId, initialData }: Edi
                                     </label>
                                     <p className="pl-1">or drag and drop</p>
                                 </div>
-                                <p className="text-xs text-gray-500">PDF files only</p>
+                                <p className="text-xs text-muted-foreground">PDF files only</p>
                                 {selectedFiles > 0 && (
-                                    <p className="text-sm text-indigo-600 font-medium">
+                                    <p className="text-sm text-primary font-medium">
                                         {selectedFiles} new file{selectedFiles !== 1 ? 's' : ''} selected
                                     </p>
                                 )}
@@ -344,31 +345,31 @@ export default function EditResourceForm({ noteId, subjectId, initialData }: Edi
                         </div>
                     </div>
 
-                    <div className="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
+                    <div className="flex items-center justify-end space-x-4 pt-6 border-t border-border">
                         <button
                             type="button"
-                            className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            className="px-4 py-2 border border-input rounded-md shadow-sm text-sm font-medium text-foreground bg-background hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring"
                             onClick={handleReset}
                         >
                             Reset
                         </button>
                         <button
                             type="button"
-                            className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            className="px-4 py-2 border border-input rounded-md shadow-sm text-sm font-medium text-foreground bg-background hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring"
                             onClick={() => router.back()}
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
-                            className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${cantUpload
-                                    ? 'bg-indigo-300 cursor-not-allowed'
-                                    : 'bg-indigo-600 hover:bg-indigo-700'
+                            className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-primary-foreground focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring ${cantUpload
+                                    ? 'bg-primary/50 cursor-not-allowed'
+                                    : 'bg-primary hover:bg-primary/90'
                                 }`}
                             disabled={cantUpload}
                         >
                             {cantUpload ? (
-                                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-primary-foreground" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                 </svg>
