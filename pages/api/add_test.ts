@@ -62,11 +62,8 @@ export default async function handler(
       bcc: recipients,
       subject: `${subject.title} - ${test.title}`,
       react: NewTestEmailTemplate({
-        test: test.title,
-        subject: subject.title,
-        subjectid: subject.id,
-        testid: test.id,
-        date: test_date.toDateString()
+        test: test,
+        subject: subject,
       }),
     });
   }
