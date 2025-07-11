@@ -8,7 +8,6 @@ export function CourseList({ courses }: {
   courses: {
     name: string;
     id: string;
-    url: string;
     slug: string
     universityId: string;
   }[]

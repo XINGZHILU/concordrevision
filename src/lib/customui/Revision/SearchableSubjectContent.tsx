@@ -20,6 +20,7 @@ interface Note {
         firstname: string | null;
         lastname: string | null;
     };
+    uploadedAt: Date;
 }
 
 interface Test {
@@ -78,29 +79,31 @@ const SearchableSubjectContent = ({
      * Filter notes based on search query
      */
     const filterNotes = (notes: Note[], query: string): Note[] => {
-        if (!query.trim()) return notes;
-        
-        const lowerQuery = query.toLowerCase();
-        return notes.filter(note => 
-            note.title.toLowerCase().includes(lowerQuery) ||
-            note.desc.toLowerCase().includes(lowerQuery)
-        );
+        const filtered = query.trim() 
+            ? notes.filter(note => 
+                note.title.toLowerCase().includes(query.toLowerCase()) ||
+                note.desc.toLowerCase().includes(query.toLowerCase())
+              )
+            : notes;
+
+        return filtered.sort((a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime());
     };
 
     /**
      * Filter tests based on search query
      */
     const filterTests = (tests: Test[], query: string): Test[] => {
-        if (!query.trim()) return tests;
+        const filtered = query.trim()
+            ? tests.filter(test => 
+                test.title.toLowerCase().includes(query.toLowerCase()) ||
+                test.desc.toLowerCase().includes(query.toLowerCase()) ||
+                test.topics.some(topic => 
+                    topic.toLowerCase().includes(query.toLowerCase())
+                )
+              )
+            : tests;
         
-        const lowerQuery = query.toLowerCase();
-        return tests.filter(test => 
-            test.title.toLowerCase().includes(lowerQuery) ||
-            test.desc.toLowerCase().includes(lowerQuery) ||
-            test.topics.some(topic => 
-                topic.toLowerCase().includes(lowerQuery)
-            )
-        );
+        return filtered.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     };
 
     // Filter resources (notes)

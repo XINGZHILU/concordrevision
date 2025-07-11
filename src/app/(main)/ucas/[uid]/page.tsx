@@ -29,6 +29,9 @@ export default async function Page({ params }: { params: { uid: string } }) {
     },
     include: {
       author: true
+    },
+    orderBy: {
+      uploadedAt: 'desc'
     }
   })
 

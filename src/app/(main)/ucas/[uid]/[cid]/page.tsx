@@ -30,6 +30,9 @@ export default async function Page({ params }: { params: { uid: string, cid: str
     },
     include: {
       author: true
+    },
+    orderBy: {
+      uploadedAt: 'desc'
     }
   })
 

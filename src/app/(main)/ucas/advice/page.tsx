@@ -15,6 +15,9 @@ export default async function AdvicePage() {
     include: {
       author: true,
       files: true
+    },
+    orderBy: {
+      uploadedAt: 'desc'
     }
   });
   return (

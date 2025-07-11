@@ -85,7 +85,7 @@ model Olympiad_Resource {
     olympiadId Int
     author     User          @relation(fields: [authorId], references: [id])
     authorId   String
-    type       Int           @default(0) // 0 = Past Paper, 1 = Solution, 2 = Other
+    type       Int           @default(0)
     files      StorageFile[]
     approved   Boolean       @default(false)
     uploadedAt      DateTime @default(now())
