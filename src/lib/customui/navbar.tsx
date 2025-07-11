@@ -165,46 +165,21 @@ export default function NavBar({ can_upload, teacher, admin }: { can_upload: boo
       {isMobileMenuOpen && (
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-background shadow-lg">
-            <Link
-              href="/"
-              className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/')
-                ? 'text-primary bg-primary/10'
-                : 'text-foreground hover:text-primary hover:bg-muted'
-                }`}
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Home
-            </Link>
-            <Link
-              href="/revision"
-              className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/revision')
-                ? 'text-primary bg-primary/10'
-                : 'text-foreground hover:text-primary hover:bg-muted'
-                }`}
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Revision
-            </Link>
-            <Link
-              href="/olympiads"
-              className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/olympiads')
-                ? 'text-primary bg-primary/10'
-                : 'text-foreground hover:text-primary hover:bg-muted'
-                }`}
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Olympiads
-            </Link>
-            <Link
-              href="/ec"
-              className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/ec')
-                ? 'text-primary bg-primary/10'
-                : 'text-foreground hover:text-primary hover:bg-muted'
-                }`}
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Extracurriculars
-            </Link>
+            {
+              key_pages.map((page) => {
+                return <Link key={page.name}
+                  href={page.link}
+                  className={`block px-3 py-2 rounded-md text-base font-medium ${isActive(page.link)
+                    ? 'text-primary bg-primary/10'
+                    : 'text-foreground hover:text-primary hover:bg-muted'
+                    }`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {page.name}
+                </Link>;
+              }
+              )
+            }
             {can_upload ? (<Link
               href="/upload"
               className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/upload')
@@ -216,6 +191,16 @@ export default function NavBar({ can_upload, teacher, admin }: { can_upload: boo
               Upload
             </Link>) : (<></>)}
             {teacher ? (<Link
+              href="/teachers"
+              className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/teachers')
+                ? 'text-primary bg-primary/10'
+                : 'text-foreground hover:text-primary hover:bg-muted'
+                }`}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Teacher
+            </Link>) : (<></>)}
+            {admin ? (<Link
               href="/admin"
               className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/admin')
                 ? 'text-primary bg-primary/10'

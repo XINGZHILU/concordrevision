@@ -30,7 +30,7 @@ export default async function TeachersLayout({
     notFound();
   }
 
-  if (!dbUser.teacher && !dbUser.admin){
+  if (!dbUser.teacher && !dbUser.admin) {
     return <h1>You do not have access to this page</h1>;
   }
 
@@ -46,7 +46,7 @@ export default async function TeachersLayout({
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
                   <Link href="/teachers" className="font-bold text-xl">
-                    Teachers Portal
+                    Dashboard
                   </Link>
 
                   <nav className="hidden md:flex space-x-4">
@@ -83,11 +83,28 @@ export default async function TeachersLayout({
             </div>
           </header>
 
+          {/* Mobile Navigation */}
+          <div className="md:hidden bg-primary/90 text-primary-foreground">
+            <div className="container mx-auto px-4 py-2">
+              <nav className="flex overflow-x-auto space-x-4 scrollbar-hide pb-1">
+                <Link href="/teachers" className="whitespace-nowrap hover:bg-primary/80 px-2 py-1 rounded">
+                  Dashboard
+                </Link>
+                <Link href="/teachers/create-test" className="whitespace-nowrap hover:bg-primary/80 px-2 py-1 rounded">
+                  Schedule Tests
+                </Link>
+                <Link href="/admin/approval" className="whitespace-nowrap hover:bg-primary/80 px-2 py-1 rounded">
+                  Approve Content
+                </Link>
+              </nav>
+            </div>
+          </div>
+
           {/* Main content */}
           <main className="w-11/12 min-h-screen p-2 mx-auto markdown-body">
             <Provider>
               {children}
-              <Toaster/>
+              <Toaster />
             </Provider>
           </main>
         </body>
