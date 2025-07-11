@@ -88,7 +88,7 @@ export default function OlympiadUploadForm({ olympiad, author }: { olympiad: num
     }
 
     return (
-        <div className="w-full max-w-lg mx-auto p-6 bg-card rounded-lg shadow-md">
+        <div className="w-full mx-auto p-6 bg-card rounded-lg shadow-md">
             <h2 className="text-2xl font-bold text-card-foreground mb-6">Upload Olympiad Resource</h2>
             <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
                 <div>
