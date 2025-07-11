@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import RevisionSubjectList from "@/lib/customui/Revision/RevisionSubjectList";
 import { currentUser } from "@clerk/nextjs/server";
+import PastPapersCard from "@/lib/customui/Revision/PastPapersCard";
 
 export default async function Home() {
     const subjects = await prisma.subject.findMany({
@@ -12,9 +13,10 @@ export default async function Home() {
     const user = await currentUser();
     if (!user) {
         return (
-            <>
+            <div className="space-y-8">
+                <PastPapersCard />
                 <RevisionSubjectList subjects={subjects} year={0} />
-            </>
+            </div>
         )
     }
 
@@ -29,8 +31,9 @@ export default async function Home() {
     }
 
     return (
-        <>
+        <div className="space-y-8">
+            <PastPapersCard />
             <RevisionSubjectList subjects={subjects} year={user_data.year} />
-        </>
+        </div>
     )
 }
