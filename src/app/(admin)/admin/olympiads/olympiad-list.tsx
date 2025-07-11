@@ -4,6 +4,7 @@ import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { toaster } from "@/components/ui/toaster";
 import {
+  Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -17,7 +18,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { olympiad_subjects } from "@/lib/consts";
-import { DialogRoot } from '@chakra-ui/react';
 
 type OlympiadWithCount = {
   id: number;
@@ -196,7 +196,7 @@ export default function OlympiadList({ olympiads }: OlympiadListProps) {
                           Edit
                         </Link>
                       </Button>
-                      <DialogRoot>
+                      <Dialog>
                         <DialogTrigger asChild>
                           <Button variant="link" className="text-red-600" disabled={olympiad._count.resources > 0}>
                             Delete
@@ -229,7 +229,7 @@ export default function OlympiadList({ olympiads }: OlympiadListProps) {
                             </Button>
                           </DialogFooter>
                         </DialogContent>
-                      </DialogRoot>
+                      </Dialog>
                     </div>
                   </td>
                 </tr>
