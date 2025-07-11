@@ -10,18 +10,14 @@ import { createClient } from "@/utils/supabase/client";
 import cuid from "cuid";
 import MDEditor from "@uiw/react-md-editor";
 import { ImageUploader } from "./upload_image";
-import { DialogRoot as Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { XIcon } from 'lucide-react';
-import { useEdgeStore } from '../../../lib/edgestore';
 
 export default function OlympiadUploadForm({ olympiad, author }: { olympiad: number, author: string }) {
     const inputFileRef = useRef<HTMLInputElement>(null);
     const [description, setDescription] = useState<string>("");
     const [title, setTitle] = useState<string>("");
     const [isImageDialogOpen, setImageDialogOpen] = useState(false);
-    const [cantUpload, setCantUpload] = useState<boolean>(false);
-    const { edgestore } = useEdgeStore();
     const [stagedFiles, setStagedFiles] = useState<File[]>([]);
     const supabase = createClient();
     const storageKey = `olympiad-form-${olympiad}`;
@@ -82,26 +78,6 @@ export default function OlympiadUploadForm({ olympiad, author }: { olympiad: num
             setDescription("");
             setTitle("");
             sessionStorage.removeItem(storageKey);
-        }
-    }
-
-
-
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files) {
-            const newFiles = Array.from(e.target.files);
-            setStagedFiles(prevFiles => {
-                const existingFileNames = prevFiles.map(f => f.name);
-                const uniqueNewFiles = newFiles.filter(f => !existingFileNames.includes(f.name));
-                return [...prevFiles, ...uniqueNewFiles];
-            });
-        }
-    };
-
-    const removeStagedFile = (fileName: string) => {
-        setStagedFiles(prevFiles => prevFiles.filter(f => f.name !== fileName));
-        if (inputFileRef.current) {
-            inputFileRef.current.value = "";
         }
     }
 

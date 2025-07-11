@@ -5,7 +5,6 @@
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { Badge } from "@/components/ui/badge";
-import { Toaster } from "@/components/ui/toaster";
 import { year_group_names } from "@/lib/consts";
 
 // Define user type with notes count
@@ -56,7 +55,6 @@ export default function UserList({ users }: UserListProps) {
 
     return (
         <div>
-            <Toaster />
 
             {/* Search and Filters */}
             <div className="mb-6 p-4 bg-muted rounded-lg border border-border">

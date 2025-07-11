@@ -7,7 +7,6 @@ import { Provider } from '@/components/ui/provider';
 import { ClerkProvider, SignedIn, UserButton } from "@clerk/nextjs";
 import Link from 'next/link';
 import { bodyFont, headingFont } from '@/lib/customui/fonts';
-import { Toaster } from '@/components/ui/toaster';
 
 export default async function TeachersLayout({
   children,
@@ -88,7 +87,6 @@ export default async function TeachersLayout({
             <Provider>
               {children}
             </Provider>
-            <Toaster />
           </main>
         </body>
       </html>

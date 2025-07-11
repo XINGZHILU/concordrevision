@@ -1,16 +1,13 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-
 'use client';
 
-import { toaster } from "../../../components/ui/toaster"
+import { Toaster, toaster } from "@/components/ui/toaster"
 import { useState, useRef, useEffect } from 'react';
 import { createClient } from "@/utils/supabase/client";
 import { StorageURLNotes } from "@/lib/utils";
 import cuid from "cuid";
 import MDEditor from "@uiw/react-md-editor";
 import { ImageUploader } from "./upload_image";
-import { DialogRoot as Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { XIcon } from 'lucide-react';
 
@@ -88,11 +85,6 @@ export default function ResourceUploadForm({ subject, author }: { subject: numbe
 
     async function store(event: React.FormEvent) {
         event.preventDefault();
-
-        if (stagedFiles.length === 0) {
-            toaster.error({ title: "No files selected", description: "Please select at least one file to upload." });
-            return;
-        }
 
         setCantUpload(true);
 
@@ -287,6 +279,7 @@ export default function ResourceUploadForm({ subject, author }: { subject: numbe
                     </div>
                 </form>
             </div>
+            <Toaster/>
         </>
     );
 }

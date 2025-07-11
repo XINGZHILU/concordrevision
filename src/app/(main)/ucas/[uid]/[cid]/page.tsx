@@ -6,12 +6,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 export default async function Page({ params }: { params: { uid: string, cid: string } }) {
-
+  const page_params = await params;
   const course = await prisma.ucasCourse.findUnique({
+
     where: {
-      id: `${params.uid}-${params.cid}`,
-      universityId: params.uid,
-      slug: params.cid
+      id: `${page_params.uid}-${page_params.cid}`,
+      universityId: page_params.uid,
+      slug: page_params.cid
     },
     include: {
       university: true,
