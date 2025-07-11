@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState } from "react";
-import { toaster, Toaster } from "../../../components/ui/toaster";
+import { toaster} from "../../../components/ui/toaster";
 import { LuCircleAlert, LuCircleCheck, LuCircleEllipsis, LuCircleHelp } from "react-icons/lu";
 import { cva } from "class-variance-authority";
 
@@ -134,7 +134,7 @@ export default function ColourSelector({ nid, uid, subject, Original }: {
 
   return (
     <div>
-      <Toaster />
+      
       <form onSubmit={submit} className="flex items-center flex-wrap gap-2">
         <div className="flex space-x-2 mr-2">
           {colorOptions.map((option) => (

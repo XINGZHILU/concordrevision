@@ -4,7 +4,7 @@ import { useState, ChangeEvent, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { toaster, Toaster } from '@/components/ui/toaster';
+import { toaster} from '@/components/ui/toaster';
 import { Loader2 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Image from 'next/image';
@@ -168,7 +168,7 @@ export function ImageUploader({ onUploadFinished }: { onUploadFinished: (url: st
           </div>
         </TabsContent>
       </Tabs>
-      <Toaster />
+      
     </>
   );
 }

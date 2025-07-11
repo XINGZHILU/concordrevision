@@ -9,6 +9,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Provider } from "@/components/ui/provider"
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Student Hub",
@@ -126,6 +127,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 {/* Main content */}
                 <main>
                   {children}
+                  <Toaster/>
                 </main>
 
                 {/* Admin Footer */}

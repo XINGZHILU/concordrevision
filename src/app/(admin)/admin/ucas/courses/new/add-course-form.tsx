@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { toaster, Toaster } from '@/components/ui/toaster';
+import { toaster} from '@/components/ui/toaster';
 import { Loader2 } from 'lucide-react';
 import { University } from '@prisma/client';
 
@@ -190,7 +190,7 @@ export default function AddCourseForm({ universities }: AddCourseFormProps) {
           Add Course
         </Button>
       </form>
-      <Toaster />
+      
     </>
   );
 } 

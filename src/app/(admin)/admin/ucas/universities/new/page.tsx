@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import { toaster, Toaster } from '@/components/ui/toaster';
+import { toaster} from '@/components/ui/toaster';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -115,6 +115,6 @@ export default function AddUniversityPage() {
           </form>
         </div>
       </div>
-      <Toaster /></>
+      </>
   );
 } 

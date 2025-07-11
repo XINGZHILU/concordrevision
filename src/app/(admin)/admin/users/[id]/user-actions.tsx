@@ -4,7 +4,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { toaster, Toaster } from "@/components/ui/toaster";
+import { toaster } from "@/components/ui/toaster";
 import {
   Dialog,
   DialogContent,
@@ -171,7 +171,7 @@ export default function UserActions({ userId, uploadPermission, isTeacher }: Use
           </DialogContent>
         </Dialog>
       </div>
-      <Toaster />
+      
     </div>
   );
 }

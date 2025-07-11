@@ -1,6 +1,6 @@
 'use client';
 
-import { Toaster, toaster } from "@/components/ui/toaster"
+import { toaster } from "@/components/ui/toaster"
 import { useState, useRef, useEffect } from 'react';
 import { createClient } from "@/utils/supabase/client";
 import { StorageURLNotes } from "@/lib/utils";
@@ -279,7 +279,6 @@ export default function ResourceUploadForm({ subject, author }: { subject: numbe
                     </div>
                 </form>
             </div>
-            <Toaster/>
         </>
     );
 }

@@ -9,6 +9,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { Provider } from "@/components/ui/provider";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
 export const metadata: Metadata = {
   title: "Student Hub",
   description: "©Joshua Ng, Xingzhi Lu, Christoph Chan 2025",
@@ -37,6 +38,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <NavBar teacher={false} can_upload={false} admin={false} />
                 <div className={'w-11/12 min-h-screen p-2 mx-auto markdown-body'}>
                   {children}
+                  <Toaster />
                 </div>
                 <br />
                 <Footer />
@@ -76,6 +78,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <div className={'w-11/12 min-h-screen p-2 mx-auto markdown-body'}>
                 {children}
               </div>
+              <Toaster />
               <br />
               <Footer />
             </ThemeProvider>

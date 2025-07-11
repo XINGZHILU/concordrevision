@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 // import { useRouter } from 'next/navigation';
 import { year_group_names } from "@/lib/consts";
-import { toaster, Toaster } from "@/components/ui/toaster";
+import { toaster} from "@/components/ui/toaster";
 import MDEditor from '@uiw/react-md-editor';
 
 type Subject = {
@@ -64,7 +64,7 @@ export default function EditSubjectForm({ subject }: EditSubjectFormProps) {
 
     return (
         <>
-            <Toaster />
+            
 
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold">Edit Subject: {year_group_names[subject.level]} {subject.title}</h1>

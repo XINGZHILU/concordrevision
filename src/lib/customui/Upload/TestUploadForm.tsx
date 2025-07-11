@@ -1,6 +1,6 @@
 'use client';
 
-import { toaster, Toaster } from "@/components/ui/toaster"
+import { toaster} from "@/components/ui/toaster"
 import { useState, useRef, useEffect } from 'react';
 import { createClient } from "@/utils/supabase/client";
 import { StorageURLNotes } from "@/lib/utils";
@@ -132,7 +132,7 @@ export default function TestUploadForm({ subject, author, test, type }: { subjec
 
   return (
     <>
-      <Toaster />
+      
       <div className="w-full mx-auto bg-card rounded-lg shadow p-6">
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-card-foreground">Upload Resource</h2>

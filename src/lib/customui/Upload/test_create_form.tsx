@@ -8,7 +8,7 @@ import MDEditor from "@uiw/react-md-editor";
 import { ImageUploader } from "./upload_image";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { toaster, Toaster } from "@/components/ui/toaster";
+import { toaster} from "@/components/ui/toaster";
 
 
 export default function NewTestForm({ subject }: { subject: number }) {
@@ -201,7 +201,7 @@ export default function NewTestForm({ subject }: { subject: number }) {
           </div>
         </form>
       </div>
-      <Toaster />
+      
     </>
   );
 }

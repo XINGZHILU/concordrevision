@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { olympiad_subjects } from "@/lib/consts";
-import { toaster, Toaster } from "@/components/ui/toaster";
+import { toaster} from "@/components/ui/toaster";
 import MDEditor from '@uiw/react-md-editor';
 
 export default function NewOlympiadPage() {
@@ -110,7 +110,7 @@ export default function NewOlympiadPage() {
 
     return (
         <div className="container mx-auto px-4 py-8">
-            <Toaster />
+            
 
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold">Add New Olympiad</h1>
