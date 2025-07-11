@@ -36,3 +36,21 @@ export const RejectedEmailTemplate: React.FC<Readonly<RejectedEmailTemplateProps
         <p>The Concord Student Hub Team</p>
     </div>
 );
+
+interface NewTestEmailTemplateProps {
+  subject: string;
+  test: string;
+  testid: number;
+  subjectid: number;
+  date: string
+}
+
+export const NewTestEmailTemplate: React.FC<Readonly<NewTestEmailTemplateProps>> = ({
+  subject, test, testid, subjectid, date
+}) => (
+  <div>
+      <p>A new test for {subject} has been scheduled on {date}</p>
+      <p>Test name: {test}</p>
+      <p><a href={`https://concordhub.vercel.app/revision/${subjectid}/tests/${testid}`}>CLICK HERE</a> for more details</p>
+  </div>
+);

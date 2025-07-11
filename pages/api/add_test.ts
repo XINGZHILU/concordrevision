@@ -1,6 +1,10 @@
 import { prisma } from "@/lib/prisma";
-
+import { Resend } from 'resend';
 import { NextApiRequest, NextApiResponse } from "next";
+import { NewTestEmailTemplate } from "@/email/email-templates";
+import { email_from } from "@/lib/consts";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async function handler(
   req: NextApiRequest,
@@ -8,22 +12,64 @@ export default async function handler(
 ) {
   const title = req.body.title as string;
   const desc = req.body.desc as string;
-  const subject = req.body.subject as number;
+  const subjectId = req.body.subject as number;
   const type = req.body.type as string;
   const date = req.body.date as string;
 
-  const test_date = new Date(date);
-  console.log(req.body);
+  const subject = await prisma.subject.findUnique({
+    where: {
+      id: subjectId
+    },
+    include: {
+      subscribers: {
+        include: {
+          user: true
+        }
+      }
+    }
+  });
 
-  await prisma.test.create({
+  if (!subject) {
+    res.status(401).json({});
+    return;
+  }
+
+  const test_date = new Date(date);
+
+  const test = await prisma.test.create({
     data: {
       title: title,
-      subjectId: subject,
+      subjectId: subjectId,
       desc: desc,
       type: +type,
       date: test_date
     }
   })
+
+  const recipients = [] as string[];
+  for (const link of subject.subscribers) {
+    if (link.test_notification === true) {
+      recipients.push(link.user.email);
+    }
+  }
+
+  // console.log(recipients);
+
+  if (recipients.length > 0) {
+    await resend.emails.send({
+      from: email_from,
+      to: email_from,
+      bcc: recipients,
+      subject: `${subject.title} - ${test.title}`,
+      react: NewTestEmailTemplate({
+        test: test.title,
+        subject: subject.title,
+        subjectid: subject.id,
+        testid: test.id,
+        date: test_date.toDateString()
+      }),
+    });
+  }
 
   res.status(200).json({});
 

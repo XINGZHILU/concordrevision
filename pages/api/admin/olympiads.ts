@@ -28,7 +28,7 @@ export default async function handler(
                 return res.status(400).json({ error: 'Subject area is required' });
             }
 
-            console.log(req.body);
+            //console.log(req.body);
 
             // Create new olympiad
             const olympiads_count = await prisma.olympiad.count();

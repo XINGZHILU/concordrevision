@@ -25,6 +25,7 @@ model User {
     green              Int[]
     ppq_records        PastPaperRecord[]
     ucasPosts          UCASPost[]
+    subscriptions      UserSubjectSubscription[]
 }
 
 model Subject {
@@ -35,6 +36,7 @@ model Subject {
     notes       Note[]
     tests       Test[]
     ppq_records PastPaperRecord[]
+    subscribers UserSubjectSubscription[]
 }
 
 model Test {
@@ -165,4 +167,14 @@ model UCASPost {
     files        StorageFile[]
     approved     Boolean       @default(false)
     uploadedAt      DateTime @default(now())
+}
+
+model UserSubjectSubscription {
+    id        Int     @id @default(autoincrement())
+    userId    String
+    user      User    @relation(fields: [userId], references: [id])
+    subjectId Int
+    subject   Subject @relation(fields: [subjectId], references: [id])
+    test_notification Boolean @default(true)
+    resource_notification Boolean @default(false)
 }

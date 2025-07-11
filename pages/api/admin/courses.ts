@@ -4,7 +4,7 @@ import { getAuth } from '@clerk/nextjs/server';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const auth = getAuth(req);
-  console.log(auth);
+  //console.log(auth);
   if (!auth || !auth.userId){
     return res.status(403).json({ error: 'Not authorized' });
   }

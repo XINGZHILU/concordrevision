@@ -75,18 +75,23 @@ export default function PPQPage() {
 
     // Update maxMarks array when paperCount changes
     useEffect(() => {
-        // Initialize or resize the maxMarks array based on paper count only (not years)
-        const newMaxMarks = [...maxMarks];
+        setMaxMarks(oldMaxMarks => {
+            const newMaxMarks = [...oldMaxMarks];
         
-        while (newMaxMarks.length < paperCount) {
-            newMaxMarks.push(100); // Default max mark
-        }
-        
-        if (newMaxMarks.length > paperCount) {
-            newMaxMarks.length = paperCount;
-        }
-        
-        setMaxMarks(newMaxMarks);
+            while (newMaxMarks.length < paperCount) {
+                newMaxMarks.push(100); // Default max mark
+            }
+            
+            if (newMaxMarks.length > paperCount) {
+                newMaxMarks.length = paperCount;
+            }
+
+            if (JSON.stringify(oldMaxMarks) === JSON.stringify(newMaxMarks)) {
+                return oldMaxMarks;
+            }
+            
+            return newMaxMarks;
+        });
     }, [paperCount]);
 
     const updateMaxMark = (paperIndex: number, value: number) => {

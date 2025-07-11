@@ -17,11 +17,6 @@ export default async function Page(req: any, res: any) {
     },
     include: {
       resources: true,
-    },
-    orderBy: {
-      resources: {
-        uploadedAt: 'desc'
-      }
     }
   });
 

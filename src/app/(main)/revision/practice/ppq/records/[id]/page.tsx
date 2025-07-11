@@ -33,7 +33,7 @@ interface PastPaperRecord {
 }
 
 export default function RecordDetailPage() {
-    const params = useParams<{ id: string }>()
+    const { id } = useParams<{ id: string }>()
     const [record, setRecord] = useState<PastPaperRecord | null>(null)
     const [loading, setLoading] = useState(true)
     const [paperData, setPaperData] = useState<PaperData[]>([])
@@ -53,9 +53,9 @@ export default function RecordDetailPage() {
     useEffect(() => {
         const fetchRecord = async () => {
             try {
-                if (!params || !params.id) return;
+                if (!id) return;
 
-                const response = await fetch(`/api/pastpaper-records/${params.id}`)
+                const response = await fetch(`/api/pastpaper-records/${id}`)
                 const data = await response.json()
                 setRecord(data)
                 setNotes(data.notes || "")
@@ -90,12 +90,12 @@ export default function RecordDetailPage() {
             }
         }
 
-        if (params && params.id) {
+        if (id) {
             fetchRecord()
         } else {
             setLoading(false)
         }
-    }, [params?.id])
+    }, [id])
 
     const togglePaperStatus = (paperId: number) => {
         setPaperData(currentData =>

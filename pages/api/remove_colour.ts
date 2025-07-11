@@ -56,7 +56,7 @@ export default async function handler(
             }
         });
     }
-    console.log(`${nid} original colour removed`);
+    //console.log(`${nid} original colour removed`);
 
     res.status(200).json({});
 }

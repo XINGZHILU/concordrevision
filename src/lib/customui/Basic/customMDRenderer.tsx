@@ -1,7 +1,11 @@
 // components/CompleteMarkdownRenderer.js
 import React, { useState, useEffect } from 'react';
 
-function CompleteMarkdownRenderer({ content }) {
+interface CodeLines extends Array<string> {
+    language?: string;
+}
+
+function CompleteMarkdownRenderer({ content }: { content: string }) {
     const [processedContent, setProcessedContent] = useState('');
 
     useEffect(() => {
@@ -57,16 +61,17 @@ function CompleteMarkdownRenderer({ content }) {
 }
 
 // Function to convert markdown to HTML
-function processMarkdown(markdown) {
+function processMarkdown(markdown: string) {
     if (!markdown) return '';
 
     // Split the markdown into lines to process block elements
     const lines = markdown.split('\n');
     let html = '';
     let inTable = false;
-    let tableLines = [];
+    let tableLines: string[] = [];
     let inCodeBlock = false;
-    let codeLines = [];
+    
+    let codeLines: CodeLines = [];
     let inList = false;
     let listType = '';
 
@@ -151,7 +156,6 @@ function processMarkdown(markdown) {
             }
 
             // Get the indentation level to handle nested lists
-            const indentation = line.indexOf(listMarker[0]);
             const content = processInlineMarkdown(trimmedLine.substring(listMarker.length));
 
             html += `<li>${content}</li>\n`;
@@ -234,7 +238,7 @@ function processMarkdown(markdown) {
 }
 
 // Function to render a code block with correct styling
-function renderCodeBlock(codeLines) {
+function renderCodeBlock(codeLines: CodeLines) {
     if (!codeLines.length) return '';
 
     const language = codeLines.language || '';
@@ -252,8 +256,8 @@ function renderCodeBlock(codeLines) {
 }
 
 // Function to render a markdown table as HTML
-function renderTable(tableLines) {
-    if (tableLines.length < 3) return ''; // Need at least header, separator, and one data row
+function renderTable(tableLines: string[]) {
+    if (tableLines.length < 2) return ''; // Need at least header and separator
 
     const headerLine = tableLines[0];
     const headers = headerLine
@@ -287,7 +291,7 @@ function renderTable(tableLines) {
 }
 
 // Process inline markdown elements (bold, italic, links, images, code)
-function processInlineMarkdown(text) {
+function processInlineMarkdown(text: string) {
     if (!text) return '';
 
     // Process inline code first (so we don't process markdown inside code)

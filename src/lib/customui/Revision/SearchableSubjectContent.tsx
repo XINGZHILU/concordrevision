@@ -6,6 +6,7 @@ import { EditableNoteCard } from '@/lib/customui/Basic/EditableNoteCard';
 import { Collapsible, Tabs } from "@chakra-ui/react";
 import { LuFolder, LuBookCheck, LuBook, LuSearch, LuX } from "react-icons/lu";
 import MDViewer from "@/lib/customui/Basic/showMD";
+import SubscriptionManager from "./SubscriptionManager";
 
 interface Note {
     id: number;
@@ -113,19 +114,26 @@ const SearchableSubjectContent = ({
     }, [notes, searchQuery]);
 
     // Separate tests into upcoming and past
-    const today = new Date();
-    const upcomingTests = useMemo(() => {
-        const upcoming = tests.filter(test => 
-            (new Date(test.date).getTime() - today.getTime()) >= (-86400000)
-        );
-        return filterTests(upcoming, searchQuery);
-    }, [tests, searchQuery]);
+    const { upcomingTests, pastTests } = useMemo(() => {
+        const today = new Date();
+        const upcoming: Test[] = [];
+        const past: Test[] = [];
 
-    const pastTests = useMemo(() => {
-        const past = tests.filter(test => 
-            (new Date(test.date).getTime() - today.getTime()) < (-86400000)
-        );
-        return filterTests(past, searchQuery);
+        tests.forEach(test => {
+            const testDate = new Date(test.date).getTime();
+            const todayTime = today.getTime();
+
+            if ((testDate - todayTime) >= (-86400000)) {
+                upcoming.push(test);
+            } else {
+                past.push(test);
+            }
+        });
+        
+        return {
+            upcomingTests: filterTests(upcoming, searchQuery),
+            pastTests: filterTests(past, searchQuery)
+        };
     }, [tests, searchQuery]);
 
     /**
@@ -194,8 +202,10 @@ const SearchableSubjectContent = ({
 
     return (
         <div>
-            <h1>{yearGroupName} {subject.title}</h1>
-            <br />
+            <div className="flex items-center gap-4 mb-4">
+                <h1 className="flex-grow">{yearGroupName} {subject.title}</h1>
+                <SubscriptionManager subjectId={subject.id} userId={currentUserId} />
+            </div>
 
             <Collapsible.Root defaultOpen>
                 <Collapsible.Trigger paddingY="3"><h2>About</h2></Collapsible.Trigger>

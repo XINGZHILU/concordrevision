@@ -19,7 +19,7 @@ export default async function Page({ params }: { params: { uid: string } }) {
     notFound();
   }
 
-  console.log(university.courses);
+  //console.log(university.courses);
 
 
   const posts = await prisma.uCASPost.findMany({
