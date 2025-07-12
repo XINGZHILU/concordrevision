@@ -1,7 +1,6 @@
 'use client';
 
 import React from "react";
-import { Check } from "lucide-react";
 
 export interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string;
@@ -18,9 +17,6 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
                     {...props}
                 />
                 {label && <span className="text-sm font-medium text-concord-text">{label}</span>}
-                <div className="absolute w-4 h-4 hidden peer-checked:block pointer-events-none">
-                    <Check className="h-4 w-4 text-white" />
-                </div>
             </label>
         );
     }

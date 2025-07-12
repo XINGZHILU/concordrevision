@@ -16,7 +16,7 @@ export function UniversityCard({ university }: {
 }) {
   return (
     <div className="p-3">
-      <Link href={`/ucas/${university.id}`} className="block h-full">
+      <Link href={`/ucas/school/${university.id}`} className="block h-full">
         <div
           className="group relative h-full overflow-hidden rounded-xl border border-border bg-card transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
         >
@@ -54,14 +54,13 @@ export function UniversityCard({ university }: {
 
 export function CourseCard({ course }: {
   course: {
-    slug: string,
+    id: string,
     name: string,
-    universityId: string,
   }
 }) {
   return (
     <div className="p-3">
-      <Link href={`/ucas/${course.universityId}/${course.slug}`} className="block h-full">
+      <Link href={`/ucas/course/${course.id}`} className="block h-full">
         <div
           className="group relative h-full overflow-hidden rounded-xl border border-border bg-card transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
         >

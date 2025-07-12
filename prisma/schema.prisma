@@ -9,14 +9,14 @@ datasource db {
 }
 
 model User {
-    id                 String              @id @default(cuid())
-    email              String              @unique
+    id                 String                    @id @default(cuid())
+    email              String                    @unique
     firstname          String?
     lastname           String?
-    teacher            Boolean             @default(false)
-    admin              Boolean             @default(false)
-    upload_permission  Boolean             @default(false)
-    year               Int                 @default(-1)
+    teacher            Boolean                   @default(false)
+    admin              Boolean                   @default(false)
+    upload_permission  Boolean                   @default(false)
+    year               Int                       @default(-1)
     // posts              Post[]
     notes              Note[]
     olympiad_resources Olympiad_Resource[]
@@ -29,7 +29,7 @@ model User {
 }
 
 model Subject {
-    id          Int               @id @default(autoincrement())
+    id          Int                       @id @default(autoincrement())
     title       String
     desc        String
     level       Int // 0 = F3, 1 = F4, etc.
@@ -37,6 +37,16 @@ model Subject {
     tests       Test[]
     ppq_records PastPaperRecord[]
     subscribers UserSubjectSubscription[]
+}
+
+model UserSubjectSubscription {
+    id                    Int     @id @default(autoincrement())
+    userId                String
+    user                  User    @relation(fields: [userId], references: [id])
+    subjectId             Int
+    subject               Subject @relation(fields: [subjectId], references: [id])
+    test_notification     Boolean @default(true)
+    resource_notification Boolean @default(false)
 }
 
 model Test {
@@ -52,21 +62,21 @@ model Test {
 }
 
 model Note {
-    id        Int           @id @default(autoincrement())
-    title     String
-    subject   Subject       @relation(fields: [subjectId], references: [id])
-    subjectId Int
-    desc      String        @default("")
-    author    User          @relation(fields: [authorId], references: [id])
-    authorId  String
-    type      Int           @default(2) // 0 = Internal Exam Note, 1 = External Exam, 2 = Other
-    test      Test?         @relation(fields: [testId], references: [id])
-    testId    Int?
-    pinned    Boolean       @default(false)
-    colour    Int           @default(0) // 0 = green, 1 = amber, 2 = red
-    approved  Boolean       @default(false)
-    files     StorageFile[]
-    uploadedAt      DateTime @default(now())
+    id         Int           @id @default(autoincrement())
+    title      String
+    subject    Subject       @relation(fields: [subjectId], references: [id])
+    subjectId  Int
+    desc       String        @default("")
+    author     User          @relation(fields: [authorId], references: [id])
+    authorId   String
+    type       Int           @default(2) // 0 = Internal Exam Note, 1 = External Exam, 2 = Other
+    test       Test?         @relation(fields: [testId], references: [id])
+    testId     Int?
+    pinned     Boolean       @default(false)
+    colour     Int           @default(0) // 0 = green, 1 = amber, 2 = red
+    approved   Boolean       @default(false)
+    files      StorageFile[]
+    uploadedAt DateTime      @default(now())
 }
 
 model Olympiad {
@@ -90,7 +100,7 @@ model Olympiad_Resource {
     type       Int           @default(0)
     files      StorageFile[]
     approved   Boolean       @default(false)
-    uploadedAt      DateTime @default(now())
+    uploadedAt DateTime      @default(now())
 }
 
 model StorageFile {
@@ -123,58 +133,54 @@ model PastPaperRecord {
     notes           String  @default("")
 }
 
-model University {
-    id        String       @id
-    name      String       @unique
-    uk        Boolean
-    courses   UcasCourse[]
-    ucasPosts UCASPost[]
-
-    @@index([name])
-}
-
-model UcasCourse {
-    id                      String     @id
-    name                    String
-    universityId            String
-    university              University @relation(fields: [universityId], references: [id], onDelete: Cascade)
-    qualification           String
-    duration_years          Int
-    summary                 String     @db.Text
-    entry_requirements_text String     @db.Text
-    alevel_requirements     String?
-    ib_requirements         String?
-    required_subjects       String[]
-    recommended_subjects    String[]
-    url                     String?
-    ucasPosts               UCASPost[]
-    slug                    String @default("")
-
-    @@index([universityId])
-}
-
 model UCASPost {
     id           Int           @id @default(autoincrement())
     type         Int           @default(0) // 0 = General, 1 = University Specific, 2 = Course Specific
     title        String
     content      String        @default("")
-    university   University?   @relation(fields: [universityId], references: [id])
-    universityId String?
-    course       UcasCourse?   @relation(fields: [courseId], references: [id])
-    courseId     String?
     author       User          @relation(fields: [authorId], references: [id])
     authorId     String
     files        StorageFile[]
     approved     Boolean       @default(false)
-    uploadedAt      DateTime @default(now())
+    uploadedAt   DateTime      @default(now())
+    tags         String[]
+    universities String[]
+    courses      String[]
 }
 
-model UserSubjectSubscription {
-    id        Int     @id @default(autoincrement())
-    userId    String
-    user      User    @relation(fields: [userId], references: [id])
-    subjectId Int
-    subject   Subject @relation(fields: [subjectId], references: [id])
-    test_notification Boolean @default(true)
-    resource_notification Boolean @default(false)
+model Tag {
+    id   String @id
+    name String
+}
+
+model University {
+    id          String       @id
+    name        String
+    uk          Boolean
+    courseLinks CourseLink[]
+}
+
+enum CourseType {
+    STEM
+    Law_Humanities
+    Languages
+    Medicine
+    Art
+}
+
+model Course {
+    id          String       @id
+    name        String
+    courseLinks CourseLink[]
+    type        CourseType
+}
+
+model CourseLink {
+    id           Int        @id @default(autoincrement())
+    university   University @relation(fields: [universityId], references: [id])
+    universityId String
+    course       Course     @relation(fields: [courseId], references: [id])
+    courseId     String
+
+    @@unique([universityId, courseId])
 }

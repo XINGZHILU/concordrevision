@@ -1,0 +1,32 @@
+import { prisma } from '@/lib/prisma';
+import { Suspense } from 'react';
+import { PostList } from './post-list';
+
+export default async function PostsPage() {
+  const posts = await prisma.uCASPost.findMany({
+    include: {
+      author: true
+    },
+    orderBy: {
+      uploadedAt: 'desc'
+    }
+  });
+
+  const tags = await prisma.tag.findMany();
+  const universities = await prisma.university.findMany();
+  const courses = await prisma.course.findMany();
+
+  return (
+    <div className='w-11/12 mx-auto'>
+      <h1 className="text-4xl font-bold my-8">UCAS Posts</h1>
+      <Suspense fallback={<p>Loading posts...</p>}>
+        <PostList 
+          posts={posts} 
+          tags={tags}
+          universities={universities}
+          courses={courses}
+        />
+      </Suspense>
+    </div>
+  )
+} 

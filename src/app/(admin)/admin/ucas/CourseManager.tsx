@@ -1,0 +1,74 @@
+'use client';
+
+import { useState } from 'react';
+import { Course, CourseType } from '@prisma/client';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/use-toast';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+export function CourseManager({ courses }: { courses: Course[] }) {
+    const [newCourseName, setNewCourseName] = useState('');
+    const [newCourseType, setNewCourseType] = useState<CourseType>(CourseType.STEM);
+    const { toast } = useToast();
+
+    async function handleCreateCourse() {
+        if (!newCourseName.trim()) {
+            toast({ title: "Error", description: "Course name cannot be empty.", variant: "destructive" });
+            return;
+        }
+
+        const response = await fetch('/api/admin/courses', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: newCourseName, type: newCourseType }),
+        });
+
+        if (response.ok) {
+            toast({ title: "Success", description: "Course created." });
+            setNewCourseName('');
+            window.location.reload();
+        } else {
+            const error = await response.json();
+            toast({ title: "Error", description: error.message, variant: "destructive" });
+        }
+    }
+
+    return (
+        <div className="p-6 bg-card rounded-lg shadow">
+            <h2 className="text-2xl font-bold mb-6">Manage Courses</h2>
+
+            <div className="mb-8 p-4 border rounded-lg">
+                <h3 className="font-semibold text-lg mb-4">Create New Course</h3>
+                <div className="flex gap-4">
+                    <Input
+                        placeholder="New course name"
+                        value={newCourseName}
+                        onChange={(e) => setNewCourseName(e.target.value)}
+                        className="flex-grow"
+                    />
+                    <Select onValueChange={(value: CourseType) => setNewCourseType(value)} defaultValue={CourseType.STEM}>
+                        <SelectTrigger className="w-[280px]">
+                            <SelectValue placeholder="Select course type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {Object.values(CourseType).map(type => (
+                                <SelectItem key={type} value={type}>{type.replace(/_/g, ' ')}</SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <Button onClick={handleCreateCourse}>Create</Button>
+                </div>
+            </div>
+
+            <div className="space-y-2">
+                {courses.map(course => (
+                    <div key={course.id} className="p-3 bg-muted/50 rounded-lg flex justify-between items-center">
+                        <span className="font-medium">{course.name}</span>
+                        <span className="text-sm text-muted-foreground">{course.type.replace(/_/g, ' ')}</span>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+} 

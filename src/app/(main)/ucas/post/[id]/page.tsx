@@ -1,0 +1,78 @@
+import { prisma } from '@/lib/prisma';
+import { notFound } from 'next/navigation';
+import { Badge } from '@/components/ui/badge';
+import Link from 'next/link';
+import MDViewer from '@/lib/customui/Basic/showMD';
+import { currentUser } from '@clerk/nextjs/server';
+import { Button } from '@/components/ui/button';
+
+export default async function PostPage({ params }: { params: { id: string } }) {
+  const user = await currentUser();
+
+  const post = await prisma.uCASPost.findUnique({
+    where: {
+      id: parseInt(params.id, 10)
+    },
+    include: {
+      author: true
+    }
+  });
+
+  if (!post) {
+    notFound();
+  }
+
+  const dbUser = user ? await prisma.user.findUnique({ where: { id: user.id }}) : null;
+  const canEdit = user && (user.id === post.authorId || (dbUser && dbUser.admin));
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-12 w-11/12 mx-auto">
+      <div className="md:col-span-3">
+        <div className="flex justify-between items-center my-8">
+            <h1 className="text-4xl font-bold">{post.title}</h1>
+            {canEdit && (
+                <Button asChild>
+                <Link href={`/ucas/post/${post.id}/edit`}>Edit Post</Link>
+                </Button>
+            )}
+        </div>
+        <p className="text-muted-foreground">By {post.author.firstname} {post.author.lastname}</p>
+        <div className="my-8">
+            <MDViewer content={post.content} />
+        </div>
+      </div>
+      <aside className="md:col-span-1 md:border-l md:pl-8 py-8">
+        <div className="space-y-8">
+            <div>
+                <h2 className="text-2xl font-bold mb-4">Tags</h2>
+                <div className="flex flex-wrap gap-2">
+                    {post.tags.map(tag => (
+                    <Badge key={tag}>{tag}</Badge>
+                    ))}
+                </div>
+            </div>
+            <div>
+                <h2 className="text-2xl font-bold mb-4">Related Universities</h2>
+                <div className="flex flex-col space-y-2">
+                    {post.universities.map(uni => (
+                        <Link key={uni} href={`/ucas/school?search=${uni}`} className="text-sm text-primary hover:underline">
+                        {uni}
+                        </Link>
+                    ))}
+                </div>
+            </div>
+            <div>
+                <h2 className="text-2xl font-bold mb-4">Related Courses</h2>
+                <div className="flex flex-col space-y-2">
+                    {post.courses.map(course => (
+                        <Link key={course} href={`/ucas/course?search=${course}`} className="text-sm text-primary hover:underline">
+                        {course}
+                        </Link>
+                    ))}
+                </div>
+            </div>
+        </div>
+      </aside>
+    </div>
+  );
+} 

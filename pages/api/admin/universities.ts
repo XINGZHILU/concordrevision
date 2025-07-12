@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '@/lib/prisma';
 import { getAuth } from '@clerk/nextjs/server';
-import { CourseType } from '@prisma/client';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { userId } = getAuth(req);
@@ -15,31 +14,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     if (req.method === 'POST') {
-        const { name, type } = req.body;
+        const { name, uk } = req.body;
 
-        if (!name || !type) {
-            return res.status(400).json({ message: 'Name and type are required' });
-        }
-
-        if (!Object.values(CourseType).includes(type)) {
-            return res.status(400).json({ message: 'Invalid course type' });
+        if (!name) {
+            return res.status(400).json({ message: 'Name is required' });
         }
 
         try {
-            const newCourse = await prisma.course.create({
+            const newUniversity = await prisma.university.create({
                 data: {
                     id: name.toLowerCase().replace(/ /g, '-'),
                     name,
-                    type,
+                    uk,
                 },
             });
-            return res.status(201).json(newCourse);
+            return res.status(201).json(newUniversity);
         } catch (error) {
             console.error(error);
-            return res.status(500).json({ message: 'Failed to create course' });
+            return res.status(500).json({ message: 'Failed to create university' });
         }
     } else {
         res.setHeader('Allow', ['POST']);
         res.status(405).end(`Method ${req.method} Not Allowed`);
     }
-}
+} 

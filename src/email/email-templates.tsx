@@ -12,7 +12,7 @@ export const ApprovedEmailTemplate: React.FC<Readonly<ApprovedEmailTemplateProps
   name, title, area
 }) => (
   <div style={{ fontFamily: 'Arial, sans-serif', lineHeight: '1.6', color: '#333' }}>
-    <div style={{ maxWidth: '600px', margin: 'auto', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden' }}>
+    <div style={{ maxWidth: '800px', margin: 'auto', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden' }}>
       <div style={{ backgroundColor: '#4CAF50', color: 'white', padding: '20px', textAlign: 'center' }}>
         <h1>Resource Approved</h1>
       </div>
@@ -41,7 +41,7 @@ export const RejectedEmailTemplate: React.FC<Readonly<RejectedEmailTemplateProps
   name, title, area
 }) => (
   <div style={{ fontFamily: 'Arial, sans-serif', lineHeight: '1.6', color: '#333' }}>
-    <div style={{ maxWidth: '600px', margin: 'auto', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden' }}>
+    <div style={{ maxWidth: '800px', margin: 'auto', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden' }}>
       <div style={{ backgroundColor: '#F44336', color: 'white', padding: '20px', textAlign: 'center' }}>
         <h1>Resource Rejected</h1>
       </div>
@@ -82,7 +82,7 @@ export const NewTestEmailTemplate: React.FC<Readonly<NewTestEmailTemplateProps>>
   subject, test
 }) => (
   <div style={{ fontFamily: 'Arial, sans-serif', lineHeight: '1.6', color: '#333' }}>
-    <div style={{ maxWidth: '600px', margin: 'auto', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden' }}>
+    <div style={{ maxWidth: '800px', margin: 'auto', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden' }}>
         <div style={{ backgroundColor: '#2196F3', color: 'white', padding: '20px', textAlign: 'center' }}>
             <h1>New Test Announcement</h1>
         </div>
