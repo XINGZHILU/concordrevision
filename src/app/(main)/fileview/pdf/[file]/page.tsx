@@ -22,6 +22,5 @@ export default async function Page({ params } : {params : {file : string}}) {
     }
     return (<PDFViewer
         url={file.path}
-        title={file.filename}
     />);
 }
