@@ -38,8 +38,35 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             console.error(error);
             return res.status(500).json({ message: 'Failed to create course' });
         }
+    } else if (req.method === 'PUT') {
+        const { id, name, type } = req.body;
+        if (!id || !name || !type) {
+            return res.status(400).json({ message: 'ID, name, and type are required' });
+        }
+        try {
+            const updatedCourse = await prisma.course.update({
+                where: { id },
+                data: { name, type },
+            });
+            return res.status(200).json(updatedCourse);
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: 'Failed to update course' });
+        }
+    } else if (req.method === 'DELETE') {
+        const { id } = req.body;
+        if (!id) {
+            return res.status(400).json({ message: 'ID is required' });
+        }
+        try {
+            await prisma.course.delete({ where: { id } });
+            return res.status(204).end();
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: 'Failed to delete course' });
+        }
     } else {
-        res.setHeader('Allow', ['POST']);
+        res.setHeader('Allow', ['POST', 'PUT', 'DELETE']);
         res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 }

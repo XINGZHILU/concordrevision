@@ -15,6 +15,10 @@ export default async function TeachersPage() {
     where: { approved: false },
   });
 
+  const pendingUCASPostCount = await prisma.uCASPost.count({
+    where: { approved: false },
+  });
+
   const userNotes = user ? await prisma.note.findMany({
     where: { authorId: user.id, testId: { not: null } },
     select: { testId: true },
@@ -56,8 +60,8 @@ export default async function TeachersPage() {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{pendingNotesCount + pendingOlympiadResourcesCount}</div>
-            <p className="text-xs text-muted-foreground">{pendingNotesCount} notes & {pendingOlympiadResourcesCount} olympiad resources</p>
+            <div className="text-2xl font-bold">{pendingNotesCount + pendingOlympiadResourcesCount + pendingUCASPostCount}</div>
+            <p className="text-xs text-muted-foreground">{pendingNotesCount} notes & {pendingOlympiadResourcesCount} olympiad resources & {pendingUCASPostCount} UCAS posts</p>
             <Button asChild className="mt-4">
               <Link href="/teachers/approval">Review Content</Link>
             </Button>

@@ -20,12 +20,28 @@ model User {
     // posts              Post[]
     notes              Note[]
     olympiad_resources Olympiad_Resource[]
-    red                Int[]
-    amber              Int[]
-    green              Int[]
     ppq_records        PastPaperRecord[]
     ucasPosts          UCASPost[]
     subscriptions      UserSubjectSubscription[]
+    colourLinks        ColourLink[]
+}
+
+enum Colour {
+    Unclassified
+    Red
+    Amber
+    Green
+}
+
+model ColourLink {
+    id        Int     @id @default(autoincrement())
+    user      User    @relation(fields: [userId], references: [id])
+    userId    String
+    subject   Subject @relation(fields: [subjectId], references: [id])
+    subjectId Int
+    note      Note    @relation(fields: [noteId], references: [id])
+    noteId    Int
+    colour    Colour
 }
 
 model Subject {
@@ -37,6 +53,7 @@ model Subject {
     tests       Test[]
     ppq_records PastPaperRecord[]
     subscribers UserSubjectSubscription[]
+    colourLinks ColourLink[]
 }
 
 model UserSubjectSubscription {
@@ -62,21 +79,21 @@ model Test {
 }
 
 model Note {
-    id         Int           @id @default(autoincrement())
-    title      String
-    subject    Subject       @relation(fields: [subjectId], references: [id])
-    subjectId  Int
-    desc       String        @default("")
-    author     User          @relation(fields: [authorId], references: [id])
-    authorId   String
-    type       Int           @default(2) // 0 = Internal Exam Note, 1 = External Exam, 2 = Other
-    test       Test?         @relation(fields: [testId], references: [id])
-    testId     Int?
-    pinned     Boolean       @default(false)
-    colour     Int           @default(0) // 0 = green, 1 = amber, 2 = red
-    approved   Boolean       @default(false)
-    files      StorageFile[]
-    uploadedAt DateTime      @default(now())
+    id          Int           @id @default(autoincrement())
+    title       String
+    subject     Subject       @relation(fields: [subjectId], references: [id])
+    subjectId   Int
+    desc        String        @default("")
+    author      User          @relation(fields: [authorId], references: [id])
+    authorId    String
+    type        Int           @default(2) // 0 = Internal Exam Note, 1 = External Exam, 2 = Other
+    test        Test?         @relation(fields: [testId], references: [id])
+    testId      Int?
+    pinned      Boolean       @default(false)
+    approved    Boolean       @default(false)
+    files       StorageFile[]
+    uploadedAt  DateTime      @default(now())
+    colourLinks ColourLink[]
 }
 
 model Olympiad {
@@ -100,6 +117,7 @@ model Olympiad_Resource {
     type       Int           @default(0)
     files      StorageFile[]
     approved   Boolean       @default(false)
+    pinned     Boolean       @default(false)
     uploadedAt DateTime      @default(now())
 }
 
@@ -142,6 +160,7 @@ model UCASPost {
     authorId     String
     files        StorageFile[]
     approved     Boolean       @default(false)
+    pinned       Boolean       @default(false)
     uploadedAt   DateTime      @default(now())
     tags         String[]
     universities String[]

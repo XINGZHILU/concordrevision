@@ -7,53 +7,19 @@ import { Collapsible, Tabs } from "@chakra-ui/react";
 import { LuFolder, LuBookCheck, LuBook, LuSearch, LuX } from "react-icons/lu";
 import MDViewer from "@/lib/customui/Basic/showMD";
 import SubscriptionManager from "./SubscriptionManager";
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { Colour, ColourLink, Note as PrismaNote, Test as PrismaTest, Subject as PrismaSubject } from '@prisma/client';
 
-interface Note {
-    id: number;
-    title: string;
-    desc: string;
-    subjectId: number;
-    type: number;
-    approved: boolean;
-    pinned: boolean;
-    author: {
-        id: string;
-        firstname: string | null;
-        lastname: string | null;
-    };
-    uploadedAt: Date;
-}
+type NoteWithAuthor = PrismaNote & { author: { id: string; firstname: string | null; lastname: string | null; } };
 
-interface Test {
-    id: number;
-    title: string;
-    desc: string;
-    subjectId: number;
-    date: string | Date;
-    type: number;
-    topics: string[];
-}
+const colorMapping: { [key in Colour]: { className: string } } = {
+    Unclassified: { className: "bg-gray-500 hover:bg-gray-600" },
+    Green: { className: "bg-green-500 hover:bg-green-600" },
+    Amber: { className: "bg-amber-500 hover:bg-amber-600" },
+    Red: { className: "bg-red-500 hover:bg-red-600" },
+};
 
-interface Subject {
-    id: number;
-    title: string;
-    desc: string;
-    level: number;
-}
-
-interface SearchableSubjectContentProps {
-    subject: Subject;
-    notes: Note[];
-    tests: Test[];
-    userColours?: { red: number[]; amber: number[]; green: number[] };
-    yearGroupName: string;
-    currentUserId?: string;
-}
-
-/**
- * Client component that provides search functionality for subject resources
- * Filters resources, upcoming tests, and past tests based on search query
- */
 const SearchableSubjectContent = ({ 
     subject, 
     notes, 
@@ -61,63 +27,57 @@ const SearchableSubjectContent = ({
     userColours, 
     yearGroupName,
     currentUserId
-}: SearchableSubjectContentProps) => {
+}: { 
+    subject: PrismaSubject; 
+    notes: NoteWithAuthor[]; 
+    tests: PrismaTest[]; 
+    userColours?: ColourLink[]; 
+    yearGroupName: string; 
+    currentUserId?: string 
+}) => {
     const [searchQuery, setSearchQuery] = useState('');
+    const [selectedColor, setSelectedColor] = useState<Colour | 'all'>('all');
 
-    /**
-     * Function to get user's color preference for a note
-     */
-    const getUserColor = (noteId: number) => {
-        if (!userColours) return -1;
-        
-        if (userColours.red.includes(noteId)) return 2;
-        if (userColours.amber.includes(noteId)) return 1;
-        if (userColours.green.includes(noteId)) return 0;
-        return -1;
+    const getUserColor = (noteId: number): Colour => {
+        const link = userColours?.find(link => link.noteId === noteId);
+        return link ? link.colour : "Unclassified";
     };
 
-    /**
-     * Filter notes based on search query
-     */
-    const filterNotes = (notes: Note[], query: string): Note[] => {
-        const filtered = query.trim() 
-            ? notes.filter(note => 
-                note.title.toLowerCase().includes(query.toLowerCase()) ||
-                note.desc.toLowerCase().includes(query.toLowerCase())
-              )
-            : notes;
-
-        return filtered.sort((a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime());
+    const filterNotes = (notes: NoteWithAuthor[], query: string): NoteWithAuthor[] => {
+        if (!query.trim()) return notes;
+        return notes.filter(note => 
+            note.title.toLowerCase().includes(query.toLowerCase()) ||
+            note.desc.toLowerCase().includes(query.toLowerCase())
+        );
     };
 
-    /**
-     * Filter tests based on search query
-     */
-    const filterTests = (tests: Test[], query: string): Test[] => {
-        const filtered = query.trim()
-            ? tests.filter(test => 
-                test.title.toLowerCase().includes(query.toLowerCase()) ||
-                test.desc.toLowerCase().includes(query.toLowerCase()) ||
-                test.topics.some(topic => 
-                    topic.toLowerCase().includes(query.toLowerCase())
-                )
-              )
-            : tests;
-        
-        return filtered.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    const filterTests = (tests: PrismaTest[], query: string): PrismaTest[] => {
+        if (!query.trim()) return tests;
+        return tests.filter(test => 
+            test.title.toLowerCase().includes(query.toLowerCase()) ||
+            test.desc.toLowerCase().includes(query.toLowerCase()) ||
+            test.topics.some(topic => 
+                topic.toLowerCase().includes(query.toLowerCase())
+            )
+        );
     };
 
-    // Filter resources (notes)
     const filteredResources = useMemo(() => {
         const approvedNotes = notes.filter(note => note.type === 2 && note.approved);
-        return filterNotes(approvedNotes, searchQuery);
-    }, [notes, searchQuery]);
+        const searchedNotes = filterNotes(approvedNotes, searchQuery);
 
-    // Separate tests into upcoming and past
+        if (selectedColor === 'all') {
+            return searchedNotes;
+        }
+
+        return searchedNotes.filter(note => getUserColor(note.id) === selectedColor);
+
+    }, [notes, searchQuery, selectedColor, userColours]);
+
     const { upcomingTests, pastTests } = useMemo(() => {
         const today = new Date();
-        const upcoming: Test[] = [];
-        const past: Test[] = [];
+        const upcoming: PrismaTest[] = [];
+        const past: PrismaTest[] = [];
 
         tests.forEach(test => {
             const testDate = new Date(test.date).getTime();
@@ -136,17 +96,11 @@ const SearchableSubjectContent = ({
         };
     }, [tests, searchQuery]);
 
-    /**
-     * Clear search input
-     */
     const clearSearch = () => {
         setSearchQuery('');
     };
 
-    /**
-     * Render resource cards
-     */
-    const renderResourceCards = (resources: Note[]) => {
+    const renderResourceCards = (resources: NoteWithAuthor[]) => {
         if (resources.length === 0) {
             return searchQuery ? (
                 <div className="text-center py-8">
@@ -158,7 +112,7 @@ const SearchableSubjectContent = ({
         }
 
         return (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {resources.map((note) => (
                     <EditableNoteCard
                         key={note.id}
@@ -171,10 +125,7 @@ const SearchableSubjectContent = ({
         );
     };
 
-    /**
-     * Render test cards
-     */
-    const renderTestCards = (testList: Test[]) => {
+    const renderTestCards = (testList: PrismaTest[]) => {
         if (testList.length === 0) {
             return searchQuery ? (
                 <div className="text-center py-8">
@@ -215,8 +166,7 @@ const SearchableSubjectContent = ({
             </Collapsible.Root>
             <br />
 
-            {/* Search Bar */}
-            <div className="mb-6">
+            <div className="mb-6 space-y-4">
                 <div className="relative max-w-md">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <LuSearch className="h-4 w-4 text-muted-foreground" />
@@ -242,9 +192,33 @@ const SearchableSubjectContent = ({
                         Searching for: <span className="font-medium">&quot;{searchQuery}&quot;</span>
                     </p>
                 )}
+
+                <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-sm font-medium text-muted-foreground mr-2">Filter by status:</span>
+                    <Button
+                        variant={selectedColor === 'all' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setSelectedColor('all')}
+                    >
+                        All
+                    </Button>
+                    {(Object.keys(colorMapping) as Colour[]).map((key) => (
+                        <Button
+                            key={key}
+                            variant={selectedColor === key ? 'default' : 'outline'}
+                            size="sm"
+                            onClick={() => setSelectedColor(key)}
+                            className={cn(
+                                "capitalize",
+                                selectedColor === key && `${colorMapping[key].className} text-white`
+                            )}
+                        >
+                            {key}
+                        </Button>
+                    ))}
+                </div>
             </div>
 
-            {/* Tabs with filtered content */}
             <div>
                 <Tabs.Root defaultValue="resources" variant="plain" rounded="l3">
                     <Tabs.List bg="bg.muted" rounded="l3" p="1">

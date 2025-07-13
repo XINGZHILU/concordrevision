@@ -10,10 +10,17 @@ export default async function UcasAdminPage() {
                     course: true
                 }
             }
+        },
+        orderBy: {
+          name: 'asc'
         }
     });
 
-    const courses = await prisma.course.findMany();
+    const courses = await prisma.course.findMany({
+      orderBy: {
+        name: 'asc'
+      }
+    });
 
     return (
         <div className="w-11/12 mx-auto">

@@ -4,12 +4,20 @@ import { PostList } from './post-list';
 
 export default async function PostsPage() {
   const posts = await prisma.uCASPost.findMany({
+    where: {
+      approved: true
+    },
+    orderBy: [
+      {
+        pinned: 'desc'
+      },
+      {
+        uploadedAt: 'desc'
+      }
+    ],
     include: {
       author: true
     },
-    orderBy: {
-      uploadedAt: 'desc'
-    }
   });
 
   const tags = await prisma.tag.findMany();

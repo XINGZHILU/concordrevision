@@ -25,6 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         title,
         content,
         authorId: userId,
+        approved: dbUser.teacher || dbUser.admin,
         tags,
         universities,
         courses,

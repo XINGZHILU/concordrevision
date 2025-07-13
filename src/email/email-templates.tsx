@@ -60,6 +60,62 @@ export const RejectedEmailTemplate: React.FC<Readonly<RejectedEmailTemplateProps
   </div>
 );
 
+interface UCASPostApprovedEmailTemplateProps {
+  name: string;
+  title: string;
+}
+
+export const UCASPostApprovedEmailTemplate: React.FC<Readonly<UCASPostApprovedEmailTemplateProps>> = ({
+  name, title
+}) => (
+  <div style={{ fontFamily: 'Arial, sans-serif', lineHeight: '1.6', color: '#333' }}>
+    <div style={{ maxWidth: '800px', margin: 'auto', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden' }}>
+      <div style={{ backgroundColor: '#4CAF50', color: 'white', padding: '20px', textAlign: 'center' }}>
+        <h1>UCAS Post Approved</h1>
+      </div>
+      <div style={{ padding: '20px' }}>
+        <p>Dear {name},</p>
+        <p>We are delighted to inform you that your UCAS post, &quot;<b>{title}</b>,&quot; has been <b>approved</b> and is now available on Concord Student Hub.</p>
+        <p>Your contribution is greatly valued and helps enrich our academic community. Thank you for your support.</p>
+        <br />
+        <p>Best wishes,</p>
+        <p><b>The Concord Student Hub Team</b></p>
+      </div>
+      <div style={{ backgroundColor: '#f8f8f8', padding: '15px', textAlign: 'center', fontSize: '12px', color: '#888', borderTop: '1px solid #ddd' }}>
+        <p>&copy; {new Date().getFullYear()} Concord Student Hub. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+);
+
+interface UCASPostRejectedEmailTemplateProps {
+  name: string;
+  title: string;
+}
+
+export const UCASPostRejectedEmailTemplate: React.FC<Readonly<UCASPostRejectedEmailTemplateProps>> = ({
+  name, title
+}) => (
+  <div style={{ fontFamily: 'Arial, sans-serif', lineHeight: '1.6', color: '#333' }}>
+    <div style={{ maxWidth: '800px', margin: 'auto', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden' }}>
+      <div style={{ backgroundColor: '#F44336', color: 'white', padding: '20px', textAlign: 'center' }}>
+        <h1>UCAS Post Rejected</h1>
+      </div>
+      <div style={{ padding: '20px' }}>
+        <p>Dear {name},</p>
+        <p>We are writing to inform you about your recent UCAS post, &quot;<b>{title}</b>.&quot; After careful review, we regret to inform you that it has been <b>rejected</b>.</p>
+        <p>We appreciate your effort and encourage you to continue supporting our academic community. Please feel free to submit other resources in the future.</p>
+        <br />
+        <p>Best regards,</p>
+        <p><b>The Concord Student Hub Team</b></p>
+      </div>
+      <div style={{ backgroundColor: '#f8f8f8', padding: '15px', textAlign: 'center', fontSize: '12px', color: '#888', borderTop: '1px solid #ddd' }}>
+        <p>&copy; {new Date().getFullYear()} Concord Student Hub. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+);
+
 interface NewTestEmailTemplateProps {
   subject: {
     title: string;

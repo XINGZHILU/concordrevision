@@ -14,6 +14,17 @@ interface OlympiadResource {
   type: number;
   approved: boolean;
   uploadedAt: Date;
+  authorId: string;
+  author: {
+    id: string;
+    email: string;
+    firstname: string | null;
+    lastname: string | null;
+    teacher: boolean;
+    admin: boolean;
+    upload_permission: boolean;
+    year: number;
+  };
 }
 
 interface Olympiad {
@@ -25,9 +36,22 @@ interface Olympiad {
   link_descriptions: string[];
 }
 
+interface User {
+  id: string;
+  email: string;
+  firstname: string | null;
+  lastname: string | null;
+  teacher: boolean;
+  admin: boolean;
+  upload_permission: boolean;
+  year: number;
+}
+
+
 interface SearchableOlympiadContentProps {
   olympiad: Olympiad;
   resources: OlympiadResource[];
+  user: User;
 }
 
 /**
@@ -36,7 +60,8 @@ interface SearchableOlympiadContentProps {
  */
 const SearchableOlympiadContent = ({
   olympiad,
-  resources
+  resources,
+  user
 }: SearchableOlympiadContentProps) => {
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -60,7 +85,7 @@ const SearchableOlympiadContent = ({
       resource.title.toLowerCase().includes(lowerQuery) ||
       resource.desc.toLowerCase().includes(lowerQuery) ||
       getResourceTypeLabel(resource.type).toLowerCase().includes(lowerQuery)
-    ).sort((a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime());
+    );
   }, [resources, searchQuery]);
 
   /**
@@ -251,16 +276,7 @@ const SearchableOlympiadContent = ({
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredResources.map((resource) => (
               <div key={resource.id} className="relative">
-                <OlympiadResourceCard resource={resource} />
-                {/* Resource type badge */}
-                <div className="absolute top-2 right-2">
-                  <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${resource.type === 0 ? 'bg-blue-500/10 text-blue-500' :
-                      resource.type === 1 ? 'bg-green-500/10 text-green-500' :
-                        'bg-purple-500/10 text-purple-500'
-                    }`}>
-                    {getResourceTypeLabel(resource.type)}
-                  </span>
-                </div>
+                <OlympiadResourceCard resource={resource} canEdit={user.admin || (resource.authorId == user.id)} />
               </div>
             ))}
           </div>

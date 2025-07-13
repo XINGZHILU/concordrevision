@@ -7,7 +7,9 @@ import { isNumeric } from "@/lib/utils";
 import FileList from "@/lib/customui/Basic/filelist";
 import MDViewer from "@/lib/customui/Basic/showMD";
 import Link from "next/link";
-import { LuArrowLeft, LuFileText, LuFile, LuExternalLink } from "react-icons/lu";
+import { LuArrowLeft, LuFileText, LuFile, LuExternalLink, LuPencil } from "react-icons/lu";
+import { currentUser } from "@clerk/nextjs/server";
+import { PinButton } from "./PinButton";
 
 export default async function Page({ params }: { params: { oid: string, rid: string } }) {
     const oid = params.oid;
@@ -35,6 +37,7 @@ export default async function Page({ params }: { params: { oid: string, rid: str
             files: true,
             author: {
                 select: {
+                    id: true,
                     firstname: true,
                     lastname: true
                 }
@@ -50,6 +53,11 @@ export default async function Page({ params }: { params: { oid: string, rid: str
     const authorName = resource.author.firstname && resource.author.lastname
         ? `${resource.author.firstname} ${resource.author.lastname}`
         : "Anonymous";
+
+    const user = await currentUser();
+    const dbUser = user ? await prisma.user.findUnique({ where: { id: user.id } }) : null;
+    const isAdmin = dbUser?.admin ?? false;
+    const canEdit = user && (resource.author.id === user.id || isAdmin);
 
     return (
         <div className="container mx-auto px-4 py-6 max-w-7xl">
@@ -70,9 +78,18 @@ export default async function Page({ params }: { params: { oid: string, rid: str
                     <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
                         {resource.title}
                     </h1>
-                    <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
-                        {resourceType}
-                    </span>
+                    <div className="flex items-center gap-2">
+                        <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
+                            {resourceType}
+                        </span>
+                        {canEdit && (
+                            <Link href={`olympiads/${oid}/resources/${rid}/edit`} className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors shadow-sm">
+                                <LuPencil className="h-4 w-4 mr-2" />
+                                Edit
+                            </Link>
+                        )}
+                        {isAdmin && <PinButton resourceId={resource.id} initialPinned={resource.pinned} />}
+                    </div>
                 </div>
                 <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
                     <span className="font-medium">{olympiad.title}</span>

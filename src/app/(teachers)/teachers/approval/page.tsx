@@ -4,7 +4,8 @@ import { prisma } from "@/lib/prisma";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FilteredNoteList from "@/app/(teachers)/teachers/approval/filtered-note-list";
 import FilteredOlympiadResourceList from "@/app/(teachers)/teachers/approval/filtered-olympiad-resource-list";
-import { LuFolder, LuFlaskConical } from "react-icons/lu"
+import { LuFolder, LuFlaskConical, LuNewspaper } from "react-icons/lu"
+import FilteredUCASPostList from "./filtered-ucas-post-list";
 
 export default async function ApprovalPage() {
 
@@ -62,7 +63,27 @@ export default async function ApprovalPage() {
         },
     });
 
-    const totalPendingApprovals = unapprovedNotes.length + unapprovedResources.length;
+    const unapprovedUCASPosts = await prisma.uCASPost.findMany({
+        where: {
+            approved: false,
+        },
+        include: {
+            author: {
+                select: {
+                    firstname: true,
+                    lastname: true,
+                    email: true,
+                },
+            },
+        },
+        orderBy: {
+            uploadedAt: 'desc',
+        },
+    });
+
+    const tags = await prisma.tag.findMany();
+
+    const totalPendingApprovals = unapprovedNotes.length + unapprovedResources.length + unapprovedUCASPosts.length;
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -86,12 +107,19 @@ export default async function ApprovalPage() {
                             <LuFlaskConical className="mr-2" />
                             Olympiad Resources ({unapprovedResources.length})
                         </TabsTrigger>
+                        <TabsTrigger value="ucas">
+                            <LuNewspaper className="mr-2" />
+                            UCAS Posts ({unapprovedUCASPosts.length})
+                        </TabsTrigger>
                     </TabsList>
                     <TabsContent value="notes">
                         <FilteredNoteList notes={unapprovedNotes} />
                     </TabsContent>
                     <TabsContent value="olympiads">
                         <FilteredOlympiadResourceList resources={unapprovedResources} />
+                    </TabsContent>
+                    <TabsContent value="ucas">
+                        <FilteredUCASPostList posts={unapprovedUCASPosts} tags={tags} />
                     </TabsContent>
                 </Tabs>
             </div>

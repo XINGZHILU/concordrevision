@@ -43,11 +43,17 @@ export default async function handler(
             }
         });
 
-        if (!existingNote) {
+        const userRecord = await prisma.user.findUnique({
+          where: {
+            id: userId
+          }
+        });
+
+        if (!existingNote || !userRecord) {
             return res.status(404).json({ error: 'Resource not found' });
         }
 
-        if (existingNote.authorId !== userId) {
+        if (existingNote.authorId !== userId && !userRecord.admin) {
             return res.status(403).json({ error: 'You can only edit your own resources' });
         }
 

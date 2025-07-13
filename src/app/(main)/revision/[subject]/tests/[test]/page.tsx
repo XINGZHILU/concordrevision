@@ -12,12 +12,12 @@ import { TestBadge } from "@/lib/customui/Basic/Badges";
 
 
 export default async function Page(req: any, res: any) {
-    function Get_Colour(usr: { red: number[]; amber: number[]; green: number[] }, nid: number) {
-        if (usr.red.includes(nid)) {
+    function Get_Colour(colours: { red: number[]; amber: number[]; green: number[] }, nid: number) {
+        if (colours.red.includes(nid)) {
             return 2;
-        } else if (usr.amber.includes(nid)) {
+        } else if (colours.amber.includes(nid)) {
             return 1;
-        } else if (usr.green.includes(nid)) {
+        } else if (colours.green.includes(nid)) {
             return 0;
         } else {
             return -1;
@@ -95,15 +95,18 @@ export default async function Page(req: any, res: any) {
         </div>)
     }
 
-    const record = await prisma.user.findUnique({
+    const colourLinks = await prisma.colourLink.findMany({
         where: {
-            id: user.id
+            userId: user.id,
+            subjectId: +sid,
         }
     });
 
-    if (!record) {
-        return <h1>User not found</h1>;
-    }
+    const userColours = {
+        red: colourLinks.filter(link => link.colour === 'Red').map(link => link.noteId),
+        amber: colourLinks.filter(link => link.colour === 'Amber').map(link => link.noteId),
+        green: colourLinks.filter(link => link.colour === 'Green').map(link => link.noteId),
+    };
 
     return (<div className="w-full">
         <h1>{year_group_names[subject.level]} {subject.title} - {test.title}</h1>
@@ -126,7 +129,7 @@ export default async function Page(req: any, res: any) {
                 ) : (
                     notes.map((note) => (
                         <div key={note.id}>
-                            <TestNoteCard note={note as any} colour={Get_Colour(record, note.id)} />
+                            <TestNoteCard note={note as any} colour={Get_Colour(userColours, note.id)} />
                         </div>
                     ))
                 )

@@ -26,6 +26,17 @@ export default async function Page(req: any, res: any) {
         },
         include: {
             notes: {
+                where: {
+                    approved: true
+                },
+                orderBy: [
+                    {
+                        pinned: 'desc'
+                    },
+                    {
+                        uploadedAt: 'desc'
+                    }
+                ],
                 include: {
                     author: {
                         select: {
@@ -46,30 +57,19 @@ export default async function Page(req: any, res: any) {
 
     // Get user data for color preferences
     const user = await currentUser();
-    let userColours: { red: number[]; amber: number[]; green: number[] } | undefined;
-
-    if (user) {
-        const record = await prisma.user.findUnique({
-            where: {
-                id: user.id
-            }
-        });
-
-        if (record) {
-            userColours = {
-                red: record.red,
-                amber: record.amber,
-                green: record.green
-            };
+    const colourLinks = user ? await prisma.colourLink.findMany({
+        where: {
+            userId: user.id,
+            subjectId: +sid,
         }
-    }
+    }) : [];
 
     return (
         <SearchableSubjectContent
             subject={subject}
             notes={subject.notes}
             tests={subject.tests}
-            userColours={userColours}
+            userColours={colourLinks}
             yearGroupName={year_group_names[subject.level]}
             currentUserId={user?.id}
         />

@@ -7,6 +7,6 @@ import React from 'react';
 export default function MDViewer({ content }: { content: string }) {
     const { resolvedTheme } = useTheme();
     return <div className="container" data-color-mode={resolvedTheme}>
-        <MDEditor.Markdown source={content} />
+        <MDEditor.Markdown source={content} style={{ background: 'transparent' }} />
     </div>;
 }

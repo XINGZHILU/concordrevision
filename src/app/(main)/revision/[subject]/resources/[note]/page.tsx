@@ -11,23 +11,9 @@ import FileList from "@/lib/customui/Basic/filelist";
 import MDViewer from "@/lib/customui/Basic/showMD";
 import Link from "next/link";
 import { LuArrowLeft, LuFileText, LuFile, LuPencil } from "react-icons/lu";
+import { PinButton } from "./PinButton";
 
 export default async function Page({ params }: { params: { subject: string, note: string } }) {
-    function Get_Colour(usr: { red: number[]; amber: number[]; green: number[] }, nid: number) {
-        if (usr.red.includes(nid)) {
-            return 2;
-        }
-        else if (usr.amber.includes(nid)) {
-            return 1;
-        }
-        else if (usr.green.includes(nid)) {
-            return 0;
-        }
-        else {
-            return -1;
-        }
-    }
-
     const sid = params.subject;
     const nid = params.note;
 
@@ -71,14 +57,22 @@ export default async function Page({ params }: { params: { subject: string, note
     }
 
     const user = await currentUser();
-    const colour = user ? await getUserColor(user.id, note.id) : -1;
+    const dbUser = user ? await prisma.user.findUnique({ where: { id: user.id } }) : null;
+    const colourLink = user ? await prisma.colourLink.findFirst({
+        where: {
+            userId: user.id,
+            noteId: note.id,
+        }
+    }) : null;
+    const colour = colourLink?.colour || "Unclassified";
 
     const authorName = note.author.firstname && note.author.lastname
         ? `${note.author.firstname} ${note.author.lastname}`
         : "Anonymous";
 
-    // Check if current user is the author
-    const canEdit = user && note.author.id === user.id;
+    // Check if current user is the author or admin
+    const canEdit = user && (note.author.id === user.id || (dbUser && dbUser.admin));
+    const isAdmin = dbUser?.admin ?? false;
 
     return (
         <div className="container mx-auto px-4 py-6 max-w-7xl">
@@ -107,25 +101,27 @@ export default async function Page({ params }: { params: { subject: string, note
                         </div>
                     </div>
                     
-                    {/* Edit button - only show for authors */}
-                    {canEdit && (
-                        <div className="flex-shrink-0">
+                    <div className="flex-shrink-0 flex items-center gap-2">
+                        {canEdit && (
                             <Link
-                                href={`/upload/revision/${subject.id}/resources/${note.id}/edit`}
+                                href={`/revision/${subject.id}/resources/${note.id}/edit`}
                                 className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors shadow-sm"
                             >
                                 <LuPencil className="h-4 w-4 mr-2" />
                                 Edit Resource
                             </Link>
-                        </div>
-                    )}
+                        )}
+                        {isAdmin && (
+                            <PinButton noteId={note.id} initialPinned={note.pinned} />
+                        )}
+                    </div>
                 </div>
             </div>
 
             {user && (
                 <div className="mb-6">
                     <h2 className="text-lg font-medium mb-2">My Knowledge Level</h2>
-                    <ColourSelector nid={note.id} uid={user.id} subject={subject.id} Original={colour} />
+                    <ColourSelector noteId={note.id} subjectId={subject.id} initialColour={colour} />
                 </div>
             )}
 
@@ -165,18 +161,4 @@ export default async function Page({ params }: { params: { subject: string, note
             </div>
         </div>
     );
-
-    async function getUserColor(userId: string, noteId: number) {
-        const record = await prisma.user.findUnique({
-            where: {
-                id: userId
-            }
-        });
-
-        if (!record) {
-            return -1;
-        }
-
-        return Get_Colour(record, noteId);
-    }
 }
