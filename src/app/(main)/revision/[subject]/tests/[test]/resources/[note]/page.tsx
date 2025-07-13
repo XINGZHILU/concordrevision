@@ -13,12 +13,14 @@ import Link from "next/link";
 import { LuArrowLeft, LuFileText, LuFile, LuPencil } from "react-icons/lu";
 import { PinButton } from "./PinButton";
 
-export default async function Page({ params }: { params: { subject: string, note: string } }) {
+export default async function Page({ params }: { params: { subject: string, test: string, note: string } }) {
   const page_params = await params;
   const sid = page_params.subject;
   const nid = page_params.note;
+  const tid = page_params.test;
 
-  if (!isNumeric(sid) || !isNumeric(nid)) {
+
+  if (!isNumeric(sid) || !isNumeric(nid) || !isNumeric(tid)) {
     notFound();
   }
 
@@ -27,11 +29,6 @@ export default async function Page({ params }: { params: { subject: string, note
       id: +sid
     },
   });
-
-
-  if (!subject) {
-    notFound();
-  }
 
   const note = await prisma.note.findUnique({
     where: {
@@ -49,11 +46,19 @@ export default async function Page({ params }: { params: { subject: string, note
     }
   });
 
-  if (!note) {
+  const test = await prisma.test.findUnique({
+    where: {
+      id: +tid
+    },
+  });
+
+  console.log(subject, note, test);
+
+  if (!note || !test || !subject) {
     notFound();
   }
 
-  if (!note.approved) {
+  if (!note.approved || note.testId != test.id || note.subjectId != subject.id) {
     notFound();
   }
 
@@ -80,11 +85,11 @@ export default async function Page({ params }: { params: { subject: string, note
       {/* Breadcrumb */}
       <div className="mb-6">
         <Link
-          href={`/revision/${subject.id}`}
+          href={`/revision/${subject.id}/tests/${test.id}`}
           className="flex items-center text-primary hover:text-primary/80 transition-colors"
         >
           <LuArrowLeft className="mr-2" />
-          <span>Back to {subject.title}</span>
+          <span>Back to {test.title}</span>
         </Link>
       </div>
 
@@ -96,6 +101,8 @@ export default async function Page({ params }: { params: { subject: string, note
               {note.title}
             </h1>
             <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+              <span className="font-medium">{test.title}</span>
+              <span>•</span>
               <span className="font-medium">{year_group_names[subject.level]} {subject.title}</span>
               <span>•</span>
               <span>Contributed by {authorName}</span>
@@ -105,7 +112,7 @@ export default async function Page({ params }: { params: { subject: string, note
           <div className="flex-shrink-0 flex items-center gap-2">
             {canEdit && (
               <Link
-                href={`/revision/${subject.id}/resources/${note.id}/edit`}
+                href={`/revision/${subject.id}/test/${test.id}/resources/${note.id}/edit`}
                 className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors shadow-sm"
               >
                 <LuPencil className="h-4 w-4 mr-2" />

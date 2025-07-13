@@ -38,7 +38,7 @@ export function TestNoteCard({ note, colour }: {
 }) {
   // https://flowbite.com/docs/components/card/
   return (
-    <Link href={`/revision/${note.subjectId}/tests/${note.testId}/${note.id}`}>
+    <Link href={`/revision/${note.subjectId}/tests/${note.testId}/resources/${note.id}`}>
       <div
         className={`max-w-sm p-6 bg-card border-border border-2 rounded-lg shadow-sm`}>
         <h5 className="mb-2 text-xl font-bold tracking-tight text-card-foreground">{note.title}</h5>
@@ -130,7 +130,7 @@ const cardVariants = cva(
 );
 
 
-export function OlympiadResourceCard({ resource, user, canEdit }: {
+export function OlympiadResourceCard({ resource, canEdit }: {
   resource: {
     id: number,
     title: string,
