@@ -1,11 +1,11 @@
+import PDFViewer from "@/lib/customui/Basic/PdfViewer";
 import { prisma } from "@/lib/prisma";
-import { notFound } from "next/navigation";
 import { isNumeric } from "@/lib/utils";
-import PDFViewer from "@/lib/customui/Basic/pdf_frame";
+import { notFound } from "next/navigation";
 
-export default async function Page(req: any, res: any) {
-    const params = await req.params;
-    const fileid = params.file;
+export default async function Page({ params } : {params : {file : string}}) {
+    const page_params = await params;
+    const fileid = page_params.file;
 
     if (!isNumeric(fileid)) {
         notFound();
@@ -20,7 +20,6 @@ export default async function Page(req: any, res: any) {
     if (!file) {
         notFound();
     }
-
     return (<PDFViewer
         url={file.path}
         title={file.filename}
