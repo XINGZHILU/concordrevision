@@ -7,11 +7,7 @@
   transition: all 0.3s ease;
   overflow: hidden;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-  font-family:
-    "Inter",
-    -apple-system,
-    BlinkMacSystemFont,
-    sans-serif;
+  font-family: "Roboto", -apple-system, BlinkMacSystemFont, sans-serif;
   width: 800px;
   max-width: 95vw;
 }
