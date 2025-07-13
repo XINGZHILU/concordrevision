@@ -20,16 +20,28 @@ export default async function PostsPage() {
     },
   });
 
-  const tags = await prisma.tag.findMany();
-  const universities = await prisma.university.findMany();
-  const courses = await prisma.course.findMany();
+  const tags = await prisma.tag.findMany({
+    orderBy: {
+      name: 'asc'
+    }
+  });
+  const universities = await prisma.university.findMany({
+    orderBy: {
+      name: 'asc'
+    }
+  });
+  const courses = await prisma.course.findMany({
+    orderBy: {
+      name: 'asc'
+    }
+  });
 
   return (
     <div className='w-11/12 mx-auto'>
       <h1 className="text-4xl font-bold my-8">UCAS Posts</h1>
       <Suspense fallback={<p>Loading posts...</p>}>
-        <PostList 
-          posts={posts} 
+        <PostList
+          posts={posts}
           tags={tags}
           universities={universities}
           courses={courses}
