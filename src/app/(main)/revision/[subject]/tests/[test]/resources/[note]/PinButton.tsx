@@ -20,7 +20,6 @@ export function PinButton({ noteId, initialPinned }: { noteId: number, initialPi
         title: updatedNote.pinned ? "Resource Pinned" : "Resource Unpinned",
         description: `The resource has been ${updatedNote.pinned ? 'pinned' : 'unpinned'}.`,
       });
-      window.location.reload();
     } else {
       const error = await response.json();
       toaster.error({ title: "Error", description: error.message });

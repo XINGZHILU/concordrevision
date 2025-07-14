@@ -20,7 +20,6 @@ export function PinButton({ postId, initialPinned }: { postId: number, initialPi
         title: updatedPost.pinned ? "Post Pinned" : "Post Unpinned",
         description: `The post has been ${updatedPost.pinned ? 'pinned' : 'unpinned'}.`,
       });
-      window.location.reload();
     } else {
       const error = await response.json();
       toaster.error({ title: "Error", description: error.message });
