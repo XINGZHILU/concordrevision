@@ -108,7 +108,7 @@ export function EditUCASPostForm({ post, tags, universities, courses }: {
                 description: "The post has been updated.",
             });
             
-            router.push(`/ucas/post/${post.id}`);
+            router.push(`/ucas/posts/${post.id}`);
             router.refresh();
 
         } catch (error: unknown) {

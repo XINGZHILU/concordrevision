@@ -18,6 +18,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { Textarea } from '@/components/ui/textarea';
 
 export function CourseManager({ courses }: { courses: Course[] }) {
     const [newCourseName, setNewCourseName] = useState('');
@@ -25,6 +26,7 @@ export function CourseManager({ courses }: { courses: Course[] }) {
     const [editingCourseId, setEditingCourseId] = useState<string | null>(null);
     const [editedName, setEditedName] = useState('');
     const [editedType, setEditedType] = useState<CourseType>(CourseType.STEM);
+    const [editedDescription, setEditedDescription] = useState('');
     const { toast } = useToast();
 
     async function handleCreateCourse() {
@@ -58,7 +60,7 @@ export function CourseManager({ courses }: { courses: Course[] }) {
         const response = await fetch('/api/admin/courses', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: courseId, name: editedName, type: editedType }),
+            body: JSON.stringify({ id: courseId, name: editedName, type: editedType, description: editedDescription }),
         });
 
         if (response.ok) {
@@ -91,6 +93,7 @@ export function CourseManager({ courses }: { courses: Course[] }) {
         setEditingCourseId(course.id);
         setEditedName(course.name);
         setEditedType(course.type);
+        setEditedDescription(course.description || '');
     };
 
     const cancelEditing = () => {
@@ -127,28 +130,37 @@ export function CourseManager({ courses }: { courses: Course[] }) {
 
             <div className="space-y-2">
                 {courses.map(course => (
-                    <div key={course.id} className="p-3 bg-muted/50 rounded-lg flex justify-between items-center">
+                    <div key={course.id} className="p-3 bg-muted/50 rounded-lg flex flex-col items-start">
                         {editingCourseId === course.id ? (
-                            <>
-                                <Input value={editedName} onChange={(e) => setEditedName(e.target.value)} className="flex-grow mr-2" />
-                                <Select onValueChange={(value: CourseType) => setEditedType(value)} defaultValue={editedType}>
-                                    <SelectTrigger className="w-[280px]">
-                                        <SelectValue placeholder="Select course type" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {Object.values(CourseType).map(type => (
-                                            <SelectItem key={type} value={type}>{type.replace(/_/g, ' ')}</SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                                <Button size="sm" onClick={() => handleUpdateCourse(course.id)}><Save className="h-4 w-4" /></Button>
-                                <Button size="sm" variant="ghost" onClick={cancelEditing}><XIcon className="h-4 w-4" /></Button>
-                            </>
+                            <div className="w-full">
+                                <div className="flex justify-between items-center mb-2">
+                                    <Input value={editedName} onChange={(e) => setEditedName(e.target.value)} className="flex-grow mr-2" />
+                                    <Select onValueChange={(value: CourseType) => setEditedType(value)} defaultValue={editedType}>
+                                        <SelectTrigger className="w-[280px]">
+                                            <SelectValue placeholder="Select course type" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {Object.values(CourseType).map(type => (
+                                                <SelectItem key={type} value={type}>{type.replace(/_/g, ' ')}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <Button size="sm" onClick={() => handleUpdateCourse(course.id)}><Save className="h-4 w-4" /></Button>
+                                    <Button size="sm" variant="ghost" onClick={cancelEditing}><XIcon className="h-4 w-4" /></Button>
+                                </div>
+                                <Textarea
+                                    value={editedDescription}
+                                    onChange={(e) => setEditedDescription(e.target.value)}
+                                    placeholder="Course Description"
+                                    className="w-full"
+                                />
+                            </div>
                         ) : (
-                            <>
+                            <div className="w-full flex justify-between items-center">
                                 <div className="flex-grow">
                                     <span className="font-medium">{course.name}</span>
                                     <span className="text-sm text-muted-foreground ml-4">{course.type.replace(/_/g, ' ')}</span>
+                                    <p className="text-sm text-muted-foreground mt-1">{course.description}</p>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <Button size="sm" variant="ghost" onClick={() => startEditing(course)}><Edit className="h-4 w-4" /></Button>
@@ -170,7 +182,7 @@ export function CourseManager({ courses }: { courses: Course[] }) {
                                         </AlertDialogContent>
                                     </AlertDialog>
                                 </div>
-                            </>
+                            </div>
                         )}
                     </div>
                 ))}

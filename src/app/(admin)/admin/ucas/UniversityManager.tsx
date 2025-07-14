@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { University, Course, CourseLink } from '@prisma/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -24,33 +24,42 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { CourseLinkForm } from '@/lib/customui/UCAS/CourseLinkForm';
 
 
 type UniversityWithCourses = University & { courseLinks: (CourseLink & { course: Course })[] };
 
 export function UniversityManager({ universities, courses }: { universities: UniversityWithCourses[], courses: Course[] }) {
   const [newUniversityName, setNewUniversityName] = useState('');
+  const [newUniversityId, setNewUniversityId] = useState('');
   const [isUk, setIsUk] = useState(true);
   const [editingUniversityId, setEditingUniversityId] = useState<string | null>(null);
   const [editedName, setEditedName] = useState('');
   const [editedIsUk, setEditedIsUk] = useState(true);
+  const [editedDescription, setEditedDescription] = useState('');
   const { toast } = useToast();
 
+  useEffect(() => {
+    const slug = newUniversityName.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+    setNewUniversityId(slug);
+  }, [newUniversityName]);
+
   async function handleCreateUniversity() {
-    if (!newUniversityName.trim()) {
-      toast({ title: "Error", description: "University name cannot be empty.", variant: "destructive" });
+    if (!newUniversityName.trim() || !newUniversityId.trim()) {
+      toast({ title: "Error", description: "University name and ID cannot be empty.", variant: "destructive" });
       return;
     }
 
     const response = await fetch('/api/admin/universities', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: newUniversityName, uk: isUk }),
+      body: JSON.stringify({ id: newUniversityId, name: newUniversityName, uk: isUk }),
     });
 
     if (response.ok) {
       toast({ title: "Success", description: "University created." });
       setNewUniversityName('');
+      setNewUniversityId('');
       window.location.reload();
     } else {
       const error = await response.json();
@@ -67,7 +76,7 @@ export function UniversityManager({ universities, courses }: { universities: Uni
     const response = await fetch(`/api/admin/universities/${universityId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: editedName, uk: editedIsUk }),
+      body: JSON.stringify({ name: editedName, uk: editedIsUk, description: editedDescription }),
     });
 
     if (response.ok) {
@@ -94,15 +103,13 @@ export function UniversityManager({ universities, courses }: { universities: Uni
     }
   }
 
-  async function handleRemoveCourseFromUniversity(universityId: string, courseId: string) {
-    const response = await fetch(`/api/admin/universities/${universityId}/courses`, {
+  async function handleRemoveCourseLink(courseLinkId: number) {
+    const response = await fetch(`/api/admin/course-links/${courseLinkId}`, {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ courseId }),
     });
 
     if (response.ok) {
-      toast({ title: "Success", description: "Course removed from university." });
+      toast({ title: "Success", description: "Course link removed." });
       window.location.reload();
     } else {
       const error = await response.json();
@@ -110,26 +117,11 @@ export function UniversityManager({ universities, courses }: { universities: Uni
     }
   }
 
-  async function handleAddCoursesToUniversity(universityId: string, courseIds: string[]) {
-    const response = await fetch(`/api/admin/universities/${universityId}/courses`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ courseIds }),
-    });
-
-    if (response.ok) {
-      toast({ title: "Success", description: "Courses added to university." });
-      window.location.reload();
-    } else {
-      const error = await response.json();
-      toast({ title: "Error", description: error.message, variant: "destructive" });
-    }
-  }
-
-  const startEditing = (uni: University) => {
+  const startEditing = (uni: UniversityWithCourses) => {
     setEditingUniversityId(uni.id);
     setEditedName(uni.name);
     setEditedIsUk(uni.uk);
+    setEditedDescription(uni.description || '');
   };
 
   const cancelEditing = () => {
@@ -144,17 +136,24 @@ export function UniversityManager({ universities, courses }: { universities: Uni
 
       <div className="mb-8 p-4 border rounded-lg">
         <h3 className="font-semibold text-lg mb-4">Create New University</h3>
-        <div className="flex gap-4">
-          <Input
-            placeholder="New university name"
-            value={newUniversityName}
-            onChange={(e) => setNewUniversityName(e.target.value)}
-            className="flex-grow"
-          />
-          <div className="flex items-center space-x-2">
-            <Checkbox id="isUk" checked={isUk} onChange={(e) => setIsUk(e.target.checked)} />
-            <label htmlFor="isUk">In UK</label>
+        <div className="flex flex-col gap-4">
+          <div className="flex gap-4">
+            <Input
+                placeholder="New university name"
+                value={newUniversityName}
+                onChange={(e) => setNewUniversityName(e.target.value)}
+                className="flex-grow"
+            />
+            <div className="flex items-center space-x-2">
+                <Checkbox id="isUk" checked={isUk} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setIsUk(e.target.checked)} />
+                <label htmlFor="isUk">In UK</label>
+            </div>
           </div>
+          <Input
+            placeholder="University ID"
+            value={newUniversityId}
+            onChange={(e) => setNewUniversityId(e.target.value)}
+          />
           <Button onClick={handleCreateUniversity}>Create</Button>
         </div>
       </div>
@@ -165,12 +164,20 @@ export function UniversityManager({ universities, courses }: { universities: Uni
             <AccordionTrigger>
               <div className="flex justify-between items-center w-full">
                 {editingUniversityId === uni.id ? (
-                  <div className="flex-grow flex gap-2 items-center">
-                    <Input value={editedName} onChange={(e) => setEditedName(e.target.value)} className="h-8" />
-                    <div className="flex items-center space-x-2">
-                      <Checkbox id={`edit-uk-${uni.id}`} checked={editedIsUk} onChange={(e) => setEditedIsUk(e.target.checked)} />
-                      <label htmlFor={`edit-uk-${uni.id}`}>In UK</label>
+                  <div className="flex-grow flex flex-col gap-2 items-start">
+                    <div className="flex gap-2 w-full">
+                      <Input value={editedName} onChange={(e) => setEditedName(e.target.value)} className="h-8" />
+                      <div className="flex items-center space-x-2">
+                        <Checkbox id={`edit-uk-${uni.id}`} checked={editedIsUk} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditedIsUk(e.target.checked)} />
+                        <label htmlFor={`edit-uk-${uni.id}`}>In UK</label>
+                      </div>
                     </div>
+                    <textarea
+                        value={editedDescription}
+                        onChange={(e) => setEditedDescription(e.target.value)}
+                        placeholder="University Description"
+                        className="w-full p-2 border rounded"
+                    />
                   </div>
                 ) : (
                   <span>{uni.name} {uni.uk ? '' : '(International)'}</span>
@@ -208,18 +215,55 @@ export function UniversityManager({ universities, courses }: { universities: Uni
             </AccordionTrigger>
             <AccordionContent>
               <div className="p-4 bg-muted/50 rounded-lg">
-                <h4 className="font-semibold mb-2">Courses offered:</h4>
-                <ul className="list-disc pl-5 space-y-1 mb-4">
+                <p className="text-sm text-muted-foreground mb-4">{uni.description}</p>
+                <div className="flex justify-between items-center mb-2">
+                    <h4 className="font-semibold">Courses offered:</h4>
+                    <CourseLinkForm
+                        universityId={uni.id}
+                        courses={courses}
+                        onSuccess={() => window.location.reload()}
+                    >
+                        <Button size="sm">Add Course Link</Button>
+                    </CourseLinkForm>
+                </div>
+                <div className="space-y-2">
                   {uni.courseLinks.map(link => (
-                    <li key={link.course.id} className="flex justify-between items-center">
-                      <span>{link.course.name}</span>
-                      <Button variant="ghost" size="icon" onClick={() => handleRemoveCourseFromUniversity(uni.id, link.course.id)}>
-                        <XIcon className="h-4 w-4" />
-                      </Button>
-                    </li>
+                    <div key={link.id} className="flex justify-between items-center p-2 rounded-md bg-background">
+                      <div>
+                        <p className="font-semibold">{link.name}</p>
+                        <p className="text-sm text-muted-foreground">{link.course.name}</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <CourseLinkForm
+                            universityId={uni.id}
+                            courses={courses}
+                            courseLink={link}
+                            onSuccess={() => window.location.reload()}
+                        >
+                            <Button variant="ghost" size="icon"><Edit className="h-4 w-4" /></Button>
+                        </CourseLinkForm>
+                        
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <Button variant="ghost" size="icon"><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    This will permanently delete the course link. This action cannot be undone.
+                                </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction onClick={() => handleRemoveCourseLink(link.id)}>Delete</AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    </div>
                   ))}
-                </ul>
-                <AddCoursesForm universityId={uni.id} allCourses={courses} existingCourses={uni.courseLinks.map(l => l.course)} onAddCourses={handleAddCoursesToUniversity} />
+                </div>
               </div>
             </AccordionContent>
           </AccordionItem>
@@ -227,45 +271,4 @@ export function UniversityManager({ universities, courses }: { universities: Uni
       </Accordion>
     </div>
   );
-}
-
-function AddCoursesForm({ universityId, allCourses, existingCourses, onAddCourses }: {
-  universityId: string,
-  allCourses: Course[],
-  existingCourses: Course[],
-  onAddCourses: (universityId: string, courseIds: string[]) => void
-}) {
-  const [selectedCourses, setSelectedCourses] = useState<string[]>([]);
-
-  const availableCourses = allCourses.filter(c => !existingCourses.find(ec => ec.id === c.id));
-
-  function handleCheckboxChange(courseId: string) {
-    setSelectedCourses(prev => prev.includes(courseId) ? prev.filter(id => id !== courseId) : [...prev, courseId]);
-  }
-
-  function handleSubmit() {
-    if (selectedCourses.length > 0) {
-      onAddCourses(universityId, selectedCourses);
-      setSelectedCourses([]);
-    }
-  }
-
-  return (
-    <div className="mt-4 pt-4 border-t">
-      <h5 className="font-semibold mb-2">Add courses:</h5>
-      <div className="max-h-48 overflow-y-auto mb-4 space-y-2">
-        {availableCourses.map(course => (
-          <div key={course.id} className="flex items-center space-x-2">
-            <Checkbox
-              id={`add-${universityId}-${course.id}`}
-              onChange={() => handleCheckboxChange(course.id)}
-              checked={selectedCourses.includes(course.id)}
-            />
-            <label htmlFor={`add-${universityId}-${course.id}`}>{course.name}</label>
-          </div>
-        ))}
-      </div>
-      <Button onClick={handleSubmit} disabled={selectedCourses.length === 0}>Add Selected Courses</Button>
-    </div>
-  )
 } 

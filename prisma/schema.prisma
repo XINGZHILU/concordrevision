@@ -177,6 +177,7 @@ model University {
     name        String
     uk          Boolean
     courseLinks CourseLink[]
+    description String       @default("")
 }
 
 enum CourseType {
@@ -192,14 +193,20 @@ model Course {
     name        String
     courseLinks CourseLink[]
     type        CourseType
+    description String       @default("")
 }
 
 model CourseLink {
-    id           Int        @id @default(autoincrement())
-    university   University @relation(fields: [universityId], references: [id])
-    universityId String
-    course       Course     @relation(fields: [courseId], references: [id])
-    courseId     String
-
-    @@unique([universityId, courseId])
+    id                 Int        @id @default(autoincrement())
+    university         University @relation(fields: [universityId], references: [id])
+    universityId       String
+    course             Course     @relation(fields: [courseId], references: [id])
+    courseId           String
+    name               String
+    entry_requirements String     @default("")
+    description        String     @default("")
+    ucascode           String
+    duration           Int
+    qualification      String
+    url                String?
 }

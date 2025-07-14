@@ -14,13 +14,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(403).json({ message: 'Forbidden' });
     }
 
-    const { id: universityId } = req.query;
+    const { id } = req.query;
 
-    if (typeof universityId !== 'string') {
-        return res.status(400).json({ message: 'Invalid university ID' });
+    if (typeof id !== 'string') {
+        return res.status(400).json({ message: 'Invalid course link ID' });
     }
 
-    if (req.method === 'POST') {
+    if (req.method === 'PUT') {
         const { courseId, name, description, entry_requirements, ucascode, duration, qualification, url } = req.body;
         
         if (!courseId || !name || !ucascode || !duration || !qualification) {
@@ -28,9 +28,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
 
         try {
-            const courseLink = await prisma.courseLink.create({
+            const courseLink = await prisma.courseLink.update({
+                where: { id: parseInt(id) },
                 data: {
-                    universityId,
                     courseId,
                     name,
                     description,
@@ -41,33 +41,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     url,
                 },
             });
-            return res.status(201).json(courseLink);
+            return res.status(200).json(courseLink);
         } catch (error) {
             console.error(error);
-            return res.status(500).json({ message: 'Failed to create course link' });
+            return res.status(500).json({ message: 'Failed to update course link' });
         }
     } else if (req.method === 'DELETE') {
-        const { courseId } = req.body;
-        if (!courseId) {
-            return res.status(400).json({ message: 'Course ID is required' });
-        }
-
         try {
             await prisma.courseLink.delete({
-                where: {
-                    universityId_courseId: {
-                        universityId,
-                        courseId,
-                    }
-                },
+                where: { id: parseInt(id) },
             });
-            return res.status(200).json({ message: 'Course removed successfully' });
+            return res.status(204).end();
         } catch (error) {
             console.error(error);
-            return res.status(500).json({ message: 'Failed to remove course' });
+            return res.status(500).json({ message: 'Failed to delete course link' });
         }
     } else {
-        res.setHeader('Allow', ['POST', 'DELETE']);
+        res.setHeader('Allow', ['PUT', 'DELETE']);
         res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 } 

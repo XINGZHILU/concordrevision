@@ -19,7 +19,7 @@ export function UCASPostList({ posts }: {
   return (
     <div className="space-y-4 mt-6">
       {posts.map(post => (
-        <Link href={`/ucas/post/${post.id}`} key={post.id} className="block">
+        <Link href={`/ucas/posts/${post.id}`} key={post.id} className="block">
           <Card className="hover:border-primary transition-colors duration-200">
             <CardHeader>
               <CardTitle>{post.title}</CardTitle>

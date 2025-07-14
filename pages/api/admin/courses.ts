@@ -5,6 +5,7 @@ import { CourseType } from '@prisma/client';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { userId } = getAuth(req);
+
     if (!userId) {
         return res.status(401).json({ message: 'Unauthorized' });
     }
@@ -16,39 +17,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (req.method === 'POST') {
         const { name, type } = req.body;
-
-        if (!name || !type) {
-            return res.status(400).json({ message: 'Name and type are required' });
+        if (!name || !type || !Object.values(CourseType).includes(type)) {
+            return res.status(400).json({ message: 'Name and a valid type are required' });
         }
-
-        if (!Object.values(CourseType).includes(type)) {
-            return res.status(400).json({ message: 'Invalid course type' });
-        }
-
         try {
-            const newCourse = await prisma.course.create({
-                data: {
-                    id: name.toLowerCase().replace(/ /g, '-'),
-                    name,
-                    type,
-                },
+            const course = await prisma.course.create({
+                data: { id: name.toLowerCase().replace(/ /g, '-'), name, type, description: '' },
             });
-            return res.status(201).json(newCourse);
+            return res.status(201).json(course);
         } catch (error) {
             console.error(error);
             return res.status(500).json({ message: 'Failed to create course' });
         }
     } else if (req.method === 'PUT') {
-        const { id, name, type } = req.body;
-        if (!id || !name || !type) {
-            return res.status(400).json({ message: 'ID, name, and type are required' });
+        const { id, name, type, description } = req.body;
+        if (!id || !name || !type || !Object.values(CourseType).includes(type)) {
+            return res.status(400).json({ message: 'ID, name, and a valid type are required' });
         }
         try {
-            const updatedCourse = await prisma.course.update({
+            const course = await prisma.course.update({
                 where: { id },
-                data: { name, type },
+                data: { name, type, description },
             });
-            return res.status(200).json(updatedCourse);
+            return res.status(200).json(course);
         } catch (error) {
             console.error(error);
             return res.status(500).json({ message: 'Failed to update course' });
@@ -56,7 +47,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } else if (req.method === 'DELETE') {
         const { id } = req.body;
         if (!id) {
-            return res.status(400).json({ message: 'ID is required' });
+            return res.status(400).json({ message: 'Course ID is required' });
         }
         try {
             await prisma.course.delete({ where: { id } });

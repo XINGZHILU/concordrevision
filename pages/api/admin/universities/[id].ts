@@ -19,10 +19,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { id } = req.query;
 
     if (req.method === "PUT") {
-        const { name, uk } = req.body;
+        const { name, uk, description } = req.body;
         const university = await prisma.university.update({
             where: { id: id as string },
-            data: { name, uk },
+            data: { name, uk, description },
         });
         return res.status(200).json(university);
     }

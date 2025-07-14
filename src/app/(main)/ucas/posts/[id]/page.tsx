@@ -37,7 +37,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
           <div className='flex gap-2'>
             {canEdit && (
               <Button asChild>
-                <Link href={`/ucas/post/${post.id}/edit`}>Edit Post</Link>
+                <Link href={`/ucas/posts/${post.id}/edit`}>Edit Post</Link>
               </Button>
             )}
             {isAdmin && (
@@ -69,11 +69,9 @@ export default async function PostPage({ params }: { params: { id: string } }) {
             <h2 className="text-2xl font-bold mb-4">Related Universities</h2>
             {
               post.universities.length > 0 ? (
-                <div className="flex flex-col space-y-2">
+                <div className="flex flex-wrap gap-2">
                   {post.universities.map(uni => (
-                    <Link key={uni} href={`/ucas/school?search=${uni}`} className="text-sm text-primary hover:underline">
-                      {uni}
-                    </Link>
+                    <Badge key={uni}>{uni}</Badge>
                   ))}
                 </div>
               ) : (<p className="text-muted-foreground">No universities tagged</p>)
@@ -83,11 +81,9 @@ export default async function PostPage({ params }: { params: { id: string } }) {
             <h2 className="text-2xl font-bold mb-4">Related Courses</h2>
             {
               post.courses.length > 0 ? (
-                <div className="flex flex-col space-y-2">
+                <div className="flex flex-wrap gap-2">
                   {post.courses.map(course => (
-                    <Link key={course} href={`/ucas/course?search=${course}`} className="text-sm text-primary hover:underline">
-                      {course}
-                    </Link>
+                    <Badge key={course}>{course}</Badge>
                   ))}
                 </div>
               ) : (<p className="text-muted-foreground">No courses tagged</p>)
