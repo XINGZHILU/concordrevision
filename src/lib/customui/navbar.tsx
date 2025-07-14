@@ -5,7 +5,7 @@ import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
 import { key_pages } from "../consts";
-//import Image from "next/image";
+import Image from "next/image";
 
 export default function NavBar({ can_upload, teacher, admin }: { can_upload: boolean, teacher: boolean, admin: boolean }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -33,10 +33,8 @@ export default function NavBar({ can_upload, teacher, admin }: { can_upload: boo
           {/* Logo/Brand */}
           <div className="flex items-center">
             <Link href="/" className="flex-shrink-0 flex items-center">
-              {/* 
-                            <Image src="/icon.png" className="h-8"
-                                alt="Concord Logo" width={20} height={20} />
-                             */}
+              <Image src="/icon.svg" className="h-8"
+                alt="Concord Logo" width={20} height={20} />
               <span className="text-xl font-bold text-primary">Concord Revision</span>
             </Link>
           </div>
