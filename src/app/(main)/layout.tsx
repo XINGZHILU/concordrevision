@@ -36,10 +36,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 disableTransitionOnChange
               >
                 <NavBar teacher={false} can_upload={false} admin={false} />
-                <main className={'w-11/12 min-h-screen p-2 mx-auto markdown-body flex flex-col'}>
+                <div className={'w-11/12 min-h-screen p-2 mx-auto markdown-body'}>
                   {children}
                   <Toaster />
-                </main>
+                </div>
                 <br />
                 <Footer />
               </ThemeProvider>
@@ -75,9 +75,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               disableTransitionOnChange
             >
               <NavBar teacher={record.teacher} can_upload={record.upload_permission || record.teacher || record.admin} admin={record.admin} />
-              <main className={'w-11/12 min-h-screen p-2 mx-auto markdown-body flex flex-col'}>
+              <div className={'w-11/12 min-h-screen p-2 mx-auto markdown-body'}>
                 {children}
-              </main>
+              </div>
               <Toaster />
               <br />
               <Footer />
