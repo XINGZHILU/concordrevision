@@ -173,11 +173,12 @@ model Tag {
 }
 
 model University {
-    id          String       @id
+    id          String           @id
     name        String
     uk          Boolean
     courseLinks CourseLink[]
-    description String       @default("")
+    description String           @default("")
+    stats       AdmissionStats[]
 }
 
 enum CourseType {
@@ -209,4 +210,15 @@ model CourseLink {
     duration           Int
     qualification      String
     url                String?
+}
+
+model AdmissionStats {
+    id           Int        @id @default(autoincrement())
+    university   University @relation(fields: [universityId], references: [id])
+    universityId String
+    applied      Int
+    accepted     Int
+    year         Int
+
+    @@unique([universityId, year])
 }

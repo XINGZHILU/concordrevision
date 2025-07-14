@@ -1,4 +1,4 @@
-# Concord Revision
+# Concordpedia
 
 This is a website where students and teachers can upload and download resources for their classes.
 

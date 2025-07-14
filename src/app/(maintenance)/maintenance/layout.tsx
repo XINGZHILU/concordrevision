@@ -5,7 +5,7 @@ import React from "react";
 
 
 export const metadata: Metadata = {
-    title: "Student Hub",
+    title: "Concordpedia",
     description: "©Joshua Ng, Xingzhi Lu, Christoph Chan 2025",
 };
 

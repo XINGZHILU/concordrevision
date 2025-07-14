@@ -12,7 +12,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: "Student Hub",
+  title: "Concordpedia",
   description: "©Joshua Ng, Xingzhi Lu, Christoph Chan 2025",
 };
 
@@ -38,7 +38,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning={true} className={`${headingFont.variable} ${bodyFont.variable}`}>
         <head>
-          <title>Student Hub</title>
+          <title>Concordpedia</title>
           <meta charSet="utf-8" />
         </head>
 
@@ -134,7 +134,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <footer className="bg-card border-t border-border mt-12">
                   <div className="container mx-auto px-4 py-4">
                     <div className="text-center text-sm text-muted-foreground">
-                      Admin Portal &copy; {new Date().getFullYear()} Student Hub. All rights reserved.
+                      Admin Portal &copy; {new Date().getFullYear()} Concordpedia. All rights reserved.
                     </div>
                   </div>
                 </footer>

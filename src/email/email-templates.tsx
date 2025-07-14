@@ -21,10 +21,10 @@ export const ApprovedEmailTemplate: React.FC<Readonly<ApprovedEmailTemplateProps
         <p>Thank you for submitting the test revision material <b>{title}</b> for <b>{area}</b>. After review from our teachers, we are delighted to inform you that your resource has been <b>accepted</b> and will now be available to be viewed and used on the website. Thank you very much for your hard work and support.</p>
         <br />
         <p>Best regards,</p>
-        <p><b>The Concord Student Hub Team</b></p>
+        <p><b>The Concordpedia Team</b></p>
       </div>
       <div style={{ backgroundColor: '#f8f8f8', padding: '15px', textAlign: 'center', fontSize: '12px', color: '#888', borderTop: '1px solid #ddd' }}>
-        <p>&copy; {new Date().getFullYear()} Concord Student Hub. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Concordpedia. All rights reserved.</p>
       </div>
     </div>
   </div>
@@ -50,10 +50,10 @@ export const RejectedEmailTemplate: React.FC<Readonly<RejectedEmailTemplateProps
         </p>
         <br />
         <p>Best regards,</p>
-        <p><b>The Concord Student Hub Team</b></p>
+        <p><b>The Concordpedia Team</b></p>
       </div>
       <div style={{ backgroundColor: '#f8f8f8', padding: '15px', textAlign: 'center', fontSize: '12px', color: '#888', borderTop: '1px solid #ddd' }}>
-        <p>&copy; {new Date().getFullYear()} Concord Student Hub. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Concordpedia. All rights reserved.</p>
       </div>
     </div>
   </div>
@@ -78,10 +78,10 @@ export const UCASPostApprovedEmailTemplate: React.FC<Readonly<UCASPostApprovedEm
         </p>
         <br />
         <p>Best regards,</p>
-        <p><b>The Concord Student Hub Team</b></p>
+        <p><b>The Concordpedia Team</b></p>
       </div>
       <div style={{ backgroundColor: '#f8f8f8', padding: '15px', textAlign: 'center', fontSize: '12px', color: '#888', borderTop: '1px solid #ddd' }}>
-        <p>&copy; {new Date().getFullYear()} Concord Student Hub. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Concordpedia. All rights reserved.</p>
       </div>
     </div>
   </div>
@@ -105,10 +105,10 @@ export const UCASPostRejectedEmailTemplate: React.FC<Readonly<UCASPostRejectedEm
         <p>Thank you for submitting the UCAS post {title}. After review from our teachers, we regret to inform you that your post has been <b>rejected</b>, however you may wish to make updates and re-submit it. Thank you very much for your hard work and support.</p>
         <br />
         <p>Best regards,</p>
-        <p><b>The Concord Student Hub Team</b></p>
+        <p><b>The Concordpedia Team</b></p>
       </div>
       <div style={{ backgroundColor: '#f8f8f8', padding: '15px', textAlign: 'center', fontSize: '12px', color: '#888', borderTop: '1px solid #ddd' }}>
-        <p>&copy; {new Date().getFullYear()} Concord Student Hub. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Concordpedia. All rights reserved.</p>
       </div>
     </div>
   </div>
@@ -181,10 +181,10 @@ export const NewTestEmailTemplate: React.FC<Readonly<NewTestEmailTemplateProps>>
         <p>We wish you the best of luck with your preparation.</p>
         <br />
         <p>Best regards,</p>
-        <p><b>The Concord Student Hub Team</b></p>
+        <p><b>The Concordpedia Team</b></p>
       </div>
       <div style={{ backgroundColor: '#f8f8f8', padding: '15px', textAlign: 'center', fontSize: '12px', color: '#888', borderTop: '1px solid #ddd' }}>
-        <p>&copy; {new Date().getFullYear()} Concord Student Hub. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Concordpedia. All rights reserved.</p>
       </div>
     </div>
   </div>

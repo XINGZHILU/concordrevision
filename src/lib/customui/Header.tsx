@@ -9,7 +9,7 @@ const Header = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-background to-muted/50 -z-10 animate-gradient-xy"></div>
       <div className="container mx-auto px-4 text-center">
         <h1 className='text-4xl md:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent-foreground'>
-          Concord Revision Hub
+          Concordpedia Hub
         </h1>
         <div className="mt-6">
           <Chat />

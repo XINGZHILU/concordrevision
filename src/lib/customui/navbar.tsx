@@ -35,7 +35,7 @@ export default function NavBar({ can_upload, teacher, admin }: { can_upload: boo
             <Link href="/" className="flex-shrink-0 flex items-center">
               <Image src="/icon.svg" className="h-8"
                 alt="Concord Logo" width={20} height={20} />
-              <span className="text-xl font-bold text-primary">Concord Revision</span>
+              <span className="text-xl font-bold text-primary">Concordpedia</span>
             </Link>
           </div>
 
