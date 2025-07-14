@@ -7,7 +7,10 @@ export default async function Page() {
             title: 'asc'
         }
     });
+
     return <div className={'content-center'}>
-        <OlympiadsList olympiads={olympiads} />
+        <OlympiadsList 
+            olympiads={olympiads} 
+        />
     </div>;
 }

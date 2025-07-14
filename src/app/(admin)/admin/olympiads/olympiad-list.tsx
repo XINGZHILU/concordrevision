@@ -34,14 +34,40 @@ interface OlympiadListProps {
   olympiads: OlympiadWithCount[];
 }
 
+function Pagination({ totalPages, currentPage, onPageChange }: { totalPages: number, currentPage: number, onPageChange: (page: number) => void }) {
+  return (
+      <div className="flex justify-center items-center space-x-2 mt-4">
+          {currentPage > 1 && (
+              <button onClick={() => onPageChange(currentPage - 1)} className="px-3 py-1 border rounded-md text-sm hover:bg-accent">
+                  Previous
+              </button>
+          )}
+          
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+              <button
+                  key={page}
+                  onClick={() => onPageChange(page)}
+                  className={`px-3 py-1 border rounded-md text-sm ${currentPage === page ? 'bg-primary text-primary-foreground' : 'hover:bg-accent'}`}
+              >
+                  {page}
+              </button>
+          ))}
+
+          {currentPage < totalPages && (
+              <button onClick={() => onPageChange(currentPage + 1)} className="px-3 py-1 border rounded-md text-sm hover:bg-accent">
+                  Next
+              </button>
+          )}
+      </div>
+  );
+}
+
 export default function OlympiadList({ olympiads }: OlympiadListProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedArea, setSelectedArea] = useState<string | 'all'>('all');
   const [isDeleting, setIsDeleting] = useState(false);
-
-  const uniqueAreas = useMemo(() => {
-    return olympiad_subjects;
-  }, []);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const filteredOlympiads = useMemo(() => {
     return olympiads.filter(olympiad => {
@@ -51,6 +77,20 @@ export default function OlympiadList({ olympiads }: OlympiadListProps) {
       return matchesSearch && matchesArea;
     });
   }, [olympiads, searchTerm, selectedArea]);
+
+  const totalPages = Math.ceil(filteredOlympiads.length / itemsPerPage);
+  const paginatedOlympiads = filteredOlympiads.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const handleAreaChange = (value: string) => {
+    setSelectedArea(value);
+    setCurrentPage(1);
+  };
 
   const handleDeleteOlympiad = async (olympiadId: number) => {
     setIsDeleting(true);
@@ -78,7 +118,6 @@ export default function OlympiadList({ olympiads }: OlympiadListProps) {
 
   return (
     <div>
-
       <div className="mb-6 p-4 bg-muted rounded-lg border border-border">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="md:col-span-2">
@@ -91,7 +130,7 @@ export default function OlympiadList({ olympiads }: OlympiadListProps) {
                 id="search"
                 placeholder="Search by title or description..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={handleSearchChange}
                 className="pl-10"
               />
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -105,13 +144,13 @@ export default function OlympiadList({ olympiads }: OlympiadListProps) {
             <label htmlFor="areaFilter" className="block text-sm font-medium text-foreground mb-1">
               Subject Area
             </label>
-            <Select onValueChange={(value) => setSelectedArea(value === 'all' ? 'all' : value)} defaultValue="all">
+            <Select onValueChange={handleAreaChange} defaultValue="all">
               <SelectTrigger id="areaFilter">
                 <SelectValue placeholder="All Areas" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Areas</SelectItem>
-                {uniqueAreas.map((area) => (
+                {olympiad_subjects.map((area) => (
                   <SelectItem key={area} value={area}>
                     {area}
                   </SelectItem>
@@ -131,112 +170,108 @@ export default function OlympiadList({ olympiads }: OlympiadListProps) {
         )}
       </h2>
 
-      {filteredOlympiads.length === 0 ? (
+      {paginatedOlympiads.length === 0 ? (
         <div className="text-center py-10 bg-card rounded-lg">
           <svg className="mx-auto h-12 w-12 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
           </svg>
-          {olympiads.length === 0 ? (
-            <>
-              <h3 className="mt-2 text-lg font-medium text-foreground">No olympiads found</h3>
-              <p className="mt-1 text-muted-foreground">Get started by adding your first olympiad.</p>
-            </>
-          ) : (
             <>
               <h3 className="mt-2 text-lg font-medium text-foreground">No matching olympiads</h3>
               <p className="mt-1 text-muted-foreground">Try adjusting your search or filter criteria.</p>
             </>
-          )}
         </div>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-border">
-            <thead className="bg-muted">
-              <tr>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                  Title
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                  Subject Area
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                  Description
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                  Resources
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-card divide-y divide-border">
-              {filteredOlympiads.map((olympiad) => (
-                <tr key={olympiad.id} className="hover:bg-accent">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-foreground">{olympiad.title}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <Badge>
-                      {olympiad.area}
-                    </Badge>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-muted-foreground line-clamp-2">{olympiad.desc}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
-                    {olympiad._count.resources}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <div className="flex space-x-2">
-                      <Button variant="link" asChild>
-                        <Link
-                          href={`/admin/olympiads/${olympiad.id}`}
-                        >
-                          Edit
-                        </Link>
-                      </Button>
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button variant="link" className="text-red-600" disabled={olympiad._count.resources > 0}>
-                            Delete
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Delete Olympiad</DialogTitle>
-                          </DialogHeader>
-                          <DialogDescription>
-                            Are you sure you want to delete the olympiad <strong>{olympiad.title}</strong>?
-                            {olympiad._count.resources > 0 ? (
-                              <div className="bg-amber-500/10 text-amber-500 p-3 rounded border border-amber-500/20 text-sm mt-2">
-                                <strong>Warning:</strong> This olympiad has {olympiad._count.resources} resources associated with it. Please reassign or delete these resources before deleting the olympiad.
-                              </div>
-                            ) : (
-                              <p className="text-muted-foreground mt-2">This action cannot be undone.</p>
-                            )}
-                          </DialogDescription>
-                          <DialogFooter>
-                            <DialogClose asChild>
-                              <Button variant="ghost">Cancel</Button>
-                            </DialogClose>
-                            <Button
-                              variant="destructive"
-                              onClick={() => handleDeleteOlympiad(olympiad.id)}
-                              disabled={olympiad._count.resources > 0 || isDeleting}
+        <>
+            <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-border">
+                <thead className="bg-muted">
+                    <tr>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                        Title
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                        Subject Area
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                        Description
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                        Resources
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                        Actions
+                    </th>
+                    </tr>
+                </thead>
+                <tbody className="bg-card divide-y divide-border">
+                    {paginatedOlympiads.map((olympiad) => (
+                    <tr key={olympiad.id} className="hover:bg-accent">
+                        <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium text-foreground">{olympiad.title}</div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                        <Badge>
+                            {olympiad.area}
+                        </Badge>
+                        </td>
+                        <td className="px-6 py-4">
+                        <div className="text-sm text-muted-foreground line-clamp-2">{olympiad.desc}</div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
+                        {olympiad._count.resources}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <div className="flex space-x-2">
+                            <Button variant="link" asChild>
+                            <Link
+                                href={`/admin/olympiads/${olympiad.id}`}
                             >
-                              {isDeleting ? 'Deleting...' : 'Delete'}
+                                Edit
+                            </Link>
                             </Button>
-                          </DialogFooter>
-                        </DialogContent>
-                      </Dialog>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                            <Dialog>
+                            <DialogTrigger asChild>
+                                <Button variant="link" className="text-red-600" disabled={olympiad._count.resources > 0}>
+                                Delete
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                                <DialogHeader>
+                                <DialogTitle>Delete Olympiad</DialogTitle>
+                                </DialogHeader>
+                                <DialogDescription>
+                                Are you sure you want to delete the olympiad <strong>{olympiad.title}</strong>?
+                                {olympiad._count.resources > 0 ? (
+                                    <div className="bg-amber-500/10 text-amber-500 p-3 rounded border border-amber-500/20 text-sm mt-2">
+                                    <strong>Warning:</strong> This olympiad has {olympiad._count.resources} resources associated with it. Please reassign or delete these resources before deleting the olympiad.
+                                    </div>
+                                ) : (
+                                    <p className="text-muted-foreground mt-2">This action cannot be undone.</p>
+                                )}
+                                </DialogDescription>
+                                <DialogFooter>
+                                <DialogClose asChild>
+                                    <Button variant="outline">Cancel</Button>
+                                </DialogClose>
+                                <Button
+                                    variant="destructive"
+                                    onClick={() => handleDeleteOlympiad(olympiad.id)}
+                                    disabled={isDeleting || olympiad._count.resources > 0}
+                                >
+                                    {isDeleting ? 'Deleting...' : 'Delete'}
+                                </Button>
+                                </DialogFooter>
+                            </DialogContent>
+                            </Dialog>
+                        </div>
+                        </td>
+                    </tr>
+                    ))}
+                </tbody>
+                </table>
+            </div>
+            {totalPages > 1 && <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={setCurrentPage} />}
+        </>
       )}
     </div>
   );

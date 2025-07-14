@@ -16,6 +16,35 @@ import {
     LuFilter
 } from "react-icons/lu";
 
+// Pagination Component
+function Pagination({ totalPages, currentPage, onPageChange }: { totalPages: number, currentPage: number, onPageChange: (page: number) => void }) {
+    return (
+        <div className="flex justify-center items-center space-x-2 mt-10">
+            {currentPage > 1 && (
+                <button onClick={() => onPageChange(currentPage - 1)} className="px-4 py-2 border rounded-md hover:bg-accent">
+                    Previous
+                </button>
+            )}
+            
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                <button
+                    key={page}
+                    onClick={() => onPageChange(page)}
+                    className={`px-4 py-2 border rounded-md ${currentPage === page ? 'bg-primary text-primary-foreground' : 'hover:bg-accent'}`}
+                >
+                    {page}
+                </button>
+            ))}
+
+            {currentPage < totalPages && (
+                <button onClick={() => onPageChange(currentPage + 1)} className="px-4 py-2 border rounded-md hover:bg-accent">
+                    Next
+                </button>
+            )}
+        </div>
+    );
+}
+
 export default function OlympiadsList({ olympiads }: {
     olympiads: {
         id: number,
@@ -26,8 +55,9 @@ export default function OlympiadsList({ olympiads }: {
 }) {
     const [selectedArea, setSelectedArea] = useState<string>("All");
     const [searchQuery, setSearchQuery] = useState<string>("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 9;
 
-    // Get area icon
     const getAreaIcon = (area: string) => {
         const subject = area.toLowerCase();
 
@@ -42,7 +72,6 @@ export default function OlympiadsList({ olympiads }: {
         return <LuBrain className="mr-2 h-5 w-5" />;
     };
 
-    // Filter olympiads by area and search query
     const filteredOlympiads = olympiads.filter((olympiad) => {
         const matchesArea = selectedArea === "All" || olympiad.area === selectedArea;
         const matchesSearch = searchQuery === "" ||
@@ -51,6 +80,19 @@ export default function OlympiadsList({ olympiads }: {
 
         return matchesArea && matchesSearch;
     });
+
+    const totalPages = Math.ceil(filteredOlympiads.length / itemsPerPage);
+    const paginatedOlympiads = filteredOlympiads.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+    const handleAreaChange = (area: string) => {
+        setSelectedArea(area);
+        setCurrentPage(1);
+    }
+
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(e.target.value);
+        setCurrentPage(1);
+    }
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -61,10 +103,8 @@ export default function OlympiadsList({ olympiads }: {
                 </p>
             </div>
 
-            {/* Search and Filter Section */}
             <div className="bg-card rounded-xl shadow-md p-6 mb-8">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    {/* Search bar */}
                     <div className="relative flex-grow max-w-md">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <LuSearch className="h-5 w-5 text-muted-foreground" />
@@ -74,55 +114,49 @@ export default function OlympiadsList({ olympiads }: {
                             className="pl-10 pr-4 py-2 w-full border border-input bg-background rounded-lg focus:ring-2 focus:ring-ring"
                             placeholder="Search olympiads..."
                             value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onChange={handleSearchChange}
                         />
                     </div>
 
-                    {/* Filter by subject area */}
-                    <div className="flex items-center">
-                        <LuFilter className="h-5 w-5 text-muted-foreground mr-2" />
-                        <span className="text-sm font-medium text-muted-foreground mr-2">Filter:</span>
-                        <div className="flex flex-wrap gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
+                        <LuFilter className="h-5 w-5 text-muted-foreground" />
+                        <span className="text-sm font-medium text-muted-foreground">Filter:</span>
+                        <button
+                            onClick={() => handleAreaChange("All")}
+                            className={`px-3 py-1.5 text-sm rounded-lg transition-all ${selectedArea === "All"
+                                    ? "bg-primary text-primary-foreground font-medium"
+                                    : "bg-muted text-muted-foreground hover:bg-accent"
+                                }`}
+                        >
+                            All
+                        </button>
+                        {olympiad_subjects.map((area) => (
                             <button
-                                onClick={() => setSelectedArea("All")}
-                                className={`px-3 py-1.5 text-sm rounded-lg transition-all ${selectedArea === "All"
+                                key={area}
+                                onClick={() => handleAreaChange(area)}
+                                className={`px-3 py-1.5 text-sm rounded-lg transition-all flex items-center ${selectedArea === area
                                         ? "bg-primary text-primary-foreground font-medium"
                                         : "bg-muted text-muted-foreground hover:bg-accent"
                                     }`}
                             >
-                                All
+                                {getAreaIcon(area)}
+                                {area}
                             </button>
-
-                            {olympiad_subjects.map((area) => (
-                                <button
-                                    key={area}
-                                    onClick={() => setSelectedArea(area)}
-                                    className={`px-3 py-1.5 text-sm rounded-lg transition-all flex items-center ${selectedArea === area
-                                            ? "bg-primary text-primary-foreground font-medium"
-                                            : "bg-muted text-muted-foreground hover:bg-accent"
-                                        }`}
-                                >
-                                    {getAreaIcon(area)}
-                                    {area}
-                                </button>
-                            ))}
-                        </div>
+                        ))}
                     </div>
                 </div>
             </div>
 
-            {/* Results count */}
-            <div className="mb-6 flex justify-between items-center">
+            
                 <h2 className="text-xl font-semibold text-foreground">
                     {selectedArea === "All" ? "All Olympiads" : selectedArea + " Olympiads"}
                     <span className="ml-2 text-muted-foreground text-base font-normal">
                         ({filteredOlympiads.length} {filteredOlympiads.length === 1 ? 'competition' : 'competitions'})
                     </span>
                 </h2>
-            </div>
+            
 
-            {/* Olympiads grid */}
-            {filteredOlympiads.length === 0 ? (
+            {paginatedOlympiads.length === 0 ? (
                 <div className="bg-muted border border-border rounded-lg p-8 text-center">
                     <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-background mb-4">
                         <LuBrain className="h-8 w-8 text-muted-foreground" />
@@ -137,10 +171,13 @@ export default function OlympiadsList({ olympiads }: {
                 </div>
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredOlympiads.map((olympiad) => (
+                    {paginatedOlympiads.map((olympiad) => (
                         <OlympiadCard key={olympiad.id} olympiad={olympiad} />
                     ))}
                 </div>
+            )}
+            {totalPages > 1 && (
+                <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={setCurrentPage} />
             )}
         </div>
     );
