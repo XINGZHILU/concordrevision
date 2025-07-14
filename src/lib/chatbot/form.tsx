@@ -58,7 +58,7 @@ export default function Chat() {
       {answer && (
         <Card>
           <CardHeader>
-            <CardTitle>Response from AI</CardTitle>
+            <CardTitle>Answer</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="prose dark:prose-invert max-w-full">
