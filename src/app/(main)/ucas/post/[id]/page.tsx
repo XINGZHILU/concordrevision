@@ -6,6 +6,7 @@ import MDViewer from '@/lib/customui/Basic/showMD';
 import { currentUser } from '@clerk/nextjs/server';
 import { Button } from '@/components/ui/button';
 import { PinButton } from './PinButton';
+import FileList from "@/lib/customui/Basic/filelist";
 
 export default async function PostPage({ params }: { params: { id: string } }) {
   const user = await currentUser();
@@ -15,7 +16,8 @@ export default async function PostPage({ params }: { params: { id: string } }) {
       id: parseInt(params.id, 10)
     },
     include: {
-      author: true
+      author: true,
+      files: true
     }
   });
 
@@ -89,6 +91,14 @@ export default async function PostPage({ params }: { params: { id: string } }) {
                   ))}
                 </div>
               ) : (<p className="text-muted-foreground">No courses tagged</p>)
+            }
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold mb-4">Attachments</h2>
+            {
+              post.files.length > 0 ? (
+                <FileList files={post.files} />
+              ) : (<p className="text-muted-foreground">No files attached</p>)
             }
           </div>
         </div>

@@ -66,6 +66,7 @@
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3",
+        "@types/cuid": "^2.0.4",
         "@types/node": "^20.17.24",
         "@types/pdfjs-dist": "^2.10.378",
         "@types/react": "^19.0.11",
