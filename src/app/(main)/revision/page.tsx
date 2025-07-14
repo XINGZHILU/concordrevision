@@ -1,7 +1,40 @@
 import { prisma } from "@/lib/prisma";
 import RevisionSubjectList from "@/lib/customui/Revision/RevisionSubjectList";
 import { currentUser } from "@clerk/nextjs/server";
-import PastPapersCard from "@/lib/customui/Revision/PastPapersCard";
+import { Card, CardContent } from "@/components/ui/card";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { MessageSquare, BookCheck } from "lucide-react";
+
+const QuickActions = () => (
+    <Card>
+        <CardContent className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Link href="/revision/chat" className="w-full">
+                <Button variant="outline" className="w-full h-full justify-start p-4">
+                    <div className="flex items-center gap-4">
+                        <MessageSquare className="w-8 h-8 text-primary" />
+                        <div>
+                            <p className="font-semibold text-left">AI Revision Assistant</p>
+                            <p className="text-sm text-muted-foreground text-left">Chat with our AI</p>
+                        </div>
+                    </div>
+                </Button>
+            </Link>
+            <Link href="/revision/practice/ppq/records" className="w-full">
+                 <Button variant="outline" className="w-full h-full justify-start p-4">
+                    <div className="flex items-center gap-4">
+                        <BookCheck className="w-8 h-8 text-primary" />
+                        <div>
+                            <p className="font-semibold text-left">Past Paper Records</p>
+                            <p className="text-sm text-muted-foreground text-left">Review your performance</p>
+                        </div>
+                    </div>
+                </Button>
+            </Link>
+        </CardContent>
+    </Card>
+);
+
 
 export default async function Home() {
     const subjects = await prisma.subject.findMany({
@@ -14,7 +47,7 @@ export default async function Home() {
     if (!user) {
         return (
             <div className="space-y-8">
-                <PastPapersCard />
+                <QuickActions />
                 <RevisionSubjectList subjects={subjects} year={0} />
             </div>
         )
@@ -32,7 +65,7 @@ export default async function Home() {
 
     return (
         <div className="space-y-8">
-            <PastPapersCard />
+            <QuickActions />
             <RevisionSubjectList subjects={subjects} year={user_data.year} />
         </div>
     )

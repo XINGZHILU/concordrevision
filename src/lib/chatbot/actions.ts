@@ -1,0 +1,59 @@
+'use server';
+
+import { ChatOpenAI } from 'langchain/chat_models/openai';
+import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import { MongoDBAtlasVectorSearch } from "langchain/vectorstores/mongodb_atlas";
+import mongoClientPromise from '@/lib/mongodb';
+import { HumanMessage } from 'langchain/schema';
+
+export async function askQuestion(question: string): Promise<string> {
+  if (!question) {
+    return "Please provide a question.";
+  }
+  
+  const client = await mongoClientPromise;
+  const dbName = "docs";
+  const collectionName = "embeddings";
+  const collection = client.db(dbName).collection(collectionName);
+
+  const vectorStore = new MongoDBAtlasVectorSearch(
+    new OpenAIEmbeddings({
+      modelName: 'text-embedding-ada-002',
+      stripNewLines: true,
+    }), {
+    collection,
+    indexName: "default",
+    textKey: "text",
+    embeddingKey: "embedding",
+  });
+
+  const retriever = vectorStore.asRetriever({
+    searchType: "mmr",
+    searchKwargs: {
+      fetchK: 20,
+      lambda: 0.1,
+    },
+  });
+
+  const retrieverOutput = await retriever.getRelevantDocuments(question);
+
+  const TEMPLATE = `You are an enthusiastic British GCSE and A Level student. Given the following sections from your revision notes, answer the question using only that information and be as detailed as possible. If you are unsure and the answer is not explicitly written in the documentation, search the web and indicate that you have searched the web. Alwauys output your answer in markdown format
+  
+  Context sections:
+  ${JSON.stringify(retrieverOutput)}
+
+  Question: """
+  ${question}
+  """
+  `;
+
+  const model = new ChatOpenAI({
+    modelName: 'gpt-3.5-turbo'
+  });
+
+  const { content } = await model.invoke([
+    new HumanMessage(TEMPLATE),
+  ]);
+
+  return content;
+} 
