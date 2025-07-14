@@ -52,18 +52,16 @@ export default function Chat() {
           </form>
         </CardContent>
       </Card>
-      
+
       {loading && <p className="text-center">Getting answer...</p>}
 
       {answer && (
         <Card>
           <CardHeader>
-            <CardTitle>Answer</CardTitle>
+            <CardTitle>AI Response</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="prose dark:prose-invert max-w-full">
-              <MDViewer content={answer}/>
-            </div>
+            <MDViewer content={answer} />
           </CardContent>
         </Card>
       )}
