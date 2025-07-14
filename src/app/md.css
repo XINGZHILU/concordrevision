@@ -59,7 +59,7 @@
   padding-left: 2em;
   margin-top: 0;
   margin-bottom: 16px;
-  font-family: inherit;
+  font-family: inherit !important;
 }
 
 .markdown-body ul ul,
