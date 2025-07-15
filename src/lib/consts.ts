@@ -9,7 +9,7 @@ export const olympiad_subjects = [
   'Economics',
 ]
 
-export const email_from = "Concordpedia Team <noreply@concord-hub.com>";
+export const email_from = "Concordpedia Team <noreply@concordpedia.com>";
 
 export const key_pages = [
   {
