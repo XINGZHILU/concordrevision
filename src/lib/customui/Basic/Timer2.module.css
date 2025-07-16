@@ -5,7 +5,7 @@
   justify-content: center;
   min-height: 20vh; /* Reduced height */
   padding: 0.3em; /* Reduced padding */
-  background-color: #f0f0f0;
+  background-color: var(--muted);
   min-width: 20vh;
   max-width: 50%;
   width: 100%;
@@ -13,7 +13,7 @@
 
 .timer {
   text-align: center;
-  background: white;
+  background: var(--background);
   padding: 1; /* Reduced padding */
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -45,5 +45,5 @@
 
 .label {
   font-size: 0.75rem; /* Reduced font size */
-  color: #555;
+  color: var(--muted-foreground);
 }

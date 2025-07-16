@@ -21,7 +21,8 @@ function CompleteMarkdownRenderer({ content }: { content: string }) {
             <style jsx global>{`
         .markdown-content code {
           font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
-          background-color: #f6f8fa;
+          background-color: var(--muted);
+          color: var(--muted-foreground);
           padding: 0.05em 0.15em;
           border-radius: 2px;
           font-size: 13px;
@@ -36,10 +37,10 @@ function CompleteMarkdownRenderer({ content }: { content: string }) {
         }
         
         .markdown-content blockquote {
-          border-left: 3px solid #ddd;
+          border-left: 3px solid var(--border);
           padding: 0 0.3em;
           margin: 0.2em 0;
-          color: #666;
+          color: var(--muted-foreground);
         }
         
         .markdown-content img {
@@ -48,7 +49,7 @@ function CompleteMarkdownRenderer({ content }: { content: string }) {
         }
         
         .markdown-content a {
-          color: #0366d6;
+          color: var(--primary);
           text-decoration: none;
         }
         

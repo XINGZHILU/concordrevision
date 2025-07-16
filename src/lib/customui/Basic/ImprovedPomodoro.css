@@ -5,7 +5,7 @@
   width: 650px;
   border-radius: 20px;
   padding: 22px 26px;
-  background: linear-gradient(to bottom, #ffffff, #fafafa);
+  background: linear-gradient(to bottom, var(--background), var(--muted));
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
 
@@ -24,7 +24,7 @@
 .medium .details-section {
   flex: 0.8;
   padding-left: 10px;
-  border-left: 1px solid #f1f3f5;
+  border-left: 1px solid var(--border);
   height: 100%;
 }
 
@@ -42,7 +42,7 @@
   font-size: 0.9rem;
   letter-spacing: 0.5px;
   border-radius: 30px;
-  background-color: rgba(67, 97, 238, 0.1);
+  background-color: var(--primary-foreground);
 }
 
 /* More balanced timer display */
@@ -58,13 +58,13 @@
   height: 8px;
   margin: 16px 0;
   border-radius: 4px;
-  background-color: #f8f9fa;
+  background-color: var(--muted);
   overflow: hidden;
 }
 
 .medium .progress-bar {
   border-radius: 4px;
-  background: linear-gradient(to right, #4361ee, #6385ff);
+  background: linear-gradient(to right, var(--primary), var(--accent));
   box-shadow: 0 0 8px rgba(67, 97, 238, 0.3);
 }
 
@@ -75,7 +75,7 @@
 }
 
 .medium .primary-button {
-  background: linear-gradient(to bottom, #4361ee, #3a56d4);
+  background: linear-gradient(to bottom, var(--primary), var(--accent));
   padding: 0 18px;
   height: 46px;
   font-size: 1rem;
@@ -91,18 +91,18 @@
 }
 
 .medium .secondary-button {
-  background-color: #f8f9fa;
+  background-color: var(--muted);
   height: 46px;
   font-size: 0.95rem;
   border-radius: 12px;
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--border);
   opacity: 0.85;
   transition: all 0.2s ease;
 }
 
 .medium .secondary-button:hover {
   opacity: 1;
-  background-color: #f1f3f5;
+  background-color: var(--accent);
 }
 
 /* Improved stats section */
@@ -111,9 +111,9 @@
   gap: 10px;
   margin: 0 0 22px;
   padding: 16px 12px;
-  background-color: rgba(248, 249, 250, 0.5);
+  background-color: var(--muted);
   border-radius: 12px;
-  border: 1px solid rgba(233, 236, 239, 0.7);
+  border: 1px solid var(--border);
 }
 
 .medium .stat-item {
@@ -124,12 +124,12 @@
 .medium .stat-value {
   font-size: 1.4rem;
   font-weight: 700;
-  color: #495057;
+  color: var(--muted-foreground);
 }
 
 .medium .stat-label {
   font-size: 0.8rem;
-  color: #868e96;
+  color: var(--muted-foreground);
   margin-top: 2px;
 }
 
@@ -137,13 +137,13 @@
 .medium .task-panel {
   margin-top: 10px;
   padding-top: 10px;
-  border-top: 1px solid rgba(241, 243, 245, 0.7);
+  border-top: 1px solid var(--border);
 }
 
 .medium .task-panel h3 {
   font-size: 1rem;
   margin-bottom: 12px;
-  color: #495057;
+  color: var(--muted-foreground);
 }
 
 .medium .add-task-form {
@@ -152,15 +152,15 @@
 
 .medium .task-input {
   border-radius: 10px;
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--border);
   padding: 10px 14px;
   font-size: 0.9rem;
   transition: all 0.2s ease;
-  background-color: #f8f9fa;
+  background-color: var(--muted);
 }
 
 .medium .task-input:focus {
-  background-color: white;
+  background-color: var(--background);
   box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
 }
 
@@ -168,7 +168,7 @@
   width: 38px;
   height: 38px;
   border-radius: 10px;
-  background: linear-gradient(to bottom, #4361ee, #3a56d4);
+  background: linear-gradient(to bottom, var(--primary), var(--accent));
   box-shadow: 0 2px 6px rgba(67, 97, 238, 0.2);
 }
 
@@ -180,21 +180,21 @@
   padding: 10px 12px;
   margin-bottom: 6px;
   border-radius: 10px;
-  background-color: rgba(248, 249, 250, 0.8);
-  border: 1px solid rgba(233, 236, 239, 0.5);
+  background-color: var(--muted);
+  border: 1px solid var(--border);
 }
 
 .medium .active-task {
-  background-color: rgba(237, 242, 255, 0.7);
-  border-left: 3px solid #4361ee;
+  background-color: var(--primary-foreground);
+  border-left: 3px solid var(--primary);
 }
 
 /* Better active task display */
 .medium .active-task-display {
   margin: 5px 0 12px;
   padding: 4px 12px;
-  background-color: rgba(237, 242, 255, 0.4);
+  background-color: var(--primary-foreground);
   border-radius: 6px;
   font-size: 0.85rem;
-  color: #4361ee;
+  color: var(--primary);
 }

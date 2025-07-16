@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useToast } from '@/components/ui/use-toast';
+import { toaster } from '@/components/ui/toaster';
 import { useState, useEffect } from 'react';
 
 interface CourseLinkFormProps {
@@ -44,7 +44,6 @@ export function CourseLinkForm({ universityId, courses, courseLink, onSuccess, c
     url: courseLink?.url || '',
   });
 
-  const { toast } = useToast();
 
   useEffect(() => {
     if (isOpen) {
@@ -86,12 +85,12 @@ export function CourseLinkForm({ universityId, courses, courseLink, onSuccess, c
     });
 
     if (response.ok) {
-      toast({ title: 'Success', description: `Course link ${courseLink ? 'updated' : 'created'}.` });
+      toaster.success({ title: 'Success', description: `Course link ${courseLink ? 'updated' : 'created'}.` });
       setIsOpen(false);
       onSuccess();
     } else {
       const error = await response.json();
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+      toaster.error({ title: 'Error', description: error.message });
     }
   };
   

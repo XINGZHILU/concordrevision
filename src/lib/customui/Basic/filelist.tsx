@@ -67,7 +67,7 @@ function truncateFilename(filename: string, maxLength = 30) {
 export default function FileList({ files }: { files: FileItemProps[] }) {
     if (files.length === 0) {
         return (
-            <p className="text-gray-500 text-center py-4">No files available</p>
+            <p className="text-muted-foreground text-center py-4">No files available</p>
         );
     }
 
@@ -83,23 +83,23 @@ export default function FileList({ files }: { files: FileItemProps[] }) {
                             href={file.path}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center p-3 border border-gray-200 hover:border-indigo-300 rounded-lg hover:bg-indigo-50 transition-all group-hover:shadow-sm"
+                            className="flex items-center p-3 border border-border hover:border-primary/50 rounded-lg hover:bg-primary/10 transition-all group-hover:shadow-sm"
                             title={file.filename}
                         >
-                            <div className="flex-shrink-0 p-2 bg-indigo-100 rounded-md text-indigo-700 mr-3">
-                                <FileIcon size={20} />
+                            <div className="flex-shrink-0 p-2 bg-primary/20 rounded-md text-primary mr-3">
+                                <FileIcon />
                             </div>
 
                             <div className="flex-grow min-w-0">
-                                <p className="text-sm font-medium text-gray-900 truncate">
+                                <p className="text-sm font-medium text-foreground truncate">
                                     {displayName}
                                 </p>
-                                <p className="text-xs text-gray-500">
+                                <p className="text-xs text-muted-foreground">
                                     {file.filename.split('.').pop()?.toUpperCase()}
                                 </p>
                             </div>
 
-                            <div className="flex-shrink-0 ml-2 text-gray-400 group-hover:text-indigo-600">
+                            <div className="flex-shrink-0 ml-2 text-muted-foreground group-hover:text-primary">
                                 <ExternalLink size={16} />
                             </div>
                         </a>

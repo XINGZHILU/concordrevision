@@ -8,7 +8,6 @@ import { bodyFont, headingFont } from "@/lib/customui/fonts";
 import { currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { Provider } from "@/components/ui/provider";
-import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 export const metadata: Metadata = {
   title: "Concordpedia",
@@ -20,34 +19,31 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const user = await currentUser();
   if (!user) {
     return (
-      <ClerkProvider>
-        <html lang="en" suppressHydrationWarning={true} className={`${headingFont.variable} ${bodyFont.variable}`}>
-          <head>
-            <title>Concordpedia</title>
-            <meta charSet="utf-8" />
-          </head>
+      <html lang="en" suppressHydrationWarning={true} className={`${headingFont.variable} ${bodyFont.variable}`}>
+        <head>
+          <title>Concordpedia</title>
+          <meta charSet="utf-8" />
+        </head>
 
-          <body className={`font-sans ${bodyFont.variable} ${headingFont.variable}`}>
-            <Provider>
-              <ThemeProvider
-                attribute="class"
-                defaultTheme="system"
-                enableSystem
-                disableTransitionOnChange
-              >
-                <NavBar teacher={false} can_upload={false} admin={false} />
-                <div className={'w-11/12 min-h-screen p-2 mx-auto markdown-body'}>
-                  {children}
-                  <Toaster />
-                </div>
-                <br />
-                <Footer />
-              </ThemeProvider>
-            </Provider>
-
-          </body>
-        </html>
-      </ClerkProvider>
+        <body className={`font-sans ${bodyFont.variable} ${headingFont.variable}`}>
+          <Provider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <ClerkProvider>
+              <NavBar teacher={false} can_upload={false} admin={false} />
+              <div className={'w-11/12 min-h-screen p-2 mx-auto markdown-body'}>
+                {children}
+                <Toaster />
+              </div>
+              <br />
+              <Footer />
+            </ClerkProvider>
+          </Provider>
+        </body>
+      </html>
     );
   }
   const record = await prisma.user.findUnique({
@@ -59,32 +55,30 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     return <h1>User not found</h1>;
   }
   return (
-    <ClerkProvider>
-      <html lang="en" suppressHydrationWarning={true} className={`${headingFont.variable} ${bodyFont.variable}`}>
-        <head>
-          <title>Concordpedia</title>
-          <meta charSet="utf-8" />
-        </head>
+    <html lang="en" suppressHydrationWarning={true} className={`${headingFont.variable} ${bodyFont.variable}`}>
+      <head>
+        <title>Concordpedia</title>
+        <meta charSet="utf-8" />
+      </head>
 
-        <body className={`font-sans ${bodyFont.variable} ${headingFont.variable}`}>
-          <Provider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              <NavBar teacher={record.teacher} can_upload={record.upload_permission || record.teacher || record.admin} admin={record.admin} />
-              <div className={'w-11/12 min-h-screen p-2 mx-auto markdown-body'}>
-                {children}
-              </div>
-              <Toaster />
-              <br />
-              <Footer />
-            </ThemeProvider>
-          </Provider>
-        </body>
-      </html>
-    </ClerkProvider>
+      <body className={`font-sans ${bodyFont.variable} ${headingFont.variable}`}>
+        <Provider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <ClerkProvider>
+            <NavBar teacher={record.teacher} can_upload={record.upload_permission || record.teacher || record.admin} admin={record.admin} />
+            <div className={'w-11/12 min-h-screen p-2 mx-auto markdown-body'}>
+              {children}
+            </div>
+            <Toaster />
+            <br />
+            <Footer />
+          </ClerkProvider>
+        </Provider>
+      </body>
+    </html>
   );
 }

@@ -5,14 +5,13 @@ import { LuCalendar, LuPencil, LuUpload } from "react-icons/lu";
 import { TestBadge } from "./Badges";
 import { cva } from 'class-variance-authority';
 
-export function NoteCard({ note, colour }: {
+export function NoteCard({ note }: {
   note: {
     id: number,
     title: string,
     desc: string,
     subjectId: number,
-  },
-  colour: number
+  }
 }) {
   // https://flowbite.com/docs/components/card/
   return (
@@ -20,21 +19,20 @@ export function NoteCard({ note, colour }: {
       <div
         className={`max-w-sm p-6 bg-card border-border border-2 rounded-lg shadow-sm`}>
         <h5 className="mb-2 text-xl font-bold tracking-tight text-card-foreground">{note.title}</h5>
-        <BadgeSymbol colour={colour} />
+        <Badge>Completed</Badge>
       </div>
     </Link>
   );
 }
 
-export function TestNoteCard({ note, colour }: {
+export function TestNoteCard({ note }: {
   note: {
     id: number,
     title: string,
     desc: string,
     subjectId: number,
     testId: number
-  },
-  colour: number
+  }
 }) {
   // https://flowbite.com/docs/components/card/
   return (
@@ -42,7 +40,7 @@ export function TestNoteCard({ note, colour }: {
       <div
         className={`max-w-sm p-6 bg-card border-border border-2 rounded-lg shadow-sm`}>
         <h5 className="mb-2 text-xl font-bold tracking-tight text-card-foreground">{note.title}</h5>
-        <BadgeSymbol colour={colour} />
+        <Badge>Completed</Badge>
       </div>
     </Link>
   );
@@ -53,15 +51,15 @@ export function TestNoteCard({ note, colour }: {
 export function BadgeSymbol({ colour }: { colour: number }) {
   if (colour === 0) {
     return (
-      <Badge variant="default">Green</Badge>
+      <Badge variant="default">Completed</Badge>
     );
   } else if (colour === 1) {
     return (
-      <Badge variant="secondary">Amber</Badge>
+      <Badge variant="secondary">In Progress</Badge>
     );
   } else if (colour === 2) {
     return (
-      <Badge variant="destructive">Red</Badge>
+      <Badge variant="destructive">Not Started</Badge>
     );
   } else {
     return (
@@ -118,9 +116,9 @@ const cardVariants = cva(
     variants: {
       color: {
         unclassified: "bg-card border-border border-2 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200",
-        green: "bg-green-50 border-green-200 border-2 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200",
-        amber: "bg-amber-50 border-amber-200 border-2 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200",
-        red: "bg-red-50 border-red-200 border-2 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200",
+        green: "bg-success/20 border-success/40 border-2 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200",
+        amber: "bg-warning/20 border-warning/40 border-2 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200",
+        red: "bg-destructive/20 border-destructive/40 border-2 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200",
       },
     },
     defaultVariants: {

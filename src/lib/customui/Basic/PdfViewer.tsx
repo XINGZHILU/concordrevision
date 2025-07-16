@@ -72,7 +72,7 @@ const Pagination = () => {
     return (
         <nav className="flex justify-between items-center mt-4 max-w-2xl mx-auto">
             <button
-                className="px-4 py-2 bg-gray-200 dark:bg-gray-800 rounded hover:bg-gray-300 dark:hover:bg-gray-700 disabled:opacity-50"
+                className="px-4 py-2 bg-muted hover:bg-accent disabled:opacity-50"
                 disabled={pageNumber <= 1}
                 onClick={() => setPageNumber(pageNumber - 1)}
             >
@@ -82,7 +82,7 @@ const Pagination = () => {
                 Page {pageNumber} of {numPages}
             </span>
             <button
-                className="px-4 py-2 bg-gray-200 dark:bg-gray-800 rounded hover:bg-gray-300 dark:hover:bg-gray-700 disabled:opacity-50"
+                className="px-4 py-2 bg-muted hover:bg-accent disabled:opacity-50"
                 disabled={pageNumber >= numPages}
                 onClick={() => setPageNumber(pageNumber + 1)}
             >

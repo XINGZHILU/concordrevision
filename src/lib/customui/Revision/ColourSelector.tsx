@@ -13,9 +13,9 @@ const colorButtonVariants = cva(
     variants: {
       color: {
         Unclassified: "bg-muted text-muted-foreground border-border hover:bg-accent",
-        Green: "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/50 dark:text-green-300 dark:border-green-800",
-        Amber: "bg-amber-100 text-amber-800 border-amber-200 dark:bg-amber-900/50 dark:text-amber-300 dark:border-amber-800",
-        Red: "bg-red-100 text-red-800 border-red-200 dark:bg-red-900/50 dark:text-red-300 dark:border-red-800",
+        Green: "bg-success/20 text-success border-success/40",
+        Amber: "bg-warning/20 text-warning border-warning/40",
+        Red: "bg-destructive/20 text-destructive border-destructive/40",
       },
       selected: {
         true: "ring-2 ring-primary ring-offset-2",

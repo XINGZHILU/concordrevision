@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { LuCheck, LuCalendarPlus, LuUpload } from 'react-icons/lu';
 
 export default async function TeachersPage() {
   const user = await currentUser();
@@ -43,7 +44,7 @@ export default async function TeachersPage() {
   }) : [];
 
   return (
-    <div>
+    <div className="container mx-auto py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold">Teacher Dashboard</h1>
         <p className="mt-2 text-muted-foreground">
@@ -55,9 +56,7 @@ export default async function TeachersPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Pending Approvals</CardTitle>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+            <LuCheck className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{pendingNotesCount + pendingOlympiadResourcesCount + pendingUCASPostCount}</div>
@@ -71,14 +70,24 @@ export default async function TeachersPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Schedule a Test</CardTitle>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
+            <LuCalendarPlus className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">Create and schedule new tests for different subjects.</p>
             <Button asChild className="mt-4">
               <Link href="/teachers/create-test">Create New Test</Link>
+            </Button>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Upload Resources</CardTitle>
+            <LuUpload className="h-5 w-5 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground">Contribute to the resource library by uploading your materials.</p>
+            <Button asChild className="mt-4">
+              <Link href="/upload">Upload</Link>
             </Button>
           </CardContent>
         </Card>

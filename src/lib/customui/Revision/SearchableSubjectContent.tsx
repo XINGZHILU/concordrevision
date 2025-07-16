@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import { TestCard } from '@/lib/customui/Basic/cards';
 import { EditableNoteCard } from '@/lib/customui/Basic/EditableNoteCard';
-import { Collapsible, Tabs } from "@chakra-ui/react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LuFolder, LuBookCheck, LuBook, LuSearch, LuX } from "react-icons/lu";
 import MDViewer from "@/lib/customui/Basic/showMD";
 import SubscriptionManager from "./SubscriptionManager";
@@ -14,10 +14,10 @@ import { Colour, ColourLink, Note as PrismaNote, Test as PrismaTest, Subject as 
 type NoteWithAuthor = PrismaNote & { author: { id: string; firstname: string | null; lastname: string | null; } };
 
 const colorMapping: { [key in Colour]: { className: string } } = {
-    Unclassified: { className: "bg-gray-500 hover:bg-gray-600" },
-    Green: { className: "bg-green-500 hover:bg-green-600" },
-    Amber: { className: "bg-amber-500 hover:bg-amber-600" },
-    Red: { className: "bg-red-500 hover:bg-red-600" },
+    Unclassified: { className: "bg-muted text-muted-foreground" },
+    Green: { className: "bg-success/20 text-success" },
+    Amber: { className: "bg-warning/20 text-warning" },
+    Red: { className: "bg-destructive/20 text-destructive" },
 };
 
 const SearchableSubjectContent = ({ 
@@ -117,7 +117,6 @@ const SearchableSubjectContent = ({
                     <EditableNoteCard
                         key={note.id}
                         note={note}
-                        colour={getUserColor(note.id)}
                         canEdit={currentUserId === note.author.id}
                     />
                 ))}
@@ -158,12 +157,10 @@ const SearchableSubjectContent = ({
                 <SubscriptionManager subjectId={subject.id} userId={currentUserId} />
             </div>
 
-            <Collapsible.Root defaultOpen>
-                <Collapsible.Trigger paddingY="3"><h2>About</h2></Collapsible.Trigger>
-                <Collapsible.Content>
-                    <MDViewer content={subject.desc} />
-                </Collapsible.Content>
-            </Collapsible.Root>
+            <details open>
+                <summary><h2>About</h2></summary>
+                <MDViewer content={subject.desc} />
+            </details>
             <br />
 
             <div className="mb-6 space-y-4">
@@ -210,7 +207,7 @@ const SearchableSubjectContent = ({
                             onClick={() => setSelectedColor(key)}
                             className={cn(
                                 "capitalize",
-                                selectedColor === key && `${colorMapping[key].className} text-white`
+                                selectedColor === key && colorMapping[key].className
                             )}
                         >
                             {key}
@@ -220,9 +217,9 @@ const SearchableSubjectContent = ({
             </div>
 
             <div>
-                <Tabs.Root defaultValue="resources" variant="plain" rounded="l3">
-                    <Tabs.List bg="bg.muted" rounded="l3" p="1">
-                        <Tabs.Trigger value="resources" p="2">
+                <Tabs defaultValue="resources">
+                    <TabsList>
+                        <TabsTrigger value="resources">
                             <LuFolder />
                             Resources
                             {searchQuery && filteredResources.length > 0 && (
@@ -230,8 +227,8 @@ const SearchableSubjectContent = ({
                                     {filteredResources.length}
                                 </span>
                             )}
-                        </Tabs.Trigger>
-                        <Tabs.Trigger value="upcoming_tests" p="2">
+                        </TabsTrigger>
+                        <TabsTrigger value="upcoming_tests">
                             <LuBook />
                             Upcoming tests
                             {searchQuery && upcomingTests.length > 0 && (
@@ -239,8 +236,8 @@ const SearchableSubjectContent = ({
                                     {upcomingTests.length}
                                 </span>
                             )}
-                        </Tabs.Trigger>
-                        <Tabs.Trigger value="past_tests" p="2">
+                        </TabsTrigger>
+                        <TabsTrigger value="past_tests">
                             <LuBookCheck />
                             Past tests
                             {searchQuery && pastTests.length > 0 && (
@@ -248,28 +245,27 @@ const SearchableSubjectContent = ({
                                     {pastTests.length}
                                 </span>
                             )}
-                        </Tabs.Trigger>
-                        <Tabs.Indicator rounded="l2" />
-                    </Tabs.List>
+                        </TabsTrigger>
+                    </TabsList>
 
-                    <Tabs.Content value="resources">
+                    <TabsContent value="resources">
                         <div className="mt-4">
                             {renderResourceCards(filteredResources)}
                         </div>
-                    </Tabs.Content>
+                    </TabsContent>
 
-                    <Tabs.Content value="upcoming_tests">
+                    <TabsContent value="upcoming_tests">
                         <div className="mt-4">
                             {renderTestCards(upcomingTests)}
                         </div>
-                    </Tabs.Content>
+                    </TabsContent>
 
-                    <Tabs.Content value="past_tests">
+                    <TabsContent value="past_tests">
                         <div className="mt-4">
                             {renderTestCards(pastTests)}
                         </div>
-                    </Tabs.Content>
-                </Tabs.Root>
+                    </TabsContent>
+                </Tabs>
             </div>
         </div>
     );

@@ -27,7 +27,7 @@ export default function NavBar({ can_upload, teacher, admin }: { can_upload: boo
   };
 
   return (
-    <nav className="bg-background shadow-md sticky top-0 z-50 border-b border-border">
+    <nav className="bg-card shadow-md sticky top-0 z-50 border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Logo/Brand */}

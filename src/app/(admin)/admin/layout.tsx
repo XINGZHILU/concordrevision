@@ -74,6 +74,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                           <Link href="/admin/ucas" className="hover:bg-primary/80 px-2 py-1 rounded">
                             UCAS
                           </Link>
+                          <Link href="/admin/delete" className="hover:bg-primary/80 px-2 py-1 rounded">
+                            Delete
+                          </Link>
                         </nav>
                       </div>
 
@@ -119,6 +122,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                       </Link>
                       <Link href="/admin/ucas" className="whitespace-nowrap hover:bg-primary/80 px-2 py-1 rounded">
                         UCAS
+                      </Link>
+                      <Link href="/admin/delete" className="whitespace-nowrap hover:bg-primary/80 px-2 py-1 rounded">
+                        Delete
                       </Link>
                     </nav>
                   </div>

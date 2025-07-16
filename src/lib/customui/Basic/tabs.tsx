@@ -1,4 +1,4 @@
-import { Link as CL, Tabs } from "@chakra-ui/react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export function SubjectTabs({ f3, f4, f5, f61, f62, defaultval }: {
     f3: React.JSX.Element[],
@@ -10,48 +10,29 @@ export function SubjectTabs({ f3, f4, f5, f61, f62, defaultval }: {
 }) {
     const className = 'grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4';
     return (<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Tabs.Root defaultValue={defaultval} variant='plain' rounded="l3">
-            <Tabs.List p="1">
-                <Tabs.Trigger value="f3" asChild p="2">
-                    <CL unstyled>
-                        Form 3
-                    </CL>
-                </Tabs.Trigger>
-                <Tabs.Trigger value="f4" asChild p="2">
-                    <CL unstyled>
-                        Form 4
-                    </CL>
-                </Tabs.Trigger>
-                <Tabs.Trigger value="f5" asChild p="2">
-                    <CL unstyled>
-                        Form 5
-                    </CL>
-                </Tabs.Trigger>
-                <Tabs.Trigger value="61" asChild p="2">
-                    <CL unstyled>
-                        6.1
-                    </CL>
-                </Tabs.Trigger>
-                <Tabs.Trigger value="62" asChild p="2">
-                    <CL unstyled>
-                        6.2
-                    </CL>
-                </Tabs.Trigger>
-                <Tabs.Indicator rounded="l2" />
-            </Tabs.List>
-            <Tabs.Content value="f3">
+        <Tabs defaultValue={defaultval}>
+            <TabsList>
+                <TabsTrigger value="f3">Form 3</TabsTrigger>
+                <TabsTrigger value="f4">Form 4</TabsTrigger>
+                <TabsTrigger value="f5">Form 5</TabsTrigger>
+                <TabsTrigger value="61">6.1</TabsTrigger>
+                <TabsTrigger value="62">6.2</TabsTrigger>
+            </TabsList>
+            <TabsContent value="f3">
                 <div className={className}>{f3}</div>
-            </Tabs.Content>
-            <Tabs.Content value="f4">
+            </TabsContent>
+            <TabsContent value="f4">
                 <div className={className}>{f4}</div>
-            </Tabs.Content><Tabs.Content value="f5">
+            </TabsContent>
+            <TabsContent value="f5">
                 <div className={className}>{f5}</div>
-            </Tabs.Content><Tabs.Content value="61">
+            </TabsContent>
+            <TabsContent value="61">
                 <div className={className}>{f61}</div>
-            </Tabs.Content><Tabs.Content value="62">
+            </TabsContent>
+            <TabsContent value="62">
                 <div className={className}>{f62}</div>
-            </Tabs.Content>
-        </Tabs.Root>
-
+            </TabsContent>
+        </Tabs>
     </div>);
 }

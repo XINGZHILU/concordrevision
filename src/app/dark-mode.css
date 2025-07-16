@@ -1,0 +1,29 @@
+.dark body {
+    --background: 0 0% 5%;
+    --foreground: 210 8% 85%;
+
+    --card: 240 2% 10%;
+    --card-foreground: 210 8% 85%;
+
+    --popover: 240 2% 10%;
+    --popover-foreground: 210 8% 85%;
+
+    --primary: 201 100% 65%;
+    --primary-foreground: 0 0% 5%;
+
+    --secondary: 240 2% 10%;
+    --secondary-foreground: 210 8% 85%;
+
+    --muted: 240 2% 10%;
+    --muted-foreground: 220 1% 51%;
+
+    --accent: 240 2% 10%;
+    --accent-foreground: 210 8% 85%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 8% 85%;
+
+    --border: 220 1% 21%;
+    --input: 220 1% 21%;
+    --ring: 201 100% 65%;
+} 

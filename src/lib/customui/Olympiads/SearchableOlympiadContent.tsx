@@ -2,7 +2,6 @@
 
 import { useState, useMemo } from 'react';
 import { OlympiadResourceCard } from '@/lib/customui/Basic/cards';
-import { Collapsible } from "@chakra-ui/react";
 import { LuSearch, LuX, LuExternalLink, LuFileText } from "react-icons/lu";
 import MDViewer from "@/lib/customui/Basic/showMD";
 
@@ -138,12 +137,10 @@ const SearchableOlympiadContent = ({
         </span>
       </div>
 
-      <Collapsible.Root defaultOpen>
-        <Collapsible.Trigger paddingY="3"><h2>About</h2></Collapsible.Trigger>
-        <Collapsible.Content>
-          <MDViewer content={olympiad.desc} />
-        </Collapsible.Content>
-      </Collapsible.Root>
+      <details open>
+        <summary><h2>About</h2></summary>
+        <MDViewer content={olympiad.desc} />
+      </details>
       <br />
 
       {/* Search Bar */}
@@ -235,7 +232,7 @@ const SearchableOlympiadContent = ({
                 </div>
 
                 {/* Subtle animation line */}
-                <div className="mt-3 h-0.5 bg-gradient-to-r from-primary to-purple-500 scale-x-0 group-hover:scale-x-100 transform transition-transform duration-300 origin-left rounded-full"></div>
+                <div className="mt-3 h-0.5 bg-gradient-to-r from-primary to-accent scale-x-0 group-hover:scale-x-100 transform transition-transform duration-300 origin-left rounded-full"></div>
               </a>
             ))}
           </div>
@@ -248,7 +245,7 @@ const SearchableOlympiadContent = ({
           <LuFileText className="h-5 w-5 mr-2" />
           Resources
           {searchQuery && filteredResources.length > 0 && (
-            <span className="ml-2 text-xs bg-green-500/10 text-green-500 px-2 py-1 rounded-full">
+            <span className="ml-2 text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
               {filteredResources.length}
             </span>
           )}
