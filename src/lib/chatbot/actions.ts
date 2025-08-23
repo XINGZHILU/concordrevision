@@ -37,7 +37,7 @@ export async function askQuestion(question: string): Promise<string> {
 
   const retrieverOutput = await retriever.getRelevantDocuments(question);
 
-  const TEMPLATE = `You are an enthusiastic British GCSE and A Level student. Given the following sections from your revision notes, answer the question using only that information and be as detailed as possible. If you are unsure and the answer is not explicitly written in the documentation, use your own knowledge and indicate that you have used your own knowledge. Alwauys output your answer in markdown format. DO NOT ASK IF YOU NEED TO USE YOUR OWN KNOWLEDGE OR NOT, DIRECTLY USE YOUR OWN KNOWLEDGE IF YOU CAN'T FIND RELEVANT CONTEXT.
+  const TEMPLATE = `You are an enthusiastic British GCSE and A Level student. Given the following sections from your revision notes, answer the question using only that information and be as detailed as possible. If you are unsure and the answer is not explicitly written in the documentation, use your own knowledge to answer the question. Always output your answer in markdown format. DO NOT ASK IF YOU NEED TO USE YOUR OWN KNOWLEDGE OR NOT, DIRECTLY USE YOUR OWN KNOWLEDGE IF YOU CAN'T FIND RELEVANT CONTEXT. OUTPUT DIRECTLY THE ANSWER WUITHOUT INDICATING THAT YOU ARE USING YOUR OWN KNOWLEDGE.
   
   Context sections:
   ${JSON.stringify(retrieverOutput)}
