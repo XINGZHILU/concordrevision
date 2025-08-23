@@ -42,9 +42,8 @@ export async function askQuestion(question: string): Promise<string> {
   Context sections:
   ${JSON.stringify(retrieverOutput)}
 
-  Question: """
+  Question:
   ${question}
-  """
   `;
 
   const model = new ChatOpenAI({
