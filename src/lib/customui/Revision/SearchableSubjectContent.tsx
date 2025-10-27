@@ -1,15 +1,16 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { TestCard } from '@/lib/customui/Basic/cards';
 import { EditableNoteCard } from '@/lib/customui/Basic/EditableNoteCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LuFolder, LuBookCheck, LuBook, LuSearch, LuX } from "react-icons/lu";
+import { LuFolder, LuBookCheck, LuBook, LuSearch, LuX, LuChevronDown } from "react-icons/lu";
 import MDViewer from "@/lib/customui/Basic/showMD";
 import SubscriptionManager from "./SubscriptionManager";
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Colour, ColourLink, Note as PrismaNote, Test as PrismaTest, Subject as PrismaSubject } from '@prisma/client';
+import { Collapsible } from "@chakra-ui/react";
 
 type NoteWithAuthor = PrismaNote & { author: { id: string; firstname: string | null; lastname: string | null; } };
 
@@ -38,10 +39,10 @@ const SearchableSubjectContent = ({
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedColor, setSelectedColor] = useState<Colour | 'all'>('all');
 
-    const getUserColor = (noteId: number): Colour => {
+    const getUserColor = useCallback((noteId: number): Colour => {
         const link = userColours?.find(link => link.noteId === noteId);
         return link ? link.colour : "Unclassified";
-    };
+    }, [userColours]);
 
     const filterNotes = (notes: NoteWithAuthor[], query: string): NoteWithAuthor[] => {
         if (!query.trim()) return notes;
@@ -72,7 +73,7 @@ const SearchableSubjectContent = ({
 
         return searchedNotes.filter(note => getUserColor(note.id) === selectedColor);
 
-    }, [notes, searchQuery, selectedColor, userColours]);
+    }, [notes, searchQuery, selectedColor, getUserColor]);
 
     const { upcomingTests, pastTests } = useMemo(() => {
         const today = new Date();
@@ -157,11 +158,15 @@ const SearchableSubjectContent = ({
                 <SubscriptionManager subjectId={subject.id} userId={currentUserId} />
             </div>
 
-            <details open>
-                <summary><h2>About</h2></summary>
-                <MDViewer content={subject.desc} />
-            </details>
-            <br />
+            <Collapsible.Root defaultOpen className="mb-6">
+                <Collapsible.Trigger className="flex items-center gap-2 text-2xl font-bold cursor-pointer hover:text-primary transition-colors group">
+                    <LuChevronDown className="transition-transform group-data-[state=closed]:rotate-[-90deg]" />
+                    About
+                </Collapsible.Trigger>
+                <Collapsible.Content className="mt-4 ml-6">
+                    <MDViewer content={subject.desc} />
+                </Collapsible.Content>
+            </Collapsible.Root>
 
             <div className="mb-6 space-y-4">
                 <div className="relative max-w-md">

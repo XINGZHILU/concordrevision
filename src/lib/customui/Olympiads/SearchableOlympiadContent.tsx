@@ -2,8 +2,9 @@
 
 import { useState, useMemo } from 'react';
 import { OlympiadResourceCard } from '@/lib/customui/Basic/cards';
-import { LuSearch, LuX, LuExternalLink, LuFileText } from "react-icons/lu";
+import { LuSearch, LuX, LuExternalLink, LuFileText, LuChevronDown } from "react-icons/lu";
 import MDViewer from "@/lib/customui/Basic/showMD";
+import { Collapsible } from "@chakra-ui/react";
 
 interface OlympiadResource {
   id: number;
@@ -137,11 +138,15 @@ const SearchableOlympiadContent = ({
         </span>
       </div>
 
-      <details open>
-        <summary><h2>About</h2></summary>
-        <MDViewer content={olympiad.desc} />
-      </details>
-      <br />
+      <Collapsible.Root defaultOpen className="mb-6">
+        <Collapsible.Trigger className="flex items-center gap-2 text-2xl font-bold cursor-pointer hover:text-primary transition-colors group">
+          <LuChevronDown className="transition-transform group-data-[state=closed]:rotate-[-90deg]" />
+          About
+        </Collapsible.Trigger>
+        <Collapsible.Content className="mt-4 ml-6">
+          <MDViewer content={olympiad.desc} />
+        </Collapsible.Content>
+      </Collapsible.Root>
 
       {/* Search Bar */}
       <div className="mb-6">

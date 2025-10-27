@@ -46,17 +46,25 @@ export default async function Page({ params }: { params: { oid: string, rid: str
     }
   });
 
-  if (!resource || !resource.approved) {
+  if (!resource) {
     notFound();
+  }
+
+  // Get current user to check authorization for pending resources
+  const user = await currentUser();
+  const dbUser = user ? await prisma.user.findUnique({ where: { id: user.id } }) : null;
+
+  // If resource is not approved, only allow access to author or admin
+  if (!resource.approved) {
+    if (!user || (resource.authorId !== user.id && !dbUser?.admin)) {
+      notFound();
+    }
   }
 
   const resourceType = getResourceTypeLabel(resource.type);
   const authorName = resource.author.firstname && resource.author.lastname
     ? `${resource.author.firstname} ${resource.author.lastname}`
     : "Anonymous";
-
-  const user = await currentUser();
-  const dbUser = user ? await prisma.user.findUnique({ where: { id: user.id } }) : null;
   const isAdmin = dbUser?.admin ?? false;
   const canEdit = user && (resource.author.id === user.id || isAdmin);
 

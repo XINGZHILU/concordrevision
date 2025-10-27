@@ -58,8 +58,20 @@ export default async function Page({ params }: { params: { subject: string, test
     notFound();
   }
 
-  if (!note.approved || note.testId != test.id || note.subjectId != subject.id) {
+  // Verify note belongs to correct test and subject
+  if (note.testId != test.id || note.subjectId != subject.id) {
     notFound();
+  }
+
+  // Get current user to check authorization for pending notes
+  const user = await currentUser();
+  const dbUser = user ? await prisma.user.findUnique({ where: { id: user.id } }) : null;
+
+  // If note is not approved, only allow access to author or admin
+  if (!note.approved) {
+    if (!user || (note.authorId !== user.id && !dbUser?.admin)) {
+      notFound();
+    }
   }
 
   // Check if the year group is visible
@@ -67,8 +79,6 @@ export default async function Page({ params }: { params: { subject: string, test
     notFound();
   }
 
-  const user = await currentUser();
-  const dbUser = user ? await prisma.user.findUnique({ where: { id: user.id } }) : null;
   const colourLink = user ? await prisma.colourLink.findFirst({
     where: {
       userId: user.id,

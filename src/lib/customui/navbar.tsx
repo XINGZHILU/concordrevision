@@ -100,6 +100,15 @@ export default function NavBar({ can_upload, teacher, admin }: { can_upload: boo
                   </SignInButton>
                 </SignedOut>
                 <SignedIn>
+                  <Link
+                    href="/account"
+                    className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/account')
+                      ? 'text-primary bg-primary/10'
+                      : 'text-foreground hover:text-primary hover:bg-muted'
+                      }`}
+                  >
+                    Account
+                  </Link>
                   <UserButton
                     appearance={{
                       elements: {
@@ -208,6 +217,19 @@ export default function NavBar({ can_upload, teacher, admin }: { can_upload: boo
             >
               Admin
             </Link>) : (<></>)}
+            
+            <SignedIn>
+              <Link
+                href="/account"
+                className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/account')
+                  ? 'text-primary bg-primary/10'
+                  : 'text-foreground hover:text-primary hover:bg-muted'
+                  }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Account
+              </Link>
+            </SignedIn>
             <SignedIn>
               <div className="mr-4">
                 <UserButton

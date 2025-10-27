@@ -26,6 +26,14 @@ export default async function PostPage({ params }: { params: { id: string } }) {
   }
 
   const dbUser = user ? await prisma.user.findUnique({ where: { id: user.id } }) : null;
+
+  // If post is not approved, only allow access to author or admin
+  if (!post.approved) {
+    if (!user || (post.authorId !== user.id && !dbUser?.admin)) {
+      notFound();
+    }
+  }
+
   const canEdit = user && (user.id === post.authorId || (dbUser && dbUser.admin));
   const isAdmin = dbUser?.admin ?? false;
 
