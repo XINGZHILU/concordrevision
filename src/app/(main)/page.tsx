@@ -10,6 +10,9 @@ export default async function Home() {
             Welcome!
           </h1>
           <div className="mt-6">
+            {/* UpcomingExams accepts optional maxDates prop (default: 8) */}
+            {/* Will display in rows of 4 columns each */}
+            {/* Example: <UpcomingExams maxDates={12} /> for 3 rows */}
             <UpcomingExams />
           </div>
         </div>
