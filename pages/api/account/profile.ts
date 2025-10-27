@@ -19,17 +19,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
         const { firstname, lastname, year } = req.body;
 
-        // Validate input
-        if (!firstname || !lastname) {
-            return res.status(400).json({ message: 'First name and last name are required' });
+        // Validate input - names are optional now (read-only in frontend)
+        if (firstname !== undefined && typeof firstname !== 'string') {
+            return res.status(400).json({ message: 'First name must be a string' });
         }
 
-        if (typeof firstname !== 'string' || typeof lastname !== 'string') {
-            return res.status(400).json({ message: 'Names must be strings' });
+        if (lastname !== undefined && typeof lastname !== 'string') {
+            return res.status(400).json({ message: 'Last name must be a string' });
         }
 
         if (year !== undefined && (typeof year !== 'number' || year < -1 || year > 4)) {
             return res.status(400).json({ message: 'Invalid year group' });
+        }
+
+        // Build update data object - only update fields that are provided
+        const updateData: {
+            firstname?: string;
+            lastname?: string;
+            year?: number;
+        } = {};
+
+        if (firstname !== undefined) {
+            updateData.firstname = firstname.trim();
+        }
+        if (lastname !== undefined) {
+            updateData.lastname = lastname.trim();
+        }
+        if (year !== undefined) {
+            updateData.year = year;
         }
 
         // Update user profile
@@ -37,11 +54,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             where: {
                 id: userId,
             },
-            data: {
-                firstname: firstname.trim(),
-                lastname: lastname.trim(),
-                ...(year !== undefined && { year }),
-            },
+            data: updateData,
             select: {
                 id: true,
                 firstname: true,

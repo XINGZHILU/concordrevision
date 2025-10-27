@@ -45,11 +45,8 @@ const UserSettingsForm: React.FC<UserSettingsFormProps> = ({ user }) => {
     const newFormData = { ...formData, [field]: value };
     setFormData(newFormData);
     
-    // Check if there are changes
-    const hasChanges = 
-      newFormData.firstname !== user.firstname ||
-      newFormData.lastname !== user.lastname ||
-      newFormData.year !== user.year;
+    // Check if there are changes (only year can be changed now)
+    const hasChanges = newFormData.year !== user.year;
     
     setHasChanges(hasChanges);
   };
@@ -68,12 +65,13 @@ const UserSettingsForm: React.FC<UserSettingsFormProps> = ({ user }) => {
     setSaving(true);
 
     try {
+      // Only send year field since name fields are read-only
       const response = await fetch('/api/account/profile', {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ year: formData.year }),
       });
 
       if (!response.ok) {
@@ -129,7 +127,7 @@ const UserSettingsForm: React.FC<UserSettingsFormProps> = ({ user }) => {
           </div>
 
           <div className="space-y-4">
-            {/* First Name */}
+            {/* First Name (Read-only) */}
             <div>
               <label htmlFor="firstname" className="block text-sm font-medium text-foreground mb-2">
                 First Name
@@ -138,14 +136,16 @@ const UserSettingsForm: React.FC<UserSettingsFormProps> = ({ user }) => {
                 type="text"
                 id="firstname"
                 value={formData.firstname}
-                onChange={(e) => handleInputChange('firstname', e.target.value)}
-                className="w-full px-3 py-2 border border-input bg-background rounded-lg text-sm focus:ring-2 focus:ring-ring focus:border-transparent"
+                disabled
+                className="w-full px-3 py-2 border border-input bg-muted rounded-lg text-sm text-muted-foreground cursor-not-allowed"
                 placeholder="Enter your first name"
-                required
               />
+              <p className="text-xs text-muted-foreground mt-1">
+                Name cannot be changed here. Please contact support if needed.
+              </p>
             </div>
 
-            {/* Last Name */}
+            {/* Last Name (Read-only) */}
             <div>
               <label htmlFor="lastname" className="block text-sm font-medium text-foreground mb-2">
                 Last Name
@@ -154,11 +154,13 @@ const UserSettingsForm: React.FC<UserSettingsFormProps> = ({ user }) => {
                 type="text"
                 id="lastname"
                 value={formData.lastname}
-                onChange={(e) => handleInputChange('lastname', e.target.value)}
-                className="w-full px-3 py-2 border border-input bg-background rounded-lg text-sm focus:ring-2 focus:ring-ring focus:border-transparent"
+                disabled
+                className="w-full px-3 py-2 border border-input bg-muted rounded-lg text-sm text-muted-foreground cursor-not-allowed"
                 placeholder="Enter your last name"
-                required
               />
+              <p className="text-xs text-muted-foreground mt-1">
+                Name cannot be changed here. Please contact support if needed.
+              </p>
             </div>
 
             {/* Email (Read-only) */}

@@ -39,7 +39,7 @@ export default async function AccountPage() {
     },
     {
       title: "Account Settings",
-      description: "Update your name, year group, and other preferences",
+      description: "Update your year group and preferences",
       href: "/account/settings",
       icon: LuSettings,
       color: "text-muted-foreground",
