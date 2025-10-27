@@ -4,7 +4,8 @@ import { getAuth } from '@clerk/nextjs/server';
 
 /**
  * API endpoint to fetch upcoming tests for user's subscribed subjects
- * Returns tests ordered by date (earliest first), limited to 8 tests
+ * Returns tests ordered by date (earliest first), limited to 100 tests
+ * Frontend component limits display to 8 unique dates with all tests on those dates
  */
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { userId } = getAuth(req);
@@ -60,7 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             orderBy: {
                 date: 'asc', // Earliest tests first
             },
-            take: 8, // Limit to 8 tests as requested
+            take: 100, // Fetch up to 100 tests to ensure we cover multiple dates (frontend limits display)
         });
 
         return res.status(200).json(upcomingTests);

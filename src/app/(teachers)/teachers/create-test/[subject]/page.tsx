@@ -1,5 +1,6 @@
 import NewTestForm from "@/lib/customui/Upload/test_create_form";
 import { prisma } from "@/lib/prisma";
+import { getYearGroupName } from "@/lib/year-group-config";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
@@ -28,7 +29,7 @@ export default async function Page({ params }: { params: { subject: string } }) 
 
     return (
         <div>
-            <h1 className="text-2xl font-bold mb-4">Create a Test for {subject.title}</h1>
+            <h1 className="text-2xl font-bold mb-4">Create a Test for {getYearGroupName(subject.level)} {subject.title}</h1>
             <NewTestForm subject={subject.id} />
         </div>
     );

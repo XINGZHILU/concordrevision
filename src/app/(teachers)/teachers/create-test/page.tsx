@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { SubjectTabs } from '@/lib/customui/Basic/tabs';
+import { getYearGroupName } from '@/lib/year-group-config';
 
 export default async function CreateTestSubjectSelectPage({
   searchParams,
@@ -29,7 +30,7 @@ export default async function CreateTestSubjectSelectPage({
       href={`/teachers/create-test/${subject.id}`}
       className="block border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200 bg-card text-card-foreground"
     >
-      <h3 className="text-lg font-semibold">{subject.title}</h3>
+      <h3 className="text-lg font-semibold">{getYearGroupName(subject.level)} {subject.title}</h3>
     </Link>
   );
 
