@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
 import { isNumeric } from "@/lib/utils";
-import { year_group_names } from "@/lib/consts";
+import { getYearGroupName, isYearGroupVisible } from "@/lib/year-group-config";
 import { currentUser } from '@clerk/nextjs/server';
 import Link from "next/link";
 import EditResourceForm from "@/lib/customui/Upload/EditResourceForm";
@@ -50,6 +50,11 @@ export default async function EditResourcePage({ params }: PageProps) {
     });
 
     if (!subject) {
+        notFound();
+    }
+
+    // Check if the year group is visible
+    if (!isYearGroupVisible(subject.level)) {
         notFound();
     }
 
@@ -134,7 +139,7 @@ export default async function EditResourcePage({ params }: PageProps) {
                     Edit Resource: {note.title}
                 </h1>
                 <p className="text-muted-foreground mb-6">
-                    {year_group_names[subject.level]} {subject.title}
+                    {getYearGroupName(subject.level)} {subject.title}
                 </p>
 
                 <EditResourceForm

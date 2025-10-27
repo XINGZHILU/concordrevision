@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
+import { notFound } from "next/navigation";
 import { isNumeric } from "@/lib/utils";
-import { year_group_names } from "@/lib/consts";
+import { getYearGroupName, isYearGroupVisible } from "@/lib/year-group-config";
 import { currentUser } from '@clerk/nextjs/server'
 import TestUploadForm from "@/lib/customui/Upload/TestUploadForm";
 import { MaxSizeAlert } from "@/lib/customui/Upload/Alert";
@@ -18,7 +19,7 @@ export default async function Page(req: any, res: any) {
     }
 
     if (!isNumeric(sid) || !isNumeric(test)) {
-        return <h1>Invalid subject or test</h1>;
+        notFound();
     }
 
     const subject = await prisma.subject.findUnique({
@@ -31,7 +32,12 @@ export default async function Page(req: any, res: any) {
     });
 
     if (!subject) {
-        return <h1>Subject not found</h1>;
+        notFound();
+    }
+
+    // Check if the year group is visible
+    if (!isYearGroupVisible(subject.level)) {
+        notFound();
     }
 
     const test_record = await prisma.test.findUnique({
@@ -44,20 +50,22 @@ export default async function Page(req: any, res: any) {
 
 
     if (!test_record) {
-        return <h1>Test not found</h1>;
+        notFound();
     }
+
+    const yearGroupName = getYearGroupName(subject.level);
 
 
     if (test_record.type === 2) {
         return (<div>
-            <h1>{year_group_names[subject.level]} {subject.title} revision resources upload</h1>
+            <h1>{yearGroupName} {subject.title} revision resources upload</h1>
 
             <TestUploadForm subject={subject.id} author={user.id} test={test_record.id} type={1}></TestUploadForm>
         </div>);
     }
     else {
         return (<div>
-            <h1>{year_group_names[subject.level]} {subject.title} revision resources upload</h1>
+            <h1>{yearGroupName} {subject.title} revision resources upload</h1>
             <MaxSizeAlert />
             <TestUploadForm subject={subject.id} author={user.id} test={test_record.id} type={0}></TestUploadForm>
         </div>);

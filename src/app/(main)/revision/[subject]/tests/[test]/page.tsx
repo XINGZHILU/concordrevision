@@ -4,7 +4,7 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { isNumeric } from "@/lib/utils";
-import { year_group_names } from "@/lib/consts";
+import { getYearGroupName, isYearGroupVisible } from "@/lib/year-group-config";
 import { currentUser } from "@clerk/nextjs/server";
 import { TestNoteCard } from "@/lib/customui/Basic/cards";
 import MDViewer from "@/lib/customui/Basic/showMD";
@@ -47,6 +47,11 @@ export default async function Page(req: any, res: any) {
     notFound();
   }
 
+  // Check if the year group is visible
+  if (!isYearGroupVisible(subject.level)) {
+    notFound();
+  }
+
   const test = await prisma.test.findUnique({
     where: {
       id: +tid
@@ -65,7 +70,7 @@ export default async function Page(req: any, res: any) {
   const user = await currentUser();
   if (!user) {
     return (<div className="w-full">
-      <h1>{year_group_names[subject.level]} {subject.title} - {test.title}</h1>
+      <h1>{getYearGroupName(subject.level)} {subject.title} - {test.title}</h1>
       <br />
       <ul>
         <li><b>Test
@@ -118,7 +123,7 @@ export default async function Page(req: any, res: any) {
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-foreground tracking-tight">{test.title}</h1>
-        <p className="text-2xl text-muted-foreground mt-1">{year_group_names[subject.level]} {subject.title}</p>
+        <p className="text-2xl text-muted-foreground mt-1">{getYearGroupName(subject.level)} {subject.title}</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

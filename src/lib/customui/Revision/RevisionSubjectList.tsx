@@ -2,7 +2,7 @@
 
 import { SubjectItem } from '../Upload/SubjectItem';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { year_group_names } from "@/lib/consts";
+import { getVisibleYearGroups, isYearGroupVisible } from "@/lib/year-group-config";
 import { LuBookOpen, LuBookPlus, LuBookUp, LuBookKey, LuBookMarked } from "react-icons/lu";
 
 const RevisionSubjectList = ({ subjects, year }: {
@@ -14,15 +14,21 @@ const RevisionSubjectList = ({ subjects, year }: {
     }[],
     year: number
 }) => {
+    // Filter subjects to only include those from visible year groups
+    const visibleSubjects = subjects.filter((subject) => isYearGroupVisible(subject.level));
+    
     // Group subjects by level
-    const f3 = subjects.filter((subject) => subject.level === 0);
-    const f4 = subjects.filter((subject) => subject.level === 1);
-    const f5 = subjects.filter((subject) => subject.level === 2);
-    const f61 = subjects.filter((subject) => subject.level === 3);
-    const f62 = subjects.filter((subject) => subject.level === 4);
+    const f3 = visibleSubjects.filter((subject) => subject.level === 0);
+    const f4 = visibleSubjects.filter((subject) => subject.level === 1);
+    const f5 = visibleSubjects.filter((subject) => subject.level === 2);
+    const f61 = visibleSubjects.filter((subject) => subject.level === 3);
+    const f62 = visibleSubjects.filter((subject) => subject.level === 4);
 
+    const visibleYearGroups = getVisibleYearGroups();
     const tabIds = ['f3', 'f4', 'f5', '61', '62'];
-    const defaultTab = tabIds[year] || 'f3';
+    const requestedTabId = tabIds[year];
+    const isRequestedVisible = visibleYearGroups.some(group => group.tabId === requestedTabId);
+    const defaultTab = isRequestedVisible ? requestedTabId : (visibleYearGroups[0]?.tabId || 'f3');
 
     // Get year group icon
     const getYearGroupIcon = (level: number) => {
@@ -45,63 +51,65 @@ const RevisionSubjectList = ({ subjects, year }: {
                 </p>
             </div>
 
-            <Tabs defaultValue={defaultTab}>
-                <div className="border-b border-border mb-8">
-                    <div className="flex justify-center">
-                        <TabsList>
-                            <TabsTrigger value="f3" className="flex items-center px-3 py-2 text-sm font-medium">
-                                {getYearGroupIcon(0)}
-                                {year_group_names[0]}
-                            </TabsTrigger>
-                            <TabsTrigger value="f4" className="flex items-center px-3 py-2 text-sm font-medium">
-                                {getYearGroupIcon(1)}
-                                {year_group_names[1]}
-                            </TabsTrigger>
-                            <TabsTrigger value="f5" className="flex items-center px-3 py-2 text-sm font-medium">
-                                {getYearGroupIcon(2)}
-                                {year_group_names[2]}
-                            </TabsTrigger>
-                            <TabsTrigger value="61" className="flex items-center px-3 py-2 text-sm font-medium">
-                                {getYearGroupIcon(3)}
-                                {year_group_names[3]}
-                            </TabsTrigger>
-                            <TabsTrigger value="62" className="flex items-center px-3 py-2 text-sm font-medium">
-                                {getYearGroupIcon(4)}
-                                {year_group_names[4]}
-                            </TabsTrigger>
-                        </TabsList>
+            {visibleYearGroups.length === 0 ? (
+                <div className="text-center py-12 bg-muted rounded-lg border border-border">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-background mb-4">
+                        <LuBookOpen className="h-8 w-8 text-muted-foreground" />
                     </div>
+                    <h3 className="text-lg font-medium text-foreground mb-1">No year groups available</h3>
+                    <p className="text-muted-foreground max-w-md mx-auto">
+                        No year groups are currently enabled. Please contact an administrator.
+                    </p>
                 </div>
+            ) : (
+                <Tabs defaultValue={defaultTab}>
+                    <div className="border-b border-border mb-8">
+                        <div className="flex justify-center">
+                            <TabsList>
+                                {visibleYearGroups.map(group => (
+                                    <TabsTrigger 
+                                        key={group.tabId} 
+                                        value={group.tabId} 
+                                        className="flex items-center px-3 py-2 text-sm font-medium"
+                                    >
+                                        {getYearGroupIcon(group.level)}
+                                        {group.name}
+                                    </TabsTrigger>
+                                ))}
+                            </TabsList>
+                        </div>
+                    </div>
 
-                <TabsContent value="f3">
-                    <SubjectListContent subjects={f3} level={0} />
-                </TabsContent>
-                <TabsContent value="f4">
-                    <SubjectListContent subjects={f4} level={1} />
-                </TabsContent>
-                <TabsContent value="f5">
-                    <SubjectListContent subjects={f5} level={2} />
-                </TabsContent>
-                <TabsContent value="61">
-                    <SubjectListContent subjects={f61} level={3} />
-                </TabsContent>
-                <TabsContent value="62">
-                    <SubjectListContent subjects={f62} level={4} />
-                </TabsContent>
-            </Tabs>
+                    {visibleYearGroups.map(group => {
+                        const contentMap: { [key: number]: typeof f3 } = {
+                            0: f3, 1: f4, 2: f5, 3: f61, 4: f62
+                        };
+                        return (
+                            <TabsContent key={group.tabId} value={group.tabId}>
+                                <SubjectListContent 
+                                    subjects={contentMap[group.level] || []} 
+                                    level={group.level}
+                                    yearGroupName={group.name}
+                                />
+                            </TabsContent>
+                        );
+                    })}
+                </Tabs>
+            )}
         </div>
     );
 };
 
 // Subject list content with empty state handling
-function SubjectListContent({ subjects, level }: {
+function SubjectListContent({ subjects, level, yearGroupName }: {
     subjects: {
         id: number,
         title: string,
         desc: string,
         level: number
     }[],
-    level: number
+    level: number,
+    yearGroupName: string
 }) {
     if (subjects.length === 0) {
         return (
@@ -114,7 +122,7 @@ function SubjectListContent({ subjects, level }: {
                 </div>
                 <h3 className="text-lg font-medium text-foreground mb-1">No subjects available</h3>
                 <p className="text-muted-foreground max-w-md mx-auto">
-                    There are currently no subjects available for {year_group_names[level]}.
+                    There are currently no subjects available for {yearGroupName}.
                     Check back later or explore other year groups.
                 </p>
             </div>

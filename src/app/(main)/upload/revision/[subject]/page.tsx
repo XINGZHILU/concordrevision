@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { isNumeric } from "@/lib/utils";
+import { isYearGroupVisible } from "@/lib/year-group-config";
 import { currentUser } from "@clerk/nextjs/server";
 
 export default async function Page({ params }: { params: { subject: string } }) {
@@ -68,6 +69,11 @@ export default async function Page({ params }: { params: { subject: string } }) 
   });
 
   if (!subject) {
+    notFound();
+  }
+
+  // Check if the year group is visible
+  if (!isYearGroupVisible(subject.level)) {
     notFound();
   }
 

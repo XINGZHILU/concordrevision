@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { isNumeric } from "@/lib/utils";
-import { year_group_names } from "@/lib/consts";
+import { getYearGroupName, isYearGroupVisible } from "@/lib/year-group-config";
 import ResourceUploadForm from "@/lib/customui/Upload/ResourceUploadForm";
 import { currentUser } from '@clerk/nextjs/server'
 import { MaxSizeAlert } from "@/lib/customui/Upload/Alert";
@@ -48,9 +48,15 @@ export default async function Page(req: any, res: any) {
         notFound();
     }
 
+    // Check if the year group is visible
+    if (!isYearGroupVisible(subject.level)) {
+        notFound();
+    }
+
+    const yearGroupName = getYearGroupName(subject.level);
 
     return (<div>
-        <h1>{year_group_names[subject.level]} {subject.title} revision resources upload</h1>
+        <h1>{yearGroupName} {subject.title} revision resources upload</h1>
         <MaxSizeAlert />
         <ResourceUploadForm subject={subject.id} author={user.id}></ResourceUploadForm>
     </div>)

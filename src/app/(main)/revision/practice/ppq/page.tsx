@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { toast, ToastContainer } from "@/components/Toast"
+import { getVisibleYearGroups, isYearGroupVisible } from "@/lib/year-group-config"
 
 interface Subject {
     id: number
@@ -25,14 +26,11 @@ export default function PPQPage() {
     const router = useRouter()
     const [currentYear] = useState(new Date().getFullYear())
 
-    // Year group labels
-    const yearGroups = [
-        { level: 0, label: "Form 3" },
-        { level: 1, label: "Form 4" },
-        { level: 2, label: "Form 5" },
-        { level: 3, label: "6.1" },
-        { level: 4, label: "6.2" }
-    ]
+    // Year group labels - use dynamic configuration
+    const yearGroups = getVisibleYearGroups().map(group => ({
+        level: group.level,
+        label: group.name
+    }))
 
     useEffect(() => {
         // Fetch subjects from the API
@@ -40,14 +38,17 @@ export default function PPQPage() {
             try {
                 const response = await fetch("/api/subjects")
                 const data = await response.json()
-                setSubjects(data)
+                
+                // Filter subjects to only include those from visible year groups
+                const visibleSubjects = data.filter(subject => isYearGroupVisible(subject.level))
+                setSubjects(visibleSubjects)
                 
                 // Filter subjects for the initial selected level
-                const filteredSubjects = data.filter(subject => subject.level === selectedLevel)
+                const filteredSubjects = visibleSubjects.filter(subject => subject.level === selectedLevel)
                 if (filteredSubjects.length > 0) {
                     setSelectedSubject(filteredSubjects[0].id.toString())
-                } else if (data.length > 0) {
-                    setSelectedSubject(data[0].id.toString())
+                } else if (visibleSubjects.length > 0) {
+                    setSelectedSubject(visibleSubjects[0].id.toString())
                 }
             } catch (error) {
                 console.error("Error fetching subjects:", error)

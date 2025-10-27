@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { isNumeric } from "@/lib/utils";
-import { year_group_names } from "@/lib/consts";
+import { getYearGroupName, isYearGroupVisible } from "@/lib/year-group-config";
 import { currentUser } from '@clerk/nextjs/server'
 import { TestLinkCard } from "@/lib/customui/Basic/cards";
 
@@ -47,6 +47,13 @@ export default async function Page(req: any, res: any) {
         notFound();
     }
 
+    // Check if the year group is visible
+    if (!isYearGroupVisible(subject.level)) {
+        notFound();
+    }
+
+    const yearGroupName = getYearGroupName(subject.level);
+
     subject.tests.sort((a, b) => a.date.getTime() - b.date.getTime());
 
     const today = new Date();
@@ -59,7 +66,7 @@ export default async function Page(req: any, res: any) {
     ));
 
     return (<div>
-        <h1>{year_group_names[subject.level]} {subject.title} test revision material upload</h1>
+        <h1>{yearGroupName} {subject.title} test revision material upload</h1>
         <br />
         <h2>Click the test to upload material</h2>
         {test_list}

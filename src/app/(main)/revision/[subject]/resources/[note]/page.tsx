@@ -4,7 +4,7 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { isNumeric } from "@/lib/utils";
-import { year_group_names } from "@/lib/consts";
+import { getYearGroupName, isYearGroupVisible } from "@/lib/year-group-config";
 import { currentUser } from "@clerk/nextjs/server";
 import ColourSelector from "@/lib/customui/Revision/ColourSelector";
 import FileList from "@/lib/customui/Basic/filelist";
@@ -57,6 +57,11 @@ export default async function Page({ params }: { params: { subject: string, note
     notFound();
   }
 
+  // Check if the year group is visible
+  if (!isYearGroupVisible(subject.level)) {
+    notFound();
+  }
+
   const user = await currentUser();
   const dbUser = user ? await prisma.user.findUnique({ where: { id: user.id } }) : null;
   const colourLink = user ? await prisma.colourLink.findFirst({
@@ -96,7 +101,7 @@ export default async function Page({ params }: { params: { subject: string, note
               {note.title}
             </h1>
             <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-              <span className="font-medium">{year_group_names[subject.level]} {subject.title}</span>
+              <span className="font-medium">{getYearGroupName(subject.level)} {subject.title}</span>
               <span>•</span>
               <span>Contributed by {authorName}</span>
             </div>

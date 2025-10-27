@@ -6,7 +6,7 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { isNumeric } from "@/lib/utils";
-import { year_group_names } from "@/lib/consts";
+import { getYearGroupName, isYearGroupVisible } from "@/lib/year-group-config";
 import { currentUser } from "@clerk/nextjs/server";
 import SearchableSubjectContent from "@/lib/customui/Revision/SearchableSubjectContent";
 
@@ -55,6 +55,11 @@ export default async function Page(req: any, res: any) {
         notFound();
     }
 
+    // Check if the year group is visible
+    if (!isYearGroupVisible(subject.level)) {
+        notFound();
+    }
+
     // Get user data for color preferences
     const user = await currentUser();
     const colourLinks = user ? await prisma.colourLink.findMany({
@@ -64,13 +69,15 @@ export default async function Page(req: any, res: any) {
         }
     }) : [];
 
+    const yearGroupName = getYearGroupName(subject.level);
+
     return (
         <SearchableSubjectContent
             subject={subject}
             notes={subject.notes}
             tests={subject.tests}
             userColours={colourLinks}
-            yearGroupName={year_group_names[subject.level]}
+            yearGroupName={yearGroupName}
             currentUserId={user?.id}
         />
     )

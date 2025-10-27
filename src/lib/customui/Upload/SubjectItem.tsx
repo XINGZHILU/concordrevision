@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { year_group_names } from "@/lib/consts";
+import { getYearGroupName } from "@/lib/year-group-config";
 import { Badge } from "../../../components/ui/badge";
 import {
     LuBook,
@@ -53,7 +53,7 @@ export function SubjectItem({ subject }: {
                                 variant="secondary"
                                 className="ml-2"
                             >
-                                {year_group_names[subject.level]}
+                                {getYearGroupName(subject.level)}
                             </Badge>
                         </div>
 
