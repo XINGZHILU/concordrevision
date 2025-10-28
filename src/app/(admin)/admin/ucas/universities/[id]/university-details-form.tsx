@@ -5,12 +5,12 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { useToast } from '@/components/ui/use-toast';
+import { Button } from "@/lib/components/ui/button";
+import { Input } from "@/lib/components/ui/input";
+import { Textarea } from "@/lib/components/ui/textarea";
+import { Checkbox } from "@/lib/components/ui/checkbox";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/lib/components/ui/form";
+import { useToast } from "@/lib/components/ui/use-toast";
 
 const formSchema = z.object({
   name: z.string().min(1, 'Name is required'),

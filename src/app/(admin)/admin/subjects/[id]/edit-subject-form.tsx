@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 // import { useRouter } from 'next/navigation';
 import { year_group_names } from "@/lib/consts";
-import { toaster} from "@/components/ui/toaster";
+import { toaster} from "@/lib/components/ui/toaster";
 import MDEditor from '@uiw/react-md-editor';
 
 type Subject = {

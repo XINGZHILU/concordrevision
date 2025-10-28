@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { Resend } from 'resend';
 import { NextApiRequest, NextApiResponse } from "next";
-import { NewTestEmailTemplate } from "@/email/email-templates";
+import { NewTestEmailTemplate } from '@/lib/email/email-templates';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 

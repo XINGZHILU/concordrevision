@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from "react"
-import { Label } from "@/components/ui/label"
+import { Label } from '@/lib/components/ui/label'
 import { cn } from "@/lib/utils"
 
 export interface FieldProps extends React.HTMLAttributes<HTMLDivElement> {

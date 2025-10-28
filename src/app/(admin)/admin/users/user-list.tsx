@@ -4,7 +4,7 @@
 
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { Badge } from "@/components/ui/badge";
+import { Badge } from '@/lib/components/ui/badge';
 import { year_group_names } from "@/lib/consts";
 
 // Define user type with notes count

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
 import Link from "next/link"
-import { toast, ToastContainer } from "@/components/Toast"
+import { toast, ToastContainer } from "@/lib/components/Toast"
 
 interface Subject {
     id: number

@@ -1,14 +1,14 @@
 'use client';
 
-import { toaster } from "@/components/ui/toaster"
+import { toaster } from '@/lib/components/ui/toaster'
 import { useState, useRef, useEffect } from 'react';
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from '@/lib/utils/supabase/client';
 import { StorageURLNotes } from "@/lib/utils";
 import cuid from "cuid";
 import MDEditor from "@uiw/react-md-editor";
 import { ImageUploader } from "@/lib/customui/Upload/upload_image";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/lib/components/ui/dialog';
+import { Button } from '@/lib/components/ui/button';
 import { XIcon } from 'lucide-react';
 
 export default function ResourceUploadForm({ subject, author }: { subject: number, author: string }) {

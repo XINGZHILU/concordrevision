@@ -7,8 +7,8 @@ import Footer from "@/lib/customui/Footer";
 // import { bodyFont, headingFont } from "@/lib/customui/fonts";
 import { currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
-import { Provider } from "@/components/ui/provider";
-import { Toaster } from "@/components/ui/toaster";
+import { Provider } from '@/lib/components/ui/provider'
+import { Toaster } from '@/lib/components/ui/toaster'
 export const metadata: Metadata = {
   title: "Concordpedia",
   description: "©Joshua Ng, Xingzhi Lu, Christoph Chan 2025",

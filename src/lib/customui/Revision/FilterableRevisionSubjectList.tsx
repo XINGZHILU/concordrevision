@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { SubjectItem } from '@/lib/customui/Upload/SubjectItem';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/lib/components/ui/tabs';
+import { Button } from '@/lib/components/ui/button';
+import { Badge } from '@/lib/components/ui/badge';
 import { getVisibleYearGroups, isYearGroupVisible } from "@/lib/year-group-config";
 import { LuBookOpen, LuBookPlus, LuBookUp, LuBookKey, LuBookMarked, LuFilter, LuUsers, LuGlobe } from "react-icons/lu";
 

@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Switch } from "@/components/ui/switch";
-import { useToast } from "@/components/ui/use-toast";
+import { Badge } from '@/lib/components/ui/badge';
+import { Button } from '@/lib/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/lib/components/ui/tabs';
+import { Switch } from '@/lib/components/ui/switch';
+import { useToast } from '@/lib/components/ui/use-toast';
 import { 
   LuBookOpen, 
   LuBookPlus, 

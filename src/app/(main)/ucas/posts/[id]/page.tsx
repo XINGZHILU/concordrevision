@@ -1,10 +1,10 @@
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from "@/lib/components/ui/badge";
 import Link from 'next/link';
 import MDViewer from '@/lib/customui/Basic/showMD';
 import { currentUser } from '@clerk/nextjs/server';
-import { Button } from '@/components/ui/button';
+import { Button } from "@/lib/components/ui/button";
 import { PinButton } from '@/app/(main)/ucas/posts/[id]/PinButton';
 import FileList from "@/lib/customui/Basic/filelist";
 

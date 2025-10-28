@@ -2,16 +2,16 @@
 
 import { useState } from 'react';
 import MDEditor from "@uiw/react-md-editor";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
-import { Input } from '@/components/ui/input';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/lib/components/ui/button";
+import { useToast } from "@/lib/components/ui/use-toast";
+import { Input } from "@/lib/components/ui/input";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/lib/components/ui/accordion";
+import { Checkbox } from "@/lib/components/ui/checkbox";
 import { Course, Tag, University, UCASPost, StorageFile } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
 import { XIcon } from 'lucide-react';
-import { createClient } from '@/utils/supabase/client';
+import { createClient } from "@/lib/utils/supabase/client";
 import cuid from 'cuid';
 import { StorageURLNotes } from '@/lib/utils';
 

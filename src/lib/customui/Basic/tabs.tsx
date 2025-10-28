@@ -1,4 +1,4 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/lib/components/ui/tabs'
 import { getVisibleYearGroups } from "@/lib/year-group-config"
 
 export function SubjectTabs({ f3, f4, f5, f61, f62, defaultval }: {

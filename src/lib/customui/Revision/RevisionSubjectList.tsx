@@ -1,7 +1,7 @@
 'use client';
 
 import { SubjectItem } from '@/lib/customui/Upload/SubjectItem';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/lib/components/ui/tabs';
 import { getVisibleYearGroups, isYearGroupVisible } from "@/lib/year-group-config";
 import { LuBookOpen, LuBookPlus, LuBookUp, LuBookKey, LuBookMarked } from "react-icons/lu";
 

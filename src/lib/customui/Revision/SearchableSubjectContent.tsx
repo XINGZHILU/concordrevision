@@ -3,11 +3,11 @@
 import { useState, useMemo, useCallback } from 'react';
 import { TestCard } from '@/lib/customui/Basic/cards';
 import { EditableNoteCard } from '@/lib/customui/Basic/EditableNoteCard';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/lib/components/ui/tabs';
 import { LuFolder, LuBookCheck, LuBook, LuSearch, LuX, LuChevronDown } from "react-icons/lu";
 import MDViewer from "@/lib/customui/Basic/showMD";
 import SubscriptionManager from "@/lib/customui/Revision/SubscriptionManager";
-import { Button } from '@/components/ui/button';
+import { Button } from '@/lib/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Colour, ColourLink, Note as PrismaNote, Test as PrismaTest, Subject as PrismaSubject } from '@prisma/client';
 import { Collapsible } from "@chakra-ui/react";

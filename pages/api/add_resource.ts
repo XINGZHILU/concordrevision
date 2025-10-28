@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/prisma";
 import { getAuth } from "@clerk/nextjs/server";
-import sendNewResource from "@/email/send_new_resource";
+import sendNewResource from '@/lib/email/send_new_resource';
 
 export default async function handler(
     req: NextApiRequest,

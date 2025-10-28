@@ -2,7 +2,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { LuUpload, LuUser, LuCalendar, LuMail, LuUsers, LuSettings } from "react-icons/lu";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/lib/components/ui/button';
 import { cn } from "@/lib/utils";
 
 /**

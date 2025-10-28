@@ -2,12 +2,12 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { UCASPost, Tag, University, Course } from '@prisma/client';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/lib/components/ui/input';
 import { UCASPostList } from '@/lib/customui/UCAS/UCASPostList';
 import { Pagination } from '@/lib/customui/UCAS/pagination';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Checkbox } from '@/lib/components/ui/checkbox';
+import { Label } from '@/lib/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/lib/components/ui/radio-group';
 
 type PostWithAuthor = UCASPost & { author: { firstname: string | null, lastname: string | null } };
 

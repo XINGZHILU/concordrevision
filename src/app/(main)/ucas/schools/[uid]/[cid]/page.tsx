@@ -1,8 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import { UCASPostList } from '@/lib/customui/UCAS/UCASPostList';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from "@/lib/components/ui/card";
+import { Badge } from "@/lib/components/ui/badge";
 import Link from 'next/link';
 
 export default async function UniversityCoursePage({

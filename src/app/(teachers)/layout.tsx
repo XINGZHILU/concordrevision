@@ -3,11 +3,11 @@ import { prisma } from '@/lib/prisma';
 import { currentUser } from '@clerk/nextjs/server';
 import "@/app/globals.css";
 import "@/app/md.css";
-import { Provider } from '@/components/ui/provider';
+import { Provider } from '@/lib/components/ui/provider';
 import { SignedIn, UserButton } from "@clerk/nextjs";
 import Link from 'next/link';
 // import { bodyFont, headingFont } from '@/lib/customui/fonts';
-import { Toaster } from '@/components/ui/toaster';
+import { Toaster } from '@/lib/components/ui/toaster';
 
 export default async function TeachersLayout({
   children,

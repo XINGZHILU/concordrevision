@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { toaster } from "@/components/ui/toaster";
+import { toaster } from "@/lib/components/ui/toaster";
 import { useRouter } from 'next/navigation';
 import {
     Dialog,
@@ -12,8 +12,8 @@ import {
     DialogDescription,
     DialogTrigger,
     DialogClose
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+} from "@/lib/components/ui/dialog";
+import { Button } from "@/lib/components/ui/button";
 
 interface NoteReviewActionsProps {
     noteId: number;

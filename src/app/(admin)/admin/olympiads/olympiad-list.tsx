@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { toaster } from "@/components/ui/toaster";
+import { toaster } from '@/lib/components/ui/toaster';
 import {
   Dialog,
   DialogContent,
@@ -12,11 +12,11 @@ import {
   DialogTrigger,
   DialogDescription,
   DialogClose
-} from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+} from '@/lib/components/ui/dialog';
+import { Badge } from '@/lib/components/ui/badge';
+import { Button } from '@/lib/components/ui/button';
+import { Input } from '@/lib/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/lib/components/ui/select';
 import { olympiad_subjects } from "@/lib/consts";
 
 type OlympiadWithCount = {

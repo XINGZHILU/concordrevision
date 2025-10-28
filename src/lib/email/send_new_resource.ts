@@ -1,4 +1,4 @@
-import { NewResourceEmailTemplate } from "@/email/email-templates";
+import { NewResourceEmailTemplate } from '@/lib/email/email-templates';
 import { fromDept } from "@/lib/consts";
 import { Resend } from 'resend';
 

@@ -1,7 +1,7 @@
 'use client';
 
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+import { Button } from '@/lib/components/ui/button';
+import { useToast } from '@/lib/components/ui/use-toast';
 import { upload_image } from "@/lib/customui/Upload/upload_image";
 
 export function ImageUploadButton({ onImageUploaded }: { onImageUploaded: (url: string) => void }) {

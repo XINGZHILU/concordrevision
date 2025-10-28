@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/lib/components/ui/badge';
 import { LuCalendar, LuClock, LuBookOpen, LuFileText } from 'react-icons/lu';
 import { TestBadge } from '@/lib/customui/Basic/Badges';
 import { getYearGroupName } from '@/lib/year-group-config';

@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/lib/components/ui/button';
 import { Olympiad_Resource } from '@prisma/client';
-import { toaster } from '@/components/ui/toaster';
-import { Input } from '@/components/ui/input';
+import { toaster } from '@/lib/components/ui/toaster';
+import { Input } from '@/lib/components/ui/input';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -15,7 +15,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+} from '@/lib/components/ui/alert-dialog';
 
 function Pagination({ totalPages, currentPage, onPageChange }: { totalPages: number, currentPage: number, onPageChange: (page: number) => void }) {
     return (

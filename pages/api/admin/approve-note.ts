@@ -4,8 +4,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/prisma";
 import { getAuth } from "@clerk/nextjs/server";
 import { Resend } from 'resend';
-import { ApprovedResourceEmailTemplate } from "@/email/email-templates";
-import sendNewResource from "@/email/send_new_resource";
+import { ApprovedResourceEmailTemplate } from '@/lib/email/email-templates';
+import sendNewResource from '@/lib/email/send_new_resource';
 import { fromDept } from "@/lib/consts";
 
 const resend = new Resend(process.env.RESEND_API_KEY);

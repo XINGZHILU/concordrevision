@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from "react";
-import { toaster } from "@/components/ui/toaster";
+import { toaster } from '@/lib/components/ui/toaster';
 import { LuCircleAlert, LuCircleCheck, LuCircleEllipsis, LuCircleHelp } from "react-icons/lu";
 import { cva } from "class-variance-authority";
 import { Colour } from "@prisma/client";

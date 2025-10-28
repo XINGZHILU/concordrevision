@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/prisma";
 import { getAuth } from "@clerk/nextjs/server";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from '@/lib/utils/supabase/client';
 
 /**
  * API endpoint for deleting files from revision resources

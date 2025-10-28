@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { Course, CourseType } from '@prisma/client';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useToast } from '@/components/ui/use-toast';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Button } from '@/lib/components/ui/button';
+import { Input } from '@/lib/components/ui/input';
+import { useToast } from '@/lib/components/ui/use-toast';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/lib/components/ui/select';
 import { Edit, Trash2, Save, XIcon } from 'lucide-react';
 import {
     AlertDialog,
@@ -17,8 +17,8 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Textarea } from '@/components/ui/textarea';
+} from '@/lib/components/ui/alert-dialog'
+import { Textarea } from '@/lib/components/ui/textarea';
 
 export function CourseManager({ courses }: { courses: Course[] }) {
     const [newCourseName, setNewCourseName] = useState('');

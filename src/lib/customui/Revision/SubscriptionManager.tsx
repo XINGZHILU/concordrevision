@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Button } from '@/components/ui/button';
-import { useToast } from '@/components/ui/use-toast';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Button } from '@/lib/components/ui/button';
+import { useToast } from '@/lib/components/ui/use-toast';
+import { Popover, PopoverContent, PopoverTrigger } from '@/lib/components/ui/popover';
 import { LuBell, LuBellOff, LuCheck } from 'react-icons/lu';
 
 interface Subscription {

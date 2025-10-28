@@ -2,8 +2,8 @@ import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import { UCASPostList } from '@/lib/customui/UCAS/UCASPostList';
 import Link from 'next/link';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Card, CardContent, CardHeader, CardTitle } from "@/lib/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/lib/components/ui/table";
 import { AdmissionStats } from '@prisma/client';
 
 function AdmissionStatsTable({ stats }: { stats: AdmissionStats[] }) {

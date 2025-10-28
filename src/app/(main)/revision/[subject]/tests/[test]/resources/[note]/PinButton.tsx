@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from "@/lib/components/ui/button";
 import { Pin, PinOff } from 'lucide-react';
-import { toaster } from '@/components/ui/toaster';
+import { toaster } from "@/lib/components/ui/toaster";
 
 export function PinButton({ noteId, initialPinned }: { noteId: number, initialPinned: boolean }) {
   const [pinned, setPinned] = useState(initialPinned);

@@ -1,9 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import FilterableRevisionSubjectList from "@/lib/customui/Revision/FilterableRevisionSubjectList";
 import { currentUser } from "@clerk/nextjs/server";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from '@/lib/components/ui/card';
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/lib/components/ui/button';
 import { BookCheck } from "lucide-react";
 
 const QuickActions = () => (

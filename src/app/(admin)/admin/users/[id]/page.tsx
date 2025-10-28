@@ -3,7 +3,7 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/lib/components/ui/badge";
 import UserActions from "@/app/(admin)/admin/users/[id]/user-actions";
 
 export default async function UserDetailPage({ params }: { params: { id: string } }) {

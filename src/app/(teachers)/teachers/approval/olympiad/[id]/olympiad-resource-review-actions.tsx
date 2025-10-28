@@ -2,9 +2,9 @@
 
 'use client';
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/components/ui/button";
 import { useRouter } from "next/navigation";
-import { toaster } from "@/components/ui/toaster";
+import { toaster } from "@/lib/components/ui/toaster";
 import {
     Dialog,
     DialogContent,
@@ -14,7 +14,7 @@ import {
     DialogDescription,
     DialogTrigger,
     DialogClose
-} from "@/components/ui/dialog";
+} from "@/lib/components/ui/dialog";
 import { useState } from "react";
 
 export function OlympiadResourceReviewActions({ resourceId }: { resourceId: number }) {

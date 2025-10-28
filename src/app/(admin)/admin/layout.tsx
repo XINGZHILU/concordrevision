@@ -7,9 +7,9 @@ import { prisma } from "@/lib/prisma";
 // import { bodyFont, headingFont } from "@/lib/customui/fonts";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Provider } from "@/components/ui/provider"
-import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "@/components/ui/toaster";
+import { Provider } from '@/lib/components/ui/provider'
+import { ThemeProvider } from '@/lib/components/theme-provider'
+import { Toaster } from '@/lib/components/ui/toaster'
 
 export const metadata: Metadata = {
   title: "Concordpedia",

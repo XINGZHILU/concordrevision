@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from '@/lib/components/ui/badge';
+import { Button } from '@/lib/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/lib/components/ui/tabs'
 import { 
   LuFileText, 
   LuTrophy, 
@@ -389,7 +389,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
             <p className="text-sm text-muted-foreground mb-2">
               {getYearGroupName(upload.subject.level)} {upload.subject.title}
               {'test' in upload && upload.test && (
-                <span> • {upload.test.title}</span>
+                <span> → {upload.test.title}</span>
               )}
             </p>
           )}

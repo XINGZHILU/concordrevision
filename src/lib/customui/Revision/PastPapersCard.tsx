@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/lib/components/ui/button';
 
 /**
  * A banner component that provides a link to the past paper records page.

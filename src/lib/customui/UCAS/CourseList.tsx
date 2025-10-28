@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { CourseCard } from '@/lib/customui/UCAS/cards';
 import { Pagination } from '@/lib/customui/UCAS/pagination';
 import { Course } from '@prisma/client';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/lib/components/ui/input';
 
 export function CourseList({ courses }: { courses: Course[] }) {
   const [displayedCourses, setDisplayedCourses] = useState<Course[]>([]);

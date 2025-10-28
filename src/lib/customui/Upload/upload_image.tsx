@@ -1,12 +1,12 @@
 'use client';
 
 import { useState, ChangeEvent, useEffect } from 'react';
-import { createClient } from '@/utils/supabase/client';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { toaster} from '@/components/ui/toaster';
+import { createClient } from '@/lib/utils/supabase/client';
+import { Button } from '@/lib/components/ui/button';
+import { Input } from '@/lib/components/ui/input';
+import { toaster} from '@/lib/components/ui/toaster';
 import { Loader2 } from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/lib/components/ui/tabs';
 import Image from 'next/image';
 import { put } from '@vercel/blob';
 

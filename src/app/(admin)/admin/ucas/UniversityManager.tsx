@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { University, Course, CourseLink } from '@prisma/client';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useToast } from '@/components/ui/use-toast';
+import { Button } from '@/lib/components/ui/button';
+import { Input } from '@/lib/components/ui/input';
+import { useToast } from '@/lib/components/ui/use-toast';
 import { Trash2, Edit } from 'lucide-react';
-import { Checkbox } from '@/components/ui/checkbox';
+import { Checkbox } from '@/lib/components/ui/checkbox';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,7 +17,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+} from '@/lib/components/ui/alert-dialog'
 import Link from 'next/link';
 
 type UniversityWithCourses = University & { courseLinks: (CourseLink & { course: Course })[] };

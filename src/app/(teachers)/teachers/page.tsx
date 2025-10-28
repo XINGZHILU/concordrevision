@@ -1,8 +1,8 @@
 import { currentUser } from '@clerk/nextjs/server';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/lib/components/ui/card';
+import { Button } from '@/lib/components/ui/button';
 import { LuCheck, LuCalendarPlus, LuUpload } from 'react-icons/lu';
 
 export default async function TeachersPage() {

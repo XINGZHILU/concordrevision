@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/prisma";
 import { getAuth } from "@clerk/nextjs/server";
 import { Resend } from 'resend';
-import { RejectedResourceEmailTemplate } from "@/email/email-templates";
+import { RejectedResourceEmailTemplate } from '@/lib/email/email-templates';
 import { fromDept } from "@/lib/consts";
 
 const resend = new Resend(process.env.RESEND_API_KEY);

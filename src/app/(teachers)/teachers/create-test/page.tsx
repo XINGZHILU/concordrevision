@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { Input } from '@/lib/components/ui/input';
+import { Button } from '@/lib/components/ui/button';
 import { SubjectTabs } from '@/lib/customui/Basic/tabs';
 import { getYearGroupName } from '@/lib/year-group-config';
 

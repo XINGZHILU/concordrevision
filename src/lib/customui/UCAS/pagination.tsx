@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/lib/components/ui/button';
 
 export function Pagination({ totalPages, currentPage, setCurrentPage }: { totalPages: number, currentPage: number, setCurrentPage: (page: number) => void }) {
 

@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import { UCASPostList } from '@/lib/customui/UCAS/UCASPostList';
 import Link from 'next/link';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from "@/lib/components/ui/card";
 
 export default async function CoursePage({ params }: { params: { cid: string } }) {
   const course = await prisma.course.findUnique({

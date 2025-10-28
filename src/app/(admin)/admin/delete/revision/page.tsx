@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/lib/components/ui/tabs';
 import { year_group_names } from "@/lib/consts";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle } from '@/lib/components/ui/card';
 import Link from "next/link";
 
 export default async function AdminDeleteSubjectsPage() {

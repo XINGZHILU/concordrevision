@@ -5,7 +5,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+} from '@/lib/components/ui/alert-dialog';
 import { LuTriangle, LuInfo } from "react-icons/lu";
 
 export function MaxSizeAlert() {

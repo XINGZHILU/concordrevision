@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef } from "react";
-import { CloseButton } from "@/components/ui/close-button";
+import { CloseButton } from '@/lib/components/ui/close-button';
 
 interface ActionBarRootProps {
     open: boolean;

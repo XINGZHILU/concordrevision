@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from '@/lib/components/ui/badge';
 import { LuCalendar, LuPencil, LuUpload } from "react-icons/lu";
 import { TestBadge } from "@/lib/customui/Basic/Badges";
 import { cva } from 'class-variance-authority';

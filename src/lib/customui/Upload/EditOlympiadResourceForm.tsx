@@ -1,15 +1,15 @@
 'use client';
 
-import { toaster } from "@/components/ui/toaster";
+import { toaster } from '@/lib/components/ui/toaster';
 import { useState, useRef, useEffect } from 'react';
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from '@/lib/utils/supabase/client';
 import { StorageURLOlympiads } from "@/lib/utils";
 import cuid from "cuid";
 import MDEditor from "@uiw/react-md-editor";
 import { useRouter } from 'next/navigation';
 import { LuTrash2, LuEye } from "react-icons/lu";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/lib/components/ui/dialog';
+import { Button } from '@/lib/components/ui/button';
 import { XIcon } from "lucide-react";
 import { ImageUploader } from "@/lib/customui/Upload/upload_image";
 

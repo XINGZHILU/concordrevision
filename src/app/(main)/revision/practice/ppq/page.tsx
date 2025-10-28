@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { toast, ToastContainer } from "@/components/Toast"
+import { toast, ToastContainer } from '@/lib/components/Toast'
 import { getVisibleYearGroups, isYearGroupVisible } from "@/lib/year-group-config"
 
 interface Subject {

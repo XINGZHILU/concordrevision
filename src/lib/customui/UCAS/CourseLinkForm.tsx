@@ -1,7 +1,7 @@
 'use client';
 
 import { Course, CourseLink } from '@prisma/client';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/lib/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -10,17 +10,17 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+} from '@/lib/components/ui/dialog';
+import { Input } from '@/lib/components/ui/input';
+import { Textarea } from '@/lib/components/ui/textarea';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { toaster } from '@/components/ui/toaster';
+} from '@/lib/components/ui/select';
+import { toaster } from '@/lib/components/ui/toaster';
 import { useState, useEffect } from 'react';
 
 interface CourseLinkFormProps {

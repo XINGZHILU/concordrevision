@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/lib/components/ui/badge";
 import FileList from "@/lib/customui/Basic/filelist";
 import MDViewer from "@/lib/customui/Basic/showMD";
 import UCASPostReviewActions from "@/app/(teachers)/teachers/approval/ucas/[id]/ucas-post-review-actions";

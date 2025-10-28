@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { year_group_names } from "@/lib/consts";
 import NoteReviewActions from "@/app/(teachers)/teachers/approval/revision/[id]/note-review-actions";
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/lib/components/ui/badge";
 import FileList from "@/lib/customui/Basic/filelist";
 import MDViewer from "@/lib/customui/Basic/showMD";
 

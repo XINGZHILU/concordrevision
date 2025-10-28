@@ -1,8 +1,8 @@
 'use client';
 
 import { useDebouncedCallback } from 'use-debounce';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/lib/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/lib/components/ui/select';
 
 export function Search({ setSearch, setLocation }: { setSearch: (search: string) => void; setLocation: (location: string) => void; }) {
 

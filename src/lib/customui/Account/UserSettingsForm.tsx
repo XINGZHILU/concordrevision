@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { useToast } from '@/components/ui/use-toast';
+import { Button } from '@/lib/components/ui/button';
+import { useToast } from '@/lib/components/ui/use-toast';
 import { 
   LuUser, 
   LuMail, 

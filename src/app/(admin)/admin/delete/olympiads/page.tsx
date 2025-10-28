@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle } from '@/lib/components/ui/card';
 
 export default async function AdminDeleteOlympiadsPage() {
     const olympiads = await prisma.olympiad.findMany({

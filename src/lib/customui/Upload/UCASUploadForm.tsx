@@ -1,20 +1,20 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from '@/lib/utils/supabase/client';
 import { StorageURLNotes } from "@/lib/utils";
 import cuid from "cuid";
 import MDEditor from "@uiw/react-md-editor";
 import { ImageUploader } from "@/lib/customui/Upload/upload_image";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/lib/components/ui/dialog';
+import { Button } from '@/lib/components/ui/button';
 import { XIcon } from 'lucide-react';
-import { useToast } from "@/components/ui/use-toast";
-import { Input } from '@/components/ui/input';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Checkbox } from "@/components/ui/checkbox";
+import { useToast } from '@/lib/components/ui/use-toast';
+import { Input } from '@/lib/components/ui/input';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/lib/components/ui/accordion';
+import { Checkbox } from '@/lib/components/ui/checkbox';
 import { Course, Tag, University } from '@prisma/client';
-import { toaster } from '@/components/ui/toaster';
+import { toaster } from '@/lib/components/ui/toaster';
 
 type UniversityWithCourses = University & { courses: Course[] };
 

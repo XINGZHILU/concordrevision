@@ -6,8 +6,8 @@ import {
     ActionBarContent,
     ActionBarRoot,
     ActionBarSeparator,
-} from "@/components/ui/action-bar"
-import { Checkbox } from "@/components/ui/checkbox"
+} from '@/lib/components/ui/action-bar'
+import { Checkbox } from '@/lib/components/ui/checkbox'
 import { useState } from "react"
 
 export default function PomodoroActionBar() {

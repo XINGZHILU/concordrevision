@@ -6,9 +6,9 @@
 import { useState, useRef } from 'react';
 import MDEditor from "@uiw/react-md-editor";
 import { ImageUploader } from "@/lib/customui/Upload/upload_image";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { toaster} from "@/components/ui/toaster";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/lib/components/ui/dialog';
+import { Button } from '@/lib/components/ui/button';
+import { toaster} from '@/lib/components/ui/toaster';
 
 
 export default function NewTestForm({ subject }: { subject: number }) {
