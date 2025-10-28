@@ -5,6 +5,7 @@ import { createClient } from '@/lib/utils/supabase/client';
 
 /**
  * API endpoint for deleting files from revision resources
+ * DELETE - Remove a file from a resource
  * Only allows authors to delete files from their own resources
  */
 export default async function handler(
@@ -95,4 +96,5 @@ export default async function handler(
             message: error instanceof Error ? error.message : 'Unknown error'
         });
     }
-} 
+}
+

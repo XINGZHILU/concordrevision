@@ -3,8 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { getAuth } from "@clerk/nextjs/server";
 
 /**
- * API endpoint for updating revision resources (Notes)
- * Only allows authors to update their own resources
+ * API endpoint for managing individual revision resources (Notes)
+ * PUT - Update an existing resource
  */
 export default async function handler(
     req: NextApiRequest,
@@ -53,6 +53,7 @@ export default async function handler(
             return res.status(404).json({ error: 'Resource not found' });
         }
 
+        // Verify user is the author or an admin
         if (existingNote.authorId !== userId && !userRecord.admin) {
             return res.status(403).json({ error: 'You can only edit your own resources' });
         }
@@ -96,4 +97,5 @@ export default async function handler(
             message: error instanceof Error ? error.message : 'Unknown error'
         });
     }
-} 
+}
+

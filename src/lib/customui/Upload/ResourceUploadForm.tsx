@@ -54,7 +54,7 @@ export default function ResourceUploadForm({ subject, author }: { subject: numbe
             names.push(file.name);
         }
 
-        const response2 = await fetch('/api/add_resource', {
+        const response2 = await fetch('/api/resources', {
             method: 'POST',
             body: JSON.stringify({
                 urls: urls,

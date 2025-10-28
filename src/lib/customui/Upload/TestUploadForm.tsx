@@ -54,7 +54,7 @@ export default function TestUploadForm({ subject, author, test, type }: { subjec
       names.push(file.name);
     }
 
-    const response2 = await fetch('/api/add_test_notes', {
+    const response2 = await fetch('/api/tests/notes', {
       method: 'POST',
       body: JSON.stringify({
         urls: urls,

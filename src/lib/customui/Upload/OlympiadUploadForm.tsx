@@ -54,7 +54,7 @@ export default function OlympiadUploadForm({ olympiad, author }: { olympiad: num
             names.push(file.name);
         }
 
-        const response2 = await fetch('/api/upload_olympiad', {
+        const response2 = await fetch('/api/olympiads/resources', {
             method: 'POST',
             body: JSON.stringify({
                 urls: urls,

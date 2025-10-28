@@ -43,7 +43,7 @@ const UpcomingExams: React.FC<UpcomingExamsProps> = ({ maxDates = 8 }) => {
   const fetchUpcomingTests = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/upcoming-tests');
+      const response = await fetch('/api/tests/upcoming');
 
       if (!response.ok) {
         if (response.status === 401) {

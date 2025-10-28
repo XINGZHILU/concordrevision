@@ -20,7 +20,7 @@ export default function NewTestForm({ subject }: { subject: number }) {
   const [cantUpload, setCantUpload] = useState<boolean>(false);
 
   async function create(title: string, desc: string, type: string, date: string) {
-    const response = await fetch('/api/add_test', {
+    const response = await fetch('/api/tests', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

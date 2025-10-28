@@ -105,7 +105,7 @@ export default function EditResourceForm({ noteId, subjectId, initialData }: Edi
         setIsDeleting(fileId);
         
         try {
-            const response = await fetch('/api/delete_file', {
+            const response = await fetch('/api/resources/files/' + fileId, {
                 method: 'DELETE',
                 body: JSON.stringify({ fileId }),
                 headers: {
@@ -141,7 +141,7 @@ export default function EditResourceForm({ noteId, subjectId, initialData }: Edi
      * Update the resource
      */
     async function updateResource(title: string, desc: string, newFileData?: { urls: string[], names: string[] }) {
-        const response = await fetch('/api/update_resource', {
+        const response = await fetch('/api/resources/' + noteId, {
             method: 'PUT',
             body: JSON.stringify({
                 noteId: noteId,
