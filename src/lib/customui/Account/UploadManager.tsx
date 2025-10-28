@@ -5,14 +5,14 @@ import Link from 'next/link';
 import { Badge } from '@/lib/components/ui/badge';
 import { Button } from '@/lib/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/lib/components/ui/tabs'
-import { 
-  LuFileText, 
-  LuTrophy, 
-  LuGraduationCap, 
-  LuClipboard, 
-  LuCalendar, 
-  LuCheck, 
-  LuClock, 
+import {
+  LuFileText,
+  LuTrophy,
+  LuGraduationCap,
+  LuClipboard,
+  LuCalendar,
+  LuCheck,
+  LuClock,
   LuEye,
   LuPencil,
   LuSearch,
@@ -144,7 +144,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
     try {
       setLoading(true);
       const response = await fetch('/api/account/uploads');
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch uploads');
       }
@@ -170,7 +170,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
       ...uploads.ucasPosts,
       ...uploads.pastPaperRecords,
     ];
-    
+
     // Sort by uploadedAt date in descending order (most recent first)
     return allUploads.sort((a, b) => {
       const dateA = 'uploadedAt' in a ? new Date(a.uploadedAt).getTime() : 0;
@@ -193,24 +193,24 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
    */
   const filterUploads = (uploadList: Upload[]): Upload[] => {
     if (!searchQuery.trim()) return uploadList;
-    
+
     return uploadList.filter(upload => {
       const searchLower = searchQuery.toLowerCase();
       const title = getUploadTitle(upload);
-      
+
       // Search in title
       if (title.toLowerCase().includes(searchLower)) return true;
-      
+
       // Search in description/content
       if ('desc' in upload && upload.desc?.toLowerCase().includes(searchLower)) return true;
       if ('content' in upload && upload.content?.toLowerCase().includes(searchLower)) return true;
       if ('notes' in upload && upload.notes?.toLowerCase().includes(searchLower)) return true;
-      
+
       // Search in subject/olympiad/tags
       if ('subject' in upload && upload.subject?.title?.toLowerCase().includes(searchLower)) return true;
       if ('olympiad' in upload && upload.olympiad?.title?.toLowerCase().includes(searchLower)) return true;
       if ('tags' in upload && upload.tags?.some(tag => tag.toLowerCase().includes(searchLower))) return true;
-      
+
       return false;
     });
   };
@@ -231,7 +231,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
    */
   const getTabUploads = (tab: string): Upload[] => {
     const allUploads = getAllUploads();
-    
+
     switch (tab) {
       case 'notes':
         return sortByUploadTime(filterUploads(uploads.notes));
@@ -355,7 +355,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
    */
   const renderUploadCard = (upload: Upload) => {
     const hasApprovalStatus = 'approved' in upload;
-    
+
     return (
       <div
         key={`${upload.uploadType}-${upload.id}`}
@@ -376,7 +376,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
               </p>
             </div>
           </div>
-          
+
           {/* Status badges */}
           <div className="flex items-center gap-2 flex-shrink-0">
             {hasApprovalStatus && (
@@ -394,7 +394,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
                 )}
               </Badge>
             )}
-            
+
             {hasApprovalStatus && upload.pinned && (
               <Badge variant="outline">Pinned</Badge>
             )}
@@ -411,13 +411,13 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
               )}
             </p>
           )}
-          
+
           {'olympiad' in upload && (
             <p className="text-sm text-muted-foreground mb-2 truncate">
               {upload.olympiad.title} • {upload.olympiad.area}
             </p>
           )}
-          
+
           {'tags' in upload && upload.tags.length > 0 && (
             <div className="flex flex-wrap gap-1 mb-2 overflow-hidden">
               {upload.tags.slice(0, 3).map((tag, index) => (
@@ -432,18 +432,6 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
               )}
             </div>
           )}
-          
-          {('desc' in upload && upload.desc) && (
-            <p className="text-sm text-muted-foreground line-clamp-2 break-words">
-              {upload.desc}
-            </p>
-          )}
-          
-          {('content' in upload && upload.content) && (
-            <p className="text-sm text-muted-foreground line-clamp-2 break-words">
-              {upload.content}
-            </p>
-          )}
         </div>
 
         {/* Footer */}
@@ -455,7 +443,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
                 <span className="whitespace-nowrap">{upload.fileCount} file{upload.fileCount !== 1 ? 's' : ''}</span>
               </span>
             )}
-            
+
             {'uploadedAt' in upload && (
               <span className="flex items-center gap-1 flex-shrink-0">
                 <LuCalendar className="h-4 w-4 flex-shrink-0" />
@@ -463,7 +451,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
               </span>
             )}
           </div>
-          
+
           <div className="flex items-center gap-2 flex-shrink-0">
             <Link href={getUploadLink(upload)}>
               <Button variant="outline" size="sm">
@@ -471,7 +459,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
                 View
               </Button>
             </Link>
-            
+
             <Link href={getEditLink(upload)}>
               <Button variant="outline" size="sm">
                 <LuPencil className="h-4 w-4 mr-1" />
@@ -531,7 +519,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
             </div>
           </div>
         </div>
-        
+
         <div className="bg-card border border-border rounded-lg p-4">
           <div className="flex items-center gap-3">
             <LuCheck className="h-8 w-8 text-success flex-shrink-0" />
@@ -541,7 +529,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
             </div>
           </div>
         </div>
-        
+
         <div className="bg-card border border-border rounded-lg p-4">
           <div className="flex items-center gap-3">
             <LuClock className="h-8 w-8 text-warning flex-shrink-0" />
@@ -551,7 +539,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
             </div>
           </div>
         </div>
-        
+
         <div className="bg-card border border-border rounded-lg p-4">
           <div className="flex items-center gap-3">
             <LuFileText className="h-8 w-8 text-primary flex-shrink-0" />
