@@ -23,7 +23,8 @@ interface FilterableRevisionSubjectListProps {
 }
 
 /**
- * Enhanced revision subject list with subscription filtering
+ * Enhanced revision subject list with subscribed subjects displayed first and highlighted
+ * Always shows all subjects, with subscribed ones prioritized
  */
 const FilterableRevisionSubjectList = ({ 
     subjects, 
@@ -31,25 +32,29 @@ const FilterableRevisionSubjectList = ({
     userSubscriptions, 
     isAuthenticated 
 }: FilterableRevisionSubjectListProps) => {
-    // Default to subscriptions only if user is authenticated and has subscriptions
-    const [showSubscribedOnly, setShowSubscribedOnly] = useState(
-        isAuthenticated && userSubscriptions.length > 0
-    );
-
     // Filter subjects to only include those from visible year groups
     const visibleSubjects = subjects.filter((subject) => isYearGroupVisible(subject.level));
     
-    // Apply subscription filter if enabled
-    const filteredSubjects = showSubscribedOnly 
-        ? visibleSubjects.filter(subject => userSubscriptions.includes(subject.id))
-        : visibleSubjects;
+    // Sort subjects: subscribed first, then alphabetically within each group
+    const sortedSubjects = [...visibleSubjects].sort((a, b) => {
+        const aSubscribed = userSubscriptions.includes(a.id);
+        const bSubscribed = userSubscriptions.includes(b.id);
+        
+        // If subscription status differs, subscribed comes first
+        if (aSubscribed !== bSubscribed) {
+            return aSubscribed ? -1 : 1;
+        }
+        
+        // Otherwise, sort alphabetically by title
+        return a.title.localeCompare(b.title);
+    });
     
-    // Group subjects by level
-    const f3 = filteredSubjects.filter((subject) => subject.level === 0);
-    const f4 = filteredSubjects.filter((subject) => subject.level === 1);
-    const f5 = filteredSubjects.filter((subject) => subject.level === 2);
-    const f61 = filteredSubjects.filter((subject) => subject.level === 3);
-    const f62 = filteredSubjects.filter((subject) => subject.level === 4);
+    // Group subjects by level (already sorted with subscribed first)
+    const f3 = sortedSubjects.filter((subject) => subject.level === 0);
+    const f4 = sortedSubjects.filter((subject) => subject.level === 1);
+    const f5 = sortedSubjects.filter((subject) => subject.level === 2);
+    const f61 = sortedSubjects.filter((subject) => subject.level === 3);
+    const f62 = sortedSubjects.filter((subject) => subject.level === 4);
 
     const visibleYearGroups = getVisibleYearGroups();
     const tabIds = ['f3', 'f4', 'f5', '61', '62'];
@@ -72,7 +77,6 @@ const FilterableRevisionSubjectList = ({
     // Calculate subscription stats
     const totalSubjects = visibleSubjects.length;
     const subscribedCount = userSubscriptions.length;
-    const currentDisplayCount = filteredSubjects.length;
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -83,78 +87,20 @@ const FilterableRevisionSubjectList = ({
                 </p>
             </div>
 
-            {/* Filter Controls */}
-            {isAuthenticated && (
+            {/* Subscription info banner */}
+            {isAuthenticated && subscribedCount > 0 && (
                 <div className="mb-8">
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-card border border-border rounded-lg">
-                        <div className="flex items-center gap-4">
-                            <div className="flex items-center gap-2">
-                                <LuFilter className="h-5 w-5 text-muted-foreground" />
-                                <span className="font-medium text-foreground">Filter:</span>
-                            </div>
-                            
-                            <div className="flex items-center gap-2">
-                                <Button
-                                    variant={!showSubscribedOnly ? "default" : "outline"}
-                                    size="sm"
-                                    onClick={() => setShowSubscribedOnly(false)}
-                                    className="flex items-center gap-2"
-                                >
-                                    <LuGlobe className="h-4 w-4" />
-                                    All Subjects
-                                    <Badge variant="secondary" className="ml-1">
-                                        {totalSubjects}
-                                    </Badge>
-                                </Button>
-                                
-                                <Button
-                                    variant={showSubscribedOnly ? "default" : "outline"}
-                                    size="sm"
-                                    onClick={() => setShowSubscribedOnly(true)}
-                                    className="flex items-center gap-2"
-                                >
-                                    <LuUsers className="h-4 w-4" />
-                                    My Subscriptions
-                                    <Badge variant="secondary" className="ml-1">
-                                        {subscribedCount}
-                                    </Badge>
-                                </Button>
-                            </div>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-2 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+                        <div className="flex items-center gap-2 text-sm">
+                            <LuUsers className="h-4 w-4 text-primary" />
+                            <span className="text-foreground">
+                                You have <strong className="text-primary">{subscribedCount}</strong> subscription{subscribedCount !== 1 ? 's' : ''}
+                            </span>
                         </div>
-                        
-                        {/* Current filter status */}
-                        <div className="text-sm text-muted-foreground">
-                            {showSubscribedOnly ? (
-                                subscribedCount === 0 ? (
-                                    <span className="text-warning">No subscriptions found</span>
-                                ) : (
-                                    <span>Showing {currentDisplayCount} subscribed subject{currentDisplayCount !== 1 ? 's' : ''}</span>
-                                )
-                            ) : (
-                                <span>Showing all {currentDisplayCount} subject{currentDisplayCount !== 1 ? 's' : ''}</span>
-                            )}
-                        </div>
+                        <span className="text-muted-foreground text-sm">
+                            • Subscribed subjects are highlighted and shown first
+                        </span>
                     </div>
-                </div>
-            )}
-
-            {/* Empty state for no subscriptions */}
-            {showSubscribedOnly && subscribedCount === 0 && (
-                <div className="text-center py-12 bg-muted rounded-lg border border-border mb-8">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-background mb-4">
-                        <LuUsers className="h-8 w-8 text-muted-foreground" />
-                    </div>
-                    <h3 className="text-lg font-medium text-foreground mb-2">No Subscriptions Yet</h3>
-                    <p className="text-muted-foreground max-w-md mx-auto mb-4">
-                        You haven't subscribed to any subjects yet. Subscribe to subjects to see their upcoming tests and get notifications.
-                    </p>
-                    <Button 
-                        onClick={() => setShowSubscribedOnly(false)}
-                        variant="outline"
-                    >
-                        <LuGlobe className="h-4 w-4 mr-2" />
-                        Browse All Subjects
-                    </Button>
                 </div>
             )}
 
@@ -210,10 +156,8 @@ const FilterableRevisionSubjectList = ({
                                     subjects={contentMap[group.level] || []} 
                                     level={group.level}
                                     yearGroupName={group.name}
-                                    showSubscribedOnly={showSubscribedOnly}
                                     userSubscriptions={userSubscriptions}
                                     isAuthenticated={isAuthenticated}
-                                    onShowAllSubjects={() => setShowSubscribedOnly(false)}
                                 />
                             </TabsContent>
                         );
@@ -225,22 +169,19 @@ const FilterableRevisionSubjectList = ({
 };
 
 // Enhanced subject list content with subscription awareness
+// Subscribed subjects are highlighted and displayed first
 function SubjectListContent({ 
     subjects, 
     level, 
     yearGroupName, 
-    showSubscribedOnly,
     userSubscriptions,
-    isAuthenticated,
-    onShowAllSubjects
+    isAuthenticated
 }: {
     subjects: Subject[];
     level: number;
     yearGroupName: string;
-    showSubscribedOnly: boolean;
     userSubscriptions: number[];
     isAuthenticated: boolean;
-    onShowAllSubjects: () => void;
 }) {
     if (subjects.length === 0) {
         return (
@@ -251,41 +192,36 @@ function SubjectListContent({
                         <LuBookKey className="h-8 w-8 text-muted-foreground" />
                     }
                 </div>
-                <h3 className="text-lg font-medium text-foreground mb-1">
-                    {showSubscribedOnly ? 'No subscribed subjects' : 'No subjects available'}
-                </h3>
-                <p className="text-muted-foreground max-w-md mx-auto mb-4">
-                    {showSubscribedOnly 
-                        ? `You haven't subscribed to any subjects in ${yearGroupName} yet.`
-                        : `There are currently no subjects available for ${yearGroupName}. Check back later or explore other year groups.`
-                    }
+                <h3 className="text-lg font-medium text-foreground mb-1">No subjects available</h3>
+                <p className="text-muted-foreground max-w-md mx-auto">
+                    There are currently no subjects available for {yearGroupName}. Check back later or explore other year groups.
                 </p>
-                {showSubscribedOnly && isAuthenticated && (
-                    <Button onClick={onShowAllSubjects} variant="outline">
-                        <LuGlobe className="h-4 w-4 mr-2" />
-                        Show All {yearGroupName} Subjects
-                    </Button>
-                )}
             </div>
         );
     }
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {subjects.map((subject) => (
-                <div key={subject.id} className="relative">
-                    <SubjectItem subject={subject} />
-                    {/* Subscription indicator */}
-                    {isAuthenticated && userSubscriptions.includes(subject.id) && (
-                        <div className="absolute top-2 right-2">
-                            <Badge variant="default" className="text-xs">
-                                <LuUsers className="h-3 w-3 mr-1" />
-                                Subscribed
-                            </Badge>
-                        </div>
-                    )}
-                </div>
-            ))}
+            {subjects.map((subject) => {
+                const isSubscribed = isAuthenticated && userSubscriptions.includes(subject.id);
+                return (
+                    <div 
+                        key={subject.id} 
+                        className={`relative ${isSubscribed ? 'ring-2 ring-primary rounded-lg' : ''}`}
+                    >
+                        <SubjectItem subject={subject} />
+                        {/* Subscription indicator badge */}
+                        {isSubscribed && (
+                            <div className="absolute top-2 right-2">
+                                <Badge variant="default" className="text-xs bg-primary">
+                                    <LuUsers className="h-3 w-3 mr-1" />
+                                    Subscribed
+                                </Badge>
+                            </div>
+                        )}
+                    </div>
+                );
+            })}
         </div>
     );
 }

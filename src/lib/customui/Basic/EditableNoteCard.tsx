@@ -33,12 +33,6 @@ interface NoteCardProps {
     canEdit: boolean;
 }
 
-function GetSymbol({ colour }: { colour: Colour }) {
-    if (colour === "Green") return <LuCircleCheck className="h-4 w-4 text-success" />;
-    if (colour === "Amber") return <LuCircleEllipsis className="h-4 w-4 text-warning" />;
-    if (colour === "Red") return <LuCircleAlert className="h-4 w-4 text-destructive" />;
-    return <LuCircleHelp className="h-4 w-4 text-muted-foreground" />;
-}
 
 /**
  * Enhanced NoteCard component that shows an edit button for the author
@@ -64,10 +58,6 @@ export function EditableNoteCard({ note, canEdit }: NoteCardProps) {
 
             {/* Footer with author and color status */}
             <div className="border-t border-border px-8 py-3 flex items-center justify-between text-xs text-muted-foreground">
-                <div className="flex items-center">
-                    <GetSymbol colour={"Green"} />
-                    <span className="ml-1.5">Completed</span>
-                </div>
                 <div className="flex items-center gap-4">
                     <span className="truncate max-w-32">{authorName}</span>
                     {canEdit && (
