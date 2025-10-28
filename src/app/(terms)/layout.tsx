@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import "@/app/globals.css";
 import "@/app/md.css";
-import { Provider } from '@/lib/components/ui/provider';
-import Link from 'next/link';
+import { Provider } from '@/lib/components/ui/provider'
 
 export const metadata: Metadata = {
   title: "Terms & Privacy - Concordpedia",
