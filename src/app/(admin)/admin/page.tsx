@@ -165,27 +165,6 @@ export default async function AdminHomePage() {
           variant={"primary"}
         />
         <AdminCard
-          title="Delete Revision Notes"
-          description="Delete revision notes by subject"
-          icon={<LuTrash className="h-8 w-8" />}
-          href="/admin/delete/revision"
-          variant="warning"
-        />
-        <AdminCard
-          title="Delete Olympiad Resources"
-          description="Delete olympiad resources by olympiad"
-          icon={<LuTrash className="h-8 w-8" />}
-          href="/admin/delete/olympiads"
-          variant="warning"
-        />
-        <AdminCard
-          title="Delete UCAS Posts"
-          description="Delete UCAS posts"
-          icon={<LuTrash className="h-8 w-8" />}
-          href="/admin/delete/ucas"
-          variant="warning"
-        />
-        <AdminCard
           title="Return to Site"
           description="Go back to the main student portal"
           icon={<LuHouse className="h-8 w-8" />}

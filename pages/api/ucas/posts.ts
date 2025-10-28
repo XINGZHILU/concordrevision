@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const dbUser = await prisma.user.findUnique({
     where: { id: userId },
-    select: { upload_permission: true, teacher: true, admin: true },
+    select: { upload_permission: true, teacher: true, admin: true, check_waiver: true },
   });
 
   if (!dbUser || (!dbUser.upload_permission && !dbUser.teacher && !dbUser.admin)) {
@@ -25,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         title,
         content,
         authorId: userId,
-        approved: dbUser.teacher || dbUser.admin,
+        approved: dbUser.teacher || dbUser.admin || dbUser.check_waiver,
         tags,
         universities,
         courses,

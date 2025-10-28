@@ -15,6 +15,7 @@ interface OlympiadResource {
   approved: boolean;
   uploadedAt: Date;
   authorId: string;
+  pinned: boolean;
   author: {
     id: string;
     email: string;

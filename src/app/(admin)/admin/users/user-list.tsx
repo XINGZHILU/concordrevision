@@ -16,6 +16,7 @@ type UserWithCount = {
     year: number;
     teacher: boolean;
     upload_permission: boolean;
+    check_waiver: boolean;
     _count: {
         notes: number;
     };

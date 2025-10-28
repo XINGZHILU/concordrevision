@@ -43,14 +43,20 @@ function GetSymbol({ colour }: { colour: Colour }) {
 /**
  * Enhanced NoteCard component that shows an edit button for the author
  * Supports editing permissions based on the current user
+ * Uses distinct styling for pinned notes
  */
 export function EditableNoteCard({ note, canEdit }: NoteCardProps) {
     const authorName = note.author.firstname && note.author.lastname
         ? `${note.author.firstname} ${note.author.lastname}`
         : note.author.firstname || note.author.lastname || 'Unknown Author';
 
+    // Use a different color for pinned notes - use primary/accent colors for visual distinction
+    const cardClassName = note.pinned
+        ? "relative group w-full bg-primary/10 border-primary/50 border-2 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 dark:bg-primary/20 dark:border-primary/60"
+        : cardVariants({ color: "unclassified" });
+
     return (
-        <div className={cardVariants({ color: "unclassified" })}>
+        <div className={cardClassName}>
             {/* Main content - clickable link */}
             <Link href={`/revision/${note.subjectId}/resources/${note.id}`} className="block p-8">
                 <h3 className="text-lg font-semibold mb-2">{note.title}</h3>

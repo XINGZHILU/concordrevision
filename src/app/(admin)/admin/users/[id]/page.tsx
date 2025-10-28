@@ -8,7 +8,7 @@ import UserActions from "@/app/(admin)/admin/users/[id]/user-actions";
 
 export default async function UserDetailPage({ params }: { params: { id: string } }) {
 
-  const userId = params.id;
+  const userId = await params.id;
 
   if (!userId) {
     notFound();
@@ -70,6 +70,9 @@ export default async function UserDetailPage({ params }: { params: { id: string 
               <Badge variant={userDetails.upload_permission ? 'default' : 'destructive'}>
                 {userDetails.upload_permission ? 'Upload Permission' : 'No Upload Permission'}
               </Badge>
+              <Badge variant={userDetails.check_waiver ? 'default' : 'secondary'}>
+                {userDetails.check_waiver ? 'Check Waiver Granted' : 'No Check Waiver'}
+              </Badge>
             </div>
           </div>
         </div>
@@ -90,6 +93,7 @@ export default async function UserDetailPage({ params }: { params: { id: string 
             userId={userDetails.id}
             uploadPermission={userDetails.upload_permission}
             isTeacher={userDetails.teacher}
+            checkWaiver={userDetails.check_waiver}
           />
         </div>
       </div>

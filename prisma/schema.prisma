@@ -16,6 +16,7 @@ model User {
     teacher            Boolean                   @default(false)
     admin              Boolean                   @default(false)
     upload_permission  Boolean                   @default(false)
+    check_waiver       Boolean                   @default(false)
     year               Int                       @default(-1)
     // posts              Post[]
     notes              Note[]

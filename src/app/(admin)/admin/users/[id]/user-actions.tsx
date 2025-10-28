@@ -21,9 +21,10 @@ interface UserActionsProps {
   userId: string;
   uploadPermission: boolean;
   isTeacher: boolean;
+  checkWaiver: boolean;
 }
 
-export default function UserActions({ userId, uploadPermission, isTeacher }: UserActionsProps) {
+export default function UserActions({ userId, uploadPermission, isTeacher, checkWaiver }: UserActionsProps) {
   const [isUpdating, setIsUpdating] = useState(false);
   const router = useRouter();
 
@@ -103,6 +104,44 @@ export default function UserActions({ userId, uploadPermission, isTeacher }: Use
     }
   };
 
+  const toggleCheckWaiver = async () => {
+    setIsUpdating(true);
+
+    try {
+      const response = await fetch(`/api/admin/users/${userId}/toggle-check-waiver`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          check_waiver: !checkWaiver,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update check waiver status');
+      }
+
+      toaster.success({
+        title: "Success",
+        description: `Upload check waiver ${checkWaiver ? 'removed' : 'granted'} successfully`
+      });
+
+      // Refresh the page to show updated data
+      setTimeout(() => {
+        router.refresh();
+      }, 1000);
+    } catch (error) {
+      console.error('Error updating check waiver status:', error);
+      toaster.error({
+        title: "Error",
+        description: "Failed to update check waiver status"
+      });
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
   return (
     <div>
       <div className="flex flex-wrap gap-2">
@@ -164,6 +203,40 @@ export default function UserActions({ userId, uploadPermission, isTeacher }: Use
                 onClick={toggleTeacherStatus}
                 disabled={isUpdating}
                 variant={isTeacher ? "destructive" : "default"}
+              >
+                {isUpdating ? 'Updating...' : 'Confirm'}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant={checkWaiver ? "secondary" : "default"} disabled={isUpdating}>
+              {checkWaiver ? 'Remove Upload Check Waiver' : 'Grant Upload Check Waiver'}
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>
+                {checkWaiver ? 'Remove Upload Check Waiver' : 'Grant Upload Check Waiver'}
+              </DialogTitle>
+            </DialogHeader>
+            <DialogDescription>
+              Are you sure you want to {checkWaiver ? 'remove the upload check waiver for' : 'grant upload check waiver to'} this user?
+              {checkWaiver
+                ? ' Their uploads will be subject to standard approval checks again.'
+                : ' This user will be trusted to upload content without requiring approval checks. Only grant this to highly trustworthy users.'
+              }
+            </DialogDescription>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button variant="ghost">Cancel</Button>
+              </DialogClose>
+              <Button
+                onClick={toggleCheckWaiver}
+                disabled={isUpdating}
+                variant={checkWaiver ? "destructive" : "default"}
               >
                 {isUpdating ? 'Updating...' : 'Confirm'}
               </Button>

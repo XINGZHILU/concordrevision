@@ -38,7 +38,7 @@ export default async function handler(
             authorId: author,
             desc: desc,
             type: type,
-            approved: record.teacher || record.admin
+            approved: record.teacher || record.admin || record.check_waiver
         },
         include: {
           subject:{
