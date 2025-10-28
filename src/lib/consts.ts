@@ -9,7 +9,7 @@ export const olympiad_subjects = [
   'Physics',
   'Mathematics',
   'Computer Science',
-  'Economics',
+  'Humanities',
 ]
 
 export const default_from = "Concordpedia Team <noreply@concordpedia.com>";

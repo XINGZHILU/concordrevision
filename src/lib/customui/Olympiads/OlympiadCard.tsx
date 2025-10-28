@@ -13,7 +13,8 @@ import {
     LuActivity,
     LuGlobe,
     LuBraces,
-    LuArrowUpRight
+    LuArrowUpRight,
+    LuBook
 } from "react-icons/lu";
 
 export function OlympiadCard({ olympiad }: {
@@ -95,7 +96,7 @@ function getOlympiadIcon(area: string) {
     if (subject.includes('chemistry')) return LuFlaskConical;
     if (subject.includes('biology')) return LuMicroscope;
     if (subject.includes('computer') || subject.includes('informatics')) return LuBraces;
-    if (subject.includes('economics')) return LuActivity;
+    if (subject.includes('humanities')) return LuBook;
     if (subject.includes('geography') || subject.includes('earth')) return LuGlobe;
 
     // Default icon

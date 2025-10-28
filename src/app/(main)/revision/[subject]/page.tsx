@@ -60,7 +60,7 @@ export default async function Page(req: any, res: any) {
         notFound();
     }
 
-    // Get user data for color preferences
+    // Get user data for color preferences and role information
     const user = await currentUser();
     const colourLinks = user ? await prisma.colourLink.findMany({
         where: {
@@ -68,6 +68,17 @@ export default async function Page(req: any, res: any) {
             subjectId: +sid,
         }
     }) : [];
+
+    // Get user role information for filtering tests
+    const dbUser = user ? await prisma.user.findUnique({
+        where: {
+            id: user.id
+        },
+        select: {
+            teacher: true,
+            admin: true
+        }
+    }) : null;
 
     const yearGroupName = getYearGroupName(subject.level);
 
@@ -79,6 +90,7 @@ export default async function Page(req: any, res: any) {
             userColours={colourLinks}
             yearGroupName={yearGroupName}
             currentUserId={user?.id}
+            isTeacherOrAdmin={dbUser?.teacher || dbUser?.admin || false}
         />
     )
 

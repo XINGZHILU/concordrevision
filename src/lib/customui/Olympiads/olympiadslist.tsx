@@ -13,7 +13,8 @@ import {
     LuGlobe,
     LuBraces,
     LuSearch,
-    LuFilter
+    LuFilter,
+    LuBook
 } from "react-icons/lu";
 
 // Pagination Component
@@ -66,7 +67,7 @@ export default function OlympiadsList({ olympiads }: {
         if (subject.includes('chemistry')) return <LuFlaskConical className="mr-2 h-5 w-5" />;
         if (subject.includes('biology')) return <LuMicroscope className="mr-2 h-5 w-5" />;
         if (subject.includes('computer')) return <LuBraces className="mr-2 h-5 w-5" />;
-        if (subject.includes('economics')) return <LuActivity className="mr-2 h-5 w-5" />;
+        if (subject.includes('humanities')) return <LuBook className="mr-2 h-5 w-5" />;
         if (subject.includes('geography')) return <LuGlobe className="mr-2 h-5 w-5" />;
 
         return <LuBrain className="mr-2 h-5 w-5" />;
@@ -281,7 +282,7 @@ function getAreaIcon(area: string) {
     if (subject.includes('chemistry')) return <LuFlaskConical className="mr-2 h-5 w-5 text-muted-foreground" />;
     if (subject.includes('biology')) return <LuMicroscope className="mr-2 h-5 w-5 text-muted-foreground" />;
     if (subject.includes('computer')) return <LuBraces className="mr-2 h-5 w-5 text-muted-foreground" />;
-    if (subject.includes('economics')) return <LuActivity className="mr-2 h-5 w-5 text-muted-foreground" />;
+    if (subject.includes('humanities')) return <LuBook className="mr-2 h-5 w-5 text-muted-foreground" />;
     if (subject.includes('geography')) return <LuGlobe className="mr-2 h-5 w-5 text-muted-foreground" />;
 
     return <LuBrain className="mr-2 h-5 w-5 text-muted-foreground" />;
