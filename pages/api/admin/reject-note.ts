@@ -1,11 +1,9 @@
-// File: pages/api/admin/reject-note.ts
-
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/prisma";
 import { getAuth } from "@clerk/nextjs/server";
 import { Resend } from 'resend';
-import { RejectedEmailTemplate } from "@/email/email-templates";
-import { email_from } from "@/lib/consts";
+import { RejectedResourceEmailTemplate } from "@/email/email-templates";
+import { fromDept } from "@/lib/consts";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -46,14 +44,13 @@ export default async function handler(
 
         try {
             await resend.emails.send({
-                from: email_from,
+                from: fromDept(deleted.subject.title),
                 to: [deleted.author.email],
                 subject: 'Upload rejected',
-                // @ts-expect-error: type might not match
-                react: RejectedEmailTemplate({
+                react: await RejectedResourceEmailTemplate({
                     name: deleted.author.firstname || "User",
                     title: deleted.title,
-                    area: deleted.subject.title
+                    subject: deleted.subject.title
                 }),
             });
         }

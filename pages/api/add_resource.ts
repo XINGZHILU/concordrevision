@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/prisma";
 import { getAuth } from "@clerk/nextjs/server";
-
+import sendNewResource from "@/email/send_new_resource";
 
 export default async function handler(
     req: NextApiRequest,
@@ -39,6 +39,17 @@ export default async function handler(
             desc: desc,
             type: type,
             approved: record.teacher || record.admin
+        },
+        include: {
+          subject:{
+            include: {
+              subscribers: {
+                include: {
+                  user: true
+                }
+              }
+            }
+          }
         }
     })
 
@@ -48,11 +59,15 @@ export default async function handler(
                 filename: names[i],
                 path: urls[i],
                 noteId: note.id,
-            }
+            },
         });
     }
 
-    res.status(200).json({ approved: record.teacher });
+    if (note.approved){
+      await sendNewResource(note);
+    }
+
+    res.status(200).json({ approved: note.approved });
 }
 
 export const config = {

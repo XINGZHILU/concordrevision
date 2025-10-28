@@ -4,8 +4,9 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/prisma";
 import { getAuth } from "@clerk/nextjs/server";
 import { Resend } from 'resend';
-import { ApprovedEmailTemplate } from "@/email/email-templates";
-import { email_from } from "@/lib/consts";
+import { ApprovedResourceEmailTemplate } from "@/email/email-templates";
+import sendNewResource from "@/email/send_new_resource";
+import { fromDept } from "@/lib/consts";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -43,21 +44,30 @@ export default async function handler(
             },
             include: {
                 author: true,
-                subject: true
-            },
+                subject:{
+                  include: {
+                    subscribers: {
+                      include: {
+                        user: true
+                      }
+                    }
+                  }
+                }
+            }
         });
 
         try {
             await resend.emails.send({
-                from: email_from,
+                from: fromDept(updatedNote.subject.title),
                 to: [updatedNote.author.email],
                 subject: 'Upload approved',
-                react: ApprovedEmailTemplate({
+                react: await ApprovedResourceEmailTemplate({
                     name: updatedNote.author.firstname || "User",
                     title: updatedNote.title,
-                    area: updatedNote.subject.title
+                    subject: updatedNote.subject.title
                 }),
             });
+            await sendNewResource(updatedNote);
         }
         finally {
             console.log('Email send attempted');

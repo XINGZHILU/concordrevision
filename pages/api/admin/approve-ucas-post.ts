@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getAuth } from "@clerk/nextjs/server";
 import { Resend } from 'resend';
 import { UCASPostApprovedEmailTemplate } from "@/email/email-templates";
-import { email_from } from "@/lib/consts";
+import { futures_email } from "@/lib/consts";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -46,11 +46,10 @@ export default async function handler(
 
         try {
             await resend.emails.send({
-                from: email_from,
+                from: futures_email,
                 to: [updatedPost.author.email],
                 subject: 'UCAS Post Approved',
-                // @ts-expect-error React 18 template issue
-                react: UCASPostApprovedEmailTemplate({
+                react: await UCASPostApprovedEmailTemplate({
                     name: updatedPost.author.firstname || "User",
                     title: updatedPost.title
                 }),

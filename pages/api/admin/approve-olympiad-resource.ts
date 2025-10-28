@@ -4,8 +4,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/prisma";
 import { getAuth } from "@clerk/nextjs/server";
 import { Resend } from 'resend';
-import { ApprovedEmailTemplate } from "@/email/email-templates";
-import { email_from } from "@/lib/consts";
+import { ApprovedOlympiadEmailTemplate } from "@/email/email-templates";
+import { fromDept } from "@/lib/consts";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -59,13 +59,14 @@ export default async function handler(
 
         try {
             await resend.emails.send({
-                from: email_from,
+                from: fromDept(updatedResource.olympiad.area),
                 to: [updatedResource.author.email],
                 subject: 'Upload approved',
-                react: ApprovedEmailTemplate({
+                react: await ApprovedOlympiadEmailTemplate({
                     name: updatedResource.author.firstname || "User",
                     title: updatedResource.title,
-                    area: updatedResource.olympiad.title
+                    olympiad: updatedResource.olympiad.title,
+                    area: updatedResource.olympiad.area
                 }),
             });
         }
