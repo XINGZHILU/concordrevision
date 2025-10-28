@@ -21,15 +21,6 @@ export default function TermsLayout({ children }: { children: React.ReactNode })
       enableSystem
       disableTransitionOnChange
     >
-      {/* Minimal header */}
-      <header className="border-b border-border py-4 bg-background">
-        <div className="max-w-7xl mx-auto px-4">
-          <Link href="/" className="text-lg font-semibold hover:text-primary transition-colors">
-            ← Back to Concordpedia
-          </Link>
-        </div>
-      </header>
-
       {/* Main content */}
       <main className="min-h-screen">
         {children}
