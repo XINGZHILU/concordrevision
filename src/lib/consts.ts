@@ -18,6 +18,8 @@ export const olympiad_subjects = [
 
 export const default_from = "Concordpedia Team <noreply@concordpedia.com>";
 
+export const default_to_stuents = "Students <students@concordpedia.com>";
+
 export const futures_email = "Student Futures Team <futures@concordpedia.com>";
 
 export function deptName(subject: string) {

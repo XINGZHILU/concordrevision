@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { Resend } from 'resend';
 import { NextApiRequest, NextApiResponse } from "next";
 import { NewTestEmailTemplate } from '@/lib/email/email-templates';
+import { default_to_stuents } from "@/lib/consts";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -57,7 +58,7 @@ export default async function handler(
   if (recipients.length > 0) {
     await resend.emails.send({
       from: `Concord College ${subject.title} Department <noreply@concordpedia.com>`,
-      to: [],
+      to: default_to_stuents,
       bcc: recipients,
       subject: `New ${subject.title} scheduled: ${test.title}`,
       react: await NewTestEmailTemplate({

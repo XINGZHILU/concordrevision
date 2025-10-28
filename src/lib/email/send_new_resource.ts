@@ -1,6 +1,7 @@
 import { NewResourceEmailTemplate } from '@/lib/email/email-templates';
 import { fromDept } from "@/lib/consts";
 import { Resend } from 'resend';
+import { default_to_stuents } from '@/lib/consts';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -32,7 +33,7 @@ export default async function sendNewResource(note: {
   if (recipients.length > 0) {
     await resend.emails.send({
       from: fromDept(note.subject.title),
-      to: [],
+      to: default_to_stuents,
       bcc: recipients,
       subject: `New ${note.subject.title} resource added`,
       react: await NewResourceEmailTemplate({

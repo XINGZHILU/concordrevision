@@ -133,14 +133,24 @@ const SubscriptionManager: React.FC<SubscriptionManagerProps> = ({ userId }) => 
     setUpdating(prev => new Set(prev).add(subjectId));
 
     try {
+      // Get current subscription to include both notification fields
+      const currentSubscription = getSubscription(subjectId);
+      if (!currentSubscription) {
+        throw new Error('Subscription not found');
+      }
+
+      // Prepare the payload with both notification settings
+      const payload = {
+        test_notification: type === 'test_notification' ? enabled : currentSubscription.test_notification,
+        resource_notification: type === 'resource_notification' ? enabled : currentSubscription.resource_notification,
+      };
+
       const response = await fetch(`/api/subscriptions/${subjectId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          [type]: enabled,
-        }),
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
