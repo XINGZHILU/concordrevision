@@ -1,8 +1,8 @@
 'use client';
 
-import { Note, Colour } from "@prisma/client";
+import { Note } from "@prisma/client";
 import Link from 'next/link';
-import { LuCircleCheck, LuCircleEllipsis, LuCircleAlert, LuCircleHelp, LuPencil } from "react-icons/lu";
+import { LuPencil, LuPin } from "react-icons/lu";
 import { cva } from 'class-variance-authority';
 
 const cardVariants = cva(
@@ -37,26 +37,30 @@ interface NoteCardProps {
 /**
  * Enhanced NoteCard component that shows an edit button for the author
  * Supports editing permissions based on the current user
- * Uses distinct styling for pinned notes
+ * Shows a pin icon for pinned notes
  */
 export function EditableNoteCard({ note, canEdit }: NoteCardProps) {
     const authorName = note.author.firstname && note.author.lastname
         ? `${note.author.firstname} ${note.author.lastname}`
         : note.author.firstname || note.author.lastname || 'Unknown Author';
 
-    // Use a different color for pinned notes - use primary/accent colors for visual distinction
-    const cardClassName = note.pinned
-        ? "relative group w-full bg-primary/10 border-primary/50 border-2 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 dark:bg-primary/20 dark:border-primary/60"
-        : cardVariants({ color: "unclassified" });
-
     return (
-        <div className={cardClassName}>
+        <div className={cardVariants({ color: "unclassified" })}>
+            {/* Pin indicator for pinned notes */}
+            {note.pinned && (
+                <div className="absolute top-2 right-2 z-10">
+                    <div className="bg-primary text-primary-foreground rounded-full p-1.5 shadow-md">
+                        <LuPin className="h-4 w-4" />
+                    </div>
+                </div>
+            )}
+            
             {/* Main content - clickable link */}
             <Link href={`/revision/${note.subjectId}/resources/${note.id}`} className="block p-8">
                 <h3 className="text-lg font-semibold mb-2">{note.title}</h3>
             </Link>
 
-            {/* Footer with author and color status */}
+            {/* Footer with author and edit button */}
             <div className="border-t border-border px-8 py-3 flex items-center justify-between text-xs text-muted-foreground">
                 <div className="flex items-center gap-4">
                     <span className="truncate max-w-32">{authorName}</span>

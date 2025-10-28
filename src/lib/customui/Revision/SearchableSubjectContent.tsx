@@ -169,7 +169,7 @@ const SearchableSubjectContent = ({
                     <EditableNoteCard
                         key={note.id}
                         note={note}
-                        canEdit={currentUserId === note.author.id}
+                        canEdit={currentUserId === note.author.id || isTeacherOrAdmin}
                     />
                 ))}
             </div>

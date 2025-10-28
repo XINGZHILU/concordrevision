@@ -289,7 +289,7 @@ const SearchableOlympiadContent = ({
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filteredResources.map((resource) => (
                   <div key={resource.id} className="relative">
-                    <OlympiadResourceCard resource={resource} canEdit={user.admin || (resource.authorId == user.id)} />
+                    <OlympiadResourceCard resource={resource} canEdit={user.admin || user.teacher || (resource.authorId == user.id)} />
                   </div>
                 ))}
               </div>

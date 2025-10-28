@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import { Badge } from '@/lib/components/ui/badge';
-import { LuCalendar, LuPencil, LuUpload } from "react-icons/lu";
+import { LuCalendar, LuPencil, LuUpload, LuPin } from "react-icons/lu";
 import { TestBadge } from "@/lib/customui/Basic/Badges";
 import { cva } from 'class-variance-authority';
 
@@ -148,13 +148,17 @@ export function OlympiadResourceCard({ resource, canEdit }: {
   }
   canEdit: boolean
 }) {
-  // Use a different color for pinned resources - use primary/accent colors for visual distinction
-  const cardClassName = resource.pinned 
-    ? "relative group w-full bg-primary/10 border-primary/50 border-2 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 dark:bg-primary/20 dark:border-primary/60" 
-    : cardVariants({ color: 'unclassified' });
-
   return (
-    <div className={cardClassName}>
+    <div className={cardVariants({ color: 'unclassified' })}>
+      {/* Pin indicator for pinned resources */}
+      {resource.pinned && (
+        <div className="absolute top-2 right-2 z-10">
+          <div className="bg-primary text-primary-foreground rounded-full p-1.5 shadow-md">
+            <LuPin className="h-4 w-4" />
+          </div>
+        </div>
+      )}
+      
       <Link href={`/olympiads/${resource.olympiadId}/resources/${resource.id}`} className="block p-8">
         <h3 className="mb-2 text-xl font-bold tracking-tight text-card-foreground">{resource.title}</h3>
       </Link>

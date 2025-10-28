@@ -205,10 +205,7 @@ function SubjectListContent({
             {subjects.map((subject) => {
                 const isSubscribed = isAuthenticated && userSubscriptions.includes(subject.id);
                 return (
-                    <div 
-                        key={subject.id} 
-                        className={`relative ${isSubscribed ? 'ring-2 ring-primary rounded-lg' : ''}`}
-                    >
+                    <div key={subject.id} className="relative">
                         <SubjectItem subject={subject} />
                         {/* Subscription indicator badge */}
                         {isSubscribed && (
