@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { prisma } from "@/lib/prisma";
-import { LuUsers, LuBook, LuCog, LuMedal, LuSchool, LuHouse, LuFileCheck, LuLibrary, LuUserCheck, LuTrash } from "react-icons/lu";
+import { LuUsers, LuBook, LuCog, LuMedal, LuSchool, LuHouse, LuFileCheck, LuLibrary, LuUserCheck } from "react-icons/lu";
 
 // Admin dashboard card component
 function AdminCard({ title, description, icon, href, count, variant = "primary" }: {

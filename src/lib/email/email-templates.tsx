@@ -2,19 +2,21 @@ import { format } from 'date-fns';
 import ReactMarkdown from 'react-markdown';
 import React from 'react';
 import { deptName } from '@/lib/consts';
+import { getYearGroupName } from '@/lib/year-group-config';
 
 function doNotReply() {
-  return <p>Please <b>do not</b> reply to this email as it is unmanned, but instead <b>contact relevant staff / students</b> directly.</p>;
+  return <p>⚠️Please <b>do not</b> reply to this email as it is unmanned, but instead <b>contact relevant staff / students</b> directly.</p>;
 }
 
 interface ApprovedResourceEmailTemplateProps {
   name: string;
   title: string;
-  subject: string
+  subject: string;
+  year: number;
 }
 
 export const ApprovedResourceEmailTemplate: React.FC<Readonly<ApprovedResourceEmailTemplateProps>> = ({
-  name, title, subject
+  name, title, subject, year
 }) => (
   <div style={{ fontFamily: 'Arial, sans-serif', lineHeight: '1.6', color: '#333' }}>
     <div style={{ maxWidth: '800px', margin: 'auto', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden' }}>
@@ -23,7 +25,7 @@ export const ApprovedResourceEmailTemplate: React.FC<Readonly<ApprovedResourceEm
       </div>
       <div style={{ padding: '20px' }}>
         <p>Dear {name},</p>
-        <p>Thank you for submitting the test revision material <b>{title}</b> for <b>{subject}</b>. After review from our teachers, we are delighted to inform you that your resource has been <b>accepted</b> and will now be available to be viewed and used on the website. Thank you very much for your hard work and support.</p>
+        <p>Thank you for submitting the test revision material <b>{title}</b> for <b>{getYearGroupName(year)} {subject}</b>. After review from our teachers, we are delighted to inform you that your resource has been <b>accepted</b> and will now be available to be viewed and used on the website. Thank you very much for your hard work and support.</p>
         <br />
         <p>Best regards,</p>
         <p><b>{deptName(subject)}</b></p>
@@ -40,10 +42,11 @@ interface RejectedResourceEmailTemplateProps {
   name: string;
   title: string;
   subject: string;
+  year: number;
 }
 
 export const RejectedResourceEmailTemplate: React.FC<Readonly<RejectedResourceEmailTemplateProps>> = ({
-  name, title, subject
+  name, title, subject, year
 }) => (
   <div style={{ fontFamily: 'Arial, sans-serif', lineHeight: '1.6', color: '#333' }}>
     <div style={{ maxWidth: '800px', margin: 'auto', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden' }}>
@@ -52,7 +55,7 @@ export const RejectedResourceEmailTemplate: React.FC<Readonly<RejectedResourceEm
       </div>
       <div style={{ padding: '20px' }}>
         <p>Dear {name},</p>
-        <p>Thank you for submitting the test revision material <b>{title}</b> for <b>{subject}</b>. After review from our teachers, we regret to inform you that your resource has been <b>rejected</b>, however you may wish to make updates and re-submit it. Thank you very much for your hard work and support.
+        <p>Thank you for submitting the test revision material <b>{title}</b> for <b>{getYearGroupName(year)} {subject}</b>. After review from our teachers, we regret to inform you that your resource has been <b>rejected</b>, however you may wish to make updates and re-submit it. Thank you very much for your hard work and support.
         </p>
         <br />
         <p>Best regards,</p>
@@ -212,7 +215,7 @@ export const NewTestEmailTemplate: React.FC<Readonly<NewTestEmailTemplateProps>>
       </div>
       <div style={{ padding: '20px' }}>
         <p>Dear Student,</p>
-        <p>A new test for <b>{subject.title}</b> has been scheduled on <b>{format(new Date(test.date), 'PPPP')}</b>.</p>
+        <p>A new test for <b>{getYearGroupName(subject.level)} {subject.title}</b> has been scheduled on <b>{format(new Date(test.date), 'PPPP')}</b>.</p>
         <p><b>Test Name:</b> {test.title}</p>
 
         <div style={{ padding: '10px', backgroundColor: '#f9f9f9', borderRadius: '5px', border: '1px solid #eee', marginTop: '15px' }}>
@@ -257,6 +260,7 @@ interface NewResourceEmailTemplateProps {
     subject: {
       title: string;
       id: number;
+      level: number;
     };
   }
 }
@@ -271,7 +275,7 @@ export const NewResourceEmailTemplate: React.FC<Readonly<NewResourceEmailTemplat
       </div>
       <div style={{ padding: '20px' }}>
         <p>Dear Student,</p>
-        <p>A new resource for <b>{note.subject.title}</b> has been added</p>
+        <p>A new resource for <b>{getYearGroupName(note.subject.level)} {note.subject.title}</b> has been added</p>
         <p><b>Resource Name:</b> {note.title}</p>
 
         <p>To view more details and access study materials, please click the button below:</p>

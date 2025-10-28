@@ -1,9 +1,5 @@
 import { getYearGroupNamesArray } from '@/lib/year-group-config';
 
-function getSlug(s: string) {
-  return s.replace(' ', '-').toLowerCase();
-}
-
 // Dynamic year group names that respect visibility settings
 export const year_group_names = getYearGroupNamesArray();
 
@@ -20,14 +16,17 @@ export const default_from = "Concordpedia Team <noreply@concordpedia.com>";
 
 export const default_to_stuents = "Students <students@concordpedia.com>";
 
-export const futures_email = "Student Futures Team <futures@concordpedia.com>";
+export const futures_email = "Student Futures Team <noreply@concordpedia.com>";
 
 export function deptName(subject: string) {
+  if (subject.indexOf('Math') != -1){
+    return 'The Maths Department'
+  }
   return `The ${subject} Department`
 }
 
 export function fromDept(subject: string) {
-  return `${deptName(subject)} <${getSlug(subject)}@concordpedia.com>`
+  return `${deptName(subject)} <noreply@concordpedia.com>`
 }
 
 export const key_pages = [

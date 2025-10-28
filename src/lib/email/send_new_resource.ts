@@ -2,6 +2,7 @@ import { NewResourceEmailTemplate } from '@/lib/email/email-templates';
 import { fromDept } from "@/lib/consts";
 import { Resend } from 'resend';
 import { default_to_stuents } from '@/lib/consts';
+import { getYearGroupName } from '@/lib/year-group-config';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -11,6 +12,7 @@ export default async function sendNewResource(note: {
   subject: {
     title: string;
     id: number;
+    level: number;
     subscribers: {
       resource_notification: boolean;
       user: {
@@ -35,7 +37,7 @@ export default async function sendNewResource(note: {
       from: fromDept(note.subject.title),
       to: default_to_stuents,
       bcc: recipients,
-      subject: `New ${note.subject.title} resource added`,
+      subject: `New ${getYearGroupName(note.subject.level)} ${note.subject.title} resource added`,
       react: await NewResourceEmailTemplate({
         note: note
       }),

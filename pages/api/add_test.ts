@@ -3,6 +3,7 @@ import { Resend } from 'resend';
 import { NextApiRequest, NextApiResponse } from "next";
 import { NewTestEmailTemplate } from '@/lib/email/email-templates';
 import { default_to_stuents } from "@/lib/consts";
+import { getYearGroupName } from "@/lib/year-group-config";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -60,7 +61,7 @@ export default async function handler(
       from: `Concord College ${subject.title} Department <noreply@concordpedia.com>`,
       to: default_to_stuents,
       bcc: recipients,
-      subject: `New ${subject.title} scheduled: ${test.title}`,
+      subject: `New ${getYearGroupName(subject.level)} ${subject.title} Test Scheduled: ${test.title}`,
       react: await NewTestEmailTemplate({
         test: test,
         subject: subject,

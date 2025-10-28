@@ -11,71 +11,72 @@ import { fromDept } from "@/lib/consts";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async function handler(
-    req: NextApiRequest,
-    res: NextApiResponse
+  req: NextApiRequest,
+  res: NextApiResponse
 ) {
-    // Check if method is POST
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method not allowed' });
+  // Check if method is POST
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  // Get user from Clerk
+  const { userId } = getAuth(req);
+
+  if (!userId) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  try {
+    // Get note ID from request body
+    const { noteId } = req.body;
+
+    if (!noteId) {
+      return res.status(400).json({ error: 'Note ID is required' });
     }
 
-    // Get user from Clerk
-    const { userId } = getAuth(req);
-
-    if (!userId) {
-        return res.status(401).json({ error: 'Unauthorized' });
-    }
+    // Update note approval status
+    const updatedNote = await prisma.note.update({
+      where: {
+        id: noteId,
+      },
+      data: {
+        approved: true,
+      },
+      include: {
+        author: true,
+        subject: {
+          include: {
+            subscribers: {
+              include: {
+                user: true
+              }
+            }
+          }
+        }
+      }
+    });
 
     try {
-        // Get note ID from request body
-        const { noteId } = req.body;
-
-        if (!noteId) {
-            return res.status(400).json({ error: 'Note ID is required' });
-        }
-
-        // Update note approval status
-        const updatedNote = await prisma.note.update({
-            where: {
-                id: noteId,
-            },
-            data: {
-                approved: true,
-            },
-            include: {
-                author: true,
-                subject:{
-                  include: {
-                    subscribers: {
-                      include: {
-                        user: true
-                      }
-                    }
-                  }
-                }
-            }
-        });
-
-        try {
-            await resend.emails.send({
-                from: fromDept(updatedNote.subject.title),
-                to: [updatedNote.author.email],
-                subject: 'Upload approved',
-                react: await ApprovedResourceEmailTemplate({
-                    name: updatedNote.author.firstname || "User",
-                    title: updatedNote.title,
-                    subject: updatedNote.subject.title
-                }),
-            });
-            await sendNewResource(updatedNote);
-        }
-        finally {
-            console.log('Email send attempted');
-        }
-
-        return res.status(200).json({ success: true, note: updatedNote });
-    } catch (error) {
-        console.error('Error approving note:', error);
-        return res.status(500).json({ error: 'Internal server error' });
+      await resend.emails.send({
+        from: fromDept(updatedNote.subject.title),
+        to: [updatedNote.author.email],
+        subject: 'Upload approved',
+        react: await ApprovedResourceEmailTemplate({
+          name: updatedNote.author.firstname || "User",
+          title: updatedNote.title,
+          subject: updatedNote.subject.title,
+          year: updatedNote.subject.level
+        }),
+      });
+      await sendNewResource(updatedNote);
     }
+    finally {
+      console.log('Email send attempted');
+    }
+
+    return res.status(200).json({ success: true, note: updatedNote });
+  } catch (error) {
+    console.error('Error approving note:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
 }

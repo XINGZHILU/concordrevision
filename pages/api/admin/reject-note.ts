@@ -50,7 +50,8 @@ export default async function handler(
                 react: await RejectedResourceEmailTemplate({
                     name: deleted.author.firstname || "User",
                     title: deleted.title,
-                    subject: deleted.subject.title
+                    subject: deleted.subject.title,
+                    year: deleted.subject.level
                 }),
             });
         }
