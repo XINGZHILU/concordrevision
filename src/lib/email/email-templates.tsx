@@ -227,7 +227,7 @@ export const NewTestEmailTemplate: React.FC<Readonly<NewTestEmailTemplateProps>>
         <p>To view more details and access study materials, please click the button below:</p>
         <div style={{ textAlign: 'center', margin: '25px' }}>
           <a
-            href={`https://concordhub.vercel.app/revision/${subject.id}/tests/${test.id}`}
+            href={`https://www.concordpedia.com/revision/${subject.id}/tests/${test.id}`}
             style={{
               backgroundColor: '#2196F3',
               color: 'white',
@@ -282,7 +282,7 @@ export const NewResourceEmailTemplate: React.FC<Readonly<NewResourceEmailTemplat
         <p>To view more details and access study materials, please click the button below:</p>
         <div style={{ textAlign: 'center', margin: '25px' }}>
           <a
-            href={`https://concordhub.vercel.app/revision/${note.subject.id}/resources/${note.id}`}
+            href={`https://www.concordpedia.com/revision/${note.subject.id}/resources/${note.id}`}
             style={{
               backgroundColor: '#2196F3',
               color: 'white',
