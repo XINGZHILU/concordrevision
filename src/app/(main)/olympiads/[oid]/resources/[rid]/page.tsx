@@ -92,7 +92,7 @@ export default async function Page({ params }: { params: { oid: string, rid: str
               {resourceType}
             </span>
             {canEdit && (
-              <Link href={`olympiads/${oid}/resources/${rid}/edit`} className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors shadow-sm">
+              <Link href={`/olympiads/${oid}/resources/${rid}/edit`} className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors shadow-sm">
                 <LuPencil className="h-4 w-4 mr-2" />
                 Edit
               </Link>

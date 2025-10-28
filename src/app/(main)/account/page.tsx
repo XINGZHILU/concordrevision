@@ -1,7 +1,7 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { LuUpload, LuUser, LuCalendar, LuMail, LuUsers, LuSettings } from "react-icons/lu";
+import { LuUpload, LuUser, LuCalendar, LuMail, LuUsers, LuSettings, LuClipboard } from "react-icons/lu";
 import { Button } from '@/lib/components/ui/button';
 import { cn } from "@/lib/utils";
 
@@ -21,6 +21,13 @@ export default async function AccountPage() {
       description: "View and edit all your uploaded content",
       href: "/account/uploads",
       icon: LuUpload,
+      color: "text-primary",
+    },
+    {
+      title: "Past Paper Records",
+      description: "Track your progress on past papers and specimen papers",
+      href: "/account/records",
+      icon: LuClipboard,
       color: "text-primary",
     },
     {

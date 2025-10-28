@@ -4,7 +4,7 @@ import { getAuth } from '@clerk/nextjs/server';
 
 /**
  * API endpoint to fetch all uploads for the current user
- * Returns notes, olympiad resources, UCAS posts, and past paper records
+ * Returns notes, olympiad resources, and UCAS posts
  */
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { userId } = getAuth(req);
@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     try {
         // Fetch all user uploads in parallel
-        const [notes, olympiadResources, ucasPosts, pastPaperRecords] = await Promise.all([
+        const [notes, olympiadResources, ucasPosts] = await Promise.all([
             // Notes (revision resources)
             prisma.note.findMany({
                 where: {
@@ -96,25 +96,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     uploadedAt: 'desc',
                 },
             }),
-
-            // Past paper records
-            prisma.pastPaperRecord.findMany({
-                where: {
-                    userId: userId,
-                },
-                include: {
-                    subject: {
-                        select: {
-                            id: true,
-                            title: true,
-                            level: true,
-                        },
-                    },
-                },
-                orderBy: {
-                    name: 'asc',
-                },
-            }),
         ]);
 
         // Format the response with upload type information
@@ -134,16 +115,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 uploadType: 'ucas_post' as const,
                 fileCount: post.files.length,
             })),
-            pastPaperRecords: pastPaperRecords.map(record => ({
-                ...record,
-                uploadType: 'past_paper_record' as const,
-                fileCount: 0, // Past paper records don't have files
-            })),
         };
 
         // Calculate summary statistics
         const summary = {
-            totalUploads: notes.length + olympiadResources.length + ucasPosts.length + pastPaperRecords.length,
+            totalUploads: notes.length + olympiadResources.length + ucasPosts.length,
             approvedUploads: notes.filter(n => n.approved).length + 
                            olympiadResources.filter(r => r.approved).length + 
                            ucasPosts.filter(p => p.approved).length,

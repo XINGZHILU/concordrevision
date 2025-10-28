@@ -9,7 +9,6 @@ import {
   LuFileText,
   LuTrophy,
   LuGraduationCap,
-  LuClipboard,
   LuCalendar,
   LuCheck,
   LuClock,
@@ -78,30 +77,12 @@ interface UCASPost extends BaseUpload {
   courses: string[];
 }
 
-interface PastPaperRecord {
-  id: string;
-  uploadType: 'past_paper_record';
-  name: string;
-  title?: string; // Add optional title property for consistency
-  subject: Subject;
-  specimen: boolean;
-  start_year: number;
-  end_year: number;
-  paper_count: number;
-  papers_finished: number[];
-  paper_marks: number[];
-  max_marks: number[];
-  notes: string;
-  fileCount: number;
-}
-
-type Upload = Note | OlympiadResource | UCASPost | PastPaperRecord;
+type Upload = Note | OlympiadResource | UCASPost;
 
 interface UploadsData {
   notes: Note[];
   olympiadResources: OlympiadResource[];
   ucasPosts: UCASPost[];
-  pastPaperRecords: PastPaperRecord[];
 }
 
 interface Summary {
@@ -123,7 +104,6 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
     notes: [],
     olympiadResources: [],
     ucasPosts: [],
-    pastPaperRecords: [],
   });
   const [summary, setSummary] = useState<Summary>({
     totalUploads: 0,
@@ -168,13 +148,12 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
       ...uploads.notes,
       ...uploads.olympiadResources,
       ...uploads.ucasPosts,
-      ...uploads.pastPaperRecords,
     ];
 
     // Sort by uploadedAt date in descending order (most recent first)
     return allUploads.sort((a, b) => {
-      const dateA = 'uploadedAt' in a ? new Date(a.uploadedAt).getTime() : 0;
-      const dateB = 'uploadedAt' in b ? new Date(b.uploadedAt).getTime() : 0;
+      const dateA = new Date(a.uploadedAt).getTime();
+      const dateB = new Date(b.uploadedAt).getTime();
       return dateB - dateA; // Descending order
     });
   };
@@ -183,9 +162,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
    * Get upload title (handles different upload types)
    */
   const getUploadTitle = (upload: Upload): string => {
-    if ('title' in upload && upload.title) return upload.title;
-    if ('name' in upload) return upload.name;
-    return 'Untitled';
+    return upload.title || 'Untitled';
   };
 
   /**
@@ -204,7 +181,6 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
       // Search in description/content
       if ('desc' in upload && upload.desc?.toLowerCase().includes(searchLower)) return true;
       if ('content' in upload && upload.content?.toLowerCase().includes(searchLower)) return true;
-      if ('notes' in upload && upload.notes?.toLowerCase().includes(searchLower)) return true;
 
       // Search in subject/olympiad/tags
       if ('subject' in upload && upload.subject?.title?.toLowerCase().includes(searchLower)) return true;
@@ -220,8 +196,8 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
    */
   const sortByUploadTime = (uploadList: Upload[]): Upload[] => {
     return uploadList.sort((a, b) => {
-      const dateA = 'uploadedAt' in a ? new Date(a.uploadedAt).getTime() : 0;
-      const dateB = 'uploadedAt' in b ? new Date(b.uploadedAt).getTime() : 0;
+      const dateA = new Date(a.uploadedAt).getTime();
+      const dateB = new Date(b.uploadedAt).getTime();
       return dateB - dateA; // Descending order
     });
   };
@@ -239,12 +215,10 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
         return sortByUploadTime(filterUploads(uploads.olympiadResources));
       case 'ucas':
         return sortByUploadTime(filterUploads(uploads.ucasPosts));
-      case 'records':
-        return sortByUploadTime(filterUploads(uploads.pastPaperRecords));
       case 'approved':
-        return sortByUploadTime(filterUploads(allUploads.filter(u => 'approved' in u && u.approved)));
+        return sortByUploadTime(filterUploads(allUploads.filter(u => u.approved)));
       case 'pending':
-        return sortByUploadTime(filterUploads(allUploads.filter(u => 'approved' in u && !u.approved)));
+        return sortByUploadTime(filterUploads(allUploads.filter(u => !u.approved)));
       default:
         return filterUploads(allUploads); // Already sorted by getAllUploads
     }
@@ -261,8 +235,6 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
         return <LuTrophy className="h-5 w-5" />;
       case 'ucas_post':
         return <LuGraduationCap className="h-5 w-5" />;
-      case 'past_paper_record':
-        return <LuClipboard className="h-5 w-5" />;
       default:
         return <LuFileText className="h-5 w-5" />;
     }
@@ -279,8 +251,6 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
         return 'Olympiad Resource';
       case 'ucas_post':
         return 'UCAS Post';
-      case 'past_paper_record':
-        return 'Past Paper Record';
       default:
         return 'Upload';
     }
@@ -302,8 +272,6 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
         return `/olympiads/${resource.olympiad.id}/resources/${resource.id}`;
       case 'ucas_post':
         return `/ucas/posts/${upload.id}`;
-      case 'past_paper_record':
-        return `/revision/practice/ppq/records/${upload.id}`;
       default:
         return '#';
     }
@@ -325,8 +293,6 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
         return `/olympiads/${resource.olympiad.id}/resources/${resource.id}/edit`;
       case 'ucas_post':
         return `/ucas/posts/${upload.id}/edit`;
-      case 'past_paper_record':
-        return `/revision/practice/ppq/records/${upload.id}`;
       default:
         return '#';
     }
@@ -354,8 +320,6 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
    * Render upload card
    */
   const renderUploadCard = (upload: Upload) => {
-    const hasApprovalStatus = 'approved' in upload;
-
     return (
       <div
         key={`${upload.uploadType}-${upload.id}`}
@@ -379,23 +343,21 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
 
           {/* Status badges */}
           <div className="flex items-center gap-2 flex-shrink-0">
-            {hasApprovalStatus && (
-              <Badge variant={upload.approved ? "default" : "secondary"}>
-                {upload.approved ? (
-                  <>
-                    <LuCheck className="h-3 w-3 mr-1" />
-                    Approved
-                  </>
-                ) : (
-                  <>
-                    <LuClock className="h-3 w-3 mr-1" />
-                    Pending
-                  </>
-                )}
-              </Badge>
-            )}
+            <Badge variant={upload.approved ? "default" : "secondary"}>
+              {upload.approved ? (
+                <>
+                  <LuCheck className="h-3 w-3 mr-1" />
+                  Approved
+                </>
+              ) : (
+                <>
+                  <LuClock className="h-3 w-3 mr-1" />
+                  Pending
+                </>
+              )}
+            </Badge>
 
-            {hasApprovalStatus && upload.pinned && (
+            {upload.pinned && (
               <Badge variant="outline">Pinned</Badge>
             )}
           </div>
@@ -444,12 +406,10 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
               </span>
             )}
 
-            {'uploadedAt' in upload && (
-              <span className="flex items-center gap-1 flex-shrink-0">
-                <LuCalendar className="h-4 w-4 flex-shrink-0" />
-                <span className="whitespace-nowrap">{formatDate(upload.uploadedAt)}</span>
-              </span>
-            )}
+            <span className="flex items-center gap-1 flex-shrink-0">
+              <LuCalendar className="h-4 w-4 flex-shrink-0" />
+              <span className="whitespace-nowrap">{formatDate(upload.uploadedAt)}</span>
+            </span>
           </div>
 
           <div className="flex items-center gap-2 flex-shrink-0">
@@ -601,11 +561,6 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
               <LuGraduationCap className="h-4 w-4 mr-1" />
               <span className="hidden sm:inline">UCAS</span>
               <span className="sm:hidden">U</span> ({uploads.ucasPosts.length})
-            </TabsTrigger>
-            <TabsTrigger value="records">
-              <LuClipboard className="h-4 w-4 mr-1" />
-              <span className="hidden sm:inline">Records</span>
-              <span className="sm:hidden">R</span> ({uploads.pastPaperRecords.length})
             </TabsTrigger>
             <TabsTrigger value="approved">
               <LuCheck className="h-4 w-4 mr-1" />

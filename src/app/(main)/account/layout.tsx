@@ -1,7 +1,7 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { LuUser, LuUpload, LuSettings, LuUsers } from "react-icons/lu";
+import { LuUser, LuUpload, LuSettings, LuUsers, LuClipboard } from "react-icons/lu";
 
 /**
  * Layout for account pages with navigation sidebar
@@ -35,6 +35,12 @@ export default async function AccountLayout({
       href: "/account/subscriptions",
       icon: LuUsers,
       description: "Manage subject subscriptions",
+    },
+    {
+      name: "Past Paper Records",
+      href: "/account/records",
+      icon: LuClipboard,
+      description: "Manage past paper practice records",
     },
     {
       name: "Settings",
