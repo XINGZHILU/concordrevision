@@ -56,7 +56,7 @@ export function EditableNoteCard({ note, canEdit }: NoteCardProps) {
             )}
             
             {/* Main content - clickable link */}
-            <Link href={`/revision/${note.subjectId}/resources/${note.id}`} className="block p-8">
+            <Link href={`/revision/${note.subjectId}/resources/${note.id}`} className="block p-8 h-fit">
                 <h3 className="text-lg font-semibold mb-2">{note.title}</h3>
             </Link>
 
