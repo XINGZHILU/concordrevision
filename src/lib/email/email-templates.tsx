@@ -5,7 +5,7 @@ import { deptName } from '@/lib/consts';
 import { getYearGroupName } from '@/lib/year-group-config';
 
 function doNotReply() {
-  return <p>⚠️Please <b>do not</b> reply to this email as it is unmanned, but instead <b>contact relevant staff / students</b> directly.</p>;
+  return <p>⚠️ Please <b>do not</b> reply to this email as it is unmanned, but instead <b>contact relevant staff / students</b> directly.</p>;
 }
 
 interface ApprovedResourceEmailTemplateProps {
@@ -25,7 +25,7 @@ export const ApprovedResourceEmailTemplate: React.FC<Readonly<ApprovedResourceEm
       </div>
       <div style={{ padding: '20px' }}>
         <p>Dear {name},</p>
-        <p>Thank you for submitting the test revision material <b>{title}</b> for <b>{getYearGroupName(year)} {subject}</b>. After review from our teachers, we are delighted to inform you that your resource has been <b>accepted</b> and will now be available to be viewed and used on the website. Thank you very much for your hard work and support.</p>
+        <p>Thank you for submitting the test revision material <b>{title}</b> for <b>{getYearGroupName(year)} {subject}</b>. After review from our teachers, we are delighted to inform you that your resource has been <b>accepted ✅</b> and will now be available to be viewed and used on the website. Thank you very much for your hard work and support.</p>
         <br />
         <p>Best regards,</p>
         <p><b>{deptName(subject)}</b></p>
@@ -55,7 +55,7 @@ export const RejectedResourceEmailTemplate: React.FC<Readonly<RejectedResourceEm
       </div>
       <div style={{ padding: '20px' }}>
         <p>Dear {name},</p>
-        <p>Thank you for submitting the test revision material <b>{title}</b> for <b>{getYearGroupName(year)} {subject}</b>. After review from our teachers, we regret to inform you that your resource has been <b>rejected</b>, however you may wish to make updates and re-submit it. Thank you very much for your hard work and support.
+        <p>Thank you for submitting the test revision material <b>{title}</b> for <b>{getYearGroupName(year)} {subject}</b>. After review from our teachers, we regret to inform you that your resource has been <b>rejected❌</b>, however you may wish to make updates and re-submit it. Thank you very much for your hard work and support.
         </p>
         <br />
         <p>Best regards,</p>
@@ -86,7 +86,7 @@ export const ApprovedOlympiadEmailTemplate: React.FC<Readonly<ApprovedOlympiadEm
       </div>
       <div style={{ padding: '20px' }}>
         <p>Dear {name},</p>
-        <p>Thank you for submitting the prepatation material <b>{title}</b> for <b>{olympiad}</b>. After review from our teachers, we are delighted to inform you that your resource has been <b>accepted</b> and will now be available to be viewed and used on the website. Thank you very much for your hard work and support.</p>
+        <p>Thank you for submitting the prepatation material <b>{title}</b> for <b>{olympiad}</b>. After review from our teachers, we are delighted to inform you that your resource has been <b>accepted✅</b> and will now be available to be viewed and used on the website. Thank you very much for your hard work and support.</p>
         <br />
         <p>Best regards</p>
         <p><b>{deptName(area)}</b></p>
@@ -116,7 +116,7 @@ export const RejectedOlympiadEmailTemplate: React.FC<Readonly<RejectedOlympiadEm
       </div>
       <div style={{ padding: '20px' }}>
         <p>Dear {name},</p>
-        <p>Thank you for submitting the preparation material <b>{title}</b> for <b>{olympiad}</b>. After review from our teachers, we regret to inform you that your resource has been <b>rejected</b>, however you may wish to make updates and re-submit it. Thank you very much for your hard work and support.
+        <p>Thank you for submitting the preparation material <b>{title}</b> for <b>{olympiad}</b>. After review from our teachers, we regret to inform you that your resource has been <b>rejected❌</b>, however you may wish to make updates and re-submit it. Thank you very much for your hard work and support.
         </p>
         <br />
         <p>Best regards,</p>
@@ -145,7 +145,7 @@ export const UCASPostApprovedEmailTemplate: React.FC<Readonly<UCASPostApprovedEm
       </div>
       <div style={{ padding: '20px' }}>
         <p>Dear {name},</p>
-        <p>Thank you for submitting the UCAS post {title}. It is now available to be viewed on the website. Thank you very much for your hard work and support.
+        <p>Thank you for submitting the UCAS post {title}. It has now been <b>accepted✅</b> and is now available to be viewed on the website. Thank you very much for your hard work and support.
         </p>
         <br />
         <p>Best regards,</p>
@@ -174,7 +174,7 @@ export const UCASPostRejectedEmailTemplate: React.FC<Readonly<UCASPostRejectedEm
       </div>
       <div style={{ padding: '20px' }}>
         <p>Dear {name},</p>
-        <p>Thank you for submitting the UCAS post {title}. After review from our teachers, we regret to inform you that your post has been <b>rejected</b>, however you may wish to make updates and re-submit it. Thank you very much for your hard work and support.</p>
+        <p>Thank you for submitting the UCAS post {title}. After review from our teachers, we regret to inform you that your post has been <b>rejected❌</b>, however you may wish to make updates and re-submit it. Thank you very much for your hard work and support.</p>
         <br />
         <p>Best regards,</p>
         <p><b>Student Futures Team</b></p>
@@ -215,11 +215,12 @@ export const NewTestEmailTemplate: React.FC<Readonly<NewTestEmailTemplateProps>>
       </div>
       <div style={{ padding: '20px' }}>
         <p>Dear Student,</p>
-        <p>A new test for <b>{getYearGroupName(subject.level)} {subject.title}</b> has been scheduled on <b>{format(new Date(test.date), 'PPPP')}</b>.</p>
-        <p><b>Test Name:</b> {test.title}</p>
+        <p>A new test for <b>{getYearGroupName(subject.level)} {subject.title}</b> has been scheduled.</p>
+        <p><b>📅 Test Date:</b> {format(new Date(test.date), 'PPPP')}</p>
+        <p><b>📝 Test Name:</b> {test.title}</p>
 
         <div style={{ padding: '10px', backgroundColor: '#f9f9f9', borderRadius: '5px', border: '1px solid #eee', marginTop: '15px' }}>
-          <h3 style={{ marginTop: 0 }}>Test Details:</h3>
+          <h3 style={{ marginTop: 0 }}>ℹ️ Test Details:</h3>
           <ReactMarkdown>{test.desc}</ReactMarkdown>
         </div>
 
