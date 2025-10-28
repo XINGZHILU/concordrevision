@@ -1,7 +1,7 @@
 // File: app/admin/subjects/page.tsx
 
 import { prisma } from "@/lib/prisma";
-import SubjectList from "./subject-list";
+import SubjectList from "@/app/(admin)/admin/subjects/subject-list";
 
 export default async function SubjectManagementPage() {
 

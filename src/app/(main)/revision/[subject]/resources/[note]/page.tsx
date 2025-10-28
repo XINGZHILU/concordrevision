@@ -11,7 +11,7 @@ import FileList from "@/lib/customui/Basic/filelist";
 import MDViewer from "@/lib/customui/Basic/showMD";
 import Link from "next/link";
 import { LuArrowLeft, LuFileText, LuFile, LuPencil } from "react-icons/lu";
-import { PinButton } from "./PinButton";
+import { PinButton } from "@/app/(main)/revision/[subject]/resources/[note]/PinButton";
 
 export default async function Page({ params }: { params: { subject: string, note: string } }) {
   const page_params = await params;

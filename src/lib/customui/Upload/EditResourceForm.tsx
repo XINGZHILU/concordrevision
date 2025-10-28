@@ -3,7 +3,7 @@
 
 'use client';
 
-import { toaster } from "../../../components/ui/toaster";
+import { toaster } from "@/components/ui/toaster";
 import { useState, useRef, useEffect } from 'react';
 import { createClient } from "@/utils/supabase/client";
 import { StorageURLNotes } from "@/lib/utils";
@@ -14,7 +14,7 @@ import { LuTrash2, LuEye } from "react-icons/lu";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { XIcon } from "lucide-react";
-import { ImageUploader } from "./upload_image";
+import { ImageUploader } from "@/lib/customui/Upload/upload_image";
 
 interface EditResourceFormProps {
     noteId: number;

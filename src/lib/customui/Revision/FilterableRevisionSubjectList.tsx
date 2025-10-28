@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { SubjectItem } from '../Upload/SubjectItem';
+import { SubjectItem } from '@/lib/customui/Upload/SubjectItem';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";

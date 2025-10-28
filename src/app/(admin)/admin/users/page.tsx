@@ -1,7 +1,7 @@
 // File: app/admin/users/page.tsx
 
 import { prisma } from "@/lib/prisma";
-import UserList from "./user-list";
+import UserList from "@/app/(admin)/admin/users/user-list";
 
 export default async function UserManagementPage() {
 

@@ -9,7 +9,7 @@ import MDViewer from "@/lib/customui/Basic/showMD";
 import Link from "next/link";
 import { LuArrowLeft, LuFileText, LuFile, LuExternalLink, LuPencil } from "react-icons/lu";
 import { currentUser } from "@clerk/nextjs/server";
-import { PinButton } from "./PinButton";
+import { PinButton } from "@/app/(main)/olympiads/[oid]/resources/[rid]/PinButton";
 
 export default async function Page({ params }: { params: { oid: string, rid: string } }) {
   const page_params = await params;

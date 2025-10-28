@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 import Head from "next/head";
-import styles from "./Timer2.module.css";
+import styles from "@/lib/customui/Basic/Timer2.module.css";
 
 const Timer2 = () => {
     const [days, setDays] = useState(0);

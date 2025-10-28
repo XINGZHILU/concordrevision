@@ -1,8 +1,8 @@
 import Link from "next/link";
 import React from "react";
-import { Badge } from "../../../components/ui/badge";
+import { Badge } from "@/components/ui/badge";
 import { LuCalendar, LuPencil, LuUpload } from "react-icons/lu";
-import { TestBadge } from "./Badges";
+import { TestBadge } from "@/lib/customui/Basic/Badges";
 import { cva } from 'class-variance-authority';
 
 export function NoteCard({ note }: {

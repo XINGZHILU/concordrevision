@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { getYearGroupName } from "@/lib/year-group-config";
-import { Badge } from "../../../components/ui/badge";
+import { Badge } from "@/components/ui/badge";
 import {
     LuBook,
     LuBeaker,

@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { AdminNoteList } from "../../note-list";
+import { AdminNoteList } from "@/app/(admin)/admin/delete/note-list";
 import { Note } from "@prisma/client";
 
 export default async function AdminDeleteRevisionPage({ params }: { params: { subjectId: string } }) {

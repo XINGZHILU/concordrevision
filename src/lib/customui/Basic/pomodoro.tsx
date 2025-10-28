@@ -2,7 +2,7 @@
 
 
 import React, { useState, useEffect, useRef } from "react";
-import "./HorizontalPomodoro.css";
+import "@/lib/customui/Basic/HorizontalPomodoro.css";
 
 // Default values as constants
 const DEFAULT_WORK_TIME = 25 * 60;

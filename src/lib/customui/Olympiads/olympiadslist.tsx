@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { olympiad_subjects } from "@/lib/consts";
-import { OlympiadCard } from './OlympiadCard';
+import { OlympiadCard } from '@/lib/customui/Olympiads/OlympiadCard';
 import {
     LuCalculator,
     LuFlaskConical,

@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import { currentUser } from '@clerk/nextjs/server';
-import { EditUCASPostForm } from './edit-ucas-post-form';
+import { EditUCASPostForm } from '@/app/(main)/ucas/posts/[id]/edit/edit-ucas-post-form';
 
 export default async function EditPostPage({ params }: { params: { id: string } }) {
     const user = await currentUser();

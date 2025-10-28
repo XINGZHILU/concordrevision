@@ -1,4 +1,4 @@
-import { getYearGroupNamesArray } from './year-group-config';
+import { getYearGroupNamesArray } from '@/lib/year-group-config';
 
 function getSlug(s: string) {
   return s.replace(' ', '-').toLowerCase();

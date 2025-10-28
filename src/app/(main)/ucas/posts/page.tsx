@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { Suspense } from 'react';
-import { PostList } from './post-list';
+import { PostList } from '@/app/(main)/ucas/posts/post-list';
 
 export default async function PostsPage() {
   const posts = await prisma.uCASPost.findMany({

@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { CourseCard } from './cards';
-import { Pagination } from './pagination';
+import { CourseCard } from '@/lib/customui/UCAS/cards';
+import { Pagination } from '@/lib/customui/UCAS/pagination';
 import { Course } from '@prisma/client';
 import { Input } from '@/components/ui/input';
 

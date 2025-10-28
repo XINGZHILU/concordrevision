@@ -5,7 +5,7 @@
  * Copy and modify these examples in your year-group-config.ts file as needed.
  */
 
-import type { YearGroupConfig } from './year-group-config';
+import type { YearGroupConfig } from '@/lib/year-group-config';
 
 // Example 1: Hide Form 3 and 6.2 year groups
 export const hideForm3And62: YearGroupConfig[] = [

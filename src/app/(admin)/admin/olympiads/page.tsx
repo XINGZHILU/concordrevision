@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
-import OlympiadList from "./olympiad-list";
+import OlympiadList from "@/app/(admin)/admin/olympiads/olympiad-list";
 
 export default async function OlympiadManagementPage() {
 

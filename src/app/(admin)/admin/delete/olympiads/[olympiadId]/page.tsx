@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { AdminOlympiadResourceList } from "../../olympiad-resource-list";
+import { AdminOlympiadResourceList } from "@/app/(admin)/admin/delete/olympiad-resource-list";
 import { Olympiad_Resource } from "@prisma/client";
 
 export default async function AdminDeleteOlympiadPage({ params }: { params: { olympiadId: string } }) {

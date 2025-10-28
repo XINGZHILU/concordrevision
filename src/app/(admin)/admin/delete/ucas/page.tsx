@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { AdminUCASPostList } from "../ucas-post-list";
+import { AdminUCASPostList } from "@/app/(admin)/admin/delete/ucas-post-list";
 import { UCASPost } from "@prisma/client";
 
 export default async function AdminDeleteUCASPage() {

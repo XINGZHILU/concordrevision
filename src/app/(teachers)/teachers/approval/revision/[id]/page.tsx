@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { year_group_names } from "@/lib/consts";
-import NoteReviewActions from "./note-review-actions";
+import NoteReviewActions from "@/app/(teachers)/teachers/approval/revision/[id]/note-review-actions";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import FileList from "@/lib/customui/Basic/filelist";

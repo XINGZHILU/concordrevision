@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
-import { key_pages } from "../consts";
+import { key_pages } from "@/lib/consts";
 import Image from "next/image";
 
 export default function NavBar({ can_upload, teacher, admin }: { can_upload: boolean, teacher: boolean, admin: boolean }) {

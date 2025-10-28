@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FilteredNoteList from "@/app/(teachers)/teachers/approval/filtered-note-list";
 import FilteredOlympiadResourceList from "@/app/(teachers)/teachers/approval/filtered-olympiad-resource-list";
 import { LuFolder, LuFlaskConical, LuNewspaper } from "react-icons/lu"
-import FilteredUCASPostList from "./filtered-ucas-post-list";
+import FilteredUCASPostList from "@/app/(teachers)/teachers/approval/filtered-ucas-post-list";
 
 export default async function ApprovalPage() {
 

@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import ResourceReviewActions from "./olympiad-resource-review-actions";
+import ResourceReviewActions from "@/app/(teachers)/teachers/approval/olympiad/[id]/olympiad-resource-review-actions";
 import FileList from "@/lib/customui/Basic/filelist";
 import MDViewer from "@/lib/customui/Basic/showMD";
 

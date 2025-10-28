@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { UniversityCard } from './cards';
-import { Search } from './search';
-import { Pagination } from './pagination';
+import { UniversityCard } from '@/lib/customui/UCAS/cards';
+import { Search } from '@/lib/customui/UCAS/search';
+import { Pagination } from '@/lib/customui/UCAS/pagination';
 import { University } from '@prisma/client';
 
 export function UniversityList({ universities }: { universities: University[] }) {

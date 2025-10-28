@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
-import { AdmissionStatsForm } from './admission-stats-form';
-import { UniversityDetailsForm } from './university-details-form';
+import { AdmissionStatsForm } from '@/app/(admin)/admin/ucas/universities/[id]/admission-stats-form';
+import { UniversityDetailsForm } from '@/app/(admin)/admin/ucas/universities/[id]/university-details-form';
 
 export default async function UniversityAdminPage({
   params,

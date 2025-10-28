@@ -1,5 +1,5 @@
-import { UniversityManager } from "./UniversityManager";
-import { CourseManager } from "./CourseManager";
+import { UniversityManager } from "@/app/(admin)/admin/ucas/UniversityManager";
+import { CourseManager } from "@/app/(admin)/admin/ucas/CourseManager";
 import { prisma } from "@/lib/prisma";
 
 export default async function UcasAdminPage() {

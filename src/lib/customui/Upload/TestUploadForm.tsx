@@ -6,7 +6,7 @@ import { createClient } from "@/utils/supabase/client";
 import { StorageURLNotes } from "@/lib/utils";
 import cuid from "cuid";
 import MDEditor from "@uiw/react-md-editor";
-import { ImageUploader } from "./upload_image";
+import { ImageUploader } from "@/lib/customui/Upload/upload_image";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { XIcon } from 'lucide-react';

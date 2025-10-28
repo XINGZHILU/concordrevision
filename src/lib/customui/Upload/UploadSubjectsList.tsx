@@ -1,7 +1,7 @@
 'use client';
 
 import Link from "next/link";
-import { SubjectTabs } from "../Basic/tabs";
+import { SubjectTabs } from "@/lib/customui/Basic/tabs";
 import { isYearGroupVisible, getVisibleYearGroups } from "@/lib/year-group-config";
 import {
   LuBook, LuBeaker, LuCalculator, LuAtom, LuFlaskConical,

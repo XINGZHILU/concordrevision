@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { askQuestion } from './actions';
+import { askQuestion } from '@/lib/chatbot/actions';
 import MDViewer from '@/lib/customui/Basic/showMD';
 
 

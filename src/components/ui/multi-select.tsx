@@ -18,7 +18,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from '@/components/ui/popover';
-import { Badge } from './badge';
+import { Badge } from '@/components/ui/badge';
 
 export type OptionType = {
     label: string;

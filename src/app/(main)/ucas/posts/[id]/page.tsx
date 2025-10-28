@@ -5,7 +5,7 @@ import Link from 'next/link';
 import MDViewer from '@/lib/customui/Basic/showMD';
 import { currentUser } from '@clerk/nextjs/server';
 import { Button } from '@/components/ui/button';
-import { PinButton } from './PinButton';
+import { PinButton } from '@/app/(main)/ucas/posts/[id]/PinButton';
 import FileList from "@/lib/customui/Basic/filelist";
 
 export default async function PostPage({ params }: { params: { id: string } }) {
