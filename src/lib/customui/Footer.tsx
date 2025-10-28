@@ -28,13 +28,6 @@ const Footer = () => {
             <li>
               <Link href="/thanks" className="text-sm text-muted-foreground hover:text-primary">Thanks</Link>
             </li>
-            {/* 
-                        <li>
-                            <div className="inline-flex">
-                                <PomodoroActionBar />
-                            </div>
-                        </li>
-                        */}
           </ul>
         </div>
       </div>
