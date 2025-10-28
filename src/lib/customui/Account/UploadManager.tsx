@@ -161,15 +161,22 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
   };
 
   /**
-   * Get all uploads as a flat array for filtering
+   * Get all uploads as a flat array for filtering, sorted by upload time (most recent first)
    */
   const getAllUploads = (): Upload[] => {
-    return [
+    const allUploads = [
       ...uploads.notes,
       ...uploads.olympiadResources,
       ...uploads.ucasPosts,
       ...uploads.pastPaperRecords,
     ];
+    
+    // Sort by uploadedAt date in descending order (most recent first)
+    return allUploads.sort((a, b) => {
+      const dateA = 'uploadedAt' in a ? new Date(a.uploadedAt).getTime() : 0;
+      const dateB = 'uploadedAt' in b ? new Date(b.uploadedAt).getTime() : 0;
+      return dateB - dateA; // Descending order
+    });
   };
 
   /**
@@ -209,6 +216,17 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
   };
 
   /**
+   * Sort uploads by upload time (most recent first)
+   */
+  const sortByUploadTime = (uploadList: Upload[]): Upload[] => {
+    return uploadList.sort((a, b) => {
+      const dateA = 'uploadedAt' in a ? new Date(a.uploadedAt).getTime() : 0;
+      const dateB = 'uploadedAt' in b ? new Date(b.uploadedAt).getTime() : 0;
+      return dateB - dateA; // Descending order
+    });
+  };
+
+  /**
    * Get uploads for specific tab
    */
   const getTabUploads = (tab: string): Upload[] => {
@@ -216,19 +234,19 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
     
     switch (tab) {
       case 'notes':
-        return filterUploads(uploads.notes);
+        return sortByUploadTime(filterUploads(uploads.notes));
       case 'olympiad':
-        return filterUploads(uploads.olympiadResources);
+        return sortByUploadTime(filterUploads(uploads.olympiadResources));
       case 'ucas':
-        return filterUploads(uploads.ucasPosts);
+        return sortByUploadTime(filterUploads(uploads.ucasPosts));
       case 'records':
-        return filterUploads(uploads.pastPaperRecords);
+        return sortByUploadTime(filterUploads(uploads.pastPaperRecords));
       case 'approved':
-        return filterUploads(allUploads.filter(u => 'approved' in u && u.approved));
+        return sortByUploadTime(filterUploads(allUploads.filter(u => 'approved' in u && u.approved)));
       case 'pending':
-        return filterUploads(allUploads.filter(u => 'approved' in u && !u.approved));
+        return sortByUploadTime(filterUploads(allUploads.filter(u => 'approved' in u && !u.approved)));
       default:
-        return filterUploads(allUploads);
+        return filterUploads(allUploads); // Already sorted by getAllUploads
     }
   };
 
@@ -341,26 +359,26 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
     return (
       <div
         key={`${upload.uploadType}-${upload.id}`}
-        className="bg-card border border-border rounded-lg p-6 hover:shadow-md transition-shadow"
+        className="bg-card border border-border rounded-lg p-4 sm:p-6 hover:shadow-md transition-shadow overflow-hidden"
       >
         {/* Header */}
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <div className="text-primary">
+        <div className="flex items-start justify-between gap-3 mb-4">
+          <div className="flex items-center gap-3 min-w-0 flex-1">
+            <div className="text-primary flex-shrink-0">
               {getUploadIcon(upload)}
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-foreground truncate">
+              <h3 className="font-semibold text-foreground break-words">
                 {getUploadTitle(upload)}
               </h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground truncate">
                 {getUploadTypeLabel(upload)}
               </p>
             </div>
           </div>
           
           {/* Status badges */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-shrink-0">
             {hasApprovalStatus && (
               <Badge variant={upload.approved ? "default" : "secondary"}>
                 {upload.approved ? (
@@ -384,9 +402,9 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
         </div>
 
         {/* Content preview */}
-        <div className="mb-4">
+        <div className="mb-4 overflow-hidden">
           {'subject' in upload && (
-            <p className="text-sm text-muted-foreground mb-2">
+            <p className="text-sm text-muted-foreground mb-2 truncate">
               {getYearGroupName(upload.subject.level)} {upload.subject.title}
               {'test' in upload && upload.test && (
                 <span> → {upload.test.title}</span>
@@ -395,20 +413,20 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
           )}
           
           {'olympiad' in upload && (
-            <p className="text-sm text-muted-foreground mb-2">
+            <p className="text-sm text-muted-foreground mb-2 truncate">
               {upload.olympiad.title} • {upload.olympiad.area}
             </p>
           )}
           
           {'tags' in upload && upload.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1 mb-2">
+            <div className="flex flex-wrap gap-1 mb-2 overflow-hidden">
               {upload.tags.slice(0, 3).map((tag, index) => (
-                <Badge key={index} variant="outline" className="text-xs">
+                <Badge key={index} variant="outline" className="text-xs truncate max-w-[200px]">
                   {tag}
                 </Badge>
               ))}
               {upload.tags.length > 3 && (
-                <Badge variant="outline" className="text-xs">
+                <Badge variant="outline" className="text-xs flex-shrink-0">
                   +{upload.tags.length - 3} more
                 </Badge>
               )}
@@ -416,37 +434,37 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
           )}
           
           {('desc' in upload && upload.desc) && (
-            <p className="text-sm text-muted-foreground line-clamp-2">
+            <p className="text-sm text-muted-foreground line-clamp-2 break-words">
               {upload.desc}
             </p>
           )}
           
           {('content' in upload && upload.content) && (
-            <p className="text-sm text-muted-foreground line-clamp-2">
+            <p className="text-sm text-muted-foreground line-clamp-2 break-words">
               {upload.content}
             </p>
           )}
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between pt-4 border-t border-border">
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-4 border-t border-border">
+          <div className="flex items-center flex-wrap gap-3 sm:gap-4 text-sm text-muted-foreground min-w-0">
             {upload.fileCount > 0 && (
-              <span className="flex items-center gap-1">
-                <LuFileText className="h-4 w-4" />
-                {upload.fileCount} file{upload.fileCount !== 1 ? 's' : ''}
+              <span className="flex items-center gap-1 flex-shrink-0">
+                <LuFileText className="h-4 w-4 flex-shrink-0" />
+                <span className="whitespace-nowrap">{upload.fileCount} file{upload.fileCount !== 1 ? 's' : ''}</span>
               </span>
             )}
             
             {'uploadedAt' in upload && (
-              <span className="flex items-center gap-1">
-                <LuCalendar className="h-4 w-4" />
-                {formatDate(upload.uploadedAt)}
+              <span className="flex items-center gap-1 flex-shrink-0">
+                <LuCalendar className="h-4 w-4 flex-shrink-0" />
+                <span className="whitespace-nowrap">{formatDate(upload.uploadedAt)}</span>
               </span>
             )}
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-shrink-0">
             <Link href={getUploadLink(upload)}>
               <Button variant="outline" size="sm">
                 <LuEye className="h-4 w-4 mr-1" />
@@ -468,7 +486,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
 
   if (loading) {
     return (
-      <div className="p-8">
+      <div className="p-4 sm:p-6 lg:p-8">
         <div className="flex items-center justify-center h-64">
           <LuRefreshCw className="h-8 w-8 animate-spin text-muted-foreground" />
         </div>
@@ -478,9 +496,9 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
 
   if (error) {
     return (
-      <div className="p-8">
-        <div className="text-center py-12">
-          <p className="text-destructive mb-4">{error}</p>
+      <div className="p-4 sm:p-6 lg:p-8">
+        <div className="text-center py-12 px-4">
+          <p className="text-destructive mb-4 break-words">{error}</p>
           <Button onClick={fetchUploads} variant="outline">
             <LuRefreshCw className="h-4 w-4 mr-2" />
             Try Again
@@ -493,7 +511,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
   const tabUploads = getTabUploads(activeTab);
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-6 lg:p-8">
       {/* Header */}
       <div className="mb-8">
         <h2 className="text-2xl font-bold text-foreground mb-2">My Uploads</h2>
@@ -503,43 +521,43 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
       </div>
 
       {/* Summary Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <div className="bg-card border border-border rounded-lg p-4">
           <div className="flex items-center gap-3">
-            <LuActivity className="h-8 w-8 text-primary" />
-            <div>
-              <p className="text-2xl font-bold text-foreground">{summary.totalUploads}</p>
-              <p className="text-sm text-muted-foreground">Total Uploads</p>
+            <LuActivity className="h-8 w-8 text-primary flex-shrink-0" />
+            <div className="min-w-0">
+              <p className="text-2xl font-bold text-foreground truncate">{summary.totalUploads}</p>
+              <p className="text-sm text-muted-foreground whitespace-nowrap">Total Uploads</p>
             </div>
           </div>
         </div>
         
         <div className="bg-card border border-border rounded-lg p-4">
           <div className="flex items-center gap-3">
-            <LuCheck className="h-8 w-8 text-success" />
-            <div>
-              <p className="text-2xl font-bold text-foreground">{summary.approvedUploads}</p>
-              <p className="text-sm text-muted-foreground">Approved</p>
+            <LuCheck className="h-8 w-8 text-success flex-shrink-0" />
+            <div className="min-w-0">
+              <p className="text-2xl font-bold text-foreground truncate">{summary.approvedUploads}</p>
+              <p className="text-sm text-muted-foreground whitespace-nowrap">Approved</p>
             </div>
           </div>
         </div>
         
         <div className="bg-card border border-border rounded-lg p-4">
           <div className="flex items-center gap-3">
-            <LuClock className="h-8 w-8 text-warning" />
-            <div>
-              <p className="text-2xl font-bold text-foreground">{summary.pendingUploads}</p>
-              <p className="text-sm text-muted-foreground">Pending</p>
+            <LuClock className="h-8 w-8 text-warning flex-shrink-0" />
+            <div className="min-w-0">
+              <p className="text-2xl font-bold text-foreground truncate">{summary.pendingUploads}</p>
+              <p className="text-sm text-muted-foreground whitespace-nowrap">Pending</p>
             </div>
           </div>
         </div>
         
         <div className="bg-card border border-border rounded-lg p-4">
           <div className="flex items-center gap-3">
-            <LuFileText className="h-8 w-8 text-primary" />
-            <div>
-              <p className="text-2xl font-bold text-foreground">{summary.totalFiles}</p>
-              <p className="text-sm text-muted-foreground">Files</p>
+            <LuFileText className="h-8 w-8 text-primary flex-shrink-0" />
+            <div className="min-w-0">
+              <p className="text-2xl font-bold text-foreground truncate">{summary.totalFiles}</p>
+              <p className="text-sm text-muted-foreground whitespace-nowrap">Files</p>
             </div>
           </div>
         </div>
@@ -568,7 +586,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
           )}
         </div>
         {searchQuery && (
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="mt-2 text-sm text-muted-foreground truncate">
             Searching for: <span className="font-medium">&quot;{searchQuery}&quot;</span>
           </p>
         )}
@@ -576,42 +594,50 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="mb-6">
-          <TabsTrigger value="all">
-            All ({getAllUploads().length})
-          </TabsTrigger>
-          <TabsTrigger value="notes">
-            <LuFileText className="h-4 w-4 mr-1" />
-            Notes ({uploads.notes.length})
-          </TabsTrigger>
-          <TabsTrigger value="olympiad">
-            <LuTrophy className="h-4 w-4 mr-1" />
-            Olympiad ({uploads.olympiadResources.length})
-          </TabsTrigger>
-          <TabsTrigger value="ucas">
-            <LuGraduationCap className="h-4 w-4 mr-1" />
-            UCAS ({uploads.ucasPosts.length})
-          </TabsTrigger>
-          <TabsTrigger value="records">
-            <LuClipboard className="h-4 w-4 mr-1" />
-            Records ({uploads.pastPaperRecords.length})
-          </TabsTrigger>
-          <TabsTrigger value="approved">
-            <LuCheck className="h-4 w-4 mr-1" />
-            Approved ({summary.approvedUploads})
-          </TabsTrigger>
-          <TabsTrigger value="pending">
-            <LuClock className="h-4 w-4 mr-1" />
-            Pending ({summary.pendingUploads})
-          </TabsTrigger>
-        </TabsList>
+        <div className="overflow-x-auto mb-6">
+          <TabsList className="inline-flex min-w-max">
+            <TabsTrigger value="all">
+              All ({getAllUploads().length})
+            </TabsTrigger>
+            <TabsTrigger value="notes">
+              <LuFileText className="h-4 w-4 mr-1" />
+              <span className="hidden sm:inline">Notes</span>
+              <span className="sm:hidden">N</span> ({uploads.notes.length})
+            </TabsTrigger>
+            <TabsTrigger value="olympiad">
+              <LuTrophy className="h-4 w-4 mr-1" />
+              <span className="hidden sm:inline">Olympiad</span>
+              <span className="sm:hidden">O</span> ({uploads.olympiadResources.length})
+            </TabsTrigger>
+            <TabsTrigger value="ucas">
+              <LuGraduationCap className="h-4 w-4 mr-1" />
+              <span className="hidden sm:inline">UCAS</span>
+              <span className="sm:hidden">U</span> ({uploads.ucasPosts.length})
+            </TabsTrigger>
+            <TabsTrigger value="records">
+              <LuClipboard className="h-4 w-4 mr-1" />
+              <span className="hidden sm:inline">Records</span>
+              <span className="sm:hidden">R</span> ({uploads.pastPaperRecords.length})
+            </TabsTrigger>
+            <TabsTrigger value="approved">
+              <LuCheck className="h-4 w-4 mr-1" />
+              <span className="hidden sm:inline">Approved</span>
+              <span className="sm:hidden">A</span> ({summary.approvedUploads})
+            </TabsTrigger>
+            <TabsTrigger value="pending">
+              <LuClock className="h-4 w-4 mr-1" />
+              <span className="hidden sm:inline">Pending</span>
+              <span className="sm:hidden">P</span> ({summary.pendingUploads})
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
         <TabsContent value={activeTab}>
           {tabUploads.length === 0 ? (
-            <div className="text-center py-12">
+            <div className="text-center py-12 px-4">
               <LuFileText className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-              <p className="text-muted-foreground mb-2">
-                {searchQuery ? `No uploads found for &quot;${searchQuery}&quot;` : 'No uploads found'}
+              <p className="text-muted-foreground mb-2 break-words">
+                {searchQuery ? `No uploads found for "${searchQuery}"` : 'No uploads found'}
               </p>
               {!searchQuery && (
                 <Link href="/upload">
@@ -623,7 +649,7 @@ const UploadManager: React.FC<UploadManagerProps> = ({ userId }) => {
               )}
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-1 gap-6">
               {tabUploads.map(renderUploadCard)}
             </div>
           )}
