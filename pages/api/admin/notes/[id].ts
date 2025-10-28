@@ -16,7 +16,7 @@ export default async function handler(
         where: { id: userId },
     });
 
-    if (!user || !user.admin) {
+    if (!user || !user.admin || !user.teacher) {
         return res.status(401).json({ error: "Unauthorized" });
     }
 

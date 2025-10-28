@@ -22,7 +22,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
 
         const dbUser = await prisma.user.findUnique({ where: { id: userId } });
-        if (userId !== post.authorId && !dbUser?.admin) {
+        // Allow authors, admins, and teachers to edit posts
+        if (userId !== post.authorId && !dbUser?.admin && !dbUser?.teacher) {
             return res.status(403).json({ message: 'Forbidden' });
         }
 

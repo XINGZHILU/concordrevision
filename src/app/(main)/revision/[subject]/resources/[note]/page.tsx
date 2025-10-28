@@ -11,7 +11,7 @@ import FileList from "@/lib/customui/Basic/filelist";
 import MDViewer from "@/lib/customui/Basic/showMD";
 import Link from "next/link";
 import { LuArrowLeft, LuFileText, LuFile, LuPencil } from "react-icons/lu";
-import { PinButton } from "@/app/(main)/revision/[subject]/resources/[note]/PinButton";
+import { PinButton } from "./PinButton";
 
 export default async function Page({ params }: { params: { subject: string, note: string } }) {
   const page_params = await params;
@@ -57,9 +57,9 @@ export default async function Page({ params }: { params: { subject: string, note
   const user = await currentUser();
   const dbUser = user ? await prisma.user.findUnique({ where: { id: user.id } }) : null;
 
-  // If note is not approved, only allow access to author or admin
+  // If note is not approved, only allow access to author, admin, or teacher
   if (!note.approved) {
-    if (!user || (note.authorId !== user.id && !dbUser?.admin)) {
+    if (!user || (note.authorId !== user.id && !dbUser?.admin && !dbUser?.teacher)) {
       notFound();
     }
   }
@@ -81,9 +81,12 @@ export default async function Page({ params }: { params: { subject: string, note
     ? `${note.author.firstname} ${note.author.lastname}`
     : "Anonymous";
 
-  // Check if current user is the author or admin
-  const canEdit = user && (note.author.id === user.id || (dbUser && dbUser.admin));
+  // Check if current user is the author, admin, or teacher
+  const canEdit = user && (note.author.id === user.id || (dbUser && (dbUser.admin || dbUser.teacher)));
   const isAdmin = dbUser?.admin ?? false;
+  const isTeacher = dbUser?.teacher ?? false;
+  // Allow both admins and teachers to pin resources
+  const canPin = isAdmin || isTeacher;
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-7xl">
@@ -122,7 +125,7 @@ export default async function Page({ params }: { params: { subject: string, note
                 Edit Resource
               </Link>
             )}
-            {isAdmin && (
+            {canPin && (
               <PinButton noteId={note.id} initialPinned={note.pinned} />
             )}
           </div>

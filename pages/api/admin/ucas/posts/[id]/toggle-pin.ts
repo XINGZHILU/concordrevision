@@ -12,7 +12,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         where: { id: userId },
     });
 
-    if (!user || !user.admin) {
+    // Allow both admins and teachers to toggle pin status
+    if (!user || (!user.admin && !user.teacher)) {
         return res.status(403).json({ error: "Forbidden" });
     }
 

@@ -45,8 +45,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(404).json({ error: 'Resource not found' });
         }
 
-        // Check if user is the author or an admin
-        if (resource.authorId !== userId && !user.admin) {
+        // Check if user is the author, admin, or teacher
+        if (resource.authorId !== userId && !user.admin && !user.teacher) {
             return res.status(403).json({ error: "Forbidden" });
         }
 

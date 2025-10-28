@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Badge } from "@/lib/components/ui/badge";
-import { OlympiadResourceReviewActions } from "@/app/(teachers)/teachers/approval/olympiad/[id]/olympiad-resource-review-actions";
+import { OlympiadResourceReviewActions } from "./olympiad-resource-review-actions";
 import FileList from "@/lib/customui/Basic/filelist";
 import MDViewer from "@/lib/customui/Basic/showMD";
 
@@ -25,7 +25,7 @@ const getResourceTypeLabel = (type: number) => {
 */
 
 export default async function OlympiadResourceReviewPage({ params }: { params: { id: string } }) {
-  const resourceId = params.id;
+  const resourceId = await params.id;
 
   if (!resourceId) {
     notFound();

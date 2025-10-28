@@ -135,14 +135,6 @@ export default async function AdminHomePage() {
         />
 
         <AdminCard
-          title="Subject Management"
-          description="Add, edit, or remove subjects and categories"
-          icon={<LuBook className="h-8 w-8" />}
-          href="/admin/subjects"
-          variant="success"
-        />
-
-        <AdminCard
           title="System Settings"
           description="Configure system-wide settings and preferences"
           icon={<LuCog className="h-8 w-8" />}
@@ -150,20 +142,6 @@ export default async function AdminHomePage() {
           variant="secondary"
         />
 
-        <AdminCard
-          title="Olympiad Management"
-          description="Manage olympiad resources and categories"
-          icon={<LuMedal className="h-8 w-8" />}
-          href="/admin/olympiads"
-          variant="primary"
-        />
-        <AdminCard
-          title="University and Courses Management"
-          description="Add, edit, or remove universities and courses"
-          icon={<LuSchool className="h-8 w-8" />}
-          href="/admin/ucas"
-          variant={"primary"}
-        />
         <AdminCard
           title="Return to Site"
           description="Go back to the main student portal"

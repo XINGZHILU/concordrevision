@@ -71,8 +71,8 @@ export function CourseLinkForm({ universityId, courses, courseLink, onSuccess, c
 
   const handleSubmit = async () => {
     const url = courseLink
-      ? `/api/admin/course-links/${courseLink.id}`
-      : `/api/admin/universities/${universityId}/courses`;
+      ? `/api/teachers/course-links/${courseLink.id}`
+      : `/api/teachers/universities/${universityId}/courses`;
     
     const method = courseLink ? 'PUT' : 'POST';
 

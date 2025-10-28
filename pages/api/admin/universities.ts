@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const dbUser = await prisma.user.findUnique({ where: { id: userId } });
-    if (!dbUser || !dbUser.admin) {
+    if (!dbUser || !dbUser.admin || !dbUser.teacher) {
         return res.status(403).json({ message: 'Forbidden' });
     }
 

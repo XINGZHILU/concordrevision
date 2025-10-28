@@ -11,7 +11,7 @@ export default async function EditPostPage({ params }: { params: { id: string } 
     }
 
     const post = await prisma.uCASPost.findUnique({
-        where: { id: parseInt(params.id, 10) },
+        where: { id: parseInt(await params.id, 10) },
         include: {
             files: true
         }
@@ -22,7 +22,8 @@ export default async function EditPostPage({ params }: { params: { id: string } 
     }
 
     const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
-    if (user.id !== post.authorId && !dbUser?.admin) {
+    // Allow authors, admins, and teachers to edit posts
+    if (user.id !== post.authorId && !dbUser?.admin && !dbUser?.teacher) {
         notFound();
     }
     

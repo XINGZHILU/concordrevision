@@ -80,8 +80,8 @@ export default async function EditResourcePage({ params }: PageProps) {
         notFound();
     }
 
-    // Check if current user is the author
-    if (note.authorId !== user.id && !userRecord.admin) {
+    // Check if current user is the author, admin, or teacher
+    if (note.authorId !== user.id && !userRecord.admin && !userRecord.teacher) {
         return (
             <div className="container mx-auto px-4 py-8">
                 <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-6 text-center">

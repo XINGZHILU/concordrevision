@@ -2,11 +2,11 @@
 
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import EditOlympiadForm from "@/app/(admin)/admin/olympiads/[id]/edit-olympiad-form";
+import EditOlympiadForm from "./edit-olympiad-form";
 
 export default async function EditOlympiadPage({ params }: { params: { id: string } }) {
 
-    const olympiadId = parseInt(params.id);
+    const olympiadId = parseInt(await params.id);
 
     if (isNaN(olympiadId)) {
         notFound();

@@ -53,8 +53,8 @@ export default async function handler(
             return res.status(404).json({ error: 'Resource not found' });
         }
 
-        // Verify user is the author or an admin
-        if (existingNote.authorId !== userId && !userRecord.admin) {
+        // Verify user is the author, admin, or teacher
+        if (existingNote.authorId !== userId && !userRecord.admin && !userRecord.teacher) {
             return res.status(403).json({ error: 'You can only edit your own resources' });
         }
 

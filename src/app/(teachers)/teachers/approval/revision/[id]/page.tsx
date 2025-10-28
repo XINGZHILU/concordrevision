@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { year_group_names } from "@/lib/consts";
-import NoteReviewActions from "@/app/(teachers)/teachers/approval/revision/[id]/note-review-actions";
+import NoteReviewActions from "./note-review-actions";
 import Link from "next/link";
 import { Badge } from "@/lib/components/ui/badge";
 import FileList from "@/lib/customui/Basic/filelist";
@@ -27,7 +27,7 @@ const getNoteTypeLabel = (type: number) => {
 
 export default async function NoteReviewPage({ params }: { params: { id: string } }) {
 
-    const noteId = params.id;
+    const noteId = await params.id;
 
     if (!noteId) {
         notFound();

@@ -9,7 +9,7 @@ import MDViewer from "@/lib/customui/Basic/showMD";
 import Link from "next/link";
 import { LuArrowLeft, LuFileText, LuFile, LuExternalLink, LuPencil } from "react-icons/lu";
 import { currentUser } from "@clerk/nextjs/server";
-import { PinButton } from "@/app/(main)/olympiads/[oid]/resources/[rid]/PinButton";
+import { PinButton } from "./PinButton";
 
 export default async function Page({ params }: { params: { oid: string, rid: string } }) {
   const page_params = await params;
@@ -54,9 +54,9 @@ export default async function Page({ params }: { params: { oid: string, rid: str
   const user = await currentUser();
   const dbUser = user ? await prisma.user.findUnique({ where: { id: user.id } }) : null;
 
-  // If resource is not approved, only allow access to author or admin
+  // If resource is not approved, only allow access to author, admin, or teacher
   if (!resource.approved) {
-    if (!user || (resource.authorId !== user.id && !dbUser?.admin)) {
+    if (!user || (resource.authorId !== user.id && !dbUser?.admin && !dbUser?.teacher)) {
       notFound();
     }
   }
@@ -66,7 +66,11 @@ export default async function Page({ params }: { params: { oid: string, rid: str
     ? `${resource.author.firstname} ${resource.author.lastname}`
     : "Anonymous";
   const isAdmin = dbUser?.admin ?? false;
-  const canEdit = user && (resource.author.id === user.id || isAdmin);
+  const isTeacher = dbUser?.teacher ?? false;
+  // Allow authors, admins, and teachers to edit resources
+  const canEdit = user && (resource.author.id === user.id || isAdmin || isTeacher);
+  // Allow both admins and teachers to pin resources
+  const canPin = isAdmin || isTeacher;
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-7xl">
@@ -97,7 +101,7 @@ export default async function Page({ params }: { params: { oid: string, rid: str
                 Edit
               </Link>
             )}
-            {isAdmin && <PinButton resourceId={resource.id} initialPinned={resource.pinned} />}
+            {canPin && <PinButton resourceId={resource.id} initialPinned={resource.pinned} />}
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">

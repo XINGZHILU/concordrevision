@@ -13,7 +13,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
 
   const post = await prisma.uCASPost.findUnique({
     where: {
-      id: parseInt(params.id, 10)
+      id: parseInt(await params.id, 10)
     },
     include: {
       author: true,
@@ -27,15 +27,19 @@ export default async function PostPage({ params }: { params: { id: string } }) {
 
   const dbUser = user ? await prisma.user.findUnique({ where: { id: user.id } }) : null;
 
-  // If post is not approved, only allow access to author or admin
+  // If post is not approved, only allow access to author, admin, or teacher
   if (!post.approved) {
-    if (!user || (post.authorId !== user.id && !dbUser?.admin)) {
+    if (!user || (post.authorId !== user.id && !dbUser?.admin && !dbUser?.teacher)) {
       notFound();
     }
   }
 
-  const canEdit = user && (user.id === post.authorId || (dbUser && dbUser.admin));
+  // Allow authors, admins, and teachers to edit posts
+  const canEdit = user && (user.id === post.authorId || (dbUser && (dbUser.admin || dbUser.teacher)));
   const isAdmin = dbUser?.admin ?? false;
+  const isTeacher = dbUser?.teacher ?? false;
+  // Allow both admins and teachers to pin posts
+  const canPin = isAdmin || isTeacher;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-12 w-11/12 mx-auto">
@@ -48,7 +52,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
                 <Link href={`/ucas/posts/${post.id}/edit`}>Edit Post</Link>
               </Button>
             )}
-            {isAdmin && (
+            {canPin && (
               <PinButton postId={post.id} initialPinned={post.pinned} />
             )}
           </div>

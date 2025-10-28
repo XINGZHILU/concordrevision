@@ -56,21 +56,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                     <Link href="/admin/users" className="hover:bg-primary/80 px-2 py-1 rounded">
                       Users
                     </Link>
-                    <Link href="/admin/subjects" className="hover:bg-primary/80 px-2 py-1 rounded">
-                      Subjects
-                    </Link>
-                    <Link href="/admin/year-groups" className="hover:bg-primary/80 px-2 py-1 rounded">
-                      Year Groups
-                    </Link>
-                    <Link href="/admin/olympiads" className="hover:bg-primary/80 px-2 py-1 rounded">
-                      Olympiads
-                    </Link>
-                    <Link href="/admin/ucas" className="hover:bg-primary/80 px-2 py-1 rounded">
-                      UCAS
-                    </Link>
-                    <Link href="/admin/delete" className="hover:bg-primary/80 px-2 py-1 rounded">
-                      Delete
-                    </Link>
                   </nav>
                 </div>
 
@@ -108,20 +93,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <Link href="/admin/users" className="whitespace-nowrap hover:bg-primary/80 px-2 py-1 rounded">
                   Users
                 </Link>
-                <Link href="/admin/subjects" className="whitespace-nowrap hover:bg-primary/80 px-2 py-1 rounded">
-                  Subjects
-                </Link>
                 <Link href="/admin/year-groups" className="whitespace-nowrap hover:bg-primary/80 px-2 py-1 rounded">
                   Year Groups
-                </Link>
-                <Link href="/admin/olympiads" className="whitespace-nowrap hover:bg-primary/80 px-2 py-1 rounded">
-                  Olympiads
-                </Link>
-                <Link href="/admin/ucas" className="whitespace-nowrap hover:bg-primary/80 px-2 py-1 rounded">
-                  UCAS
-                </Link>
-                <Link href="/admin/delete" className="whitespace-nowrap hover:bg-primary/80 px-2 py-1 rounded">
-                  Delete
                 </Link>
               </nav>
             </div>

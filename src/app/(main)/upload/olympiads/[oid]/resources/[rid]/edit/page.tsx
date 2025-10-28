@@ -32,7 +32,8 @@ export default async function EditOlympiadResourcePage({ params }: { params: { o
       notFound();
   }
 
-    if ((resource.author.id !== user.id) && !dbUser.admin) {
+    // Allow authors, admins, and teachers to edit resources
+    if ((resource.author.id !== user.id) && !dbUser.admin && !dbUser.teacher) {
         return <p>You do not have permission to edit this resource.</p>;
     }
 

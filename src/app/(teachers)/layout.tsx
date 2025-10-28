@@ -51,6 +51,18 @@ export default async function TeachersLayout({
                 <Link href="/teachers/approval" className="hover:bg-primary/80 px-2 py-1 rounded">
                   Approve Content
                 </Link>
+                <Link href="/teachers/subjects" className="hover:bg-primary/80 px-2 py-1 rounded">
+                  Subjects
+                </Link>
+                <Link href="/teachers/olympiads" className="hover:bg-primary/80 px-2 py-1 rounded">
+                  Olympiads
+                </Link>
+                <Link href="/teachers/ucas" className="hover:bg-primary/80 px-2 py-1 rounded">
+                  UCAS
+                </Link>
+                <Link href="/teachers/delete" className="hover:bg-primary/80 px-2 py-1 rounded">
+                  Delete
+                </Link>
               </nav>
             </div>
 
@@ -88,8 +100,20 @@ export default async function TeachersLayout({
             <Link href="/teachers/create-test" className="whitespace-nowrap hover:bg-primary/80 px-2 py-1 rounded">
               Schedule Tests
             </Link>
-            <Link href="/admin/approval" className="whitespace-nowrap hover:bg-primary/80 px-2 py-1 rounded">
+            <Link href="/teachers/approval" className="whitespace-nowrap hover:bg-primary/80 px-2 py-1 rounded">
               Approve Content
+            </Link>
+            <Link href="/teachers/subjects" className="whitespace-nowrap hover:bg-primary/80 px-2 py-1 rounded">
+              Subjects
+            </Link>
+            <Link href="/teachers/olympiads" className="whitespace-nowrap hover:bg-primary/80 px-2 py-1 rounded">
+              Olympiads
+            </Link>
+            <Link href="/teachers/ucas" className="whitespace-nowrap hover:bg-primary/80 px-2 py-1 rounded">
+              UCAS
+            </Link>
+            <Link href="/teachers/delete" className="whitespace-nowrap hover:bg-primary/80 px-2 py-1 rounded">
+              Delete
             </Link>
           </nav>
         </div>

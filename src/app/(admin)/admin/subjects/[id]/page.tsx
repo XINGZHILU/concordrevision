@@ -2,11 +2,11 @@
 
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import EditSubjectForm from "@/app/(admin)/admin/subjects/[id]/edit-subject-form";
+import EditSubjectForm from "./edit-subject-form";
 
 export default async function EditSubjectPage({ params }: { params: { id: string } }) {
 
-    const subjectId = parseInt(params.id);
+    const subjectId = parseInt(await params.id);
 
     if (isNaN(subjectId)) {
         notFound();

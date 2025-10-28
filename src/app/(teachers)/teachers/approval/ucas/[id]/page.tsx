@@ -4,11 +4,11 @@ import Link from "next/link";
 import { Badge } from "@/lib/components/ui/badge";
 import FileList from "@/lib/customui/Basic/filelist";
 import MDViewer from "@/lib/customui/Basic/showMD";
-import UCASPostReviewActions from "@/app/(teachers)/teachers/approval/ucas/[id]/ucas-post-review-actions";
+import UCASPostReviewActions from "./ucas-post-review-actions";
 
 export default async function UCASPostReviewPage({ params }: { params: { id: string } }) {
 
-    const postId = params.id;
+    const postId = await params.id;
 
     if (!postId) {
         notFound();
