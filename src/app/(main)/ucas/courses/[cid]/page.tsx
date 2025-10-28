@@ -5,9 +5,10 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from "@/lib/components/ui/card";
 
 export default async function CoursePage({ params }: { params: { cid: string } }) {
+  const page_params = await params;
   const course = await prisma.course.findUnique({
     where: {
-      id: params.cid
+      id: page_params.cid
     },
     include: {
       courseLinks: {

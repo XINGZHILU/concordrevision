@@ -21,7 +21,7 @@ export default async function UniversityCoursePage({
     }
   });
 
-  if (!courseLink || courseLink.universityId !== params.uid) {
+  if (!courseLink || courseLink.universityId !== page_params.uid) {
     notFound();
   }
 

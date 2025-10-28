@@ -5,13 +5,14 @@ import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 export default async function Page({ params }: { params: { subject: string } }) {
+    const page_params = await params;
     const user = await currentUser();
 
     if (!user) {
         return redirect('/sign-in');
     }
 
-    const subjectId = parseInt(params.subject, 10);
+    const subjectId = parseInt(page_params.subject, 10);
 
     if (isNaN(subjectId)) {
         return redirect('/teachers/create-test');

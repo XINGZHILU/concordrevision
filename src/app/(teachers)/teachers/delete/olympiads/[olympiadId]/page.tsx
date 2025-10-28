@@ -3,11 +3,12 @@ import { TeacherOlympiadResourceList } from "../../olympiad-resource-list";
 import { Olympiad_Resource } from "@prisma/client";
 
 export default async function TeacherDeleteOlympiadPage({ params }: { params: { olympiadId: string } }) {
+    const page_params = await params;
     const olympiad = await prisma.olympiad.findUnique({
-        where: { id: parseInt(params.olympiadId) },
+        where: { id: parseInt(page_params.olympiadId) },
     });
     const resources = await prisma.olympiad_Resource.findMany({
-        where: { olympiadId: parseInt(params.olympiadId) },
+        where: { olympiadId: parseInt(page_params.olympiadId) },
         include: {
             author: true,
         },

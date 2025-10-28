@@ -3,11 +3,12 @@ import { TeacherNoteList } from "../../note-list";
 import { Note } from "@prisma/client";
 
 export default async function TeacherDeleteRevisionPage({ params }: { params: { subjectId: string } }) {
+    const page_params = await params;
     const subject = await prisma.subject.findUnique({
-        where: { id: parseInt(params.subjectId) },
+        where: { id: parseInt(page_params.subjectId) },
     });
     const notes = await prisma.note.findMany({
-        where: { subjectId: parseInt(params.subjectId) },
+        where: { subjectId: parseInt(page_params.subjectId) },
         include: {
             author: true,
         },

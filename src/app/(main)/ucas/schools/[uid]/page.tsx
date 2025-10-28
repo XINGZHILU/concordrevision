@@ -44,9 +44,10 @@ function AdmissionStatsTable({ stats }: { stats: AdmissionStats[] }) {
 
 
 export default async function UniversityPage({ params }: { params: { uid: string } }) {
+  const page_params = await params;
   const university = await prisma.university.findUnique({
     where: {
-      id: params.uid
+      id: page_params.uid
     },
     include: {
       courseLinks: {

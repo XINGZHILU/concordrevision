@@ -18,7 +18,7 @@ interface PageProps {
  * Only allows authors to edit their own resources
  */
 export default async function EditResourcePage({ params }: PageProps) {
-    const { subject: sid, note: nid } = params;
+    const { subject: sid, note: nid } = await params;
 
     // Check if parameters are valid numbers
     if (!isNumeric(sid) || !isNumeric(nid)) {
