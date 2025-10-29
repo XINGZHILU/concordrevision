@@ -25,17 +25,18 @@ export default async function UniversityCoursePage({
     notFound();
   }
 
+  // Filter posts by university ID and UCAS subject ID instead of names
   const posts = await prisma.uCASPost.findMany({
     where: {
       AND: [
         {
           universities: {
-            has: course.university.name
+            has: course.university.id
           }
         },
         {
           ucasSubjects: {
-            has: course.ucasSubject.name
+            has: course.ucasSubject.id
           }
         }
       ]

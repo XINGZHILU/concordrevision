@@ -126,6 +126,11 @@ export function EditUCASPostForm({ post, tags, universities, ucasSubjects }: {
         }
     }
 
+    /**
+     * Handle checkbox change for selecting tags, universities, or subjects
+     * @param setter - State setter function
+     * @param value - Value to add or remove
+     */
     const handleCheckboxChange = (setter: React.Dispatch<React.SetStateAction<string[]>>, value: string) => {
         setter(prev => prev.includes(value) ? prev.filter(item => item !== value) : [...prev, value]);
     }
@@ -176,8 +181,8 @@ export function EditUCASPostForm({ post, tags, universities, ucasSubjects }: {
                             <label key={uni.id} className="flex items-center space-x-2 my-2 cursor-pointer">
                                 <Checkbox
                                     id={`uni-${uni.id}`}
-                                    checked={selectedUniversities.includes(uni.name)}
-                                    onChange={() => handleCheckboxChange(setSelectedUniversities, uni.name)}
+                                    checked={selectedUniversities.includes(uni.id)}
+                                    onChange={() => handleCheckboxChange(setSelectedUniversities, uni.id)}
                                 />
                                 <span>{uni.name}</span>
                             </label>
@@ -197,8 +202,8 @@ export function EditUCASPostForm({ post, tags, universities, ucasSubjects }: {
                             <label key={subject.id} className="flex items-center space-x-2 my-2 cursor-pointer">
                                 <Checkbox
                                     id={`ucasSubject-${subject.id}`}
-                                    checked={selectedUCASSubjects.includes(subject.name)}
-                                    onChange={() => handleCheckboxChange(setSelectedUCASSubjects, subject.name)}
+                                    checked={selectedUCASSubjects.includes(subject.id)}
+                                    onChange={() => handleCheckboxChange(setSelectedUCASSubjects, subject.id)}
                                 />
                                 <span>{subject.name}</span>
                             </label>

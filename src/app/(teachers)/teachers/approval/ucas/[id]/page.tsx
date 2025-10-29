@@ -36,6 +36,31 @@ export default async function UCASPostReviewPage({ params }: { params: { id: str
 
     const tags = await prisma.tag.findMany();
 
+    // Fetch university and UCAS subject names from their IDs
+    const universities = await prisma.university.findMany({
+        where: {
+            id: {
+                in: post.universities
+            }
+        },
+        select: {
+            id: true,
+            name: true
+        }
+    });
+
+    const ucasSubjects = await prisma.uCASSubject.findMany({
+        where: {
+            id: {
+                in: post.ucasSubjects
+            }
+        },
+        select: {
+            id: true,
+            name: true
+        }
+    });
+
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="flex justify-between items-center mb-6">
@@ -90,14 +115,22 @@ export default async function UCASPostReviewPage({ params }: { params: { id: str
                     <div className="mb-6">
                         <h3 className="text-lg font-medium mb-2">Universities:</h3>
                         <div className="flex flex-wrap gap-2">
-                            {post.universities.map(uni => <Badge key={uni} variant="outline">{uni}</Badge>)}
+                            {universities.length > 0 ? (
+                                universities.map(uni => <Badge key={uni.id} variant="outline">{uni.name}</Badge>)
+                            ) : (
+                                <p className="text-muted-foreground italic">No universities tagged</p>
+                            )}
                         </div>
                     </div>
 
                     <div className="mb-6">
                         <h3 className="text-lg font-medium mb-2">UCAS Subjects:</h3>
                         <div className="flex flex-wrap gap-2">
-                            {post.ucasSubjects.map(subject => <Badge key={subject} variant="outline">{subject}</Badge>)}
+                            {ucasSubjects.length > 0 ? (
+                                ucasSubjects.map(subject => <Badge key={subject.id} variant="outline">{subject.name}</Badge>)
+                            ) : (
+                                <p className="text-muted-foreground italic">No UCAS subjects tagged</p>
+                            )}
                         </div>
                     </div>
 

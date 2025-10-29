@@ -25,10 +25,11 @@ export default async function UniversityPage({ params }: { params: { uid: string
     notFound();
   }
 
+  // Filter posts by university ID instead of name
   const posts = await prisma.uCASPost.findMany({
     where: {
       universities: {
-        has: university.name
+        has: university.id
       }
     },
     include: {

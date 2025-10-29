@@ -109,7 +109,7 @@ const SearchableCourseContent = ({
   return (
     <div>
       <div className="mb-6">
-        <h1 className="mb-2">{course.name}</h1>
+        <h1 className="mb-2">{course.name} ({course.qualification})</h1>
         <h2 className="text-2xl text-muted-foreground">
           <Link href={`/ucas/schools/${course.university.id}`} className="hover:underline hover:text-primary transition-colors">
             {course.university.name}

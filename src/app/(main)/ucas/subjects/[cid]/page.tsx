@@ -24,10 +24,11 @@ export default async function UCASSubjectPage({ params }: { params: { cid: strin
     notFound();
   }
 
+  // Filter posts by UCAS subject ID instead of name
   const posts = await prisma.uCASPost.findMany({
     where: {
       ucasSubjects: {
-        has: ucasSubject.name
+        has: ucasSubject.id
       }
     },
     include: {

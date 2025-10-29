@@ -114,6 +114,17 @@ export function PostList({ posts, tags, universities, ucasSubjects }: {
   );
 }
 
+/**
+ * Reusable filter checkbox group component for filtering posts by tags, universities, or subjects
+ * @param title - Display title for the filter group
+ * @param options - Array of options with id and name
+ * @param search - Current search query
+ * @param onSearchChange - Handler for search input change
+ * @param selected - Array of selected option IDs
+ * @param onSelectedChange - Handler for selection change
+ * @param match - Match mode ('any' or 'all')
+ * @param onMatchChange - Handler for match mode change
+ */
 function FilterCheckboxGroup({ title, options, search, onSearchChange, selected, onSelectedChange, match, onMatchChange }: {
     title: string;
     options: { id: string | number; name: string }[];
@@ -154,8 +165,8 @@ function FilterCheckboxGroup({ title, options, search, onSearchChange, selected,
                      <label key={opt.id} className="flex items-center space-x-2 my-2 cursor-pointer">
                         <Checkbox
                             id={`${title}-${opt.id}`}
-                            checked={selected.includes(opt.name)}
-                            onChange={() => handleCheckboxChange(opt.name)}
+                            checked={selected.includes(String(opt.id))}
+                            onChange={() => handleCheckboxChange(String(opt.id))}
                         />
                         <Label htmlFor={`${title}-${opt.id}`}>{opt.name}</Label>
                     </label>

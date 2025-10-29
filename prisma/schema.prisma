@@ -164,8 +164,8 @@ model UCASPost {
     pinned       Boolean       @default(false)
     uploadedAt   DateTime      @default(now())
     tags         String[]
-    universities String[]
-    ucasSubjects String[]
+    universities String[]      // Array of University IDs
+    ucasSubjects String[]      // Array of UCASSubject IDs
 }
 
 model Tag {

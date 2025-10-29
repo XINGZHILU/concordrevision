@@ -25,6 +25,31 @@ export default async function PostPage({ params }: { params: { id: string } }) {
     notFound();
   }
 
+  // Fetch university and UCAS subject names from their IDs
+  const universities = await prisma.university.findMany({
+    where: {
+      id: {
+        in: post.universities
+      }
+    },
+    select: {
+      id: true,
+      name: true
+    }
+  });
+
+  const ucasSubjects = await prisma.uCASSubject.findMany({
+    where: {
+      id: {
+        in: post.ucasSubjects
+      }
+    },
+    select: {
+      id: true,
+      name: true
+    }
+  });
+
   const dbUser = user ? await prisma.user.findUnique({ where: { id: user.id } }) : null;
 
   // If post is not approved, only allow access to author, admin, or teacher
@@ -80,10 +105,12 @@ export default async function PostPage({ params }: { params: { id: string } }) {
           <div>
             <h2 className="text-2xl font-bold mb-4">Related Universities</h2>
             {
-              post.universities.length > 0 ? (
+              universities.length > 0 ? (
                 <div className="flex flex-wrap gap-2">
-                  {post.universities.map(uni => (
-                    <Badge key={uni}>{uni}</Badge>
+                  {universities.map(uni => (
+                    <Link key={uni.id} href={`/ucas/schools/${uni.id}`}>
+                      <Badge className="hover:bg-primary/90 cursor-pointer">{uni.name}</Badge>
+                    </Link>
                   ))}
                 </div>
               ) : (<p className="text-muted-foreground">No universities tagged</p>)
@@ -92,10 +119,12 @@ export default async function PostPage({ params }: { params: { id: string } }) {
           <div>
             <h2 className="text-2xl font-bold mb-4">Related UCAS Subjects</h2>
             {
-              post.ucasSubjects.length > 0 ? (
+              ucasSubjects.length > 0 ? (
                 <div className="flex flex-wrap gap-2">
-                  {post.ucasSubjects.map(subject => (
-                    <Badge key={subject}>{subject}</Badge>
+                  {ucasSubjects.map(subject => (
+                    <Link key={subject.id} href={`/ucas/subjects/${subject.id}`}>
+                      <Badge className="hover:bg-primary/90 cursor-pointer">{subject.name}</Badge>
+                    </Link>
                   ))}
                 </div>
               ) : (<p className="text-muted-foreground">No UCAS subjects tagged</p>)
