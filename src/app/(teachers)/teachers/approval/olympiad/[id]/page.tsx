@@ -25,7 +25,7 @@ const getResourceTypeLabel = (type: number) => {
 */
 
 export default async function OlympiadResourceReviewPage({ params }: { params: { id: string } }) {
-  const resourceId = await params.id;
+  const resourceId = (await params).id;
 
   if (!resourceId) {
     notFound();

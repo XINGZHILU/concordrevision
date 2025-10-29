@@ -170,44 +170,98 @@ export function EditUCASPostForm({ post, tags, universities, ucasSubjects }: {
                 </AccordionItem>
                 <AccordionItem value="universities">
                     <AccordionTrigger>Universities (Optional)</AccordionTrigger>
-                    <AccordionContent className="max-h-60 overflow-y-auto">
+                    <AccordionContent>
                         <Input
                             placeholder="Search universities..."
                             value={universitySearch}
                             onChange={(e) => setUniversitySearch(e.target.value)}
-                            className="mb-4"
+                            className="mb-2"
                         />
-                        {universities.filter(uni => uni.name.toLowerCase().includes(universitySearch.toLowerCase())).map(uni => (
-                            <label key={uni.id} className="flex items-center space-x-2 my-2 cursor-pointer">
-                                <Checkbox
-                                    id={`uni-${uni.id}`}
-                                    checked={selectedUniversities.includes(uni.id)}
-                                    onChange={() => handleCheckboxChange(setSelectedUniversities, uni.id)}
-                                />
-                                <span>{uni.name}</span>
-                            </label>
-                        ))}
+                        <div className="flex gap-2 mb-4">
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                    const filteredUnis = universities.filter(uni => 
+                                        uni.name.toLowerCase().includes(universitySearch.toLowerCase())
+                                    );
+                                    setSelectedUniversities(filteredUnis.map(uni => uni.id));
+                                }}
+                                className="flex-1"
+                            >
+                                Select All
+                            </Button>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setSelectedUniversities([])}
+                                className="flex-1"
+                            >
+                                Unselect All
+                            </Button>
+                        </div>
+                        <div className="max-h-60 overflow-y-auto">
+                            {universities.filter(uni => uni.name.toLowerCase().includes(universitySearch.toLowerCase())).map(uni => (
+                                <label key={uni.id} className="flex items-center space-x-2 my-2 cursor-pointer">
+                                    <Checkbox
+                                        id={`uni-${uni.id}`}
+                                        checked={selectedUniversities.includes(uni.id)}
+                                        onChange={() => handleCheckboxChange(setSelectedUniversities, uni.id)}
+                                    />
+                                    <span>{uni.name}</span>
+                                </label>
+                            ))}
+                        </div>
                     </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="ucasSubjects">
                     <AccordionTrigger>UCAS Subjects (Optional)</AccordionTrigger>
-                    <AccordionContent className="max-h-60 overflow-y-auto">
+                    <AccordionContent>
                         <Input
                             placeholder="Search UCAS subjects..."
                             value={subjectSearch}
                             onChange={(e) => setSubjectSearch(e.target.value)}
-                            className="mb-4"
+                            className="mb-2"
                         />
-                        {ucasSubjects.filter(subject => subject.name.toLowerCase().includes(subjectSearch.toLowerCase())).map(subject => (
-                            <label key={subject.id} className="flex items-center space-x-2 my-2 cursor-pointer">
-                                <Checkbox
-                                    id={`ucasSubject-${subject.id}`}
-                                    checked={selectedUCASSubjects.includes(subject.id)}
-                                    onChange={() => handleCheckboxChange(setSelectedUCASSubjects, subject.id)}
-                                />
-                                <span>{subject.name}</span>
-                            </label>
-                        ))}
+                        <div className="flex gap-2 mb-4">
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                    const filteredSubjects = ucasSubjects.filter(subject => 
+                                        subject.name.toLowerCase().includes(subjectSearch.toLowerCase())
+                                    );
+                                    setSelectedUCASSubjects(filteredSubjects.map(subject => subject.id));
+                                }}
+                                className="flex-1"
+                            >
+                                Select All
+                            </Button>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setSelectedUCASSubjects([])}
+                                className="flex-1"
+                            >
+                                Unselect All
+                            </Button>
+                        </div>
+                        <div className="max-h-60 overflow-y-auto">
+                            {ucasSubjects.filter(subject => subject.name.toLowerCase().includes(subjectSearch.toLowerCase())).map(subject => (
+                                <label key={subject.id} className="flex items-center space-x-2 my-2 cursor-pointer">
+                                    <Checkbox
+                                        id={`ucasSubject-${subject.id}`}
+                                        checked={selectedUCASSubjects.includes(subject.id)}
+                                        onChange={() => handleCheckboxChange(setSelectedUCASSubjects, subject.id)}
+                                    />
+                                    <span>{subject.name}</span>
+                                </label>
+                            ))}
+                        </div>
                     </AccordionContent>
                 </AccordionItem>
             </Accordion>

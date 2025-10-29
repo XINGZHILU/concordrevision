@@ -11,7 +11,7 @@ export default async function EditPostPage({ params }: { params: { id: string } 
     }
 
     const post = await prisma.uCASPost.findUnique({
-        where: { id: parseInt(await params.id, 10) },
+        where: { id: parseInt((await params).id, 10) },
         include: {
             files: true
         }

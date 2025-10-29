@@ -6,7 +6,7 @@ import EditSubjectForm from "./edit-subject-form";
 
 export default async function EditSubjectPage({ params }: { params: { id: string } }) {
 
-    const subjectId = parseInt(await params.id);
+    const subjectId = parseInt((await params).id);
 
     if (isNaN(subjectId)) {
         notFound();

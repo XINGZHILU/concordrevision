@@ -8,7 +8,7 @@ import UserActions from "./user-actions";
 
 export default async function UserDetailPage({ params }: { params: { id: string } }) {
 
-  const userId = await params.id;
+  const userId = (await params).id;
 
   if (!userId) {
     notFound();

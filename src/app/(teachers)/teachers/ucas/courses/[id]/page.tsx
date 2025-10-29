@@ -20,7 +20,7 @@ export default async function EditCoursePage({ params }: { params: { id: string 
     }
 
     const course = await prisma.course.findUnique({
-        where: { id: parseInt(await params.id, 10) },
+        where: { id: parseInt((await params).id, 10) },
         include: {
             university: true,
             ucasSubject: true

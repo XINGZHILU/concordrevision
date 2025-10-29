@@ -8,7 +8,7 @@ import UCASPostReviewActions from "./ucas-post-review-actions";
 
 export default async function UCASPostReviewPage({ params }: { params: { id: string } }) {
 
-    const postId = await params.id;
+    const postId = (await params).id;
 
     if (!postId) {
         notFound();

@@ -6,7 +6,7 @@ import EditOlympiadForm from "./edit-olympiad-form";
 
 export default async function EditOlympiadPage({ params }: { params: { id: string } }) {
 
-    const olympiadId = parseInt(await params.id);
+    const olympiadId = parseInt((await params).id);
 
     if (isNaN(olympiadId)) {
         notFound();

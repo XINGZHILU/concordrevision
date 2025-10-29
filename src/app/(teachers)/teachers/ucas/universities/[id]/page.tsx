@@ -8,7 +8,7 @@ export default async function UniversityTeacherPage({
   params: { id: string };
 }) {
   const university = await prisma.university.findUnique({
-    where: { id: await params.id },
+    where: { id: (await params).id },
     include: {
       stats: true,
       courses: {

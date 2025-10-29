@@ -1,19 +1,18 @@
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
-import { Badge } from "@/lib/components/ui/badge";
 import Link from 'next/link';
 import MDViewer from '@/lib/customui/Basic/showMD';
 import { currentUser } from '@clerk/nextjs/server';
 import { Button } from "@/lib/components/ui/button";
 import { PinButton } from '@/app/(main)/ucas/posts/[id]/PinButton';
-import FileList from "@/lib/customui/Basic/filelist";
+import { PostSidebar } from './PostSidebar';
 
 export default async function PostPage({ params }: { params: { id: string } }) {
   const user = await currentUser();
 
   const post = await prisma.uCASPost.findUnique({
     where: {
-      id: parseInt(await params.id, 10)
+      id: parseInt((await params).id, 10)
     },
     include: {
       author: true,
@@ -87,59 +86,12 @@ export default async function PostPage({ params }: { params: { id: string } }) {
           <MDViewer content={post.content} />
         </div>
       </div>
-      <aside className="md:col-span-1 md:border-l md:pl-8 py-8">
-        <div className="space-y-8">
-          <div>
-            <h2 className="text-2xl font-bold mb-4">Tags</h2>
-            {
-              post.tags.length > 0 ? (
-                <div className="flex flex-wrap gap-2">
-                  {post.tags.map(tag => (
-                    <Badge key={tag}>{tag}</Badge>
-                  ))}
-                </div>
-              ) : (<p className="text-muted-foreground">No tags added</p>)
-            }
-
-          </div>
-          <div>
-            <h2 className="text-2xl font-bold mb-4">Related Universities</h2>
-            {
-              universities.length > 0 ? (
-                <div className="flex flex-wrap gap-2">
-                  {universities.map(uni => (
-                    <Link key={uni.id} href={`/ucas/schools/${uni.id}`}>
-                      <Badge className="hover:bg-primary/90 cursor-pointer">{uni.name}</Badge>
-                    </Link>
-                  ))}
-                </div>
-              ) : (<p className="text-muted-foreground">No universities tagged</p>)
-            }
-          </div>
-          <div>
-            <h2 className="text-2xl font-bold mb-4">Related UCAS Subjects</h2>
-            {
-              ucasSubjects.length > 0 ? (
-                <div className="flex flex-wrap gap-2">
-                  {ucasSubjects.map(subject => (
-                    <Link key={subject.id} href={`/ucas/subjects/${subject.id}`}>
-                      <Badge className="hover:bg-primary/90 cursor-pointer">{subject.name}</Badge>
-                    </Link>
-                  ))}
-                </div>
-              ) : (<p className="text-muted-foreground">No UCAS subjects tagged</p>)
-            }
-          </div>
-          <div>
-            <h2 className="text-2xl font-bold mb-4">Attachments</h2>
-            {
-              post.files.length > 0 ? (
-                <FileList files={post.files} />
-              ) : (<p className="text-muted-foreground">No files attached</p>)
-            }
-          </div>
-        </div>
-      </aside>
+      <PostSidebar 
+        tags={post.tags}
+        universities={universities}
+        ucasSubjects={ucasSubjects}
+        files={post.files}
+      />
     </div>
   );
 } 

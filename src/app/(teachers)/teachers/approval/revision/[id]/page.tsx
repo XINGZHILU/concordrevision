@@ -27,7 +27,7 @@ const getNoteTypeLabel = (type: number) => {
 
 export default async function NoteReviewPage({ params }: { params: { id: string } }) {
 
-    const noteId = await params.id;
+    const noteId = (await params).id;
 
     if (!noteId) {
         notFound();
