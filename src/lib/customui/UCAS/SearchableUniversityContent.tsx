@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/lib/components/ui/tabs';
-import { LuInfo, LuGraduationCap, LuFileText, LuSearch, LuX, LuBarChart3 } from "react-icons/lu";
+import { LuInfo, LuGraduationCap, LuFileText, LuSearch, LuX, LuTrendingUp } from "react-icons/lu";
 import { Card, CardContent, CardHeader, CardTitle } from "@/lib/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/lib/components/ui/table";
 import Link from 'next/link';
@@ -102,7 +102,7 @@ const SearchableUniversityContent = ({
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <LuBarChart3 className="h-5 w-5" />
+            <LuTrendingUp className="h-5 w-5" />
             Admission Statistics
           </CardTitle>
         </CardHeader>
@@ -220,7 +220,7 @@ const SearchableUniversityContent = ({
             About
           </TabsTrigger>
           <TabsTrigger value="stats" className="flex items-center gap-2">
-            <LuBarChart3 className="h-4 w-4" />
+            <LuTrendingUp className="h-4 w-4" />
             Admission Stats
             {stats.length > 0 && (
               <span className="ml-1 text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">
