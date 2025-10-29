@@ -103,7 +103,7 @@ const SearchableUniversityContent = ({
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <LuTrendingUp className="h-5 w-5" />
-            Admission Statistics
+            Admission Statistics for Concord Students
           </CardTitle>
         </CardHeader>
         <CardContent>
