@@ -2,6 +2,10 @@ import UCASUploadForm from "@/lib/customui/Upload/UCASUploadForm";
 import { prisma } from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { notFound } from "next/navigation";
+
+/**
+ * Page for uploading UCAS posts
+ */
 export default async function Page() {
   const user = await currentUser();
 
@@ -16,9 +20,9 @@ export default async function Page() {
   });
   const universities = await prisma.university.findMany({
     include: {
-      courseLinks: {
+      courses: {
         include: {
-          course: true
+          ucasSubject: true
         }
       }
     },
@@ -26,7 +30,7 @@ export default async function Page() {
       name: 'asc'
     }
   });
-  const courses = await prisma.course.findMany({
+  const ucasSubjects = await prisma.uCASSubject.findMany({
     orderBy: {
       name: 'asc'
     }
@@ -36,7 +40,8 @@ export default async function Page() {
     id: uni.id,
     name: uni.name,
     uk: uni.uk,
-    courses: uni.courseLinks.map(cl => cl.course)
+    description: uni.description,
+    ucasSubjects: uni.courses.map(c => c.ucasSubject)
   }));
 
   return (
@@ -45,7 +50,7 @@ export default async function Page() {
         author={user.id}
         tags={tags}
         universities={formattedUniversities}
-        courses={courses}
+        ucasSubjects={ucasSubjects}
       />
     </div>
   );

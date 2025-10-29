@@ -7,7 +7,7 @@ import { useToast } from "@/lib/components/ui/use-toast";
 import { Input } from "@/lib/components/ui/input";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/lib/components/ui/accordion";
 import { Checkbox } from "@/lib/components/ui/checkbox";
-import { Course, Tag, University, UCASPost, StorageFile } from '@prisma/client';
+import { UCASSubject, Tag, University, UCASPost, StorageFile } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
 import { XIcon } from 'lucide-react';
@@ -17,11 +17,11 @@ import { StorageURLNotes } from '@/lib/utils';
 
 type UCASPostWithFiles = UCASPost & { files: StorageFile[] };
 
-export function EditUCASPostForm({ post, tags, universities, courses }: { 
+export function EditUCASPostForm({ post, tags, universities, ucasSubjects }: { 
     post: UCASPostWithFiles,
     tags: Tag[],
     universities: University[], 
-    courses: Course[] 
+    ucasSubjects: UCASSubject[] 
 }) {
     const router = useRouter();
     const [content, setContent] = useState<string>(post.content);
@@ -34,9 +34,9 @@ export function EditUCASPostForm({ post, tags, universities, courses }: {
 
     const [selectedTags, setSelectedTags] = useState<string[]>(post.tags);
     const [selectedUniversities, setSelectedUniversities] = useState<string[]>(post.universities);
-    const [selectedCourses, setSelectedCourses] = useState<string[]>(post.courses);
+    const [selectedUCASSubjects, setSelectedUCASSubjects] = useState<string[]>(post.ucasSubjects);
     const [universitySearch, setUniversitySearch] = useState('');
-    const [courseSearch, setCourseSearch] = useState('');
+    const [subjectSearch, setSubjectSearch] = useState('');
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
@@ -90,7 +90,7 @@ export function EditUCASPostForm({ post, tags, universities, courses }: {
                     content: content,
                     tags: selectedTags,
                     universities: selectedUniversities,
-                    courses: selectedCourses,
+                    ucasSubjects: selectedUCASSubjects,
                     newFiles: uploadedFiles,
                     deletedFiles: post.files.filter(f => !existingFiles.some(ef => ef.id === f.id)).map(f => f.id)
                 }),
@@ -147,7 +147,7 @@ export function EditUCASPostForm({ post, tags, universities, courses }: {
                 />
             </div>
 
-            <Accordion type="multiple" className="w-full" defaultValue={['tags', 'universities', 'courses']}>
+            <Accordion type="multiple" className="w-full" defaultValue={['tags', 'universities', 'ucasSubjects']}>
                 <AccordionItem value="tags">
                     <AccordionTrigger>Tags (Optional)</AccordionTrigger>
                     <AccordionContent className="max-h-60 overflow-y-auto">
@@ -184,23 +184,23 @@ export function EditUCASPostForm({ post, tags, universities, courses }: {
                         ))}
                     </AccordionContent>
                 </AccordionItem>
-                <AccordionItem value="courses">
-                    <AccordionTrigger>Courses (Optional)</AccordionTrigger>
+                <AccordionItem value="ucasSubjects">
+                    <AccordionTrigger>UCAS Subjects (Optional)</AccordionTrigger>
                     <AccordionContent className="max-h-60 overflow-y-auto">
                         <Input
-                            placeholder="Search courses..."
-                            value={courseSearch}
-                            onChange={(e) => setCourseSearch(e.target.value)}
+                            placeholder="Search UCAS subjects..."
+                            value={subjectSearch}
+                            onChange={(e) => setSubjectSearch(e.target.value)}
                             className="mb-4"
                         />
-                        {courses.filter(course => course.name.toLowerCase().includes(courseSearch.toLowerCase())).map(course => (
-                            <label key={course.id} className="flex items-center space-x-2 my-2 cursor-pointer">
+                        {ucasSubjects.filter(subject => subject.name.toLowerCase().includes(subjectSearch.toLowerCase())).map(subject => (
+                            <label key={subject.id} className="flex items-center space-x-2 my-2 cursor-pointer">
                                 <Checkbox
-                                    id={`course-${course.id}`}
-                                    checked={selectedCourses.includes(course.name)}
-                                    onChange={() => handleCheckboxChange(setSelectedCourses, course.name)}
+                                    id={`ucasSubject-${subject.id}`}
+                                    checked={selectedUCASSubjects.includes(subject.name)}
+                                    onChange={() => handleCheckboxChange(setSelectedUCASSubjects, subject.name)}
                                 />
-                                <span>{course.name}</span>
+                                <span>{subject.name}</span>
                             </label>
                         ))}
                     </AccordionContent>

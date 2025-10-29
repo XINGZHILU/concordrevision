@@ -2,19 +2,16 @@
 
 import { useState, useMemo } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/lib/components/ui/tabs';
-import { LuInfo, LuGraduationCap, LuFileText, LuSearch, LuX, LuTrendingUp } from "react-icons/lu";
+import { LuInfo, LuGraduationCap, LuFileText, LuSearch, LuX } from "react-icons/lu";
 import { Card, CardContent, CardHeader, CardTitle } from "@/lib/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/lib/components/ui/table";
 import Link from 'next/link';
-import { AdmissionStats } from '@prisma/client';
 import MDViewer from '@/lib/customui/Basic/showMD';
 
 interface Course {
   id: number;
   name: string;
   universityId: string;
-  ucasSubjectId: string;
-  ucasSubject: {
+  university: {
     id: string;
     name: string;
   };
@@ -30,45 +27,43 @@ interface UCASPost {
   };
 }
 
-interface University {
+interface UCASSubject {
   id: string;
   name: string;
   description: string;
 }
 
-interface SearchableUniversityContentProps {
-  university: University;
+interface SearchableUCASSubjectContentProps {
+  ucasSubject: UCASSubject;
   courses: Course[];
-  stats: AdmissionStats[];
   posts: UCASPost[];
   isTeacher?: boolean;
 }
 
 /**
- * Client component that displays university details with tabs for About, Admission Stats, Courses and Posts
- * Courses are specific degree offerings at this university (e.g., "BSc Computer Science")
+ * Client component that displays UCAS subject details with tabs for About, Courses and Posts
+ * Courses are specific offerings of this subject at different universities
  * Provides search functionality for courses and posts
  * If isTeacher is true, course links go to editing page
  */
-const SearchableUniversityContent = ({
-  university,
+const SearchableUCASSubjectContent = ({
+  ucasSubject,
   courses,
-  stats,
   posts,
-}: SearchableUniversityContentProps) => {
+}: SearchableUCASSubjectContentProps) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('about');
 
   /**
-   * Filter courses based on search query
+   * Filter universities based on search query
    */
-  const filteredCourses = useMemo(() => {
+  const filteredUniversities = useMemo(() => {
     if (!searchQuery.trim()) return courses;
 
     const lowerQuery = searchQuery.toLowerCase();
     return courses.filter(course =>
-      course.name.toLowerCase().includes(lowerQuery) ||
-      course.ucasSubject.name.toLowerCase().includes(lowerQuery)
+      course.university.name.toLowerCase().includes(lowerQuery) ||
+      course.name.toLowerCase().includes(lowerQuery)
     );
   }, [courses, searchQuery]);
 
@@ -92,58 +87,10 @@ const SearchableUniversityContent = ({
   };
 
   /**
-   * Render admission statistics table
+   * Render university cards with empty state handling
    */
-  const renderAdmissionStats = () => {
-    if (stats.length === 0) {
-      return (
-        <div className="text-center py-8">
-          <p className="text-muted-foreground">No admission statistics available</p>
-        </div>
-      );
-    }
-
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <LuTrendingUp className="h-5 w-5" />
-            Admission Statistics for Concord Students
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Year</TableHead>
-                <TableHead className="text-right">Applicants</TableHead>
-                <TableHead className="text-right">Offers</TableHead>
-                <TableHead className="text-right">Offer Rate</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {stats.sort((a, b) => b.year - a.year).map((stat) => (
-                <TableRow key={stat.id}>
-                  <TableCell className="font-medium">{stat.year}</TableCell>
-                  <TableCell className="text-right">{stat.applied}</TableCell>
-                  <TableCell className="text-right">{stat.accepted}</TableCell>
-                  <TableCell className="text-right">
-                    {stat.applied > 0 ? `${((stat.accepted / stat.applied) * 100).toFixed(1)}%` : 'N/A'}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
-    );
-  };
-
-  /**
-   * Render course cards with empty state handling
-   */
-  const renderCourseCards = () => {
-    if (filteredCourses.length === 0) {
+  const renderUniversityCards = () => {
+    if (filteredUniversities.length === 0) {
       return searchQuery ? (
         <div className="text-center py-8">
           <p className="text-muted-foreground">No courses found for &quot;{searchQuery}&quot;</p>
@@ -157,9 +104,9 @@ const SearchableUniversityContent = ({
 
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredCourses.map(course => (
+        {filteredUniversities.map(course => (
           <Link
-            href={`/ucas/schools/${university.id}/${course.id}`}
+            href={`/ucas/schools/${course.universityId}/${course.id}`}
             key={course.id}
           >
             <Card className="hover:shadow-lg hover:border-primary transition-all duration-300 h-full">
@@ -168,7 +115,7 @@ const SearchableUniversityContent = ({
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground text-sm">
-                  Subject: {course.ucasSubject.name}
+                  {course.university.name}
                 </p>
               </CardContent>
             </Card>
@@ -215,25 +162,16 @@ const SearchableUniversityContent = ({
   return (
     <div>
       <div className="mb-6">
-        <h1 className="mb-2">{university.name}</h1>
+        <h1 className="mb-2">{ucasSubject.name}</h1>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4 mb-6">
+        <TabsList className="grid w-full grid-cols-3 mb-6">
           <TabsTrigger value="about" className="flex items-center gap-2">
             <LuInfo className="h-4 w-4" />
             About
           </TabsTrigger>
-          <TabsTrigger value="stats" className="flex items-center gap-2">
-            <LuTrendingUp className="h-4 w-4" />
-            Admission Stats
-            {stats.length > 0 && (
-              <span className="ml-1 text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">
-                {stats.length}
-              </span>
-            )}
-          </TabsTrigger>
-        <TabsTrigger value="courses" className="flex items-center gap-2">
+        <TabsTrigger value="universities" className="flex items-center gap-2">
           <LuGraduationCap className="h-4 w-4" />
           Courses
           {courses.length > 0 && (
@@ -256,17 +194,12 @@ const SearchableUniversityContent = ({
         {/* About Tab */}
         <TabsContent value="about" className="mt-0">
           <div className="prose dark:prose-invert max-w-none">
-            <MDViewer content={university.description || 'No description available.'} />
+            <MDViewer content={ucasSubject.description || 'No description available.'} />
           </div>
         </TabsContent>
 
-        {/* Admission Stats Tab */}
-        <TabsContent value="stats" className="mt-0">
-          {renderAdmissionStats()}
-        </TabsContent>
-
       {/* Courses Tab */}
-      <TabsContent value="courses" className="mt-0">
+      <TabsContent value="universities" className="mt-0">
         {/* Search Bar */}
         <div className="mb-6">
           <div className="relative max-w-md">
@@ -277,7 +210,7 @@ const SearchableUniversityContent = ({
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search courses..."
+              placeholder="Search courses by university or program name..."
               className="block w-full pl-9 pr-8 py-2 border border-input bg-background rounded-lg text-sm focus:ring-2 focus:ring-ring"
             />
               {searchQuery && (
@@ -296,9 +229,12 @@ const SearchableUniversityContent = ({
             )}
           </div>
 
-          {/* Courses Grid */}
-          {renderCourseCards()}
-        </TabsContent>
+        {/* Courses Grid */}
+        <p className="text-sm text-muted-foreground mb-4">
+          Showing {filteredUniversities.length} course{filteredUniversities.length !== 1 ? 's' : ''} across different universities offering {ucasSubject.name}
+        </p>
+        {renderUniversityCards()}
+      </TabsContent>
 
         {/* Posts Tab */}
         <TabsContent value="posts" className="mt-0">
@@ -339,5 +275,5 @@ const SearchableUniversityContent = ({
   );
 };
 
-export default SearchableUniversityContent;
+export default SearchableUCASSubjectContent;
 

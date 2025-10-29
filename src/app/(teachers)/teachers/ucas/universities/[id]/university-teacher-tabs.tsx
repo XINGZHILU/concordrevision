@@ -5,25 +5,25 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/lib/components/ui/ta
 import { LuInfo, LuTrendingUp, LuLink } from "react-icons/lu";
 import { UniversityDetailsForm } from './university-details-form';
 import { AdmissionStatsForm } from './admission-stats-form';
-import { UniversityCourseLinksForm } from './university-course-links-form';
-import { University, AdmissionStats, CourseLink, Course } from '@prisma/client';
+import { UniversityCoursesForm } from './university-course-links-form';
+import { University, AdmissionStats, Course, UCASSubject } from '@prisma/client';
 
 type UniversityWithRelations = University & {
   stats: AdmissionStats[];
-  courseLinks: (CourseLink & {
-    course: Course;
+  courses: (Course & {
+    ucasSubject: UCASSubject;
   })[];
 };
 
 interface UniversityTeacherTabsProps {
   university: UniversityWithRelations;
-  courses: Course[];
+  ucasSubjects: UCASSubject[];
 }
 
 /**
- * Client component for university teacher management with tabs for Details, Admission Stats, and Course Links
+ * Client component for university teacher management with tabs for Details, Admission Stats, and Courses
  */
-export function UniversityTeacherTabs({ university, courses }: UniversityTeacherTabsProps) {
+export function UniversityTeacherTabs({ university, ucasSubjects }: UniversityTeacherTabsProps) {
   const [activeTab, setActiveTab] = useState('details');
 
   return (
@@ -42,12 +42,12 @@ export function UniversityTeacherTabs({ university, courses }: UniversityTeacher
             </span>
           )}
         </TabsTrigger>
-        <TabsTrigger value="courseLinks" className="flex items-center gap-2">
+        <TabsTrigger value="courses" className="flex items-center gap-2">
           <LuLink className="h-4 w-4" />
-          Course Links
-          {university.courseLinks.length > 0 && (
+          Courses
+          {university.courses.length > 0 && (
             <span className="ml-1 text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">
-              {university.courseLinks.length}
+              {university.courses.length}
             </span>
           )}
         </TabsTrigger>
@@ -63,12 +63,12 @@ export function UniversityTeacherTabs({ university, courses }: UniversityTeacher
         <AdmissionStatsForm universityId={university.id} stats={university.stats} />
       </TabsContent>
 
-      {/* Course Links Tab */}
-      <TabsContent value="courseLinks" className="mt-0">
-        <UniversityCourseLinksForm 
+      {/* Courses Tab */}
+      <TabsContent value="courses" className="mt-0">
+        <UniversityCoursesForm 
           universityId={university.id}
-          courseLinks={university.courseLinks}
-          courses={courses}
+          courses={university.courses}
+          ucasSubjects={ucasSubjects}
         />
       </TabsContent>
     </Tabs>

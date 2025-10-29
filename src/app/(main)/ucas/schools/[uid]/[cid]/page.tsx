@@ -1,24 +1,27 @@
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
-import SearchableCourseLinkContent from '@/lib/customui/UCAS/SearchableCourseLinkContent';
+import SearchableCourseContent from '@/lib/customui/UCAS/SearchableCourseContent';
 
+/**
+ * Page displaying a specific course at a specific university
+ */
 export default async function UniversityCoursePage({
   params
 }: {
   params: { uid: string; cid: string };
 }) {
   const page_params = await params;
-  const courseLink = await prisma.courseLink.findUnique({
+  const course = await prisma.course.findUnique({
     where: {
       id: parseInt(page_params.cid)
     },
     include: {
       university: true,
-      course: true
+      ucasSubject: true
     }
   });
 
-  if (!courseLink || courseLink.universityId !== page_params.uid) {
+  if (!course || course.universityId !== page_params.uid) {
     notFound();
   }
 
@@ -27,12 +30,12 @@ export default async function UniversityCoursePage({
       AND: [
         {
           universities: {
-            has: courseLink.university.name
+            has: course.university.name
           }
         },
         {
-          courses: {
-            has: courseLink.course.name
+          ucasSubjects: {
+            has: course.ucasSubject.name
           }
         }
       ]
@@ -44,8 +47,8 @@ export default async function UniversityCoursePage({
 
   return (
     <div className="w-11/12 mx-auto py-8">
-      <SearchableCourseLinkContent 
-        courseLink={courseLink}
+      <SearchableCourseContent 
+        course={course}
         posts={posts}
       />
     </div>

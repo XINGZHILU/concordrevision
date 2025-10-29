@@ -154,7 +154,7 @@ model PastPaperRecord {
 
 model UCASPost {
     id           Int           @id @default(autoincrement())
-    type         Int           @default(0) // 0 = General, 1 = University Specific, 2 = Course Specific
+    type         Int           @default(0) // 0 = General, 1 = University Specific, 2 = UCAS Subject Specific
     title        String
     content      String        @default("")
     author       User          @relation(fields: [authorId], references: [id])
@@ -165,7 +165,7 @@ model UCASPost {
     uploadedAt   DateTime      @default(now())
     tags         String[]
     universities String[]
-    courses      String[]
+    ucasSubjects String[]
 }
 
 model Tag {
@@ -177,12 +177,12 @@ model University {
     id          String           @id
     name        String
     uk          Boolean
-    courseLinks CourseLink[]
+    courses     Course[]
     description String           @default("")
     stats       AdmissionStats[]
 }
 
-enum CourseType {
+enum UCASSubjectType {
     STEM
     Law_Humanities
     Languages
@@ -190,23 +190,23 @@ enum CourseType {
     Art
 }
 
-model Course {
-    id          String       @id
+model UCASSubject {
+    id          String            @id
     name        String
-    courseLinks CourseLink[]
-    type        CourseType
-    description String       @default("")
+    courses     Course[]
+    type        UCASSubjectType
+    description String            @default("")
 }
 
-model CourseLink {
-    id                 Int        @id @default(autoincrement())
-    university         University @relation(fields: [universityId], references: [id])
+model Course {
+    id                 Int          @id @default(autoincrement())
+    university         University   @relation(fields: [universityId], references: [id])
     universityId       String
-    course             Course     @relation(fields: [courseId], references: [id])
-    courseId           String
+    ucasSubject        UCASSubject  @relation(fields: [ucasSubjectId], references: [id])
+    ucasSubjectId      String
     name               String
-    entry_requirements String     @default("")
-    description        String     @default("")
+    entry_requirements String       @default("")
+    description        String       @default("")
     ucascode           String
     duration           Int
     qualification      String

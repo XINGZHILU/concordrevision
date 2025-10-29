@@ -2,6 +2,9 @@ import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import SearchableUniversityContent from '@/lib/customui/UCAS/SearchableUniversityContent';
 
+/**
+ * Page displaying a specific university with its courses and admission stats
+ */
 export default async function UniversityPage({ params }: { params: { uid: string } }) {
   const page_params = await params;
   const university = await prisma.university.findUnique({
@@ -9,9 +12,9 @@ export default async function UniversityPage({ params }: { params: { uid: string
       id: page_params.uid
     },
     include: {
-      courseLinks: {
+      courses: {
         include: {
-          course: true
+          ucasSubject: true
         }
       },
       stats: true,
@@ -37,7 +40,7 @@ export default async function UniversityPage({ params }: { params: { uid: string
     <div className="w-11/12 mx-auto py-8">
       <SearchableUniversityContent 
         university={university}
-        courseLinks={university.courseLinks}
+        courses={university.courses}
         stats={university.stats}
         posts={posts}
       />

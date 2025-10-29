@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(403).json({ message: 'Forbidden' });
         }
 
-        const { title, content, tags, universities, courses, newFiles, deletedFiles } = req.body;
+        const { title, content, tags, universities, ucasSubjects, newFiles, deletedFiles } = req.body;
 
         try {
             await prisma.$transaction(async (tx) => {
@@ -51,7 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         content,
                         tags,
                         universities,
-                        courses,
+                        ucasSubjects,
                     },
                 });
 

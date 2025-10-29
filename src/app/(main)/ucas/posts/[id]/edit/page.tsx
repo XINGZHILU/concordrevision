@@ -27,9 +27,21 @@ export default async function EditPostPage({ params }: { params: { id: string } 
         notFound();
     }
     
-    const tags = await prisma.tag.findMany();
-    const universities = await prisma.university.findMany();
-    const courses = await prisma.course.findMany();
+    const tags = await prisma.tag.findMany({
+      orderBy: {
+        name: 'asc'
+      }
+    });
+    const universities = await prisma.university.findMany({
+      orderBy: {
+        name: 'asc'
+      }
+    });
+    const ucasSubjects = await prisma.uCASSubject.findMany({
+      orderBy: {
+        name: 'asc'
+      }
+    });
 
     return (
         <div className="w-11/12 mx-auto">
@@ -38,7 +50,7 @@ export default async function EditPostPage({ params }: { params: { id: string } 
                 post={post}
                 tags={tags}
                 universities={universities}
-                courses={courses}
+                ucasSubjects={ucasSubjects}
             />
         </div>
     );

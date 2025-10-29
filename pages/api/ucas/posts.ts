@@ -18,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (req.method === "POST") {
-    const { title, content, files, tags, universities, courses } = req.body;
+    const { title, content, files, tags, universities, ucasSubjects } = req.body;
 
     const post = await prisma.uCASPost.create({
       data: {
@@ -28,7 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         approved: dbUser.teacher || dbUser.admin || dbUser.check_waiver,
         tags,
         universities,
-        courses,
+        ucasSubjects,
         files: files && files.length > 0 ? {
           create: files.map((file: { name: string; url: string; }) => ({
             filename: file.name,

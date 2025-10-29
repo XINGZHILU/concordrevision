@@ -11,9 +11,9 @@ export default async function UniversityTeacherPage({
     where: { id: await params.id },
     include: {
       stats: true,
-      courseLinks: {
+      courses: {
         include: {
-          course: true
+          ucasSubject: true
         },
         orderBy: {
           name: 'asc'
@@ -26,7 +26,7 @@ export default async function UniversityTeacherPage({
     notFound();
   }
 
-  const courses = await prisma.course.findMany({
+  const ucasSubjects = await prisma.uCASSubject.findMany({
     orderBy: {
       name: 'asc'
     }
@@ -37,7 +37,7 @@ export default async function UniversityTeacherPage({
       <h1 className="text-3xl font-bold mb-6">Manage {university.name}</h1>
       <UniversityTeacherTabs 
         university={university}
-        courses={courses}
+        ucasSubjects={ucasSubjects}
       />
     </div>
   );

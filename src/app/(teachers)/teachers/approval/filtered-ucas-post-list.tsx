@@ -15,7 +15,7 @@ type UCASPostWithAuthor = {
     };
     tags: string[];
     universities: string[];
-    courses: string[];
+    ucasSubjects: string[];
     uploadedAt: Date;
 };
 

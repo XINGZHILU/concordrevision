@@ -52,15 +52,15 @@ export function UniversityCard({ university }: {
   );
 }
 
-export function CourseCard({ course }: {
-  course: {
+export function UCASSubjectCard({ ucasSubject }: {
+  ucasSubject: {
     id: string,
     name: string,
   }
 }) {
   return (
     <div className="p-3">
-      <Link href={`/ucas/courses/${course.id}`} className="block h-full">
+      <Link href={`/ucas/subjects/${ucasSubject.id}`} className="block h-full">
         <div
           className="group relative h-full overflow-hidden rounded-xl border border-border bg-card transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
         >
@@ -77,7 +77,7 @@ export function CourseCard({ course }: {
                 <LuLandmark className="h-5 w-5 text-muted-foreground" />
               </div>
               <h3 className="text-xl font-bold text-card-foreground group-hover:text-primary">
-                {course.name}
+                {ucasSubject.name}
               </h3>
             </div>
             <br />

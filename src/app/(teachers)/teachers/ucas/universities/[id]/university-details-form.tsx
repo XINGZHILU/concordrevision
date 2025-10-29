@@ -2,43 +2,33 @@
 
 import { University } from '@prisma/client';
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
 import { Button } from "@/lib/components/ui/button";
 import { Input } from "@/lib/components/ui/input";
-import { Textarea } from "@/lib/components/ui/textarea";
 import { Checkbox } from "@/lib/components/ui/checkbox";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/lib/components/ui/form";
 import { useToast } from "@/lib/components/ui/use-toast";
-
-const formSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
-  description: z.string().min(1, 'Description is required'),
-  uk: z.boolean(),
-});
+import MDEditor from "@uiw/react-md-editor";
 
 /**
  * Form component for editing university details
- * Allows teachers to update university name, description, and UK status
+ * Allows teachers to update university name, description (markdown), and UK status
  */
 export function UniversityDetailsForm({ university }: { university: University }) {
   const router = useRouter();
   const { toast } = useToast();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: university.name,
-      description: university.description,
-      uk: university.uk,
-    },
-  });
+  const [name, setName] = useState(university.name);
+  const [description, setDescription] = useState(university.description);
+  const [uk, setUk] = useState(university.uk);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setIsSubmitting(true);
+
     const response = await fetch(`/api/teachers/universities/${university.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(values),
+      body: JSON.stringify({ name, description, uk }),
     });
 
     if (response.ok) {
@@ -47,59 +37,46 @@ export function UniversityDetailsForm({ university }: { university: University }
     } else {
       toast({ title: 'Failed to update university', variant: 'destructive' });
     }
+    
+    setIsSubmitting(false);
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <label className="block text-sm font-medium mb-2">Name</label>
+        <Input 
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
         />
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+      </div>
+      
+      <div>
+        <label className="block text-sm font-medium mb-2">Description (Markdown)</label>
+        <MDEditor
+          value={description}
+          onChange={(value) => setDescription(value || '')}
+          height={400}
+          data-color-mode={typeof window !== 'undefined' && document.documentElement.classList.contains('dark') ? 'dark' : 'light'}
         />
-        <FormField
-          control={form.control}
-          name="uk"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-               <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onChange={(e) => field.onChange(e.target.checked)}
-                />
-              </FormControl>
-              <div className="space-y-1 leading-none">
-                <FormLabel>UK based</FormLabel>
-              </div>
-            </FormItem>
-          )}
+      </div>
+      
+      <div className="flex items-center space-x-3 rounded-md border p-4">
+        <Checkbox
+          id="uk-checkbox"
+          checked={uk}
+          onChange={() => setUk(!uk)}
         />
-        <Button type="submit" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting ? 'Saving...' : 'Save Changes'}
-        </Button>
-      </form>
-    </Form>
+        <label htmlFor="uk-checkbox" className="text-sm font-medium leading-none cursor-pointer">
+          UK based
+        </label>
+      </div>
+      
+      <Button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? 'Saving...' : 'Save Changes'}
+      </Button>
+    </form>
   );
 }
 

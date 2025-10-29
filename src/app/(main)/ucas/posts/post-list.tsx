@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { UCASPost, Tag, University, Course } from '@prisma/client';
+import { UCASPost, Tag, University, UCASSubject } from '@prisma/client';
 import { Input } from '@/lib/components/ui/input';
 import { UCASPostList } from '@/lib/customui/UCAS/UCASPostList';
 import { Pagination } from '@/lib/customui/UCAS/pagination';
@@ -11,11 +11,11 @@ import { RadioGroup, RadioGroupItem } from '@/lib/components/ui/radio-group';
 
 type PostWithAuthor = UCASPost & { author: { firstname: string | null, lastname: string | null } };
 
-export function PostList({ posts, tags, universities, courses }: { 
+export function PostList({ posts, tags, universities, ucasSubjects }: { 
   posts: PostWithAuthor[], 
   tags: Tag[], 
   universities: University[], 
-  courses: Course[] 
+  ucasSubjects: UCASSubject[] 
 }) {
   const [displayedPosts, setDisplayedPosts] = useState<PostWithAuthor[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -30,9 +30,9 @@ export function PostList({ posts, tags, universities, courses }: {
   const [uniSearch, setUniSearch] = useState('');
   const [uniMatch, setUniMatch] = useState<'any' | 'all'>('any');
 
-  const [selectedCourses, setSelectedCourses] = useState<string[]>([]);
-  const [courseSearch, setCourseSearch] = useState('');
-  const [courseMatch, setCourseMatch] = useState<'any' | 'all'>('any');
+  const [selectedUCASSubjects, setSelectedUCASSubjects] = useState<string[]>([]);
+  const [subjectSearch, setSubjectSearch] = useState('');
+  const [subjectMatch, setSubjectMatch] = useState<'any' | 'all'>('any');
 
   const filteredPosts = useMemo(() => {
     return posts.filter(post => {
@@ -46,13 +46,13 @@ export function PostList({ posts, tags, universities, courses }: {
         ? selectedUniversities.some(u => post.universities.includes(u))
         : selectedUniversities.every(u => post.universities.includes(u)));
         
-      const courseFilter = selectedCourses.length === 0 || (courseMatch === 'any'
-        ? selectedCourses.some(c => post.courses.includes(c))
-        : selectedCourses.every(c => post.courses.includes(c)));
+      const subjectFilter = selectedUCASSubjects.length === 0 || (subjectMatch === 'any'
+        ? selectedUCASSubjects.some(s => post.ucasSubjects.includes(s))
+        : selectedUCASSubjects.every(s => post.ucasSubjects.includes(s)));
 
-      return searchMatch && tagFilter && uniFilter && courseFilter;
+      return searchMatch && tagFilter && uniFilter && subjectFilter;
     });
-  }, [posts, search, selectedTags, tagMatch, selectedUniversities, uniMatch, selectedCourses, courseMatch]);
+  }, [posts, search, selectedTags, tagMatch, selectedUniversities, uniMatch, selectedUCASSubjects, subjectMatch]);
 
   useEffect(() => {
     setTotalPages(Math.ceil(filteredPosts.length / 10));
@@ -84,14 +84,14 @@ export function PostList({ posts, tags, universities, courses }: {
                 onMatchChange={setUniMatch}
             />
             <FilterCheckboxGroup
-                title="Courses"
-                options={courses.map(c => ({ id: c.id, name: c.name }))}
-                search={courseSearch}
-                onSearchChange={setCourseSearch}
-                selected={selectedCourses}
-                onSelectedChange={setSelectedCourses}
-                match={courseMatch}
-                onMatchChange={setCourseMatch}
+                title="UCAS Subjects"
+                options={ucasSubjects.map(s => ({ id: s.id, name: s.name }))}
+                search={subjectSearch}
+                onSearchChange={setSubjectSearch}
+                selected={selectedUCASSubjects}
+                onSelectedChange={setSelectedUCASSubjects}
+                match={subjectMatch}
+                onMatchChange={setSubjectMatch}
             />
         </div>
         <div className="md:col-span-3">

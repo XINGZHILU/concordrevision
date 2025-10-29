@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { University, Course, CourseLink } from '@prisma/client';
+import { University, Course, UCASSubject } from '@prisma/client';
 import { Button } from '@/lib/components/ui/button';
 import { Input } from '@/lib/components/ui/input';
 import { useToast } from '@/lib/components/ui/use-toast';
@@ -20,9 +20,9 @@ import {
 } from '@/lib/components/ui/alert-dialog'
 import Link from 'next/link';
 
-type UniversityWithCourses = University & { courseLinks: (CourseLink & { course: Course })[] };
+type UniversityWithCourses = University & { courses: (Course & { ucasSubject: UCASSubject })[] };
 
-export function UniversityManager({ universities }: { universities: UniversityWithCourses[] }) {
+export function UniversityManager({ universities, ucasSubjects }: { universities: UniversityWithCourses[], ucasSubjects: UCASSubject[] }) {
   const [newUniversityName, setNewUniversityName] = useState('');
   const [newUniversityId, setNewUniversityId] = useState('');
   const [isUk, setIsUk] = useState(true);

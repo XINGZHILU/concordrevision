@@ -1,13 +1,17 @@
 import { UniversityManager } from "@/app/(admin)/admin/ucas/UniversityManager";
-import { CourseManager } from "@/app/(admin)/admin/ucas/CourseManager";
+import { UCASSubjectManager } from "@/app/(admin)/admin/ucas/UCASSubjectManager";
 import { prisma } from "@/lib/prisma";
+
+/**
+ * Admin page for managing UCAS data (universities and UCAS subjects)
+ */
 
 export default async function UcasAdminPage() {
     const universities = await prisma.university.findMany({
         include: {
-            courseLinks: {
+            courses: {
                 include: {
-                    course: true
+                    ucasSubject: true
                 }
             }
         },
@@ -16,7 +20,7 @@ export default async function UcasAdminPage() {
         }
     });
 
-    const courses = await prisma.course.findMany({
+    const ucasSubjects = await prisma.uCASSubject.findMany({
       orderBy: {
         name: 'asc'
       }
@@ -26,8 +30,8 @@ export default async function UcasAdminPage() {
         <div className="w-11/12 mx-auto">
             <h1 className="text-4xl font-bold my-8">UCAS Management</h1>
             <div className="space-y-12">
-                <UniversityManager universities={universities} courses={courses} />
-                <CourseManager courses={courses} />
+                <UniversityManager universities={universities} ucasSubjects={ucasSubjects} />
+                <UCASSubjectManager ucasSubjects={ucasSubjects} />
             </div>
         </div>
     );

@@ -90,15 +90,15 @@ export default async function PostPage({ params }: { params: { id: string } }) {
             }
           </div>
           <div>
-            <h2 className="text-2xl font-bold mb-4">Related Courses</h2>
+            <h2 className="text-2xl font-bold mb-4">Related UCAS Subjects</h2>
             {
-              post.courses.length > 0 ? (
+              post.ucasSubjects.length > 0 ? (
                 <div className="flex flex-wrap gap-2">
-                  {post.courses.map(course => (
-                    <Badge key={course}>{course}</Badge>
+                  {post.ucasSubjects.map(subject => (
+                    <Badge key={subject}>{subject}</Badge>
                   ))}
                 </div>
-              ) : (<p className="text-muted-foreground">No courses tagged</p>)
+              ) : (<p className="text-muted-foreground">No UCAS subjects tagged</p>)
             }
           </div>
           <div>

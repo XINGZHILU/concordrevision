@@ -1,14 +1,16 @@
-import { UniversityManager } from "./UniversityManager";
-import { CourseManager } from "./CourseManager";
+
 import { prisma } from "@/lib/prisma";
 import { UCASTeacherTabs } from "./UCASTeacherTabs";
 
+/**
+ * Teacher dashboard page for managing UCAS data (universities, subjects, and courses)
+ */
 export default async function UcasTeacherPage() {
     const universities = await prisma.university.findMany({
         include: {
-            courseLinks: {
+            courses: {
                 include: {
-                    course: true
+                    ucasSubject: true
                 }
             }
         },
@@ -17,15 +19,15 @@ export default async function UcasTeacherPage() {
         }
     });
 
-    const courses = await prisma.course.findMany({
+    const ucasSubjects = await prisma.uCASSubject.findMany({
       orderBy: {
         name: 'asc'
       }
     });
 
-    const courseLinks = await prisma.courseLink.findMany({
+    const courses = await prisma.course.findMany({
       include: {
-        course: true,
+        ucasSubject: true,
         university: true
       },
       orderBy: [
@@ -39,8 +41,8 @@ export default async function UcasTeacherPage() {
             <h1 className="mb-6">UCAS Management</h1>
             <UCASTeacherTabs 
                 universities={universities} 
+                ucasSubjects={ucasSubjects}
                 courses={courses}
-                courseLinks={courseLinks}
             />
         </div>
     );

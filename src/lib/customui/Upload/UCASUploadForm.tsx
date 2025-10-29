@@ -13,16 +13,16 @@ import { useToast } from '@/lib/components/ui/use-toast';
 import { Input } from '@/lib/components/ui/input';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/lib/components/ui/accordion';
 import { Checkbox } from '@/lib/components/ui/checkbox';
-import { Course, Tag, University } from '@prisma/client';
+import { UCASSubject, Tag, University } from '@prisma/client';
 import { toaster } from '@/lib/components/ui/toaster';
 
-type UniversityWithCourses = University & { courses: Course[] };
+type UniversityWithUCASSubjects = University & { ucasSubjects: UCASSubject[] };
 
-export default function UCASUploadForm({ universities, author, tags, courses }: {
-  universities: UniversityWithCourses[],
+export default function UCASUploadForm({ universities, author, tags, ucasSubjects }: {
+  universities: UniversityWithUCASSubjects[],
   author: string,
   tags: Tag[],
-  courses: Course[]
+  ucasSubjects: UCASSubject[]
 }) {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [content, setContent] = useState<string>("");
@@ -37,26 +37,26 @@ export default function UCASUploadForm({ universities, author, tags, courses }: 
 
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedUniversities, setSelectedUniversities] = useState<string[]>([]);
-  const [selectedCourses, setSelectedCourses] = useState<string[]>([]);
+  const [selectedUCASSubjects, setSelectedUCASSubjects] = useState<string[]>([]);
   const [universitySearch, setUniversitySearch] = useState('');
-  const [courseSearch, setCourseSearch] = useState('');
+  const [subjectSearch, setSubjectSearch] = useState('');
 
   useEffect(() => {
     const saved = sessionStorage.getItem(storageKey);
     if (saved) {
-      const { title, content, selectedTags, selectedUniversities, selectedCourses } = JSON.parse(saved);
+      const { title, content, selectedTags, selectedUniversities, selectedUCASSubjects } = JSON.parse(saved);
       setTitle(title || "");
       setContent(content || "");
       setSelectedTags(selectedTags || []);
       setSelectedUniversities(selectedUniversities || []);
-      setSelectedCourses(selectedCourses || []);
+      setSelectedUCASSubjects(selectedUCASSubjects || []);
     }
   }, [storageKey]);
 
   useEffect(() => {
-    const data = JSON.stringify({ title, content, selectedTags, selectedUniversities, selectedCourses });
+    const data = JSON.stringify({ title, content, selectedTags, selectedUniversities, selectedUCASSubjects });
     sessionStorage.setItem(storageKey, data);
-  }, [title, content, storageKey, selectedTags, selectedUniversities, selectedCourses]);
+  }, [title, content, storageKey, selectedTags, selectedUniversities, selectedUCASSubjects]);
 
   async function upload(files: File[], title: string, desc: string) {
     setCantUpload(true);
@@ -87,7 +87,7 @@ export default function UCASUploadForm({ universities, author, tags, courses }: 
           files: uploadedFiles,
           tags: selectedTags,
           universities: selectedUniversities,
-          courses: selectedCourses // typo
+          ucasSubjects: selectedUCASSubjects
         }),
         headers: {
           'Content-Type': 'application/json'
@@ -105,7 +105,7 @@ export default function UCASUploadForm({ universities, author, tags, courses }: 
       setTitle("");
       setSelectedTags([]);
       setSelectedUniversities([]);
-      setSelectedCourses([]);
+      setSelectedUCASSubjects([]);
       sessionStorage.removeItem(storageKey);
 
     } catch (error: unknown) {
@@ -227,23 +227,23 @@ export default function UCASUploadForm({ universities, author, tags, courses }: 
                 ))}
               </AccordionContent>
             </AccordionItem>
-            <AccordionItem value="courses">
-              <AccordionTrigger>Courses (Optional)</AccordionTrigger>
+            <AccordionItem value="ucasSubjects">
+              <AccordionTrigger>UCAS Subjects (Optional)</AccordionTrigger>
               <AccordionContent className="max-h-60 overflow-y-auto">
                 <Input
-                  placeholder="Search courses..."
-                  value={courseSearch}
-                  onChange={(e) => setCourseSearch(e.target.value)}
+                  placeholder="Search UCAS subjects..."
+                  value={subjectSearch}
+                  onChange={(e) => setSubjectSearch(e.target.value)}
                   className="mb-4"
                 />
-                {courses.filter(course => course.name.toLowerCase().includes(courseSearch.toLowerCase())).map(course => (
-                  <label key={course.id} className="flex items-center space-x-2 my-2 cursor-pointer">
+                {ucasSubjects.filter(subject => subject.name.toLowerCase().includes(subjectSearch.toLowerCase())).map(subject => (
+                  <label key={subject.id} className="flex items-center space-x-2 my-2 cursor-pointer">
                     <Checkbox
-                      id={`course-${course.id}`}
-                      checked={selectedCourses.includes(course.name)}
-                      onChange={() => handleCheckboxChange(setSelectedCourses, course.name)}
+                      id={`ucasSubject-${subject.id}`}
+                      checked={selectedUCASSubjects.includes(subject.name)}
+                      onChange={() => handleCheckboxChange(setSelectedUCASSubjects, subject.name)}
                     />
-                    <span>{course.name}</span>
+                    <span>{subject.name}</span>
                   </label>
                 ))}
               </AccordionContent>
@@ -354,7 +354,7 @@ export default function UCASUploadForm({ universities, author, tags, courses }: 
                 setTitle("");
                 setSelectedTags([]);
                 setSelectedUniversities([]);
-                setSelectedCourses([]);
+                setSelectedUCASSubjects([]);
                 sessionStorage.removeItem(storageKey);
               }}
             >

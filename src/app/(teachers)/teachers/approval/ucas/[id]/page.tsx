@@ -95,9 +95,9 @@ export default async function UCASPostReviewPage({ params }: { params: { id: str
                     </div>
 
                     <div className="mb-6">
-                        <h3 className="text-lg font-medium mb-2">Courses:</h3>
+                        <h3 className="text-lg font-medium mb-2">UCAS Subjects:</h3>
                         <div className="flex flex-wrap gap-2">
-                            {post.courses.map(course => <Badge key={course} variant="outline">{course}</Badge>)}
+                            {post.ucasSubjects.map(subject => <Badge key={subject} variant="outline">{subject}</Badge>)}
                         </div>
                     </div>
 

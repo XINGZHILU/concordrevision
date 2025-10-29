@@ -30,7 +30,7 @@ export default async function PostsPage() {
       name: 'asc'
     }
   });
-  const courses = await prisma.course.findMany({
+  const ucasSubjects = await prisma.uCASSubject.findMany({
     orderBy: {
       name: 'asc'
     }
@@ -44,7 +44,7 @@ export default async function PostsPage() {
           posts={posts}
           tags={tags}
           universities={universities}
-          courses={courses}
+          ucasSubjects={ucasSubjects}
         />
       </Suspense>
     </div>
