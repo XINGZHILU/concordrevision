@@ -24,16 +24,21 @@ export default async function UCASSubjectPage({ params }: { params: { cid: strin
     notFound();
   }
 
-  // Filter posts by UCAS subject ID instead of name
+  // Filter posts by UCAS subject ID instead of name, ordered with pinned posts first
   const posts = await prisma.uCASPost.findMany({
     where: {
       ucasSubjects: {
         has: ucasSubject.id
-      }
+      },
+      approved: true
     },
     include: {
       author: true
-    }
+    },
+    orderBy: [
+      { pinned: 'desc' },
+      { uploadedAt: 'desc' }
+    ]
   });
 
   return (
