@@ -2,9 +2,12 @@
 
 import { useState, useMemo } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/lib/components/ui/tabs';
-import { LuInfo, LuGraduationCap, LuFileText, LuSearch, LuX, LuTrendingUp } from "react-icons/lu";
+import { LuInfo, LuGraduationCap, LuFileText, LuSearch, LuX, LuTrendingUp, LuPin } from "react-icons/lu";
 import { Card, CardContent, CardHeader, CardTitle } from "@/lib/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/lib/components/ui/table";
+import { Badge } from "@/lib/components/ui/badge";
+import { Checkbox } from '@/lib/components/ui/checkbox';
+import { Label } from '@/lib/components/ui/label';
 import Link from 'next/link';
 import { AdmissionStats } from '@prisma/client';
 import MDViewer from '@/lib/customui/Basic/showMD';
@@ -24,6 +27,8 @@ interface Course {
 interface UCASPost {
   id: number;
   title: string;
+  tags: string[];
+  pinned: boolean;
   author: {
     firstname: string | null;
     lastname: string | null;
@@ -58,6 +63,16 @@ const SearchableUniversityContent = ({
 }: SearchableUniversityContentProps) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('about');
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  // Get all unique tags from posts
+  const allTags = useMemo(() => {
+    const tagSet = new Set<string>();
+    posts.forEach(post => {
+      post.tags.forEach(tag => tagSet.add(tag));
+    });
+    return Array.from(tagSet).sort();
+  }, [posts]);
 
   /**
    * Filter courses based on search query
@@ -73,16 +88,15 @@ const SearchableUniversityContent = ({
   }, [courses, searchQuery]);
 
   /**
-   * Filter posts based on search query
+   * Filter posts based on search query and selected tags
    */
   const filteredPosts = useMemo(() => {
-    if (!searchQuery.trim()) return posts;
-
-    const lowerQuery = searchQuery.toLowerCase();
-    return posts.filter(post =>
-      post.title.toLowerCase().includes(lowerQuery)
-    );
-  }, [posts, searchQuery]);
+    return posts.filter(post => {
+      const searchMatch = !searchQuery.trim() || post.title.toLowerCase().includes(searchQuery.toLowerCase());
+      const tagMatch = selectedTags.length === 0 || selectedTags.some(tag => post.tags.includes(tag));
+      return searchMatch && tagMatch;
+    });
+  }, [posts, searchQuery, selectedTags]);
 
   /**
    * Clear search input
@@ -183,9 +197,9 @@ const SearchableUniversityContent = ({
    */
   const renderPostCards = () => {
     if (filteredPosts.length === 0) {
-      return searchQuery ? (
+      return searchQuery || selectedTags.length > 0 ? (
         <div className="text-center py-8">
-          <p className="text-muted-foreground">No posts found for &quot;{searchQuery}&quot;</p>
+          <p className="text-muted-foreground">No posts found matching your filters</p>
         </div>
       ) : (
         <div className="text-center py-8">
@@ -198,12 +212,24 @@ const SearchableUniversityContent = ({
       <div className="space-y-4">
         {filteredPosts.map(post => (
           <Link href={`/ucas/posts/${post.id}`} key={post.id} className="block">
-            <Card className="hover:border-primary transition-colors duration-200">
+            <Card className="hover:border-primary transition-colors duration-200 relative">
+              {post.pinned && (
+                <div className="absolute top-4 right-4">
+                  <LuPin className="h-5 w-5 text-primary" />
+                </div>
+              )}
               <CardHeader>
-                <CardTitle className="text-lg">{post.title}</CardTitle>
+                <CardTitle className="text-lg pr-8">{post.title}</CardTitle>
                 <p className="text-sm text-muted-foreground">
                   By {post.author.firstname} {post.author.lastname}
                 </p>
+                {post.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mt-2">
+                    {post.tags.map(tag => (
+                      <Badge key={tag} variant="secondary" className="text-xs">{tag}</Badge>
+                    ))}
+                  </div>
+                )}
               </CardHeader>
             </Card>
           </Link>
@@ -302,8 +328,8 @@ const SearchableUniversityContent = ({
 
         {/* Posts Tab */}
         <TabsContent value="posts" className="mt-0">
-          {/* Search Bar */}
-          <div className="mb-6">
+          {/* Search Bar and Tag Filter */}
+          <div className="mb-6 space-y-4">
             <div className="relative max-w-md">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <LuSearch className="h-4 w-4 text-muted-foreground" />
@@ -325,9 +351,39 @@ const SearchableUniversityContent = ({
               )}
             </div>
             {searchQuery && (
-              <p className="mt-2 text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground">
                 Searching for: <span className="font-medium">&quot;{searchQuery}&quot;</span>
               </p>
+            )}
+            
+            {/* Tag Filter */}
+            {allTags.length > 0 && (
+              <div className="border rounded-lg p-4">
+                <h3 className="font-semibold mb-3">Filter by Tags</h3>
+                <div className="flex flex-wrap gap-2">
+                  {allTags.map(tag => (
+                    <label key={tag} className="flex items-center space-x-2 cursor-pointer">
+                      <Checkbox
+                        id={`tag-${tag}`}
+                        checked={selectedTags.includes(tag)}
+                        onChange={() => {
+                          setSelectedTags(prev =>
+                            prev.includes(tag)
+                              ? prev.filter(t => t !== tag)
+                              : [...prev, tag]
+                          );
+                        }}
+                      />
+                      <Label htmlFor={`tag-${tag}`} className="cursor-pointer">{tag}</Label>
+                    </label>
+                  ))}
+                </div>
+                {selectedTags.length > 0 && (
+                  <p className="mt-3 text-sm text-muted-foreground">
+                    {selectedTags.length} tag{selectedTags.length !== 1 ? 's' : ''} selected
+                  </p>
+                )}
+              </div>
             )}
           </div>
 

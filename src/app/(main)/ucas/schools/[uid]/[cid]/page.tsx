@@ -25,7 +25,7 @@ export default async function UniversityCoursePage({
     notFound();
   }
 
-  // Filter posts by university ID and UCAS subject ID instead of names
+  // Filter posts by university ID and UCAS subject ID instead of names, ordered with pinned posts first
   const posts = await prisma.uCASPost.findMany({
     where: {
       AND: [
@@ -39,11 +39,16 @@ export default async function UniversityCoursePage({
             has: course.ucasSubject.id
           }
         }
-      ]
+      ],
+      approved: true
     },
     include: {
       author: true
-    }
+    },
+    orderBy: [
+      { pinned: 'desc' },
+      { uploadedAt: 'desc' }
+    ]
   });
 
   return (

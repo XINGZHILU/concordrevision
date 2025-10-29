@@ -25,16 +25,21 @@ export default async function UniversityPage({ params }: { params: { uid: string
     notFound();
   }
 
-  // Filter posts by university ID instead of name
+  // Filter posts by university ID instead of name, ordered with pinned posts first
   const posts = await prisma.uCASPost.findMany({
     where: {
       universities: {
         has: university.id
-      }
+      },
+      approved: true
     },
     include: {
       author: true
-    }
+    },
+    orderBy: [
+      { pinned: 'desc' },
+      { uploadedAt: 'desc' }
+    ]
   });
 
   return (
