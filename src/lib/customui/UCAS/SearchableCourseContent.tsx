@@ -51,7 +51,7 @@ const SearchableCourseContent = ({
   posts
 }: SearchableCourseContentProps) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState('details');
+  const [activeTab, setActiveTab] = useState('basic');
 
   /**
    * Filter posts based on search query
@@ -123,7 +123,7 @@ const SearchableCourseContent = ({
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-3 mb-6">
-        <TabsTrigger value="basic" className="flex items-center gap-2">
+          <TabsTrigger value="basic" className="flex items-center gap-2">
             <LuFileText className="h-4 w-4" />
             Basic Information
           </TabsTrigger>
