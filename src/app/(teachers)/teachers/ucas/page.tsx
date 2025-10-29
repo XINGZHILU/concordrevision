@@ -1,6 +1,7 @@
 import { UniversityManager } from "./UniversityManager";
 import { CourseManager } from "./CourseManager";
 import { prisma } from "@/lib/prisma";
+import { UCASTeacherTabs } from "./UCASTeacherTabs";
 
 export default async function UcasTeacherPage() {
     const universities = await prisma.university.findMany({
@@ -22,13 +23,25 @@ export default async function UcasTeacherPage() {
       }
     });
 
+    const courseLinks = await prisma.courseLink.findMany({
+      include: {
+        course: true,
+        university: true
+      },
+      orderBy: [
+        { university: { name: 'asc' } },
+        { name: 'asc' }
+      ]
+    });
+
     return (
-        <div className="w-11/12 mx-auto">
-            <h1 className="text-4xl font-bold my-8">UCAS Management</h1>
-            <div className="space-y-12">
-                <UniversityManager universities={universities} courses={courses} />
-                <CourseManager courses={courses} />
-            </div>
+        <div className="w-11/12 mx-auto py-8">
+            <h1 className="mb-6">UCAS Management</h1>
+            <UCASTeacherTabs 
+                universities={universities} 
+                courses={courses}
+                courseLinks={courseLinks}
+            />
         </div>
     );
 }

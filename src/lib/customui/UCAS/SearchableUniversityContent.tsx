@@ -17,6 +17,7 @@ interface CourseLink {
     id: string;
     name: string;
   };
+  qualification: string;
 }
 
 interface UCASPost {
@@ -43,6 +44,7 @@ interface SearchableUniversityContentProps {
 
 /**
  * Client component that displays university details with tabs for About, Admission Stats, Courses and Posts
+ * Courses are specific offerings at this university (e.g., "Computer Science BA")
  * Provides search functionality for courses and posts
  */
 const SearchableUniversityContent = ({
@@ -159,11 +161,11 @@ const SearchableUniversityContent = ({
           >
             <Card className="hover:shadow-lg hover:border-primary transition-all duration-300 h-full">
               <CardHeader>
-                <CardTitle className="text-lg">{courseLink.name}</CardTitle>
+                <CardTitle className="text-lg">{courseLink.name} {courseLink.qualification}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground text-sm">
-                  {courseLink.course.name}
+                  Subject: {courseLink.course.name}
                 </p>
               </CardContent>
             </Card>
@@ -228,15 +230,15 @@ const SearchableUniversityContent = ({
               </span>
             )}
           </TabsTrigger>
-          <TabsTrigger value="courses" className="flex items-center gap-2">
-            <LuGraduationCap className="h-4 w-4" />
-            Courses
-            {courseLinks.length > 0 && (
-              <span className="ml-1 text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">
-                {courseLinks.length}
-              </span>
-            )}
-          </TabsTrigger>
+        <TabsTrigger value="courses" className="flex items-center gap-2">
+          <LuGraduationCap className="h-4 w-4" />
+          Courses
+          {courseLinks.length > 0 && (
+            <span className="ml-1 text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">
+              {courseLinks.length}
+            </span>
+          )}
+        </TabsTrigger>
           <TabsTrigger value="posts" className="flex items-center gap-2">
             <LuFileText className="h-4 w-4" />
             Posts
@@ -260,21 +262,21 @@ const SearchableUniversityContent = ({
           {renderAdmissionStats()}
         </TabsContent>
 
-        {/* Courses Tab */}
-        <TabsContent value="courses" className="mt-0">
-          {/* Search Bar */}
-          <div className="mb-6">
-            <div className="relative max-w-md">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <LuSearch className="h-4 w-4 text-muted-foreground" />
-              </div>
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search courses..."
-                className="block w-full pl-9 pr-8 py-2 border border-input bg-background rounded-lg text-sm focus:ring-2 focus:ring-ring"
-              />
+      {/* Courses Tab */}
+      <TabsContent value="courses" className="mt-0">
+        {/* Search Bar */}
+        <div className="mb-6">
+          <div className="relative max-w-md">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <LuSearch className="h-4 w-4 text-muted-foreground" />
+            </div>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search courses..."
+              className="block w-full pl-9 pr-8 py-2 border border-input bg-background rounded-lg text-sm focus:ring-2 focus:ring-ring"
+            />
               {searchQuery && (
                 <button
                   onClick={clearSearch}

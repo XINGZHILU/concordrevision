@@ -38,8 +38,9 @@ interface SearchableCourseContentProps {
 }
 
 /**
- * Client component that displays course details with tabs for About, Universities and Posts
- * Provides search functionality for universities and posts
+ * Client component that displays subject details with tabs for About, Courses and Posts
+ * Courses are specific offerings of this subject at different universities
+ * Provides search functionality for courses and posts
  */
 const SearchableCourseContent = ({
   course,
@@ -88,11 +89,11 @@ const SearchableCourseContent = ({
     if (filteredUniversities.length === 0) {
       return searchQuery ? (
         <div className="text-center py-8">
-          <p className="text-muted-foreground">No universities found for &quot;{searchQuery}&quot;</p>
+          <p className="text-muted-foreground">No courses found for &quot;{searchQuery}&quot;</p>
         </div>
       ) : (
         <div className="text-center py-8">
-          <p className="text-muted-foreground">No universities offering this course</p>
+          <p className="text-muted-foreground">No courses available</p>
         </div>
       );
     }
@@ -106,11 +107,11 @@ const SearchableCourseContent = ({
           >
             <Card className="hover:shadow-lg hover:border-primary transition-all duration-300 h-full">
               <CardHeader>
-                <CardTitle className="text-lg">{courseLink.university.name}</CardTitle>
+                <CardTitle className="text-lg">{courseLink.name}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground text-sm">
-                  {courseLink.name}
+                  {courseLink.university.name}
                 </p>
               </CardContent>
             </Card>
@@ -166,15 +167,15 @@ const SearchableCourseContent = ({
             <LuInfo className="h-4 w-4" />
             About
           </TabsTrigger>
-          <TabsTrigger value="universities" className="flex items-center gap-2">
-            <LuGraduationCap className="h-4 w-4" />
-            Universities
-            {courseLinks.length > 0 && (
-              <span className="ml-1 text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">
-                {courseLinks.length}
-              </span>
-            )}
-          </TabsTrigger>
+        <TabsTrigger value="universities" className="flex items-center gap-2">
+          <LuGraduationCap className="h-4 w-4" />
+          Courses
+          {courseLinks.length > 0 && (
+            <span className="ml-1 text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">
+              {courseLinks.length}
+            </span>
+          )}
+        </TabsTrigger>
           <TabsTrigger value="posts" className="flex items-center gap-2">
             <LuFileText className="h-4 w-4" />
             Posts
@@ -193,21 +194,21 @@ const SearchableCourseContent = ({
           </div>
         </TabsContent>
 
-        {/* Universities Tab */}
-        <TabsContent value="universities" className="mt-0">
-          {/* Search Bar */}
-          <div className="mb-6">
-            <div className="relative max-w-md">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <LuSearch className="h-4 w-4 text-muted-foreground" />
-              </div>
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search universities..."
-                className="block w-full pl-9 pr-8 py-2 border border-input bg-background rounded-lg text-sm focus:ring-2 focus:ring-ring"
-              />
+      {/* Courses Tab */}
+      <TabsContent value="universities" className="mt-0">
+        {/* Search Bar */}
+        <div className="mb-6">
+          <div className="relative max-w-md">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <LuSearch className="h-4 w-4 text-muted-foreground" />
+            </div>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search courses..."
+              className="block w-full pl-9 pr-8 py-2 border border-input bg-background rounded-lg text-sm focus:ring-2 focus:ring-ring"
+            />
               {searchQuery && (
                 <button
                   onClick={clearSearch}
@@ -224,9 +225,9 @@ const SearchableCourseContent = ({
             )}
           </div>
 
-          {/* Universities Grid */}
-          {renderUniversityCards()}
-        </TabsContent>
+        {/* Courses Grid */}
+        {renderUniversityCards()}
+      </TabsContent>
 
         {/* Posts Tab */}
         <TabsContent value="posts" className="mt-0">
