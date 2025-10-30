@@ -51,7 +51,11 @@ export default async function handler(
           id: subscription.subjectId
         },
         select: {
-          tests: true
+          tests: {
+            include: {
+              subject: true
+            }
+          }
         }
       });
       if (!subject) {
