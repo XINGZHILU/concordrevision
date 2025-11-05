@@ -29,7 +29,7 @@ export function getPdfViewerUrl(fileUrl: string, fileName?: string): string {
         params.set('name', fileName);
     }
     
-    return `/viewer/pdf/view?${params.toString()}`;
+    return `/pdf/view?${params.toString()}`;
 }
 
 /**
