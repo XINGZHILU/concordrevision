@@ -45,22 +45,14 @@ function AdobeViewerContent() {
   const fileName = searchParams?.get('name') || "Document.pdf";
 
   useEffect(() => {
-    // Only run in the browser
-    const loadAdobeSDK = () => {
-      if (window.AdobeDC) {
-        initializeAdobe();
-      } else {
-        // Load SDK dynamically
-        const script = document.createElement("script");
-        script.src = "https://acrobatservices.adobe.com/view-sdk/viewer.js";
-        script.async = true;
-        script.onload = () => initializeAdobe();
-        document.body.appendChild(script);
-      }
-    };
+    // Clear the container before initializing
+    const container = document.getElementById("adobe-dc-view");
+    if (container) {
+      container.innerHTML = '';
+    }
 
     const initializeAdobe = () => {
-      document.addEventListener("adobe_dc_view_sdk.ready", () => {
+      try {
         const adobeDCView = new window.AdobeDC.View({
           clientId: "4535a4cd7b104484b535e22386736738", // real Adobe Client ID
           divId: "adobe-dc-view",
@@ -82,10 +74,53 @@ function AdobeViewerContent() {
             showLeftHandPanel: true,
           }
         );
-      });
+      } catch (error) {
+        console.error("Error initializing Adobe PDF viewer:", error);
+      }
+    };
+
+    // Only run in the browser
+    const loadAdobeSDK = () => {
+      if (window.AdobeDC) {
+        // SDK already loaded, initialize immediately
+        initializeAdobe();
+      } else {
+        // Check if script is already being loaded
+        const existingScript = document.querySelector('script[src*="acrobatservices.adobe.com"]');
+        if (existingScript) {
+          // Wait for it to load
+          existingScript.addEventListener('load', () => {
+            if (window.AdobeDC) {
+              initializeAdobe();
+            }
+          });
+        } else {
+          // Load SDK dynamically
+          const script = document.createElement("script");
+          script.src = "https://acrobatservices.adobe.com/view-sdk/viewer.js";
+          script.async = true;
+          script.onload = () => {
+            if (window.AdobeDC) {
+              initializeAdobe();
+            }
+          };
+          script.onerror = () => {
+            console.error("Failed to load Adobe PDF Embed SDK");
+          };
+          document.body.appendChild(script);
+        }
+      }
     };
 
     loadAdobeSDK();
+
+    // Cleanup function
+    return () => {
+      const container = document.getElementById("adobe-dc-view");
+      if (container) {
+        container.innerHTML = '';
+      }
+    };
   }, [pdfUrl, fileName]);
 
   return (
@@ -112,3 +147,4 @@ export default function AdobeViewer() {
     </Suspense>
   );
 }
+

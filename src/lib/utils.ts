@@ -22,8 +22,8 @@ export function StorageURLOlympiads(filepath: string) {
  * @returns The URL path to the PDF viewer
  */
 export function getPdfViewerUrl(fileUrl: string, fileName?: string): string {
-    const encodedUrl = encodeURIComponent(fileUrl);
-    const params = new URLSearchParams({ url: encodedUrl });
+    // Use URLSearchParams to properly encode the parameters
+    const params = new URLSearchParams({ url: fileUrl });
     
     if (fileName) {
         params.set('name', fileName);
