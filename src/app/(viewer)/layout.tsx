@@ -1,11 +1,4 @@
-import type { Metadata } from "next";
-import "@/app/globals.css";
 import { Provider } from '@/lib/components/ui/provider'
-
-export const metadata: Metadata = {
-  title: "PDF Viewer - Concordpedia",
-  description: "©Joshua Ng, Xingzhi Lu, Christoph Chan 2025",
-};
 
 /**
  * Minimal layout for the PDF viewer
