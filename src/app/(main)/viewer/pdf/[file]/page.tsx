@@ -77,12 +77,9 @@ export default function AdobeViewer() {
 
   return (
     <main className="flex flex-col h-screen p-4">
-      <h1 className="text-2xl font-semibold mb-4">
-        Adobe PDF Embed Example (Next.js)
-      </h1>
       <div
         id="adobe-dc-view"
-        className="flex-1 border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden"
+        className="flex-1 border border-gray-300 dark:border-gray-700 rounded-lg"
       ></div>
     </main>
   );
