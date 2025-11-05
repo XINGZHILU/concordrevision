@@ -26,6 +26,9 @@ declare global {
           },
           viewerConfig: {
             embedMode: string;
+            showDownloadPDF?: boolean;
+            showPrintPDF?: boolean;
+            showLeftHandPanel?: boolean;
           }
         ) => void;
       };
@@ -66,7 +69,10 @@ export default function AdobeViewer() {
             metaData: { fileName: "Bodea Brochure.pdf" },
           },
           {
-            embedMode: "IN_LINE",
+            embedMode: "FULL_WINDOW",
+            showDownloadPDF: true,
+            showPrintPDF: true,
+            showLeftHandPanel: true,
           }
         );
       });
@@ -76,10 +82,10 @@ export default function AdobeViewer() {
   }, []);
 
   return (
-    <main className="flex flex-col h-screen p-4">
+    <main className="h-screen w-full">
       <div
         id="adobe-dc-view"
-        className="flex-1 border border-gray-300 dark:border-gray-700 rounded-lg"
+        className="h-full w-full"
       ></div>
     </main>
   );
