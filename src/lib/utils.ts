@@ -14,3 +14,32 @@ export function StorageURLNotes(filepath: string) {
 export function StorageURLOlympiads(filepath: string) {
     return `https://uvvmcshblmmafbcdkztp.supabase.co/storage/v1/object/public/olympiads-storage/${filepath}`;
 }
+
+/**
+ * Generates a URL to the PDF viewer page
+ * @param fileUrl - The URL of the PDF file to view
+ * @param fileName - Optional display name for the PDF
+ * @returns The URL path to the PDF viewer
+ */
+export function getPdfViewerUrl(fileUrl: string, fileName?: string): string {
+    const encodedUrl = encodeURIComponent(fileUrl);
+    const params = new URLSearchParams({ url: encodedUrl });
+    
+    if (fileName) {
+        params.set('name', fileName);
+    }
+    
+    return `/viewer/pdf/view?${params.toString()}`;
+}
+
+/**
+ * Redirects to the PDF viewer page (client-side only)
+ * @param fileUrl - The URL of the PDF file to view
+ * @param fileName - Optional display name for the PDF
+ */
+export function redirectToPdf(fileUrl: string, fileName?: string): void {
+    if (typeof window !== 'undefined') {
+        const url = getPdfViewerUrl(fileUrl, fileName);
+        window.location.href = url;
+    }
+}

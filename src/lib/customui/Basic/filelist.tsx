@@ -1,4 +1,7 @@
+'use client';
+
 import React from 'react';
+import Link from 'next/link';
 import {
     File,
     FileSpreadsheet,
@@ -9,6 +12,7 @@ import {
     FileArchive,
     ExternalLink
 } from 'lucide-react';
+import { getPdfViewerUrl } from '@/lib/utils';
 
 interface FileItemProps {
     id: number;
@@ -76,11 +80,17 @@ export default function FileList({ files }: { files: FileItemProps[] }) {
             {files.map((file) => {
                 const FileIcon = getFileIcon(file.filename);
                 const displayName = truncateFilename(file.filename);
+                const extension = file.filename.split('.').pop()?.toLowerCase() || '';
+                const isPdf = extension === 'pdf';
+
+                // For PDF files, use the PDF viewer; for others, direct download
+                const linkHref = isPdf ? getPdfViewerUrl(file.path, file.filename) : file.path;
+                const LinkComponent = isPdf ? Link : 'a';
 
                 return (
                     <div key={file.id} className="group">
-                        <a
-                            href={file.path}
+                        <LinkComponent
+                            href={linkHref}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center p-3 border border-border hover:border-primary/50 rounded-lg hover:bg-primary/10 transition-all group-hover:shadow-sm"
@@ -95,14 +105,14 @@ export default function FileList({ files }: { files: FileItemProps[] }) {
                                     {displayName}
                                 </p>
                                 <p className="text-xs text-muted-foreground">
-                                    {file.filename.split('.').pop()?.toUpperCase()}
+                                    {extension.toUpperCase()}
                                 </p>
                             </div>
 
                             <div className="flex-shrink-0 ml-2 text-muted-foreground group-hover:text-primary">
                                 <ExternalLink size={16} />
                             </div>
-                        </a>
+                        </LinkComponent>
                     </div>
                 );
             })}
