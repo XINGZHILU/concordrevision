@@ -9,7 +9,7 @@ import { useSearchParams } from "next/navigation";
  */
 declare global {
   interface Window {
-    AdobeDC: {
+    AdobeDC?: {
       View: new (config: {
         clientId: string;
         divId: string;
@@ -37,36 +37,48 @@ declare global {
   }
 }
 
-function AdobeViewerContent() {
+/**
+ * Adobe PDF Viewer component with optimized loading
+ */
+function AdobePdfViewerContent() {
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
   // Get PDF URL and filename from query parameters
-  const pdfUrl = searchParams?.get('url') || "https://acrobatservices.adobe.com/view-sdk-demo/PDFs/Bodea Brochure.pdf";
+  const pdfUrl = searchParams?.get('url');
   const fileName = searchParams?.get('name') || "Document.pdf";
 
   useEffect(() => {
-    console.log("PDF Viewer - Initializing with URL:", pdfUrl);
-    console.log("PDF Viewer - File name:", fileName);
+    if (!pdfUrl) {
+      setError("No PDF URL provided");
+      setIsLoading(false);
+      return;
+    }
 
-    // Clear the container before initializing
+    // Clear any existing content
     const container = document.getElementById("adobe-dc-view");
     if (container) {
       container.innerHTML = '';
     }
 
-    let readyListenerAdded = false;
+    let isInitialized = false;
 
-    const initializeAdobe = () => {
-      console.log("PDF Viewer - Adobe SDK ready, initializing viewer");
+    const initializeViewer = () => {
+      if (isInitialized) return;
+      isInitialized = true;
+
       try {
+        if (!window.AdobeDC) {
+          setError("Adobe SDK not loaded");
+          setIsLoading(false);
+          return;
+        }
+
         const adobeDCView = new window.AdobeDC.View({
-          clientId: "4535a4cd7b104484b535e22386736738", // real Adobe Client ID
+          clientId: "4535a4cd7b104484b535e22386736738",
           divId: "adobe-dc-view",
         });
-
-        console.log("PDF Viewer - Attempting to preview file:", pdfUrl);
 
         adobeDCView.previewFile(
           {
@@ -85,71 +97,41 @@ function AdobeViewerContent() {
           }
         );
 
-        console.log("PDF Viewer - PreviewFile called successfully");
-        setIsLoading(false);
-      } catch (error) {
-        console.error("PDF Viewer - Error initializing Adobe PDF viewer:", error);
-        setError(error instanceof Error ? error.message : "Failed to load PDF viewer");
+        // Hide loading after a short delay to ensure viewer is rendered
+        setTimeout(() => setIsLoading(false), 1000);
+      } catch (err) {
+        console.error("Error initializing Adobe PDF viewer:", err);
+        setError(err instanceof Error ? err.message : "Failed to initialize PDF viewer");
         setIsLoading(false);
       }
     };
 
-    const onAdobeReady = () => {
-      console.log("PDF Viewer - adobe_dc_view_sdk.ready event fired");
-      initializeAdobe();
-    };
-
-    // Only run in the browser
-    const loadAdobeSDK = () => {
-      if (window.AdobeDC) {
-        console.log("PDF Viewer - Adobe SDK already loaded");
-        // SDK already loaded, but still wait for the ready event
-        if (!readyListenerAdded) {
-          document.addEventListener("adobe_dc_view_sdk.ready", onAdobeReady);
-          readyListenerAdded = true;
-        }
-        // Also try to initialize directly in case the event already fired
-        initializeAdobe();
+    // Load Adobe SDK
+    if (window.AdobeDC) {
+      // SDK already loaded
+      initializeViewer();
+    } else {
+      // Check if script already exists
+      const existingScript = document.querySelector('script[src*="acrobatservices.adobe.com"]');
+      
+      if (existingScript) {
+        // Script is loading, wait for it
+        existingScript.addEventListener('load', initializeViewer);
       } else {
-        console.log("PDF Viewer - Adobe SDK not loaded, loading script");
-        // Check if script is already being loaded
-        const existingScript = document.querySelector('script[src*="acrobatservices.adobe.com"]');
-        if (existingScript) {
-          console.log("PDF Viewer - Script already exists, waiting for load");
-          existingScript.addEventListener('load', () => {
-            if (window.AdobeDC && !readyListenerAdded) {
-              document.addEventListener("adobe_dc_view_sdk.ready", onAdobeReady);
-              readyListenerAdded = true;
-            }
-          });
-        } else {
-          // Load SDK dynamically
-          console.log("PDF Viewer - Loading Adobe SDK script");
-          const script = document.createElement("script");
-          script.src = "https://acrobatservices.adobe.com/view-sdk/viewer.js";
-          script.async = true;
-          script.onload = () => {
-            console.log("PDF Viewer - Adobe SDK script loaded");
-            if (window.AdobeDC && !readyListenerAdded) {
-              document.addEventListener("adobe_dc_view_sdk.ready", onAdobeReady);
-              readyListenerAdded = true;
-            }
-          };
-          script.onerror = () => {
-            console.error("PDF Viewer - Failed to load Adobe PDF Embed SDK");
-          };
-          document.body.appendChild(script);
-        }
+        // Load the script
+        const script = document.createElement("script");
+        script.src = "https://acrobatservices.adobe.com/view-sdk/viewer.js";
+        script.async = true;
+        script.onload = initializeViewer;
+        script.onerror = () => {
+          setError("Failed to load Adobe PDF SDK");
+          setIsLoading(false);
+        };
+        document.head.appendChild(script);
       }
-    };
+    }
 
-    loadAdobeSDK();
-
-    // Cleanup function
     return () => {
-      if (readyListenerAdded) {
-        document.removeEventListener("adobe_dc_view_sdk.ready", onAdobeReady);
-      }
       const container = document.getElementById("adobe-dc-view");
       if (container) {
         container.innerHTML = '';
@@ -157,40 +139,40 @@ function AdobeViewerContent() {
     };
   }, [pdfUrl, fileName]);
 
+  // Error state
+  if (error) {
+    return (
+      <main className="h-screen w-full flex items-center justify-center bg-background">
+        <div className="text-center p-8 max-w-md">
+          <div className="text-6xl mb-4">⚠️</div>
+          <h2 className="text-2xl font-bold text-foreground mb-4">Failed to Load PDF</h2>
+          <p className="text-muted-foreground mb-4">{error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
+          >
+            Retry
+          </button>
+        </div>
+      </main>
+    );
+  }
+
   return (
-    <main className="h-screen w-full relative">
-      {/* Loading overlay */}
+    <main className="h-screen w-full relative bg-background">
+      {/* Loading overlay - shows while Adobe SDK initializes */}
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-background z-50">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-lg text-foreground">Loading PDF viewer...</p>
-            <p className="text-sm text-muted-foreground mt-2">Initializing Adobe PDF Embed API</p>
+            <p className="text-lg text-foreground mb-2">Loading PDF Viewer...</p>
+            <p className="text-sm text-muted-foreground">Initializing Adobe PDF Embed API</p>
+            <p className="text-xs text-muted-foreground mt-4">This may take a few seconds on first load</p>
           </div>
         </div>
       )}
 
-      {/* Error message */}
-      {error && (
-        <div className="absolute inset-0 flex items-center justify-center bg-background z-50">
-          <div className="text-center p-8 max-w-md">
-            <div className="text-6xl mb-4">⚠️</div>
-            <h2 className="text-2xl font-bold text-foreground mb-4">Failed to Load PDF</h2>
-            <p className="text-muted-foreground mb-4">{error}</p>
-            <p className="text-sm text-muted-foreground">
-              Please check the browser console for more details.
-            </p>
-            <button 
-              onClick={() => window.location.reload()} 
-              className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
-            >
-              Retry
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* PDF viewer container */}
+      {/* Adobe PDF viewer container */}
       <div
         id="adobe-dc-view"
         className="h-full w-full"
@@ -202,14 +184,17 @@ function AdobeViewerContent() {
 /**
  * Main component with Suspense wrapper for useSearchParams
  */
-export default function AdobeViewer() {
+export default function AdobePdfViewer() {
   return (
     <Suspense fallback={
-      <div className="h-screen w-full flex items-center justify-center">
-        <div className="text-lg">Loading PDF viewer...</div>
+      <div className="h-screen w-full flex items-center justify-center bg-background">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-lg text-foreground">Preparing PDF viewer...</p>
+        </div>
       </div>
     }>
-      <AdobeViewerContent />
+      <AdobePdfViewerContent />
     </Suspense>
   );
 }
