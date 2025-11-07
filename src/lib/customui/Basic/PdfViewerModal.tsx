@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 
 /**
@@ -171,7 +172,8 @@ export default function PdfViewerModal({ isOpen, onClose, pdfUrl, fileName }: Pd
 
   if (!isOpen) return null;
 
-  return (
+  // Render modal at document body level to avoid z-index stacking context issues
+  return createPortal(
     <div className="fixed inset-0 z-[9999] flex items-center justify-center">
       {/* Backdrop */}
       <div 
@@ -246,7 +248,8 @@ export default function PdfViewerModal({ isOpen, onClose, pdfUrl, fileName }: Pd
           ></div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
