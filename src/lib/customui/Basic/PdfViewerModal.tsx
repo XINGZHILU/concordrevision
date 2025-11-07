@@ -9,7 +9,7 @@ import { X } from 'lucide-react';
  */
 declare global {
   interface Window {
-    AdobeDC: {
+    AdobeDC?: {
       View: new (config: {
         clientId: string;
         divId: string;
@@ -25,9 +25,7 @@ declare global {
               fileName: string;
             };
           },
-          viewerConfig: {
-            embedMode: string;
-          }
+          viewerConfig: Record<string, unknown>
         ) => void;
       };
     };
@@ -73,7 +71,7 @@ export default function PdfViewerModal({ isOpen, onClose, pdfUrl, fileName }: Pd
     const initializeAdobe = () => {
       document.addEventListener("adobe_dc_view_sdk.ready", () => {
         try {
-          const adobeDCView = new window.AdobeDC.View({
+          const adobeDCView = new window.AdobeDC!.View({
             clientId: "4535a4cd7b104484b535e22386736738", // real Adobe Client ID
             divId: "adobe-dc-view-modal",
           });
@@ -87,9 +85,7 @@ export default function PdfViewerModal({ isOpen, onClose, pdfUrl, fileName }: Pd
               },
               metaData: { fileName: fileName },
             },
-            {
-              embedMode: "IN_LINE",
-            }
+            {}
           );
 
           // Hide loading after a short delay
