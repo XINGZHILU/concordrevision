@@ -191,15 +191,6 @@ export default function PdfViewerModal({ isOpen, onClose, pdfUrl, fileName }: Pd
             {fileName}
           </h2>
           <div className="flex items-center gap-2 ml-4">
-            <a
-              href={pdfUrl}
-              download={fileName}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-3 py-1.5 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-colors whitespace-nowrap"
-            >
-              Download
-            </a>
             <button
               onClick={onClose}
               className="p-2 hover:bg-destructive hover:text-destructive-foreground rounded-md transition-colors border border-border"
