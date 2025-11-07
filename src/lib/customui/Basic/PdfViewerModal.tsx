@@ -5,10 +5,11 @@ import { X } from 'lucide-react';
 
 /**
  * Type declarations for Adobe DC View SDK
+ * Extends the Window interface to include AdobeDC global object
  */
 declare global {
   interface Window {
-    AdobeDC?: {
+    AdobeDC: {
       View: new (config: {
         clientId: string;
         divId: string;
@@ -26,9 +27,6 @@ declare global {
           },
           viewerConfig: {
             embedMode: string;
-            showDownloadPDF?: boolean;
-            showPrintPDF?: boolean;
-            showLeftHandPanel?: boolean;
           }
         ) => void;
       };
@@ -58,76 +56,53 @@ export default function PdfViewerModal({ isOpen, onClose, pdfUrl, fileName }: Pd
     setIsLoading(true);
     setError(null);
 
-    // Clear any existing content
-    const container = document.getElementById("adobe-dc-view-modal");
-    if (container) {
-      container.innerHTML = '';
-    }
-
-    let isInitialized = false;
-
-    const initializeViewer = () => {
-      if (isInitialized) return;
-      isInitialized = true;
-
-      try {
-        if (!window.AdobeDC) {
-          setError("Adobe SDK not loaded");
-          setIsLoading(false);
-          return;
-        }
-
-        const adobeDCView = new window.AdobeDC.View({
-          clientId: "4535a4cd7b104484b535e22386736738",
-          divId: "adobe-dc-view-modal",
-        });
-
-        adobeDCView.previewFile(
-          {
-            content: {
-              location: {
-                url: pdfUrl,
-              },
-            },
-            metaData: { fileName: fileName },
-          },
-          {
-            embedMode: "SIZED_CONTAINER",
-            showDownloadPDF: true,
-            showPrintPDF: true,
-            showLeftHandPanel: true,
-          }
-        );
-
-        // Hide loading after viewer is rendered
-        setTimeout(() => setIsLoading(false), 1000);
-      } catch (err) {
-        console.error("Error initializing Adobe PDF viewer:", err);
-        setError(err instanceof Error ? err.message : "Failed to initialize PDF viewer");
-        setIsLoading(false);
-      }
-    };
-
-    // Load Adobe SDK
-    if (window.AdobeDC) {
-      initializeViewer();
-    } else {
-      const existingScript = document.querySelector('script[src*="acrobatservices.adobe.com"]');
-      
-      if (existingScript) {
-        existingScript.addEventListener('load', initializeViewer);
+    // Only run in the browser
+    const loadAdobeSDK = () => {
+      if (window.AdobeDC) {
+        initializeAdobe();
       } else {
+        // Load SDK dynamically
         const script = document.createElement("script");
         script.src = "https://acrobatservices.adobe.com/view-sdk/viewer.js";
         script.async = true;
-        script.onload = initializeViewer;
-        script.onerror = () => {
-          setError("Failed to load Adobe PDF SDK");
-          setIsLoading(false);
-        };
-        document.head.appendChild(script);
+        script.onload = () => initializeAdobe();
+        document.body.appendChild(script);
       }
-    }
+    };
+
+    const initializeAdobe = () => {
+      document.addEventListener("adobe_dc_view_sdk.ready", () => {
+        try {
+          const adobeDCView = new window.AdobeDC.View({
+            clientId: "4535a4cd7b104484b535e22386736738", // real Adobe Client ID
+            divId: "adobe-dc-view-modal",
+          });
+
+          adobeDCView.previewFile(
+            {
+              content: {
+                location: {
+                  url: pdfUrl,
+                },
+              },
+              metaData: { fileName: fileName },
+            },
+            {
+              embedMode: "IN_LINE",
+            }
+          );
+
+          // Hide loading after a short delay
+          setTimeout(() => setIsLoading(false), 1500);
+        } catch (err) {
+          console.error("Error initializing Adobe PDF viewer:", err);
+          setError(err instanceof Error ? err.message : "Failed to initialize PDF viewer");
+          setIsLoading(false);
+        }
+      });
+    };
+
+    loadAdobeSDK();
 
     return () => {
       const container = document.getElementById("adobe-dc-view-modal");
