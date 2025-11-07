@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import {
     File,
@@ -12,7 +12,7 @@ import {
     FileArchive,
     ExternalLink
 } from 'lucide-react';
-import { getPdfViewerUrl } from '@/lib/utils';
+import PdfViewerModal from './PdfViewerModal';
 
 interface FileItemProps {
     id: number;
@@ -69,6 +69,20 @@ function truncateFilename(filename: string, maxLength = 30) {
 }
 
 export default function FileList({ files }: { files: FileItemProps[] }) {
+    const [pdfModalOpen, setPdfModalOpen] = useState(false);
+    const [selectedPdf, setSelectedPdf] = useState<{ url: string; name: string } | null>(null);
+
+    const handlePdfClick = (url: string, name: string) => {
+        setSelectedPdf({ url, name });
+        setPdfModalOpen(true);
+    };
+
+    const closePdfModal = () => {
+        setPdfModalOpen(false);
+        // Delay clearing the selected PDF to avoid content flash during close animation
+        setTimeout(() => setSelectedPdf(null), 300);
+    };
+
     if (files.length === 0) {
         return (
             <p className="text-muted-foreground text-center py-4">No files available</p>
@@ -76,46 +90,81 @@ export default function FileList({ files }: { files: FileItemProps[] }) {
     }
 
     return (
-        <div className="space-y-3">
-            {files.map((file) => {
-                const FileIcon = getFileIcon(file.filename);
-                const displayName = truncateFilename(file.filename);
-                const extension = file.filename.split('.').pop()?.toLowerCase() || '';
-                const isPdf = extension === 'pdf';
+        <>
+            <div className="space-y-3">
+                {files.map((file) => {
+                    const FileIcon = getFileIcon(file.filename);
+                    const displayName = truncateFilename(file.filename);
+                    const extension = file.filename.split('.').pop()?.toLowerCase() || '';
+                    const isPdf = extension === 'pdf';
 
-                // For PDF files, use the PDF viewer; for others, direct download
-                const linkHref = isPdf ? getPdfViewerUrl(file.path, file.filename) : file.path;
-                const LinkComponent = isPdf ? Link : 'a';
+                    return (
+                        <div key={file.id} className="group">
+                            {isPdf ? (
+                                // PDF files open in modal
+                                <button
+                                    onClick={() => handlePdfClick(file.path, file.filename)}
+                                    className="w-full flex items-center p-3 border border-border hover:border-primary/50 rounded-lg hover:bg-primary/10 transition-all group-hover:shadow-sm text-left"
+                                    title={file.filename}
+                                >
+                                    <div className="flex-shrink-0 p-2 bg-primary/20 rounded-md text-primary mr-3">
+                                        <FileIcon />
+                                    </div>
 
-                return (
-                    <div key={file.id} className="group">
-                        <LinkComponent
-                            href={linkHref}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center p-3 border border-border hover:border-primary/50 rounded-lg hover:bg-primary/10 transition-all group-hover:shadow-sm"
-                            title={file.filename}
-                        >
-                            <div className="flex-shrink-0 p-2 bg-primary/20 rounded-md text-primary mr-3">
-                                <FileIcon />
-                            </div>
+                                    <div className="flex-grow min-w-0">
+                                        <p className="text-sm font-medium text-foreground truncate">
+                                            {displayName}
+                                        </p>
+                                        <p className="text-xs text-muted-foreground">
+                                            {extension.toUpperCase()}
+                                        </p>
+                                    </div>
 
-                            <div className="flex-grow min-w-0">
-                                <p className="text-sm font-medium text-foreground truncate">
-                                    {displayName}
-                                </p>
-                                <p className="text-xs text-muted-foreground">
-                                    {extension.toUpperCase()}
-                                </p>
-                            </div>
+                                    <div className="flex-shrink-0 ml-2 text-muted-foreground group-hover:text-primary">
+                                        <ExternalLink size={16} />
+                                    </div>
+                                </button>
+                            ) : (
+                                // Non-PDF files open in new tab
+                                <a
+                                    href={file.path}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center p-3 border border-border hover:border-primary/50 rounded-lg hover:bg-primary/10 transition-all group-hover:shadow-sm"
+                                    title={file.filename}
+                                >
+                                    <div className="flex-shrink-0 p-2 bg-primary/20 rounded-md text-primary mr-3">
+                                        <FileIcon />
+                                    </div>
 
-                            <div className="flex-shrink-0 ml-2 text-muted-foreground group-hover:text-primary">
-                                <ExternalLink size={16} />
-                            </div>
-                        </LinkComponent>
-                    </div>
-                );
-            })}
-        </div>
+                                    <div className="flex-grow min-w-0">
+                                        <p className="text-sm font-medium text-foreground truncate">
+                                            {displayName}
+                                        </p>
+                                        <p className="text-xs text-muted-foreground">
+                                            {extension.toUpperCase()}
+                                        </p>
+                                    </div>
+
+                                    <div className="flex-shrink-0 ml-2 text-muted-foreground group-hover:text-primary">
+                                        <ExternalLink size={16} />
+                                    </div>
+                                </a>
+                            )}
+                        </div>
+                    );
+                })}
+            </div>
+
+            {/* PDF Viewer Modal */}
+            {selectedPdf && (
+                <PdfViewerModal
+                    isOpen={pdfModalOpen}
+                    onClose={closePdfModal}
+                    pdfUrl={selectedPdf.url}
+                    fileName={selectedPdf.name}
+                />
+            )}
+        </>
     );
 }
