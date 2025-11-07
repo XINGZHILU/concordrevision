@@ -181,6 +181,16 @@ export default function PdfViewerModal({ isOpen, onClose, pdfUrl, fileName }: Pd
 
       {/* Modal Content */}
       <div className="relative w-[95vw] h-[95vh] bg-background rounded-lg shadow-2xl flex flex-col overflow-hidden">
+        {/* Floating Close Button - Top Right Corner */}
+        <button
+          onClick={onClose}
+          className="absolute top-2 right-2 z-50 p-2 bg-background/95 hover:bg-destructive hover:text-destructive-foreground rounded-full shadow-lg transition-all border border-border backdrop-blur-sm"
+          aria-label="Close"
+          title="Close (ESC)"
+        >
+          <X className="w-6 h-6" />
+        </button>
+
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-card">
           <h2 className="text-lg font-semibold text-foreground truncate flex-1">
@@ -198,8 +208,9 @@ export default function PdfViewerModal({ isOpen, onClose, pdfUrl, fileName }: Pd
             </a>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-accent rounded transition-colors"
+              className="p-2 hover:bg-destructive hover:text-destructive-foreground rounded-md transition-colors border border-border"
               aria-label="Close"
+              title="Close (ESC)"
             >
               <X className="w-5 h-5" />
             </button>
