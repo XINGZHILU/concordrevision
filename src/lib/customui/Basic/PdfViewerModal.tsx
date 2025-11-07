@@ -172,7 +172,7 @@ export default function PdfViewerModal({ isOpen, onClose, pdfUrl, fileName }: Pd
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center">
       {/* Backdrop */}
       <div 
         className="absolute inset-0 bg-black/70 backdrop-blur-sm"
@@ -181,15 +181,7 @@ export default function PdfViewerModal({ isOpen, onClose, pdfUrl, fileName }: Pd
 
       {/* Modal Content */}
       <div className="relative w-[95vw] h-[95vh] bg-background rounded-lg shadow-2xl flex flex-col overflow-hidden">
-        {/* Floating Close Button - Top Right Corner */}
-        <button
-          onClick={onClose}
-          className="absolute top-2 right-2 z-50 p-2 bg-background/95 hover:bg-destructive hover:text-destructive-foreground rounded-full shadow-lg transition-all border border-border backdrop-blur-sm"
-          aria-label="Close"
-          title="Close (ESC)"
-        >
-          <X className="w-6 h-6" />
-        </button>
+
 
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-card">
