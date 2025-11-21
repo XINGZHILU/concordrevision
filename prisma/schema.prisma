@@ -222,4 +222,5 @@ enum UCASSubjectType {
   Law_Humanities
   Medicine
   Art
+  Languages
 }
