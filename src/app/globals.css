@@ -125,7 +125,7 @@ h5 {
 }
 
 p {
-  @apply font-medium text-[1rem];
+  @apply font-normal text-[1rem];
 }
 
 button {

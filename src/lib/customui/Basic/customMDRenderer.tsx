@@ -19,6 +19,10 @@ function CompleteMarkdownRenderer({ content }: { content: string }) {
             <div dangerouslySetInnerHTML={{ __html: processedContent }} />
 
             <style jsx global>{`
+        .markdown-content p {
+          font-weight: 400;
+        }
+        
         .markdown-content code {
           font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
           background-color: var(--muted);

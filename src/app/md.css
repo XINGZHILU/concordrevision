@@ -8,6 +8,18 @@
   color: #24292e;
 }
 
+/* Ensure paragraphs match the font-weight of lists (normal, not medium) */
+.markdown-body p {
+  font-weight: 400;
+}
+
+/* Also target MDEditor-specific classes to ensure consistency */
+.wmde-markdown p,
+[data-color-mode="light"] .wmde-markdown p,
+[data-color-mode="dark"] .wmde-markdown p {
+  font-weight: 400 !important;
+}
+
 .markdown-body h1,
 .markdown-body h2,
 .markdown-body h3,
@@ -60,6 +72,15 @@
   margin-top: 0;
   margin-bottom: 16px;
   font-family: inherit !important;
+  font-weight: 400;
+}
+
+/* Ensure list items also use normal font-weight */
+.markdown-body li,
+.wmde-markdown li,
+[data-color-mode="light"] .wmde-markdown li,
+[data-color-mode="dark"] .wmde-markdown li {
+  font-weight: 400 !important;
 }
 
 .markdown-body ul ul,
