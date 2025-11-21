@@ -1,225 +1,225 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider  = "postgresql"
-    url       = env("DATABASE_URL")
-    directUrl = env("DIRECT_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
-    id                 String                    @id @default(cuid())
-    email              String                    @unique
-    firstname          String?
-    lastname           String?
-    teacher            Boolean                   @default(false)
-    admin              Boolean                   @default(false)
-    upload_permission  Boolean                   @default(false)
-    check_waiver       Boolean                   @default(false)
-    year               Int                       @default(-1)
-    // posts              Post[]
-    notes              Note[]
-    olympiad_resources Olympiad_Resource[]
-    ppq_records        PastPaperRecord[]
-    ucasPosts          UCASPost[]
-    subscriptions      UserSubjectSubscription[]
-    colourLinks        ColourLink[]
-}
-
-enum Colour {
-    Unclassified
-    Red
-    Amber
-    Green
+  id                 String                    @id @default(cuid())
+  email              String                    @unique
+  teacher            Boolean                   @default(false)
+  year               Int                       @default(-1)
+  upload_permission  Boolean                   @default(false)
+  firstname          String?
+  lastname           String?
+  admin              Boolean                   @default(false)
+  check_waiver       Boolean                   @default(false)
+  colourLinks        ColourLink[]
+  notes              Note[]
+  olympiad_resources Olympiad_Resource[]
+  ppq_records        PastPaperRecord[]
+  ucasPosts          UCASPost[]
+  subscriptions      UserSubjectSubscription[]
 }
 
 model ColourLink {
-    id        Int     @id @default(autoincrement())
-    user      User    @relation(fields: [userId], references: [id])
-    userId    String
-    subject   Subject @relation(fields: [subjectId], references: [id])
-    subjectId Int
-    note      Note    @relation(fields: [noteId], references: [id])
-    noteId    Int
-    colour    Colour
+  id        Int     @id @default(autoincrement())
+  userId    String
+  subjectId Int
+  noteId    Int
+  colour    Colour
+  note      Note    @relation(fields: [noteId], references: [id])
+  subject   Subject @relation(fields: [subjectId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
 }
 
 model Subject {
-    id          Int                       @id @default(autoincrement())
-    title       String
-    desc        String
-    level       Int // 0 = F3, 1 = F4, etc.
-    notes       Note[]
-    tests       Test[]
-    ppq_records PastPaperRecord[]
-    subscribers UserSubjectSubscription[]
-    colourLinks ColourLink[]
+  id          Int                       @id @default(autoincrement())
+  title       String
+  desc        String
+  level       Int
+  colourLinks ColourLink[]
+  notes       Note[]
+  ppq_records PastPaperRecord[]
+  tests       Test[]
+  subscribers UserSubjectSubscription[]
 }
 
 model UserSubjectSubscription {
-    id                    Int     @id @default(autoincrement())
-    userId                String
-    user                  User    @relation(fields: [userId], references: [id])
-    subjectId             Int
-    subject               Subject @relation(fields: [subjectId], references: [id])
-    test_notification     Boolean @default(true)
-    resource_notification Boolean @default(false)
+  id                    Int     @id @default(autoincrement())
+  userId                String
+  subjectId             Int
+  resource_notification Boolean @default(false)
+  test_notification     Boolean @default(true)
+  subject               Subject @relation(fields: [subjectId], references: [id])
+  user                  User    @relation(fields: [userId], references: [id])
 }
 
 model Test {
-    id        Int      @id @default(autoincrement())
-    title     String
-    type      Int      @default(0) // 0 = Sat Test, 1 = EOT Exam, 2 = External Exam
-    subject   Subject  @relation(fields: [subjectId], references: [id])
-    subjectId Int
-    desc      String   @default("")
-    topics    String[]
-    notes     Note[]
-    date      DateTime @default(now()) @db.Date
+  id        Int      @id @default(autoincrement())
+  title     String
+  subjectId Int
+  desc      String   @default("")
+  type      Int      @default(0)
+  date      DateTime @default(now()) @db.Date
+  topics    String[]
+  notes     Note[]
+  subject   Subject  @relation(fields: [subjectId], references: [id])
 }
 
 model Note {
-    id          Int           @id @default(autoincrement())
-    title       String
-    subject     Subject       @relation(fields: [subjectId], references: [id])
-    subjectId   Int
-    desc        String        @default("")
-    author      User          @relation(fields: [authorId], references: [id])
-    authorId    String
-    type        Int           @default(2) // 0 = Internal Exam Note, 1 = External Exam, 2 = Other
-    test        Test?         @relation(fields: [testId], references: [id])
-    testId      Int?
-    pinned      Boolean       @default(false)
-    approved    Boolean       @default(false)
-    files       StorageFile[]
-    uploadedAt  DateTime      @default(now())
-    colourLinks ColourLink[]
+  id          Int           @id @default(autoincrement())
+  title       String
+  subjectId   Int
+  desc        String        @default("")
+  authorId    String
+  type        Int           @default(2)
+  testId      Int?
+  pinned      Boolean       @default(false)
+  approved    Boolean       @default(false)
+  uploadedAt  DateTime      @default(now())
+  colourLinks ColourLink[]
+  author      User          @relation(fields: [authorId], references: [id])
+  subject     Subject       @relation(fields: [subjectId], references: [id])
+  test        Test?         @relation(fields: [testId], references: [id])
+  files       StorageFile[]
 }
 
 model Olympiad {
-    id                Int                 @id @default(autoincrement())
-    title             String
-    area              String
-    links             String[]
-    link_descriptions String[]
-    desc              String              @default("")
-    resources         Olympiad_Resource[]
+  id                Int                 @id @default(autoincrement())
+  title             String
+  desc              String              @default("")
+  area              String
+  links             String[]
+  link_descriptions String[]
+  resources         Olympiad_Resource[]
 }
 
 model Olympiad_Resource {
-    id         Int           @id @default(autoincrement())
-    title      String
-    desc       String        @default("")
-    olympiad   Olympiad      @relation(fields: [olympiadId], references: [id])
-    olympiadId Int
-    author     User          @relation(fields: [authorId], references: [id])
-    authorId   String
-    type       Int           @default(0)
-    files      StorageFile[]
-    approved   Boolean       @default(false)
-    pinned     Boolean       @default(false)
-    uploadedAt DateTime      @default(now())
+  id         Int           @id @default(autoincrement())
+  title      String
+  desc       String        @default("")
+  olympiadId Int
+  authorId   String
+  type       Int           @default(0)
+  approved   Boolean       @default(false)
+  uploadedAt DateTime      @default(now())
+  pinned     Boolean       @default(false)
+  author     User          @relation(fields: [authorId], references: [id])
+  olympiad   Olympiad      @relation(fields: [olympiadId], references: [id])
+  files      StorageFile[]
 }
 
 model StorageFile {
-    id                Int                @id @default(autoincrement())
-    filename          String
-    type              String             @default("pdf")
-    path              String
-    note              Note?              @relation(fields: [noteId], references: [id])
-    noteId            Int?
-    olympiad_resource Olympiad_Resource? @relation(fields: [olympiadId], references: [id])
-    olympiadId        Int?
-    ucasPost          UCASPost?          @relation(fields: [ucasPostId], references: [id])
-    ucasPostId        Int?
+  id                Int                @id @default(autoincrement())
+  filename          String
+  type              String             @default("pdf")
+  path              String
+  noteId            Int?
+  olympiadId        Int?
+  ucasPostId        Int?
+  note              Note?              @relation(fields: [noteId], references: [id])
+  olympiad_resource Olympiad_Resource? @relation(fields: [olympiadId], references: [id])
+  ucasPost          UCASPost?          @relation(fields: [ucasPostId], references: [id])
 }
 
 model PastPaperRecord {
-    id              String  @id @default(cuid())
-    name            String
-    user            User    @relation(fields: [userId], references: [id])
-    userId          String
-    subject         Subject @relation(fields: [subjectId], references: [id])
-    subjectId       Int
-    specimen        Boolean @default(true)
-    start_year      Int     @default(2015)
-    end_year        Int     @default(2025)
-    paper_count     Int     @default(3)
-    papers_finished Int[]
-    paper_marks     Int[]
-    max_marks       Int[]
-    notes           String  @default("")
+  id              String  @id @default(cuid())
+  name            String
+  userId          String
+  subjectId       Int
+  specimen        Boolean @default(true)
+  start_year      Int     @default(2015)
+  paper_count     Int     @default(3)
+  papers_finished Int[]
+  paper_marks     Int[]
+  max_marks       Int[]
+  end_year        Int     @default(2025)
+  notes           String  @default("")
+  subject         Subject @relation(fields: [subjectId], references: [id])
+  user            User    @relation(fields: [userId], references: [id])
 }
 
 model UCASPost {
-    id           Int           @id @default(autoincrement())
-    type         Int           @default(0) // 0 = General, 1 = University Specific, 2 = UCAS Subject Specific
-    title        String
-    content      String        @default("")
-    author       User          @relation(fields: [authorId], references: [id])
-    authorId     String
-    files        StorageFile[]
-    approved     Boolean       @default(false)
-    pinned       Boolean       @default(false)
-    uploadedAt   DateTime      @default(now())
-    tags         String[]
-    universities String[]      // Array of University IDs
-    ucasSubjects String[]      // Array of UCASSubject IDs
+  id           Int           @id @default(autoincrement())
+  type         Int           @default(0)
+  title        String
+  content      String        @default("")
+  authorId     String
+  approved     Boolean       @default(false)
+  uploadedAt   DateTime      @default(now())
+  tags         String[]
+  universities String[]
+  ucasSubjects String[]
+  pinned       Boolean       @default(false)
+  files        StorageFile[]
+  author       User          @relation(fields: [authorId], references: [id])
 }
 
 model Tag {
-    id   String @id
-    name String
+  id   String @id
+  name String
 }
 
 model University {
-    id          String           @id
-    name        String
-    uk          Boolean
-    courses     Course[]
-    description String           @default("")
-    stats       AdmissionStats[]
-}
-
-enum UCASSubjectType {
-    STEM
-    Law_Humanities
-    Languages
-    Medicine
-    Art
+  id          String           @id
+  name        String
+  uk          Boolean
+  description String           @default("")
+  stats       AdmissionStats[]
+  courses     Course[]
 }
 
 model UCASSubject {
-    id          String            @id
-    name        String
-    courses     Course[]
-    type        UCASSubjectType
-    description String            @default("")
+  id          String          @id(map: "Course_pkey")
+  name        String
+  type        UCASSubjectType
+  description String          @default("")
+  courses     Course[]
 }
 
 model Course {
-    id                 Int          @id @default(autoincrement())
-    university         University   @relation(fields: [universityId], references: [id])
-    universityId       String
-    ucasSubject        UCASSubject  @relation(fields: [ucasSubjectId], references: [id])
-    ucasSubjectId      String
-    name               String
-    entry_requirements String       @default("")
-    description        String       @default("")
-    ucascode           String
-    duration           Int
-    qualification      String
-    url                String?
+  id                 Int         @id(map: "CourseLink_pkey") @default(autoincrement())
+  universityId       String
+  ucasSubjectId      String
+  description        String      @default("")
+  duration           Int
+  entry_requirements String      @default("")
+  name               String
+  qualification      String
+  ucascode           String
+  url                String?
+  ucasSubject        UCASSubject @relation(fields: [ucasSubjectId], references: [id])
+  university         University  @relation(fields: [universityId], references: [id])
+
+  @@unique([universityId, ucasSubjectId])
 }
 
 model AdmissionStats {
-    id           Int        @id @default(autoincrement())
-    university   University @relation(fields: [universityId], references: [id])
-    universityId String
-    applied      Int
-    accepted     Int
-    year         Int
+  id           Int        @id @default(autoincrement())
+  universityId String
+  applied      Int
+  accepted     Int
+  year         Int
+  university   University @relation(fields: [universityId], references: [id])
 
-    @@unique([universityId, year])
+  @@unique([universityId, year])
+}
+
+enum Colour {
+  Unclassified
+  Red
+  Amber
+  Green
+}
+
+enum UCASSubjectType {
+  STEM
+  Law_Humanities
+  Medicine
+  Art
 }

@@ -6,7 +6,7 @@ import { Button } from '@/lib/components/ui/button';
 import { Input } from '@/lib/components/ui/input';
 import { useToast } from '@/lib/components/ui/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/lib/components/ui/select';
-import { Edit, Trash2, Save, XIcon } from 'lucide-react';
+import { Edit, Trash2, Save, XIcon, Search } from 'lucide-react';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -31,6 +31,7 @@ export function UCASSubjectManager({ ucasSubjects }: { ucasSubjects: UCASSubject
     const [editedName, setEditedName] = useState('');
     const [editedType, setEditedType] = useState<UCASSubjectType>(UCASSubjectType.STEM);
     const [editedDescription, setEditedDescription] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
     const { toast } = useToast();
 
     /**
@@ -122,6 +123,18 @@ export function UCASSubjectManager({ ucasSubjects }: { ucasSubjects: UCASSubject
         setEditedDescription('');
     }
 
+    /**
+     * Filter subjects based on search query
+     * Searches by name and type
+     */
+    const filteredSubjects = ucasSubjects.filter((subject) => {
+        const query = searchQuery.toLowerCase();
+        return (
+            subject.name.toLowerCase().includes(query) ||
+            subject.type.toLowerCase().includes(query)
+        );
+    });
+
     return (
         <div className="space-y-6">
             {/* Create new UCAS subject */}
@@ -155,9 +168,33 @@ export function UCASSubjectManager({ ucasSubjects }: { ucasSubjects: UCASSubject
 
             {/* List existing UCAS subjects */}
             <div className="space-y-4">
-                <h2 className="text-lg font-semibold">Existing UCAS Subjects</h2>
-                {ucasSubjects.map((subject) => (
-                    <div key={subject.id} className="p-4 border rounded-lg">
+                <div className="flex items-center justify-between">
+                    <h2 className="text-lg font-semibold">Existing UCAS Subjects</h2>
+                    <p className="text-sm text-muted-foreground">
+                        {filteredSubjects.length} of {ucasSubjects.length} subjects
+                    </p>
+                </div>
+                
+                {/* Search bar */}
+                <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                        placeholder="Search by name or type..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="pl-10"
+                    />
+                </div>
+
+                {filteredSubjects.length === 0 ? (
+                    <div className="p-8 text-center border rounded-lg border-dashed">
+                        <p className="text-muted-foreground">
+                            {searchQuery ? 'No subjects found matching your search.' : 'No UCAS subjects yet.'}
+                        </p>
+                    </div>
+                ) : (
+                    filteredSubjects.map((subject) => (
+                        <div key={subject.id} className="p-4 border rounded-lg">
                         {editingSubjectId === subject.id ? (
                             <div className="space-y-4">
                                 <Input
@@ -201,9 +238,7 @@ export function UCASSubjectManager({ ucasSubjects }: { ucasSubjects: UCASSubject
                                 <div>
                                     <h3 className="font-semibold">{subject.name}</h3>
                                     <p className="text-sm text-muted-foreground">Type: {subject.type}</p>
-                                    {subject.description && (
-                                        <p className="text-sm mt-2">{subject.description}</p>
-                                    )}
+                                    
                                 </div>
                                 <div className="flex gap-2">
                                     <Button onClick={() => startEditing(subject)} variant="outline" size="sm">
@@ -233,8 +268,9 @@ export function UCASSubjectManager({ ucasSubjects }: { ucasSubjects: UCASSubject
                                 </div>
                             </div>
                         )}
-                    </div>
-                ))}
+                        </div>
+                    ))
+                )}
             </div>
         </div>
     );
