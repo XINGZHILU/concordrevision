@@ -14,7 +14,13 @@ export default async function UniversityPage({ params }: { params: { uid: string
     include: {
       courses: {
         include: {
-          ucasSubject: true
+          ucasSubject: {
+            select: {
+              id: true,
+              name: true,
+              type: true
+            }
+          }
         }
       },
       stats: true,
