@@ -195,8 +195,6 @@ model Course {
   url                String?
   ucasSubject        UCASSubject @relation(fields: [ucasSubjectId], references: [id])
   university         University  @relation(fields: [universityId], references: [id])
-
-  @@unique([universityId, ucasSubjectId])
 }
 
 model AdmissionStats {
