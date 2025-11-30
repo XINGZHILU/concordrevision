@@ -119,7 +119,7 @@ export default async function Page({ params }: { params: { oid: string, rid: str
         <div className="flex flex-col md:flex-row gap-8">
           {/* Main content - larger proportion */}
           <div className="flex-grow md:w-3/4">
-            <div className="rounded-lg shadow-md border border-border p-8 mb-6">
+            <div className="bg-card rounded-lg shadow-md border border-border p-8 mb-6">
               <div className="prose prose-lg max-w-none text-foreground">
                 <MDViewer content={resource.desc} />
               </div>
