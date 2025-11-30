@@ -120,7 +120,6 @@ export default async function Page({ params }: { params: { oid: string, rid: str
           {/* Main content - larger proportion */}
           <div className="flex-grow md:w-3/4">
             <div className="rounded-lg shadow-md border border-border p-8 mb-6">
-              <h2 className="text-2xl font-semibold mb-5 text-primary border-b pb-3 border-border">Olympiad Resource Content</h2>
               <div className="prose prose-lg max-w-none text-foreground">
                 <MDViewer content={resource.desc} />
               </div>
