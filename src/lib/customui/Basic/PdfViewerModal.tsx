@@ -76,15 +76,7 @@ export default function PdfViewerModal({ isOpen, onClose, pdfUrl, fileName }: Pd
             },
             metaData: { fileName: fileName },
           },
-          {
-            embedMode: "LIGHT_BOX",
-            defaultViewMode: "FIT_WIDTH",
-            showDownloadPDF: true,
-            showPrintPDF: true,
-            showLeftHandPanel: false,
-            enableFormFilling: false,
-            dockPageControls: true,
-          }
+          {}
         );
 
         // Hide loading after a short delay

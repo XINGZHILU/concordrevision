@@ -80,25 +80,22 @@ function AdobePdfViewerContent() {
           divId: "adobe-dc-view",
         });
 
-         adobeDCView.previewFile(
-           {
-             content: {
-               location: {
-                 url: pdfUrl,
-               },
-             },
-             metaData: { fileName: fileName },
-           },
-           {
-             embedMode: "FULL_WINDOW",
-             defaultViewMode: "FIT_WIDTH",
-             showDownloadPDF: true,
-             showPrintPDF: true,
-             showLeftHandPanel: false,
-             enableFormFilling: false,
-             dockPageControls: true,
-           }
-         );
+        adobeDCView.previewFile(
+          {
+            content: {
+              location: {
+                url: pdfUrl,
+              },
+            },
+            metaData: { fileName: fileName },
+          },
+          {
+            embedMode: "FULL_WINDOW",
+            showDownloadPDF: true,
+            showPrintPDF: true,
+            showLeftHandPanel: true,
+          }
+        );
 
         // Hide loading after a short delay to ensure viewer is rendered
         setTimeout(() => setIsLoading(false), 1000);
