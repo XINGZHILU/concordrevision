@@ -1,8 +1,41 @@
 "use client"; // needed only in App Router
 
-import { useEffect, useState, Suspense, useCallback, useRef } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { loadAdobeSDK } from "@/lib/utils/adobeSDK";
+
+/**
+ * Type declarations for Adobe DC View SDK
+ * Extends the Window interface to include AdobeDC global object
+ */
+declare global {
+  interface Window {
+    AdobeDC?: {
+      View: new (config: {
+        clientId: string;
+        divId: string;
+      }) => {
+        previewFile: (
+          fileConfig: {
+            content: {
+              location: {
+                url: string;
+              };
+            };
+            metaData: {
+              fileName: string;
+            };
+          },
+          viewerConfig: {
+            embedMode: string;
+            showDownloadPDF?: boolean;
+            showPrintPDF?: boolean;
+            showLeftHandPanel?: boolean;
+          }
+        ) => void;
+      };
+    };
+  }
+}
 
 /**
  * Adobe PDF Viewer component with optimized loading
@@ -11,92 +44,100 @@ function AdobePdfViewerContent() {
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const viewerInstanceRef = useRef<any>(null);
-  const mountedRef = useRef(true);
   
   // Get PDF URL and filename from query parameters
   const pdfUrl = searchParams?.get('url');
   const fileName = searchParams?.get('name') || "Document.pdf";
 
-  const initializeViewer = useCallback(async () => {
+  useEffect(() => {
     if (!pdfUrl) {
       setError("No PDF URL provided");
       setIsLoading(false);
       return;
     }
 
-    if (!mountedRef.current) return;
+    // Clear any existing content
+    const container = document.getElementById("adobe-dc-view");
+    if (container) {
+      container.innerHTML = '';
+    }
 
-    try {
-      // Load Adobe SDK (cached after first load)
-      await loadAdobeSDK();
+    let isInitialized = false;
 
-      if (!mountedRef.current || !window.AdobeDC) {
-        throw new Error("Adobe SDK not available");
-      }
+    const initializeViewer = () => {
+      if (isInitialized) return;
+      isInitialized = true;
 
-      // Clean up previous instance
-      if (viewerInstanceRef.current) {
-        const container = document.getElementById("adobe-dc-view");
-        if (container) {
-          container.innerHTML = '';
+      try {
+        if (!window.AdobeDC) {
+          setError("Adobe SDK not loaded");
+          setIsLoading(false);
+          return;
         }
-      }
 
-      // Create new viewer instance
-      viewerInstanceRef.current = new window.AdobeDC.View({
-        clientId: "4535a4cd7b104484b535e22386736738",
-        divId: "adobe-dc-view",
-      });
+        const adobeDCView = new window.AdobeDC.View({
+          clientId: "4535a4cd7b104484b535e22386736738",
+          divId: "adobe-dc-view",
+        });
 
-      viewerInstanceRef.current.previewFile(
-        {
-          content: {
-            location: {
-              url: pdfUrl,
+        adobeDCView.previewFile(
+          {
+            content: {
+              location: {
+                url: pdfUrl,
+              },
             },
+            metaData: { fileName: fileName },
           },
-          metaData: { fileName: fileName },
-        },
-        {
-          embedMode: "FULL_WINDOW",
-          defaultViewMode: "FIT_WIDTH",
-          showDownloadPDF: true,
-          showPrintPDF: true,
-          showLeftHandPanel: false,
-          enableFormFilling: false,
-          enableSearchAPIs: false,
-          dockPageControls: true,
-        }
-      );
+          {
+            embedMode: "FULL_WINDOW",
+            showDownloadPDF: true,
+            showPrintPDF: true,
+            showLeftHandPanel: true,
+          }
+        );
 
-      // Hide loading after viewer is ready
-      setTimeout(() => {
-        if (mountedRef.current) setIsLoading(false);
-      }, 500);
-
-    } catch (err) {
-      console.error("Error initializing Adobe PDF viewer:", err);
-      if (mountedRef.current) {
+        // Hide loading after a short delay to ensure viewer is rendered
+        setTimeout(() => setIsLoading(false), 1000);
+      } catch (err) {
+        console.error("Error initializing Adobe PDF viewer:", err);
         setError(err instanceof Error ? err.message : "Failed to initialize PDF viewer");
         setIsLoading(false);
       }
-    }
-  }, [pdfUrl, fileName]);
+    };
 
-  useEffect(() => {
-    mountedRef.current = true;
-    initializeViewer();
+    // Load Adobe SDK
+    if (window.AdobeDC) {
+      // SDK already loaded
+      initializeViewer();
+    } else {
+      // Check if script already exists
+      const existingScript = document.querySelector('script[src*="acrobatservices.adobe.com"]');
+      
+      if (existingScript) {
+        // Script is loading, wait for it
+        existingScript.addEventListener('load', initializeViewer);
+      } else {
+        // Load the script
+        const script = document.createElement("script");
+        script.src = "https://acrobatservices.adobe.com/view-sdk/viewer.js";
+        script.async = true;
+        script.onload = initializeViewer;
+        script.onerror = () => {
+          setError("Failed to load Adobe PDF SDK");
+          setIsLoading(false);
+        };
+        document.head.appendChild(script);
+      }
+    }
 
     return () => {
-      mountedRef.current = false;
       const container = document.getElementById("adobe-dc-view");
       if (container) {
         container.innerHTML = '';
       }
-      viewerInstanceRef.current = null;
     };
-  }, [initializeViewer]);
+  }, [pdfUrl, fileName]);
 
   // Error state
   if (error) {
