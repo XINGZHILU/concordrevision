@@ -67,7 +67,7 @@ export default function EditOlympiadResourceForm({ resourceId, olympiadId, initi
         const names: string[] = [];
         
         for (const file of files) {
-            const response = await supabase.storage.from('olympiad-storage').upload(
+            const response = await supabase.storage.from('olympiads-storage').upload(
                 cuid() + file.name,
                 file,
                 {
@@ -91,7 +91,7 @@ export default function EditOlympiadResourceForm({ resourceId, olympiadId, initi
         setIsDeleting(fileId);
         
         try {
-            const response = await fetch('/api/resources/files/' + fileId, {
+            const response = await fetch('/api/olympiads/files/' + fileId, {
                 method: 'DELETE',
                 body: JSON.stringify({ fileId }),
                 headers: {

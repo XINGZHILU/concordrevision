@@ -65,7 +65,7 @@ export function EditableNoteCard({ note, canEdit }: NoteCardProps) {
                 <div className="flex items-center gap-4">
                     <span className="truncate max-w-32">{authorName}</span>
                     {canEdit && (
-                        <Link href={`/upload/revision/${note.subjectId}/edit`} className="text-primary hover:underline flex items-center">
+                        <Link href={`/upload/revision/${note.subjectId}/resources/${note.id}/edit`} className="text-primary hover:underline flex items-center">
                             <LuPencil className="h-3 w-3 mr-1" />
                             Edit
                         </Link>
