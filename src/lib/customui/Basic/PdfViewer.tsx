@@ -1,106 +1,50 @@
-'use client';
+import { useEffect, useRef } from "react";
 
-import '@/lib/polyfill';
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { Document, Page, pdfjs } from 'react-pdf';
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
-import 'react-pdf/dist/esm/Page/TextLayer.css';
-
-pdfjs.GlobalWorkerOptions.workerSrc = `/pdf.worker.mjs`;
-
-interface PdfContextType {
-    numPages: number | null;
-    setNumPages: (numPages: number | null) => void;
-    pageNumber: number;
-    setPageNumber: (pageNumber: number) => void;
+interface PDFViewerProps {
+  src: string;
+  height?: string;
 }
 
-const PdfContext = createContext<PdfContextType | undefined>(undefined);
+export default function PDFViewer({ src, height = "500px" }: PDFViewerProps) {
+  const viewerRef = useRef<HTMLDivElement>(null);
 
-export const PdfProvider = ({ children }: { children: ReactNode }) => {
-    const [numPages, setNumPages] = useState<number | null>(null);
-    const [pageNumber, setPageNumber] = useState(1);
-
-    return (
-        <PdfContext.Provider value={{ numPages, setNumPages, pageNumber, setPageNumber }}>
-            {children}
-        </PdfContext.Provider>
-    );
-};
-
-export const usePdf = () => {
-    const context = useContext(PdfContext);
-    if (context === undefined) {
-        throw new Error('usePdf must be used within a PdfProvider');
-    }
-    return context;
-};
-
-interface PdfViewerProps {
-  url: string;
-}
-
-const Viewer = ({ url }: PdfViewerProps) => {
-    const { setNumPages, pageNumber } = usePdf();
-
-    function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
-        setNumPages(numPages);
+  useEffect(() => {
+    // Ensure the div has a unique ID
+    if (!viewerRef.current?.id) {
+      viewerRef.current!.id =
+        "pdf-viewer-" + Math.random().toString(36).slice(2);
     }
 
-    function onDocumentLoadError(error: Error) {
-        console.error('Failed to load PDF document:', error.message);
-    }
+    // Create module script
+    const script = document.createElement("script");
+    script.type = "module";
+    script.textContent = `
+      import EmbedPDF from "https://snippet.embedpdf.com/embedpdf.js";
 
-    return (
-        <Document
-            file={url}
-            onLoadSuccess={onDocumentLoadSuccess}
-            onLoadError={onDocumentLoadError}
-        >
-            <Page pageNumber={pageNumber} />
-        </Document>
-    );
-};
+      if (!window.__embedPDFInit) {
+        window.__embedPDFInit = {};
+      }
 
-const Pagination = () => {
-    const { pageNumber, numPages, setPageNumber } = usePdf();
+      const targetId = "${viewerRef.current!.id}";
+      const target = document.getElementById(targetId);
 
-    if (!numPages) {
-        return null;
-    }
+      if (target && !window.__embedPDFInit[targetId]) {
+        window.__embedPDFInit[targetId] = true;
 
-    return (
-        <nav className="flex justify-between items-center mt-4 max-w-2xl mx-auto">
-            <button
-                className="px-4 py-2 bg-muted hover:bg-accent disabled:opacity-50"
-                disabled={pageNumber <= 1}
-                onClick={() => setPageNumber(pageNumber - 1)}
-            >
-                Previous
-            </button>
-            <span>
-                Page {pageNumber} of {numPages}
-            </span>
-            <button
-                className="px-4 py-2 bg-muted hover:bg-accent disabled:opacity-50"
-                disabled={pageNumber >= numPages}
-                onClick={() => setPageNumber(pageNumber + 1)}
-            >
-                Next
-            </button>
-        </nav>
-    );
-}
+        EmbedPDF.init({
+          type: "container",
+          target,
+          src: "${src}"
+        });
+      }
+    `;
 
-export default function PdfViewer({ url }: PdfViewerProps) {
-    return (
-        <PdfProvider>
-            <div className="min-h-screen h-full w-full p-4">
-                <div className="flex justify-center">
-                    <Viewer url={url} />
-                </div>
-                <Pagination />
-            </div>
-        </PdfProvider>
-    );
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, [src]);
+
+  return <div ref={viewerRef} style={{ height, width: "100%" }} />;
 }

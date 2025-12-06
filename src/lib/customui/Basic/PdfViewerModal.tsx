@@ -1,154 +1,46 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { createPortal } from 'react-dom';
-import { X } from 'lucide-react';
+import { X, ZoomIn, ZoomOut, Loader2, Download } from 'lucide-react';
+import { Document, Page, pdfjs } from 'react-pdf';
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+import 'react-pdf/dist/esm/Page/TextLayer.css';
 
-/**
- * Type declarations for Adobe DC View SDK
- * Extends the Window interface to include AdobeDC global object
- */
-declare global {
-  interface Window {
-    AdobeDC?: {
-      View: new (config: {
-        clientId: string;
-        divId: string;
-      }) => {
-        previewFile: (
-          fileConfig: {
-            content: {
-              location: {
-                url: string;
-              };
-            };
-            metaData: {
-              fileName: string;
-            };
-          },
-          viewerConfig: Record<string, unknown>
-        ) => void;
-      };
-    };
-  }
-}
+// Set up the worker
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 interface PdfViewerModalProps {
   isOpen: boolean;
   onClose: () => void;
   pdfUrl: string;
   fileName: string;
+  download?: boolean;
 }
 
 /**
- * Modal popup for viewing PDFs with Adobe Embed API
+ * Modal popup for viewing PDFs with react-pdf
  * Allows users to view PDFs without leaving the current page
  */
-export default function PdfViewerModal({ isOpen, onClose, pdfUrl, fileName }: PdfViewerModalProps) {
-  const [isLoading, setIsLoading] = useState(true);
+export default function PdfViewerModal({ isOpen, onClose, pdfUrl, fileName, download }: PdfViewerModalProps) {
+  const [numPages, setNumPages] = useState<number>(0);
+  const [scale, setScale] = useState<number>(1.0);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Reset state when modal opens with new PDF
   useEffect(() => {
-    if (!isOpen) return;
+    if (isOpen) {
+      setScale(1.0);
+      setIsLoading(true);
+      setError(null);
+    }
+  }, [isOpen, pdfUrl]);
 
-    // Reset state when modal opens
-    setIsLoading(true);
-    setError(null);
-
-    let readyHandlerAdded = false;
-    let mounted = true;
-
-    const handleReady = () => {
-      if (!mounted) return;
-      
-      try {
-        const adobeDCView = new window.AdobeDC!.View({
-          clientId: "4535a4cd7b104484b535e22386736738", // real Adobe Client ID
-          divId: "adobe-dc-view-modal",
-        });
-
-        adobeDCView.previewFile(
-          {
-            content: {
-              location: {
-                url: pdfUrl,
-              },
-            },
-            metaData: { fileName: fileName },
-          },
-          {}
-        );
-
-        // Hide loading after a short delay
-        setTimeout(() => {
-          if (mounted) setIsLoading(false);
-        }, 800);
-      } catch (err) {
-        console.error("Error initializing Adobe PDF viewer:", err);
-        if (mounted) {
-          setError(err instanceof Error ? err.message : "Failed to initialize PDF viewer");
-          setIsLoading(false);
-        }
-      }
-    };
-
-    const initializeViewer = () => {
-      if (!window.AdobeDC) {
-        console.warn("Adobe SDK not ready yet");
-        return;
-      }
-
-      // If SDK is ready, initialize immediately
-      handleReady();
-    };
-
-    // Only run in the browser
-    const loadAdobeSDK = () => {
-      if (window.AdobeDC) {
-        // SDK already loaded - initialize immediately
-        initializeViewer();
-      } else {
-        // Check if script is already in the document
-        const existingScript = document.querySelector('script[src*="acrobatservices.adobe.com"]');
-        
-        if (!existingScript) {
-          // Load SDK dynamically
-          const script = document.createElement("script");
-          script.src = "https://acrobatservices.adobe.com/view-sdk/viewer.js";
-          script.async = true;
-          script.onload = () => {
-            // Wait for the ready event
-            document.addEventListener("adobe_dc_view_sdk.ready", handleReady, { once: true });
-            readyHandlerAdded = true;
-          };
-          script.onerror = () => {
-            if (mounted) {
-              setError("Failed to load Adobe PDF SDK");
-              setIsLoading(false);
-            }
-          };
-          document.head.appendChild(script);
-        } else {
-          // Script is loading or loaded, wait for ready event
-          document.addEventListener("adobe_dc_view_sdk.ready", handleReady, { once: true });
-          readyHandlerAdded = true;
-        }
-      }
-    };
-
-    loadAdobeSDK();
-
-    return () => {
-      mounted = false;
-      if (readyHandlerAdded) {
-        document.removeEventListener("adobe_dc_view_sdk.ready", handleReady);
-      }
-      const container = document.getElementById("adobe-dc-view-modal");
-      if (container) {
-        container.innerHTML = '';
-      }
-    };
-  }, [isOpen, pdfUrl, fileName]);
+  // Generate array of page numbers for rendering all pages
+  const pageNumbers = useMemo(() => {
+    return Array.from({ length: numPages }, (_, i) => i + 1);
+  }, [numPages]);
 
   // Handle escape key to close modal
   useEffect(() => {
@@ -170,30 +62,103 @@ export default function PdfViewerModal({ isOpen, onClose, pdfUrl, fileName }: Pd
     };
   }, [isOpen, onClose]);
 
+  const onDocumentLoadSuccess = useCallback(({ numPages }: { numPages: number }) => {
+    setNumPages(numPages);
+    setIsLoading(false);
+    setError(null);
+  }, []);
+
+  const onDocumentLoadError = useCallback((error: Error) => {
+    console.error('Error loading PDF:', error);
+    setError('Failed to load PDF document');
+    setIsLoading(false);
+  }, []);
+
+  const zoomIn = () => {
+    setScale((prev) => Math.min(prev + 0.25, 3.0));
+  };
+
+  const zoomOut = () => {
+    setScale((prev) => Math.max(prev - 0.25, 0.5));
+  };
+
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = pdfUrl;
+    link.download = fileName || 'document.pdf';
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   if (!isOpen) return null;
 
   // Render modal at document body level to avoid z-index stacking context issues
   return createPortal(
     <div className="fixed inset-0 z-[9999] flex items-center justify-center">
       {/* Backdrop */}
-      <div 
+      <div
         className="absolute inset-0 bg-black/70 backdrop-blur-sm"
         onClick={onClose}
       ></div>
 
       {/* Modal Content */}
       <div className="relative w-[95vw] h-[95vh] bg-background rounded-lg shadow-2xl flex flex-col overflow-hidden">
-
-
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-card">
           <h2 className="text-lg font-semibold text-foreground truncate flex-1">
             {fileName}
           </h2>
+
+          {/* Controls */}
           <div className="flex items-center gap-2 ml-4">
+            {/* Page count */}
+            <span className="text-sm text-muted-foreground">
+              {numPages > 0 ? `${numPages} pages` : '...'}
+            </span>
+
+            {/* Zoom controls */}
+            <div className="flex items-center gap-1 ml-2 border-l border-border pl-2">
+              <button
+                onClick={zoomOut}
+                disabled={scale <= 0.5}
+                className="p-2 hover:bg-muted rounded-md transition-colors border border-border disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label="Zoom out"
+                title="Zoom out"
+              >
+                <ZoomOut className="w-5 h-5" />
+              </button>
+              <span className="text-sm text-muted-foreground min-w-[60px] text-center">
+                {Math.round(scale * 100)}%
+              </span>
+              <button
+                onClick={zoomIn}
+                disabled={scale >= 3.0}
+                className="p-2 hover:bg-muted rounded-md transition-colors border border-border disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label="Zoom in"
+                title="Zoom in"
+              >
+                <ZoomIn className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Download button - only shown when download prop is true */}
+            {download === true && (
+              <button
+                onClick={handleDownload}
+                className="p-2 hover:bg-primary hover:text-primary-foreground rounded-md transition-colors border border-border ml-2"
+                aria-label="Download"
+                title="Download PDF"
+              >
+                <Download className="w-5 h-5" />
+              </button>
+            )}
+
+            {/* Close button */}
             <button
               onClick={onClose}
-              className="p-2 hover:bg-destructive hover:text-destructive-foreground rounded-md transition-colors border border-border"
+              className="p-2 hover:bg-destructive hover:text-destructive-foreground rounded-md transition-colors border border-border ml-2"
               aria-label="Close"
               title="Close (ESC)"
             >
@@ -203,13 +168,13 @@ export default function PdfViewerModal({ isOpen, onClose, pdfUrl, fileName }: Pd
         </div>
 
         {/* PDF Viewer Container */}
-        <div className="flex-1 relative bg-background">
+        <div className="flex-1 relative bg-muted/30 overflow-auto">
           {/* Loading overlay */}
           {isLoading && (
             <div className="absolute inset-0 flex items-center justify-center bg-background z-10">
               <div className="text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-                <p className="text-lg text-foreground">Loading PDF viewer...</p>
+                <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
+                <p className="text-lg text-foreground">Loading PDF...</p>
                 <p className="text-sm text-muted-foreground mt-2">Please wait...</p>
               </div>
             </div>
@@ -222,8 +187,8 @@ export default function PdfViewerModal({ isOpen, onClose, pdfUrl, fileName }: Pd
                 <div className="text-6xl mb-4">⚠️</div>
                 <h3 className="text-xl font-bold text-foreground mb-2">Failed to Load PDF</h3>
                 <p className="text-muted-foreground mb-4">{error}</p>
-                <button 
-                  onClick={() => window.location.reload()} 
+                <button
+                  onClick={() => window.location.reload()}
                   className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
                 >
                   Retry
@@ -232,15 +197,30 @@ export default function PdfViewerModal({ isOpen, onClose, pdfUrl, fileName }: Pd
             </div>
           )}
 
-          {/* Adobe PDF viewer */}
-          <div
-            id="adobe-dc-view-modal"
-            className="w-full h-full"
-          ></div>
+          {/* PDF Document - All pages scrollable */}
+          <div className="flex justify-center p-4">
+            <Document
+              file={pdfUrl}
+              onLoadSuccess={onDocumentLoadSuccess}
+              onLoadError={onDocumentLoadError}
+              loading={null}
+              className="flex flex-col items-center gap-4"
+            >
+              {pageNumbers.map((pageNum) => (
+                <Page
+                  key={pageNum}
+                  pageNumber={pageNum}
+                  scale={scale}
+                  className="shadow-lg"
+                  renderTextLayer={true}
+                  renderAnnotationLayer={true}
+                />
+              ))}
+            </Document>
+          </div>
         </div>
       </div>
     </div>,
     document.body
   );
 }
-
