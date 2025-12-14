@@ -82,14 +82,33 @@ export default function PdfViewerModal({ isOpen, onClose, pdfUrl, fileName, down
     setScale((prev) => Math.max(prev - 0.25, 0.5));
   };
 
-  const handleDownload = () => {
-    const link = document.createElement('a');
-    link.href = pdfUrl;
-    link.download = fileName || 'document.pdf';
-    link.target = '_blank';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleDownload = async () => {
+    try {
+      // Fetch the PDF file as a blob
+      const response = await fetch(pdfUrl);
+      const blob = await response.blob();
+      
+      // Create a blob URL and trigger download
+      const blobUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = fileName || 'document.pdf';
+      document.body.appendChild(link);
+      link.click();
+      
+      // Clean up
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error('Error downloading PDF:', error);
+      // Fallback to direct link if fetch fails
+      const link = document.createElement('a');
+      link.href = pdfUrl;
+      link.download = fileName || 'document.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   };
 
   if (!isOpen) return null;
