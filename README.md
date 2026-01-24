@@ -166,41 +166,6 @@ concordrevision/
 - **LangChain** - AI/ML integrations
 - **date-fns** - Date utilities
 
-## 📚 Subjects Provided
-
-### GCSE / IGCSE
-
-| Subject | Exam Boards | Resources Available |
-|---------|-------------|-------------------|
-| Biology | AQA | ✅ Revision Notes |
-| Chemistry | AQA | ✅ Revision Notes |
-| Physics | AQA, Edexcel | ✅ Revision Notes |
-| Mathematics | Various | ✅ Multiple Resources |
-| Computer Science | CAIE | ✅ Revision Notes |
-| Astronomy | Edexcel | ✅ Revision Notes |
-| English Language | Various | 📝 Growing Collection |
-| English Literature | Various | 📝 Growing Collection |
-| Geography | Various | 📝 Growing Collection |
-| History | Various | 📝 Growing Collection |
-| Economics | Various | 📝 Growing Collection |
-| Modern Foreign Languages | Various | 📝 Growing Collection |
-
-### A Levels
-
-| Subject | Exam Boards | Resources Available |
-|---------|-------------|-------------------|
-| Mathematics | Edexcel | ✅ Revision Notes |
-| Further Mathematics | Edexcel | ✅ Revision Notes |
-| Biology | AQA | ✅ Revision Notes |
-| Chemistry | OCR | ✅ Revision Notes |
-| Physics | AQA | ✅ Revision Notes |
-| Economics | Various | 📝 Growing Collection |
-| English Language | Various | 📝 Growing Collection |
-| English Literature | Various | 📝 Growing Collection |
-| Modern Foreign Languages | Various | 📝 Growing Collection |
-| History | Various | 📝 Growing Collection |
-| Geography | Various | 📝 Growing Collection |
-
 ## 👥 User Roles
 
 ### Students
