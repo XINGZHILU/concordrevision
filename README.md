@@ -241,22 +241,7 @@ When contributing to Concordpedia:
 
 This project is private and proprietary.
 
-## 🙏 Acknowledgments
-
-- Built with ❤️ for the educational community
-- Powered by modern web technologies
-- Special thanks to all contributors
-
 ## 📞 Support
 
-For questions, issues, or suggestions, please contact the development team or open an issue in the repository.
+For questions, issues, or suggestions, please open an issue in the repository.
 
----
-
-<div align="center">
-
-**Made with Next.js, TypeScript, and Tailwind CSS**
-
-*Empowering education through technology*
-
-</div>
