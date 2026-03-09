@@ -152,9 +152,36 @@ export default async function Page({ params }: { params: { subject: string, test
       )}
 
       {/* Two-column layout */}
-      <div className="flex flex-col md:flex-row gap-8">
-        {/* Main content - larger proportion */}
-        <div className="flex-grow md:w-3/4">
+      {/* Conditional layout based on whether there are files */}
+      {note.files.length > 0 ? (
+        <div className="flex flex-col md:flex-row gap-8">
+          {/* Main content - larger proportion */}
+          <div className="flex-grow md:w-3/4">
+            <div className="bg-card rounded-lg shadow-md border border-border p-8 mb-6">
+              <h2 className="text-2xl font-semibold mb-5 text-primary border-b pb-3 border-border">Content</h2>
+              <div className="prose prose-lg max-w-none text-foreground">
+                <MDViewer content={note.desc} />
+              </div>
+            </div>
+          </div>
+
+          {/* Sidebar for files - only shown when there are files */}
+          <div className="md:w-1/4">
+            <div className="bg-card rounded-lg shadow-sm border p-6 sticky top-20">
+              <h2 className="text-lg font-semibold mb-4 flex items-center">
+                <LuFileText className="mr-2" />
+                Attachments
+                <span className="ml-2 text-sm font-normal text-muted-foreground">
+                  ({note.files.length})
+                </span>
+              </h2>
+              <FileList files={note.files} />
+            </div>
+          </div>
+        </div>
+      ) : (
+        /* Full width content when no files */
+        <div className="w-full">
           <div className="bg-card rounded-lg shadow-md border border-border p-8 mb-6">
             <h2 className="text-2xl font-semibold mb-5 text-primary border-b pb-3 border-border">Content</h2>
             <div className="prose prose-lg max-w-none text-foreground">
@@ -162,29 +189,7 @@ export default async function Page({ params }: { params: { subject: string, test
             </div>
           </div>
         </div>
-
-        {/* Sidebar for files - narrower */}
-        <div className="md:w-1/4">
-          <div className="bg-card rounded-lg shadow-sm border p-6 sticky top-20">
-            <h2 className="text-lg font-semibold mb-4 flex items-center">
-              <LuFileText className="mr-2" />
-              Attachments
-              <span className="ml-2 text-sm font-normal text-muted-foreground">
-                ({note.files.length})
-              </span>
-            </h2>
-
-            {note.files.length > 0 ? (
-              <FileList files={note.files} />
-            ) : (
-              <div className="text-center py-8 text-muted-foreground">
-                <LuFile className="mx-auto h-10 w-10 mb-2" />
-                <p>No files attached</p>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

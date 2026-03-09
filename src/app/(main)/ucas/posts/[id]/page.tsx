@@ -66,11 +66,19 @@ export default async function PostPage({ params }: { params: { id: string } }) {
   const canPin = isAdmin || isTeacher;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-12 w-11/12 mx-auto">
-      <div className="md:col-span-3">
-        <div className="flex justify-between items-center my-8">
-          <h1 className="text-4xl font-bold">{post.title}</h1>
-          <div className='flex gap-2'>
+    <div className="container mx-auto px-4 py-6 max-w-7xl">
+      {/* Page Header */}
+      <div className="mb-8 border-b pb-4">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
+              {post.title}
+            </h1>
+            <p className="text-sm md:text-base text-muted-foreground">
+              By {post.author.firstname} {post.author.lastname}
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
             {canEdit && (
               <Button asChild>
                 <Link href={`/ucas/posts/${post.id}/edit`}>Edit Post</Link>
@@ -81,17 +89,54 @@ export default async function PostPage({ params }: { params: { id: string } }) {
             )}
           </div>
         </div>
-        <p className="text-muted-foreground">By {post.author.firstname} {post.author.lastname}</p>
-        <div className="my-8">
-          <MDViewer content={post.content} />
-        </div>
       </div>
-      <PostSidebar 
-        tags={post.tags}
-        universities={universities}
-        ucasSubjects={ucasSubjects}
-        files={post.files}
-      />
+
+      {/* Two-column layout with conditional sidebar based on attachments */}
+      {post.files.length > 0 ? (
+        <div className="flex flex-col md:flex-row gap-8">
+          {/* Main content - larger proportion */}
+          <div className="flex-grow md:w-3/4">
+            <div className="bg-card rounded-lg shadow-md border border-border p-8 mb-6">
+              <div className="prose prose-lg max-w-none text-foreground">
+                <MDViewer content={post.content} />
+              </div>
+            </div>
+          </div>
+
+          {/* Sidebar - includes attachments and related metadata */}
+          <div className="md:w-1/4">
+            <div className="bg-card rounded-lg shadow-sm border p-4 md:p-6 sticky top-20">
+              <PostSidebar
+                tags={post.tags}
+                universities={universities}
+                ucasSubjects={ucasSubjects}
+                files={post.files}
+              />
+            </div>
+          </div>
+        </div>
+      ) : (
+        <>
+          {/* Full width content when no attachments */}
+          <div className="w-full">
+            <div className="bg-card rounded-lg shadow-md border border-border p-8 mb-6">
+              <div className="prose prose-lg max-w-none text-foreground">
+                <MDViewer content={post.content} />
+              </div>
+            </div>
+          </div>
+
+          {/* Metadata section below main content when there are no attachments */}
+          <div className="mt-6">
+            <PostSidebar
+              tags={post.tags}
+              universities={universities}
+              ucasSubjects={ucasSubjects}
+              files={post.files}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 } 
