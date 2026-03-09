@@ -166,41 +166,6 @@ concordrevision/
 - **LangChain** - AI/ML integrations
 - **date-fns** - Date utilities
 
-## 📚 Subjects Provided
-
-### GCSE / IGCSE
-
-| Subject | Exam Boards | Resources Available |
-|---------|-------------|-------------------|
-| Biology | AQA | ✅ Revision Notes |
-| Chemistry | AQA | ✅ Revision Notes |
-| Physics | AQA, Edexcel | ✅ Revision Notes |
-| Mathematics | Various | ✅ Multiple Resources |
-| Computer Science | CAIE | ✅ Revision Notes |
-| Astronomy | Edexcel | ✅ Revision Notes |
-| English Language | Various | 📝 Growing Collection |
-| English Literature | Various | 📝 Growing Collection |
-| Geography | Various | 📝 Growing Collection |
-| History | Various | 📝 Growing Collection |
-| Economics | Various | 📝 Growing Collection |
-| Modern Foreign Languages | Various | 📝 Growing Collection |
-
-### A Levels
-
-| Subject | Exam Boards | Resources Available |
-|---------|-------------|-------------------|
-| Mathematics | Edexcel | ✅ Revision Notes |
-| Further Mathematics | Edexcel | ✅ Revision Notes |
-| Biology | AQA | ✅ Revision Notes |
-| Chemistry | OCR | ✅ Revision Notes |
-| Physics | AQA | ✅ Revision Notes |
-| Economics | Various | 📝 Growing Collection |
-| English Language | Various | 📝 Growing Collection |
-| English Literature | Various | 📝 Growing Collection |
-| Modern Foreign Languages | Various | 📝 Growing Collection |
-| History | Various | 📝 Growing Collection |
-| Geography | Various | 📝 Growing Collection |
-
 ## 👥 User Roles
 
 ### Students
@@ -276,22 +241,7 @@ When contributing to Concordpedia:
 
 This project is private and proprietary.
 
-## 🙏 Acknowledgments
-
-- Built with ❤️ for the educational community
-- Powered by modern web technologies
-- Special thanks to all contributors
-
 ## 📞 Support
 
-For questions, issues, or suggestions, please contact the development team or open an issue in the repository.
+For questions, issues, or suggestions, please open an issue in the repository.
 
----
-
-<div align="center">
-
-**Made with Next.js, TypeScript, and Tailwind CSS**
-
-*Empowering education through technology*
-
-</div>
