@@ -1,14 +1,12 @@
 'use client';
 
+import MDEditor from "@uiw/react-md-editor";
 import { useTheme } from "next-themes";
-import React from "react";
-import CompleteMarkdownRenderer from "@/lib/customui/Basic/customMDRenderer";
+import React from 'react';
 
 export default function MDViewer({ content }: { content: string }) {
     const { resolvedTheme } = useTheme();
-    return (
-        <div className="container" data-color-mode={resolvedTheme}>
-            <CompleteMarkdownRenderer content={content} />
-        </div>
-    );
+    return <div className="container" data-color-mode={resolvedTheme}>
+        <MDEditor.Markdown source={content} style={{ background: 'transparent' }} />
+    </div>;
 }
